@@ -11,8 +11,7 @@ public class NetworkController : MonoBehaviourPunCallbacks
 
     void Start()
     {
-        messageLog.text = "Connecting to server...";
-        PhotonNetwork.ConnectUsingSettings();
+        Connect();
     }
 
     // Update is called once per frame
@@ -30,5 +29,24 @@ public class NetworkController : MonoBehaviourPunCallbacks
     void Update()
     {
 
+    }
+
+    private void Awake()
+    {
+        PhotonNetwork.AutomaticallySyncScene = true;
+    }
+
+    public void Connect()
+    {
+        if(PhotonNetwork.IsConnected)
+        {
+            PhotonNetwork.JoinRandomRoom();
+        }
+        else
+        {
+            messageLog.text = "Connecting to server...";
+            PhotonNetwork.ConnectUsingSettings();
+            PhotonNetwork.GameVersion = "1";
+        }
     }
 }
