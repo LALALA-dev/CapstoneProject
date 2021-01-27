@@ -2,14 +2,16 @@
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class NetworkController : MonoBehaviourPunCallbacks
 {
-    // Start is called before the first frame update
+    public TextMeshProUGUI messageLog;
+
     void Start()
     {
-        print("Connecting to server.");
+        messageLog.text = "Connecting to server...";
         PhotonNetwork.ConnectUsingSettings();
     }
 
@@ -17,12 +19,12 @@ public class NetworkController : MonoBehaviourPunCallbacks
 
     public override void OnConnectedToMaster()
     {
-        Debug.Log("Hello World!");
+        messageLog.text = "Connected to Master Server";
     }
 
     public override void OnDisconnected(DisconnectCause cause)
     {
-        print("Disconnected from server for reason " + cause.ToString());
+        messageLog.text = "Disconnected from server because: " + cause.ToString();
     }
 
     void Update()
