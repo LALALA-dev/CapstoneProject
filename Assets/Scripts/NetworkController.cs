@@ -8,9 +8,12 @@ using UnityEngine;
 public class NetworkController : MonoBehaviourPunCallbacks
 {
     public TextMeshProUGUI messageLog;
+    private GameBoard game;
 
     void Start()
     {
+        game = new GameBoard();
+        Debug.Log(game.branches[0].ownership);
         Connect();
     }
 
