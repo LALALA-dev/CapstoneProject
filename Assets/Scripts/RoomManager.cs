@@ -1,52 +1,43 @@
-﻿using Photon.Realtime;
+﻿using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewBehaviourScript : IMatchmakingCallbacks
+public class RoomManager : MonoBehaviourPunCallbacks
 {
-    private LoadBalancingClient loadBalancingClient;
-
-    private void QuickMatch()
+    void Start()
     {
-        loadBalancingClient.OpJoinRandomOrCreateRoom(null, null); ;
+        CreateOrJoinRoom();
     }
 
-    // do not forget to register callbacks via loadBalancingClient.AddCallbackTarget
-    // also deregister via loadBalancingClient.RemoveCallbackTarget
-
-    void IMatchmakingCallbacks.OnJoinedRoom()
+    public void CreateOrJoinRoom()
     {
-        Debug.Log("Joined Room");
+        if (PhotonNetwork.IsConnected)
+            return;
+
+        RoomOptions roomOptions = new RoomOptions();
+        roomOptions.MaxPlayers = 2;
+        Photon.Pun.PhotonNetwork.JoinOrCreateRoom("basic", roomOptions, TypedLobby.Default);
     }
 
-    public void OnFriendListUpdate(List<FriendInfo> friendList)
+    public override void OnCreatedRoom()
     {
-        throw new System.NotImplementedException();
+        Debug.Log("Created Room!");
     }
 
-    public void OnCreatedRoom()
+    public override void OnJoinedRoom()
     {
-        Debug.Log("Created Room");
+        Debug.Log("Joined Room!");
     }
 
-    public void OnCreateRoomFailed(short returnCode, string message)
+    public override void OnJoinRoomFailed(short returnCode, string message)
     {
-        throw new System.NotImplementedException();
+        Debug.Log("Joined Room Failed");
     }
 
-    public void OnJoinRoomFailed(short returnCode, string message)
+    public override void OnCreateRoomFailed(short returnCode, string message)
     {
-        throw new System.NotImplementedException();
-    }
-
-    public void OnJoinRandomFailed(short returnCode, string message)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void OnLeftRoom()
-    {
-        throw new System.NotImplementedException();
+        Debug.Log("Room Creation Failed");
     }
 }
