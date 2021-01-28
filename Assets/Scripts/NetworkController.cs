@@ -21,17 +21,13 @@ public class NetworkController : MonoBehaviourPunCallbacks
 
     public override void OnConnectedToMaster()
     {
-        messageLog.text = "Connected to Master Server";
+        Debug.Log("Connected to Master Server");
+        CreateOrJoinRoom();
     }
 
     public override void OnDisconnected(DisconnectCause cause)
     {
         messageLog.text = "Disconnected from server because: " + cause.ToString();
-    }
-
-    void Update()
-    {
-
     }
 
     private void Awake()
@@ -43,13 +39,49 @@ public class NetworkController : MonoBehaviourPunCallbacks
     {
         if(PhotonNetwork.IsConnected)
         {
-            PhotonNetwork.JoinRandomRoom();
+            //CreateOrJoinRoom();
         }
         else
         {
-            messageLog.text = "Connecting to server...";
+            Debug.Log("Connecting to server...");
             PhotonNetwork.ConnectUsingSettings();
             PhotonNetwork.GameVersion = "1";
+            //CreateOrJoinRoom();
         }
+    }
+
+    public void CreateOrJoinRoom()
+    {
+        //if (PhotonNetwork.IsConnected)
+        //    return;
+
+        RoomOptions roomOptions = new RoomOptions();
+        roomOptions.MaxPlayers = 2;
+        Photon.Pun.PhotonNetwork.JoinOrCreateRoom("basic", roomOptions, TypedLobby.Default);
+    }
+
+    public override void OnConnected()
+    {
+        //CreateOrJoinRoom();
+    }
+
+    public override void OnCreatedRoom()
+    {
+        Debug.Log("Created Room!");
+    }
+
+    public override void OnJoinedRoom()
+    {
+        Debug.Log("Joined Room!");
+    }
+
+    public override void OnJoinRoomFailed(short returnCode, string message)
+    {
+        Debug.Log("Joined Room Failed");
+    }
+
+    public override void OnCreateRoomFailed(short returnCode, string message)
+    {
+        Debug.Log("Room Creation Failed");
     }
 }
