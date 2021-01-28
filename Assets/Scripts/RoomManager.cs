@@ -6,10 +6,6 @@ using UnityEngine;
 
 public class RoomManager : MonoBehaviourPunCallbacks
 {
-    void Start()
-    {
-        CreateOrJoinRoom();
-    }
 
     public void CreateOrJoinRoom()
     {
@@ -19,6 +15,11 @@ public class RoomManager : MonoBehaviourPunCallbacks
         RoomOptions roomOptions = new RoomOptions();
         roomOptions.MaxPlayers = 2;
         Photon.Pun.PhotonNetwork.JoinOrCreateRoom("basic", roomOptions, TypedLobby.Default);
+    }
+
+    public override void OnConnected()
+    {
+        CreateOrJoinRoom();
     }
 
     public override void OnCreatedRoom()
