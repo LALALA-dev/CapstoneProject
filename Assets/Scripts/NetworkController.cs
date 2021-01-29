@@ -4,20 +4,12 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class NetworkController : MonoBehaviourPunCallbacks
 {
     public TextMeshProUGUI messageLog;
-    private GameBoard game;
-
-    void Start()
-    {
-        game = new GameBoard();
-        Debug.Log(game.branches[0].ownership);
-        Connect();
-    }
-
-    // Update is called once per frame
+    public TMP_InputField inputField;
 
     public override void OnConnectedToMaster()
     {
@@ -39,30 +31,27 @@ public class NetworkController : MonoBehaviourPunCallbacks
     {
         if(PhotonNetwork.IsConnected)
         {
-            //CreateOrJoinRoom();
+            CreateOrJoinRoom();
         }
         else
         {
             Debug.Log("Connecting to server...");
             PhotonNetwork.ConnectUsingSettings();
             PhotonNetwork.GameVersion = "1";
-            //CreateOrJoinRoom();
         }
     }
 
     public void CreateOrJoinRoom()
     {
-        //if (PhotonNetwork.IsConnected)
-        //    return;
+        if (!PhotonNetwork.IsConnected)
+            return;
 
-        RoomOptions roomOptions = new RoomOptions();
-        roomOptions.MaxPlayers = 2;
-        Photon.Pun.PhotonNetwork.JoinOrCreateRoom("basic", roomOptions, TypedLobby.Default);
-    }
-
-    public override void OnConnected()
-    {
-        //CreateOrJoinRoom();
+        if (inputField.text.Trim() != "")
+        {
+            RoomOptions roomOptions = new RoomOptions();
+            roomOptions.MaxPlayers = 2;
+            Photon.Pun.PhotonNetwork.JoinOrCreateRoom(inputField.text.Trim(), roomOptions, TypedLobby.Default);
+        }
     }
 
     public override void OnCreatedRoom()
