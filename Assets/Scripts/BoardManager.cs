@@ -7,16 +7,20 @@ public class BoardManager : MonoBehaviour
     public Sprite[] images;
     public SpriteRenderer[] spriteRenderers;
 
+    private void Start()
+    {
+        ReshuffleBoard();
+    }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Reshuffle();
+            ReshuffleBoard();
         }
     }
 
-    public void Reshuffle()
+    public void ReshuffleBoard()
     {
         for (int i = 0; i < images.Length; i++)
         {
@@ -32,7 +36,7 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    public void endTurn()
+    public void EndCurrentPlayersTurn()
     {
         Game.playerOneTurn = !Game.playerOneTurn;
     }

@@ -10,26 +10,24 @@ public class NodeController : MonoBehaviour
 
     void Start()
     {
-        SpriteRenderer sprite = GetComponent<SpriteRenderer>();
-        sprite.sprite = unowned;
-    }
-
-    void Update()
-    {
-        
+        ClaimNode(unowned);
     }
 
     private void OnMouseDown()
     {
         if(Game.playerOneTurn)
         {
-            SpriteRenderer sprite = GetComponent<SpriteRenderer>();
-            sprite.sprite = playerOne; 
+            ClaimNode(playerOne);
         }
         else
         {
-            SpriteRenderer sprite = GetComponent<SpriteRenderer>();
-            sprite.sprite = playerTwo;
+            ClaimNode(playerTwo);
         }
+    }
+
+    private void ClaimNode(Sprite playerColor)
+    {
+        SpriteRenderer sprite = GetComponent<SpriteRenderer>();
+        sprite.sprite = playerColor;
     }
 }

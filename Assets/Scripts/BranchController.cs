@@ -10,26 +10,24 @@ public class BranchController : MonoBehaviour
 
     void Start()
     {
-        SpriteRenderer sprite = GetComponent<SpriteRenderer>();
-        sprite.sprite = unowned;
-    }
-
-    void Update()
-    {
-
+        ClaimBranch(unowned);
     }
 
     private void OnMouseDown()
     {
         if (Game.playerOneTurn)
         {
-            SpriteRenderer sprite = GetComponent<SpriteRenderer>();
-            sprite.sprite = playerOne;
+            ClaimBranch(playerOne);
         }
         else
         {
-            SpriteRenderer sprite = GetComponent<SpriteRenderer>();
-            sprite.sprite = playerTwo;
+            ClaimBranch(playerTwo);
         }
+    }
+
+    private void ClaimBranch(Sprite playerColor)
+    {
+        SpriteRenderer sprite = GetComponent<SpriteRenderer>();
+        sprite.sprite = playerColor;
     }
 }
