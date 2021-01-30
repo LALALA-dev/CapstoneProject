@@ -32,4 +32,9 @@ public class BoardManager : MonoBehaviour
         }
     }
 
+    public void endTurn()
+    {
+        Game.playerOneTurn = !Game.playerOneTurn;
+    }
+
 }
