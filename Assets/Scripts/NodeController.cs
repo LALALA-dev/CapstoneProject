@@ -13,9 +13,21 @@ public class NodeController : MonoBehaviour
         ClaimNode(unowned);
     }
 
-    private void OnMouseDown()
+    /*private void OnMouseDown()
     {
         if(Game.playerOneTurn)
+        {
+            ClaimNode(playerOne);
+        }
+        else
+        {
+            ClaimNode(playerTwo);
+        }
+    }
+    */
+    public void OnMouseDown()
+    {
+        if (Game.playerOneTurn)
         {
             ClaimNode(playerOne);
         }
