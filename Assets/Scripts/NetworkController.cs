@@ -8,18 +8,47 @@ using UnityEngine.UI;
 
 public class NetworkController : MonoBehaviourPunCallbacks
 {
-    public TextMeshProUGUI messageLog;
+    public TextMeshProUGUI onlineStatusText;
+    public TextMeshProUGUI currentRoomText;
+    public TMP_Dropdown roomsDropdown;
     public TMP_InputField inputField;
+
+    private void Start()
+    {
+        roomsDropdown.ClearOptions();
+        Connect();
+    }
 
     public override void OnConnectedToMaster()
     {
-        Debug.Log("Connected to Master Server");
-        CreateOrJoinRoom();
+        onlineStatusText.text = "Online";
+
+        PhotonNetwork.JoinLobby();
     }
 
     public override void OnDisconnected(DisconnectCause cause)
     {
-        messageLog.text = "Disconnected from server because: " + cause.ToString();
+        onlineStatusText.text = "Disconnected from server because: " + cause.ToString();
+    }
+
+    public override void OnRoomListUpdate(List<RoomInfo> roomList)
+    {
+        List<string> roomNames = new List<string>();
+
+        if (roomList.Count > 0)
+        {
+            foreach (RoomInfo roomInfo in roomList)
+            {
+                roomNames.Add(roomInfo.Name);
+            }
+        }
+        else
+        {
+            roomNames.Add("No Online Matches");
+        }
+
+        roomsDropdown.ClearOptions();
+        roomsDropdown.AddOptions(roomNames);
     }
 
     private void Awake()
@@ -56,7 +85,7 @@ public class NetworkController : MonoBehaviourPunCallbacks
 
     public override void OnCreatedRoom()
     {
-        Debug.Log("Created Room!");
+        currentRoomText.text = "Created Room!";
     }
 
     public override void OnJoinedRoom()
