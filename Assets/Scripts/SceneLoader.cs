@@ -5,6 +5,17 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
+
+    public void LoadNetworkScene()
+    {
+        SceneManager.LoadScene(2);
+    }
+
+    public void LoadLocalGameScene()
+    {
+        SceneManager.LoadScene(1);
+    }
+
     public void LoadNextScene()
     {
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
