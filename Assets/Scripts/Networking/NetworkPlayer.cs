@@ -7,14 +7,14 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
 {
 
     [SerializeField] private NetworkController networkController;
-    [SerializeField] private PhotonView photonView;
+    private PhotonView pView;
 
     public static NetworkPlayer player;
     public string playerName;
 
     void Start()
     {
-        photonView = PhotonView.Get(this);
+        pView = GetComponent<PhotonView>();
 
         if (player == null)
             player = this;
@@ -24,20 +24,20 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
 
     public void SendPlayerInfo(string playerName)
     {
-        if (photonView.IsMine)
-            photonView.RPC("RPC_SendInfo", RpcTarget.AllBuffered, playerName);
+        if (pView.IsMine)
+            pView.RPC("RPC_SendInfo", RpcTarget.AllBuffered, playerName);
     }
 
     public void SendPlayerMove(/*MoveObject Param*/)
     {
-        if (photonView.IsMine)
-            photonView.RPC("RPC_SendPlayerMove", RpcTarget.All /*, MoveObject param*/);
+        if (pView.IsMine)
+            pView.RPC("RPC_SendPlayerMove", RpcTarget.All /*, MoveObject param*/);
     }
 
     public void SendHostBoardConfiguration(/*BoardConfig Param*/)
     {
-        if (photonView.IsMine)
-            photonView.RPC("RPC_SendBoardConfig", RpcTarget.All /*, BoardConfig param*/);
+        if (pView.IsMine)
+            pView.RPC("RPC_SendBoardConfig", RpcTarget.All /*, BoardConfig param*/);
     }
 
     #region RPC Functions
