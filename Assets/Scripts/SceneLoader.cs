@@ -1,19 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine;
 
 public class SceneLoader : MonoBehaviour
 {
 
     public void LoadNetworkScene()
     {
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene("NetworkScene");
     }
 
     public void LoadLocalGameScene()
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene("GameScene");
+    }
+
+    public void LoadMenuScene()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 
     public void LoadNextScene()
