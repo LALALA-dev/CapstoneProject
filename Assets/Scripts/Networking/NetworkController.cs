@@ -16,7 +16,7 @@ public class NetworkController : MonoBehaviourPunCallbacks
     public static NetworkController NetController;
     public static string netOpponentsName;
 
-    [SerializeField] private PhotonView photonView;
+    // [SerializeField] private PhotonView photonView;
 
     private void Awake()
     {
