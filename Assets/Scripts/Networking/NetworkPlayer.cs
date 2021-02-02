@@ -6,15 +6,22 @@ using UnityEngine;
 public class NetworkPlayer : MonoBehaviourPunCallbacks
 {
 
-    //[SerializeField] private NetworkController networkController;
-    //[SerializeField] private PhotonView photonView;
+    [SerializeField] private NetworkController networkController;
+    [SerializeField] private PhotonView photonView;
 
     public static NetworkPlayer player;
+    public string playerName;
 
     void Start()
     {
-        //photonView = PhotonView.Get(this);
-        player = this;
+        photonView = PhotonView.Get(this);
+
+        if (player == null)
+            player = this;
+
+        DontDestroyOnLoad(this.gameObject);
     }
+
+
 
 }

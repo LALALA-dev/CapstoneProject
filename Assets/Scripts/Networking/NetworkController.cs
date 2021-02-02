@@ -11,12 +11,12 @@ public class NetworkController : MonoBehaviourPunCallbacks
     public TextMeshProUGUI onlineStatusText;
     public TextMeshProUGUI currentRoomText;
     public TMP_Dropdown roomsDropdown;
-    public TMP_InputField inputField;
+    public TMP_InputField roomInputField;
+    public TMP_InputField nameInputField;
 
     public static NetworkController NetController;
     public static string netOpponentsName;
 
-    // [SerializeField] private PhotonView photonView;
 
     private void Awake()
     {
@@ -81,11 +81,11 @@ public class NetworkController : MonoBehaviourPunCallbacks
         if (!PhotonNetwork.IsConnected)
             return;
 
-        if (inputField.text.Trim() != "")
+        if (roomInputField.text.Trim() != "")
         {
             RoomOptions roomOptions = new RoomOptions();
             roomOptions.MaxPlayers = 2;
-            Photon.Pun.PhotonNetwork.JoinOrCreateRoom(inputField.text.Trim(), roomOptions, TypedLobby.Default);
+            Photon.Pun.PhotonNetwork.JoinOrCreateRoom(roomInputField.text.Trim(), roomOptions, TypedLobby.Default);
         }
     }
 
@@ -112,5 +112,13 @@ public class NetworkController : MonoBehaviourPunCallbacks
     public void GetOpponentInfo(string name)
     {
         netOpponentsName = name;
+    }
+
+    public void setPlayerName()
+    {
+        if(nameInputField.text.Trim() != "")
+        {
+            NetworkPlayer.player.name = nameInputField.text.Trim();
+        }
     }
 }
