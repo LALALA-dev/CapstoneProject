@@ -33,7 +33,6 @@ public class NetworkController : MonoBehaviourPunCallbacks
     public override void OnConnectedToMaster()
     {
         onlineStatusText.text = "Online";
-
         PhotonNetwork.JoinLobby();
     }
 
@@ -97,6 +96,7 @@ public class NetworkController : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log("Joined Room!");
+        GameObject player = PhotonNetwork.Instantiate("NetworkPlayer", new Vector3(0, 0, 0), Quaternion.identity, 0);
     }
 
     public override void OnJoinRoomFailed(short returnCode, string message)
@@ -112,6 +112,7 @@ public class NetworkController : MonoBehaviourPunCallbacks
     public void GetOpponentInfo(string name)
     {
         netOpponentsName = name;
+        Debug.Log("Your opponent's name is " + netOpponentsName + "!");
     }
 
     public void setPlayerName()
@@ -119,6 +120,7 @@ public class NetworkController : MonoBehaviourPunCallbacks
         if(nameInputField.text.Trim() != "")
         {
             NetworkPlayer.player.name = nameInputField.text.Trim();
+            NetworkPlayer.player.SendPlayerInfo(NetworkPlayer.player.name);
         }
     }
 }

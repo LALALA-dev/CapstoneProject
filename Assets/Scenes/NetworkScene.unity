@@ -1640,7 +1640,7 @@ GameObject:
   - component: {fileID: 600878502}
   - component: {fileID: 600878501}
   m_Layer: 5
-  m_Name: InputField (TMP)
+  m_Name: SetNameInput
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4828,8 +4828,8 @@ MonoBehaviour:
   onlineStatusText: {fileID: 1265269546}
   currentRoomText: {fileID: 281333875}
   roomsDropdown: {fileID: 1840988632}
-  roomInputField: {fileID: 0}
-  nameInputField: {fileID: 0}
+  roomInputField: {fileID: 328813035}
+  nameInputField: {fileID: 600878501}
 --- !u!1 &2108282082
 GameObject:
   m_ObjectHideFlags: 0
