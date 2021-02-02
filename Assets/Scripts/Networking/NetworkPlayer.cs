@@ -20,8 +20,17 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
             player = this;
 
         DontDestroyOnLoad(this.gameObject);
+
+        if(photonView.IsMine)
+        {
+            photonView.RPC("RPC_SendName", RpcTarget.AllBuffered);
+        }
     }
 
+    [PunRPC]
+    void RPC_SendName()
+    {
 
+    }
 
 }
