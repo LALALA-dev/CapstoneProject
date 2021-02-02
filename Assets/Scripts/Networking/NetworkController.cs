@@ -69,7 +69,6 @@ public class NetworkController : MonoBehaviourPunCallbacks
         }
         else
         {
-            Debug.Log("Connecting to server...");
             PhotonNetwork.ConnectUsingSettings();
             PhotonNetwork.GameVersion = "1";
         }
@@ -90,7 +89,7 @@ public class NetworkController : MonoBehaviourPunCallbacks
 
     public override void OnCreatedRoom()
     {
-        currentRoomText.text = "Created Room!";
+        currentRoomText.text = PhotonNetwork.CurrentRoom.Name;
     }
 
     public override void OnJoinedRoom()
