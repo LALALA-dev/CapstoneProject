@@ -13,6 +13,17 @@ public class NetworkController : MonoBehaviourPunCallbacks
     public TMP_Dropdown roomsDropdown;
     public TMP_InputField inputField;
 
+    public static NetworkController NetController;
+    public static string netOpponentsName;
+
+    [SerializeField] private PhotonView photonView;
+
+    private void Awake()
+    {
+        PhotonNetwork.AutomaticallySyncScene = true;
+        NetController = this;
+    }
+
     private void Start()
     {
         roomsDropdown.ClearOptions();
@@ -49,11 +60,6 @@ public class NetworkController : MonoBehaviourPunCallbacks
 
         roomsDropdown.ClearOptions();
         roomsDropdown.AddOptions(roomNames);
-    }
-
-    private void Awake()
-    {
-        PhotonNetwork.AutomaticallySyncScene = true;
     }
 
     public void Connect()
@@ -101,5 +107,10 @@ public class NetworkController : MonoBehaviourPunCallbacks
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
         Debug.Log("Room Creation Failed");
+    }
+
+    public void GetOpponentInfo(string name)
+    {
+        netOpponentsName = name;
     }
 }
