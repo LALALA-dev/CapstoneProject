@@ -8,15 +8,12 @@ using UnityEngine.UI;
 
 public class NetworkController : MonoBehaviourPunCallbacks
 {
-    public TextMeshProUGUI onlineStatusText;
-    public TextMeshProUGUI currentRoomText;
-    public TMP_Dropdown roomsDropdown;
     public TMP_InputField roomInputField;
     public TMP_InputField nameInputField;
 
     public static NetworkController NetController;
     public static string netOpponentsName;
-
+    private string networkPlayerName = "default";
 
     private void Awake()
     {
@@ -26,39 +23,17 @@ public class NetworkController : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        roomsDropdown.ClearOptions();
         Connect();
     }
 
     public override void OnConnectedToMaster()
     {
-        onlineStatusText.text = "Online";
         PhotonNetwork.JoinLobby();
     }
 
     public override void OnDisconnected(DisconnectCause cause)
     {
-        onlineStatusText.text = "Disconnected from server because: " + cause.ToString();
-    }
-
-    public override void OnRoomListUpdate(List<RoomInfo> roomList)
-    {
-        List<string> roomNames = new List<string>();
-
-        if (roomList.Count > 0)
-        {
-            foreach (RoomInfo roomInfo in roomList)
-            {
-                roomNames.Add(roomInfo.Name);
-            }
-        }
-        else
-        {
-            roomNames.Add("No Online Matches");
-        }
-
-        roomsDropdown.ClearOptions();
-        roomsDropdown.AddOptions(roomNames);
+        Debug.Log("Disconnected from server because: " + cause.ToString());
     }
 
     public void Connect()
@@ -89,13 +64,14 @@ public class NetworkController : MonoBehaviourPunCallbacks
 
     public override void OnCreatedRoom()
     {
-        currentRoomText.text = PhotonNetwork.CurrentRoom.Name;
+        GameObject player = PhotonNetwork.Instantiate("NetworkPlayer", new Vector3(0, 0, 0), Quaternion.identity, 0);
+        setNetworkPlayerName();
     }
 
     public override void OnJoinedRoom()
     {
-        Debug.Log("Joined Room!");
         GameObject player = PhotonNetwork.Instantiate("NetworkPlayer", new Vector3(0, 0, 0), Quaternion.identity, 0);
+        setNetworkPlayerName();
     }
 
     public override void OnJoinRoomFailed(short returnCode, string message)
@@ -114,12 +90,17 @@ public class NetworkController : MonoBehaviourPunCallbacks
         Debug.Log("Your opponent's name is " + netOpponentsName + "!");
     }
 
-    public void setPlayerName()
+    private void setNetworkPlayerName()
     {
-        if(nameInputField.text.Trim() != "")
+        NetworkPlayer.player.name = networkPlayerName;
+        NetworkPlayer.player.SendPlayerInfo(networkPlayerName);
+    }
+
+    public void setName()
+    {
+        if (nameInputField.text.Trim() != "")
         {
-            NetworkPlayer.player.name = nameInputField.text.Trim();
-            NetworkPlayer.player.SendPlayerInfo(NetworkPlayer.player.name);
+            networkPlayerName = nameInputField.text.Trim();
         }
     }
 }
