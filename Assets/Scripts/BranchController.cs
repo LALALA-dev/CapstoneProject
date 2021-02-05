@@ -1,33 +1,70 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GameObjectProperties;
 
 public class BranchController : MonoBehaviour
 {
-    public Sprite playerOne;
-    public Sprite playerTwo;
-    public Sprite unowned;
+    public Sprite playerOneSprite;
+    public Sprite playerTwoSprite;
+    public Sprite blankSprite;
+
+    public Branch branchEntity;
 
     void Start()
     {
-        ClaimBranch(unowned);
+        // Mark Branch Unowned at start
+        ClaimBranch(blankSprite);
     }
 
     private void OnMouseDown()
     {
-        if (Game.playerOneTurn)
+        // Determine if current player can place here. (As of now simply meaning you can't override
+        if(isBranchBlank() || isBranchSurroundedByCurrentPlayer())
         {
-            ClaimBranch(playerOne);
+            branchEntity.branchState.ownerColor = branchEntity.gameController.getCurrentPlayerColor();
+            branchEntity.branchState.branchColor = branchEntity.gameController.getCurrentPlayerColor();
+
+            // Change color
+            if (Game.playerOneTurn)
+                ClaimBranch(playerOneSprite);
+            else
+                ClaimBranch(playerTwoSprite);
         }
+        // Are you trying to undo a selection?
+        else if(isBranchColorOfCurrentPlayer())
+        {
+            ClaimBranch(blankSprite);
+        }
+
+        // Print
+        print("You clicked on:\n" + this.GetComponent<Renderer>().name + ", ID: " + branchEntity.id + ", Color: ");
+        if (GetComponent<SpriteRenderer>().sprite == playerOneSprite)
+            print("Orange\n");
+        else if (GetComponent<SpriteRenderer>().sprite == playerTwoSprite)
+            print("Purple\n");
         else
-        {
-            ClaimBranch(playerTwo);
-        }
+            print("Blank\n");
     }
 
     private void ClaimBranch(Sprite playerColor)
     {
         SpriteRenderer sprite = GetComponent<SpriteRenderer>();
         sprite.sprite = playerColor;
+    }
+
+    private bool isBranchBlank()
+    {
+        return branchEntity.branchState.ownerColor == PlayerColor.Blank;
+    }
+
+    private bool isBranchSurroundedByCurrentPlayer()
+    {
+        return ((branchEntity.branchState.ownerColor == branchEntity.gameController.getCurrentPlayerColor()) && (branchEntity.branchState.branchColor == PlayerColor.Blank));
+    }
+
+    private bool isBranchColorOfCurrentPlayer()
+    {
+        return branchEntity.branchState.branchColor == branchEntity.gameController.getCurrentPlayerColor();
     }
 }

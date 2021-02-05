@@ -1,13 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GameObjectProperties;
 
-public class Branch
+public class Branch : MonoBehaviour
 {
-    public string ownership { get; set; }
+    public int id;
+    public BranchState branchState;
 
-    public Branch()
+    public GameController gameController;
+
+    void Start()
     {
-        ownership = "unowned";
+        branchState.location = id;
+        branchState.ownerColor = branchState.branchColor = PlayerColor.Blank;
+
+        gameController = GameController.getInstance();
+        gameController.getGameBoard().branches[id] = this;
     }
 }

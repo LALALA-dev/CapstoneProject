@@ -1,59 +1,77 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GameObjectProperties;
 
 public class GameBoard
 {
-    const int MAX_TILES = 13;
-    const int MAX_NODES = 24;
-    const int MAX_BRANCHES = 36;
+    private const int MAX_SQUARES = 13;
+    private const int MAX_NODES = 24;
+    private const int MAX_BRANCHES = 36;
 
-    public PropertyTile[] tiles = new PropertyTile[MAX_TILES];
-    public Node[] nodes = new Node[MAX_NODES];
-    public Branch[] branches = new Branch[MAX_BRANCHES];
+    public Square[] squares;
+    public Node[] nodes;
+    public Branch[] branches;
+
+    private BoardState boardState;
 
     public GameBoard()
     {
-        for(int i = 0; i < MAX_TILES; i++)
-        {
-            tiles[i] = new PropertyTile();
-        }
+        squares = new Square[MAX_SQUARES];
+        nodes = new Node[MAX_NODES];
+        branches = new Branch[MAX_BRANCHES];
 
-        for (int i = 0; i < MAX_NODES; i++)
-        {
-            nodes[i] = new Node();
-        }
-
-        for(int i = 0; i < MAX_BRANCHES; i++)
-        {
-            branches[i] = new Branch();
-        }
+        boardState.squareStates = new SquareState[MAX_SQUARES];
+        boardState.nodeStates = new NodeState[MAX_NODES];
+        boardState.branchStates = new BranchState[MAX_BRANCHES];
     }
 
-    public GameBoard(PropertyTile[] tileState)
+    // Given an array of ResourceState, sets each square on the board to that layout.
+    // Used to set up a custom gameboard.
+    public void setSquares(SquareState[] squareStates)
     {
-        for (int i = 0; i < MAX_TILES; i++)
+        int i = 0;
+        foreach (SquareState squareState in squareStates)
         {
-            tiles[i] = tileState[i];
+            squares[i].squareState = squareState;
+            ++i;
         }
     }
 
-    public GameBoard(PropertyTile[] tileState, Node[] nodeState, Branch[] branchState)
+    // Sets the board up as per the given arrays of SquareState, NodeState, and BranchState.
+    // Used to set up a custom gameboard with pieces in desired locations.
+    public void setBoard(SquareState[] resourceStates, NodeState[] nodeStates, BranchState[] branchStates)
     {
-        for(int i = 0; i < MAX_TILES; i++)
-        {
-            tiles[i] = tileState[i];
-        }
+        int nodeIndex = 0, branchIndex = 0;
 
-        for(int i = 0; i < MAX_NODES; i++)
+        setSquares(resourceStates);
+        foreach (NodeState nodeState in nodeStates)
         {
-            nodes[i] = nodeState[i];
+            nodes[nodeIndex].nodeState = nodeState;
+            ++nodeIndex;
         }
-
-        for(int i = 0; i < MAX_BRANCHES; i++)
+        foreach (BranchState branchState in branchStates)
         {
-            branches[i] = branchState[i];
+            branches[branchIndex].branchState = branchState;
+            ++branchIndex;
         }
     }
 
+    public BoardState getBoardState()
+    {
+        foreach (Square square in squares)
+        {
+            boardState.squareStates[square.id] = square.squareState;
+        }
+        foreach (Node node in nodes)
+        {
+            boardState.nodeStates[node.id] = node.nodeState;
+        }
+        foreach (Branch branch in branches)
+        {
+            boardState.branchStates[branch.id] = branch.branchState;
+        }
+
+        return boardState;
+    }
 }

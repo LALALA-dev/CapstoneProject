@@ -1,13 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GameObjectProperties;
 
-public class Node
+public class Node : MonoBehaviour
 {
-    public string ownership { get; set; }
+    public int id;
+    public NodeState nodeState;
 
-    public Node()
+    public GameController gameController;
+
+    void Start()
     {
-        ownership = "unowned";
+        nodeState.location = id;
+        nodeState.ownerColor = PlayerColor.Blank;
+        nodeState.nodeColor = PlayerColor.Blank;
+
+        gameController = GameController.getInstance();
+        gameController.getGameBoard().nodes[id] = this;
     }
 }
