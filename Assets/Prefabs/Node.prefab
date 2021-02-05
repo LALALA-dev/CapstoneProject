@@ -97,9 +97,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99fe49401deaa4f4e976cfb7fbc5f619, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerOne: {fileID: 21300000, guid: 75465469a8d503047a780871b41fdac6, type: 3}
-  playerTwo: {fileID: 21300000, guid: 23777c0059fb263448f2c7b48740c0a6, type: 3}
-  unowned: {fileID: 21300000, guid: 119547d3740ade148b6a3cd2eda69d31, type: 3}
+  playerOneSprite: {fileID: 21300000, guid: 75465469a8d503047a780871b41fdac6, type: 3}
+  playerTwoSprite: {fileID: 21300000, guid: 23777c0059fb263448f2c7b48740c0a6, type: 3}
+  blankSprite: {fileID: 21300000, guid: 119547d3740ade148b6a3cd2eda69d31, type: 3}
+  nodeEntity: {fileID: -4356487210103373749}
 --- !u!61 &-4297313528893347514
 BoxCollider2D:
   m_ObjectHideFlags: 0
