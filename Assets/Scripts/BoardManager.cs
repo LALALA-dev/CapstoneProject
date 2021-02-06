@@ -4,20 +4,15 @@ using UnityEngine;
 
 public class BoardManager : MonoBehaviour
 {
+    private GameController gameController;
+
     public Sprite[] images;
     public SpriteRenderer[] spriteRenderers;
 
     private void Start()
     {
+        gameController = GameController.getInstance();
         ReshuffleBoard();
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            ReshuffleBoard();
-        }
     }
 
     public void ReshuffleBoard()
@@ -39,6 +34,7 @@ public class BoardManager : MonoBehaviour
     public void EndCurrentPlayersTurn()
     {
         Game.playerOneTurn = !Game.playerOneTurn;
+        gameController.endTurn();
     }
 
 }
