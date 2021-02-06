@@ -13,7 +13,7 @@ public class NodeController : MonoBehaviour
 
     void Start()
     {
-        // Mark Branch Unowned at start
+        // Mark Node Unowned at start
         ClaimNode(blankSprite);
     }
 
@@ -22,7 +22,6 @@ public class NodeController : MonoBehaviour
         // Determine if current player can place here. (As of now simply meaning you can't override
         if (isNodeBlank())
         {
-            nodeEntity.nodeState.ownerColor = nodeEntity.gameController.getCurrentPlayerColor();
             nodeEntity.nodeState.nodeColor = nodeEntity.gameController.getCurrentPlayerColor();
 
             // Change color
@@ -34,6 +33,8 @@ public class NodeController : MonoBehaviour
         // Are you trying to undo a selection?
         else if (isNodeColorOfCurrentPlayer())
         {
+            nodeEntity.nodeState.nodeColor = PlayerColor.Blank;
+
             ClaimNode(blankSprite);
         }
 
@@ -55,7 +56,7 @@ public class NodeController : MonoBehaviour
 
     private bool isNodeBlank()
     {
-        return nodeEntity.nodeState.ownerColor == PlayerColor.Blank;
+        return nodeEntity.nodeState.nodeColor == PlayerColor.Blank;
     }
 
 

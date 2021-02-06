@@ -44,7 +44,6 @@ public class GameObjectProperties
     {
         public int location;
         public PlayerColor nodeColor;
-        public PlayerColor ownerColor;
     }
 
     public struct BoardState
