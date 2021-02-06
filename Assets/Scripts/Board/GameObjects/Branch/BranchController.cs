@@ -32,8 +32,11 @@ public class BranchController : MonoBehaviour
                 ClaimBranch(playerTwoSprite);
         }
         // Are you trying to undo a selection?
-        else if(isBranchColorOfCurrentPlayer())
+        else if (isBranchColorOfCurrentPlayer())
         {
+            branchEntity.branchState.ownerColor = PlayerColor.Blank;
+            branchEntity.branchState.branchColor = PlayerColor.Blank;
+
             ClaimBranch(blankSprite);
         }
 

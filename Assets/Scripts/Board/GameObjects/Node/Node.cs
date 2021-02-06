@@ -13,7 +13,6 @@ public class Node : MonoBehaviour
     void Start()
     {
         nodeState.location = id;
-        nodeState.ownerColor = PlayerColor.Blank;
         nodeState.nodeColor = PlayerColor.Blank;
 
         gameController = GameController.getInstance();
