@@ -13,7 +13,7 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
     public string playerName;
     public string[] boardConfig;
 
-    void Start()
+    void Awake()
     {
         pView = GetComponent<PhotonView>();
 

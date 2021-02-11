@@ -46,6 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   networkController: {fileID: -6626603275084973407, guid: 27892c25cdc21ed479416d031055ac7d, type: 3}
   playerName: 
+  boardConfig: []
 --- !u!114 &3664782473902123175
 MonoBehaviour:
   m_ObjectHideFlags: 0

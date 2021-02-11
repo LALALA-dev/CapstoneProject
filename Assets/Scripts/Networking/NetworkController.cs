@@ -1,22 +1,27 @@
 ﻿using Photon.Pun;
 using Photon.Realtime;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class NetworkController : MonoBehaviourPunCallbacks
 {
-    public TMP_InputField roomInputField;
+    public TMP_InputField hostCreateRoomNameField;
+    public TMP_InputField privateRoomNameField;
+
     public TMP_InputField nameInputField;
 
     public static NetworkController NetController;
     public static string netOpponentsName;
-    private string networkPlayerName = "default";
+    public static string networkPlayerName = "Player";
 
+    #region Set Up
     private void Awake()
     {
+        if (NetworkPlayer.player != null)
+        {
+            Destroy(NetworkPlayer.player);
+        }
+
         PhotonNetwork.AutomaticallySyncScene = true;
         NetController = this;
     }
@@ -31,17 +36,10 @@ public class NetworkController : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinLobby();
     }
 
-    public override void OnDisconnected(DisconnectCause cause)
-    {
-        Debug.Log("Disconnected from server because: " + cause.ToString());
-    }
-
     public void Connect()
     {
-        if(PhotonNetwork.IsConnected)
-        {
-            CreateOrJoinRoom();
-        }
+        if (PhotonNetwork.IsConnected)
+            return;
         else
         {
             PhotonNetwork.ConnectUsingSettings();
@@ -49,30 +47,68 @@ public class NetworkController : MonoBehaviourPunCallbacks
         }
     }
 
-    public void CreateOrJoinRoom()
+    #endregion
+
+    #region Join Matches
+    public void CreateHostRoom()
     {
         if (!PhotonNetwork.IsConnected)
             return;
 
-        if (roomInputField.text.Trim() != "")
+        if (PhotonNetwork.InRoom)
+        {
+            PhotonNetwork.LeaveRoom();
+        }
+
+
+        if (hostCreateRoomNameField.text.Trim() != "")
         {
             RoomOptions roomOptions = new RoomOptions();
             roomOptions.MaxPlayers = 2;
-            Photon.Pun.PhotonNetwork.JoinOrCreateRoom(roomInputField.text.Trim(), roomOptions, TypedLobby.Default);
+            PhotonNetwork.CreateRoom(hostCreateRoomNameField.text.Trim(), roomOptions, TypedLobby.Default);
+        }
+        else
+        {
+            // TODO: ADD ERROR MESSAGE 
         }
     }
 
-    public override void OnCreatedRoom()
+    public void JoinPublicRoom()
     {
-        GameObject player = PhotonNetwork.Instantiate("NetworkPlayer", new Vector3(0, 0, 0), Quaternion.identity, 0);
-        setNetworkPlayerName();
+        if (!PhotonNetwork.IsConnected)
+            return;
+
+        RoomOptions roomOptions = new RoomOptions();
+        roomOptions.MaxPlayers = 2;
+        PhotonNetwork.JoinOrCreateRoom("StandardRoom", roomOptions, TypedLobby.Default);
+    }
+
+    public void JoinPrivateRoom()
+    {
+        if (!PhotonNetwork.IsConnected)
+            return;
+
+        if (PhotonNetwork.InRoom)
+            PhotonNetwork.LeaveRoom();
+
+        if (privateRoomNameField.text.Trim() != "")
+        {
+            PhotonNetwork.JoinRoom(privateRoomNameField.text.Trim());
+        }
+        else
+        {
+            // TODO: ADD ERROR MESSAGE 
+        }
     }
 
     public override void OnJoinedRoom()
     {
         GameObject player = PhotonNetwork.Instantiate("NetworkPlayer", new Vector3(0, 0, 0), Quaternion.identity, 0);
-        setNetworkPlayerName();
+        SetNetworkPlayerName();
     }
+    #endregion
+
+    #region Failure Functions
 
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
@@ -84,23 +120,26 @@ public class NetworkController : MonoBehaviourPunCallbacks
         Debug.Log("Room Creation Failed");
     }
 
+    public override void OnDisconnected(DisconnectCause cause)
+    {
+        Debug.Log("Disconnected from server because: " + cause.ToString());
+    }
+
+    #endregion
+
+
+    #region Public Functions
     public void GetOpponentInfo(string name)
     {
         netOpponentsName = name;
         Debug.Log("Your opponent's name is " + netOpponentsName + "!");
     }
 
-    private void setNetworkPlayerName()
+    public void SetNetworkPlayerName()
     {
         NetworkPlayer.player.name = networkPlayerName;
         NetworkPlayer.player.SendPlayerInfo(networkPlayerName);
     }
 
-    public void setName()
-    {
-        if (nameInputField.text.Trim() != "")
-        {
-            networkPlayerName = nameInputField.text.Trim();
-        }
-    }
+    #endregion
 }
