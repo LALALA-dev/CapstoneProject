@@ -3,17 +3,32 @@ using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
+    public TextMeshProUGUI statusText;
+
     #region Set Up
     private void Awake()
     {
         PhotonNetwork.AutomaticallySyncScene = true;
     }
 
+    private void Update()
+    {
+        if (!PhotonNetwork.IsConnected)
+            return;
+        if(PhotonNetwork.InRoom && PhotonNetwork.CurrentRoom.PlayerCount == 2)
+        {
+            statusText.text = "Waiting on Host to Start!";
+            Debug.Log("Waiting on Host to Start!");
+        }
+    }
+
     private void Start()
     {
+        statusText.text = "Connecting to Room";
         Connect();
     }
     public void Connect()
@@ -90,6 +105,12 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         {
             // TODO: ADD ERROR MESSAGE 
         }
+    }
+
+    public override void OnCreatedRoom()
+    {
+        statusText.text = "Waiting for opponent to join";
+        Debug.Log("Waiting for opponent to join");
     }
 
     public override void OnJoinedRoom()
