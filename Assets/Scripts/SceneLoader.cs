@@ -18,7 +18,7 @@ public class SceneLoader : MonoBehaviour
 
     public void LoadNetworkScene()
     {
-        SceneManager.LoadScene("NetworkScene");
+        SceneManager.LoadScene("MultiplayerPreferences");
     }
 
     public void QuitGame()
@@ -29,5 +29,10 @@ public class SceneLoader : MonoBehaviour
     public void LoadLocalGameScene()
     {
         SceneManager.LoadScene("GameScene");
+    }
+
+    public void LoadNetworkLobbyScene()
+    {
+        SceneManager.LoadScene("NetworkLobbyScene");
     }
 }

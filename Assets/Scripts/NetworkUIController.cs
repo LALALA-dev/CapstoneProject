@@ -47,7 +47,36 @@ public class NetworkUIController : MonoBehaviour
 
     public void DisableInputs()
     {
+        SetRoomName();
         hostCreateRoomNameField.gameObject.SetActive(false);
         privateRoomNameField.gameObject.SetActive(false);
+    }
+
+    public void SetRoomName()
+    {
+        if (hostCreateRoomNameField.IsActive())
+        {
+            if(hostCreateRoomNameField.text.Trim() != "")
+            {
+                GameInformation.roomName = hostCreateRoomNameField.text.Trim();
+                GameInformation.networkGameType = NetworkGameType.Host;
+            }
+            else
+            {
+                // TODO: ERROR MESSAGE
+            }
+        }
+        else
+        {
+            if (privateRoomNameField.text.Trim() != "")
+            {
+                GameInformation.roomName = privateRoomNameField.text.Trim();
+                GameInformation.networkGameType = NetworkGameType.Private;
+            }
+            else
+            {
+                // TODO: ERROR MESSAGE
+            }
+        }
     }
 }
