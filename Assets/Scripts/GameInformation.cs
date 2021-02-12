@@ -16,4 +16,6 @@ public class GameInformation
     public static string roomName = "StandardRoom";
 
     public static NetworkGameType networkGameType = NetworkGameType.Public;
+
+    public static bool playerIsHost = false;
 }

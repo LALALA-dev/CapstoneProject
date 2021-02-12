@@ -61,13 +61,14 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
         if (GameInformation.roomName.Trim() != "")
         {
+            GameInformation.playerIsHost = true;
             RoomOptions roomOptions = new RoomOptions();
             roomOptions.MaxPlayers = 2;
             PhotonNetwork.CreateRoom(GameInformation.roomName.Trim(), roomOptions, TypedLobby.Default);
         }
         else
         {
-            // TODO: ADD ERROR MESSAGE 
+            // TODO: ADD GUI ERROR MESSAGE 
         }
     }
 
@@ -88,11 +89,12 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
         if (GameInformation.roomName.Trim() != "")
         {
+            GameInformation.playerIsHost = false;
             PhotonNetwork.JoinRoom(GameInformation.roomName.Trim());
         }
         else
         {
-            // TODO: ADD ERROR MESSAGE 
+            // TODO: ADD GUI ERROR MESSAGE 
         }
     }
 
@@ -105,6 +107,14 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         GameObject player = PhotonNetwork.Instantiate("NetworkPlayer", new Vector3(0, 0, 0), Quaternion.identity, 0);
+
+        if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
+            GameInformation.playerIsHost = false;
+        else
+            GameInformation.playerIsHost = true;
+
+        Debug.Log("Player is Host = " + GameInformation.playerIsHost);
+
         Debug.Log("Successfully Joined Room");
         PhotonNetwork.LoadLevel("GameScene");
     }
@@ -118,6 +128,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             if (PhotonNetwork.LocalPlayer.IsMasterClient)
             {
                 statusText.text = "Player joined, ready to Start Game...";
+                PhotonNetwork.LoadLevel("GameScene");
             }
         }
     }

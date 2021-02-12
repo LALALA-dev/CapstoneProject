@@ -11,7 +11,6 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
 
     public static NetworkPlayer player;
     public string playerName;
-    public string[] boardConfig;
 
     void Awake()
     {
@@ -60,8 +59,7 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
     void RPC_SendBoardConfig(GameBoard boardConfig)
     {
         Debug.Log("RPC_SendBoardConfig() was called");
-        // TODO: SEND A BOARD CONFIGURATION (IF HOST == TRUE)
-        if (pView.IsMine)
+        if(GameInformation.playerIsHost)
             pView.RPC("RPC_SendBoardConfig", RpcTarget.All, boardConfig);
     }
     #endregion

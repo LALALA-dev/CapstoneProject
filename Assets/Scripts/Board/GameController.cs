@@ -3,15 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using static GameObjectProperties;
 
-public class GameController
+public class GameController : MonoBehaviour
 {
     private static GameController gameController;
+    private NetworkController networkController;
     private GameBoard gameBoard;
+
     private PlayerColor currentPlayerColor;
 
     private GameController()
     {
         gameBoard = new GameBoard();
+    }
+
+    private void Start()
+    {
+        gameController = new GameController();
+        networkController = NetworkController.NetController;
+
+        if(GameInformation.playerIsHost)
+            networkController.SendOpponentBoardConfiguration(getGameBoard());
     }
 
     public static GameController getInstance()
@@ -103,6 +114,12 @@ public class GameController
         }
 
         return branchConfigString;
+    }
+
+    public void SetBoardConfiguration(GameBoard hostGameBoard)
+    {
+        gameBoard = hostGameBoard;
+        Debug.Log("BoardState: \n\t" + getCurrentSquareConfig() + "\n\t" + getCurrentNodeConfig() + "\n\t" + getCurrentBranchConfig());
     }
 }
 

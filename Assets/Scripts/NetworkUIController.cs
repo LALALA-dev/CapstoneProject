@@ -14,7 +14,6 @@ public class NetworkUIController : MonoBehaviour
         if(PlayerPrefs.HasKey("NetworkName"))
         {
             setNameField.text = PlayerPrefs.GetString("NetworkName");
-            NetworkController.networkPlayerName = PlayerPrefs.GetString("NetworkName");
         }
         hostCreateRoomNameField.gameObject.SetActive(false);
         privateRoomNameField.gameObject.SetActive(false);
@@ -24,12 +23,10 @@ public class NetworkUIController : MonoBehaviour
     {
         if (setNameField.text.Trim() != "")
         {
-            NetworkController.networkPlayerName = setNameField.text.Trim();
             PlayerPrefs.SetString("NetworkName", setNameField.text.Trim());
         }
         else
         {
-            setNameField.text = NetworkController.networkPlayerName;
         }
     }
 

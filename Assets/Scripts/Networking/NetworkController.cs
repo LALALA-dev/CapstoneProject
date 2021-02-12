@@ -6,14 +6,16 @@ using UnityEngine;
 public class NetworkController : MonoBehaviourPunCallbacks
 {
     public static NetworkController NetController;
+    public GameController gameController;
+
     public static string netOpponentsName;
-    public static string networkPlayerName = "Player";
 
     #region Set Up
     private void Awake()
     {
         PhotonNetwork.AutomaticallySyncScene = true;
         NetController = this;
+        gameController = GameController.getInstance();
     }
 
     #endregion
@@ -25,10 +27,15 @@ public class NetworkController : MonoBehaviourPunCallbacks
         Debug.Log("Your opponent's name is " + netOpponentsName + "!");
     }
 
-    public void SetNetworkPlayerName()
+    public void SendOpponentBoardConfiguration(GameBoard gameBoard)
     {
-        NetworkPlayer.player.name = networkPlayerName;
-        NetworkPlayer.player.SendPlayerInfo(networkPlayerName);
+        NetworkPlayer.player.SendHostBoardConfiguration(gameBoard);
+    }
+
+    public void SetClientBoardConfiguration(GameBoard gameBoard)
+    {
+        if (!GameInformation.playerIsHost)
+            gameController.SetBoardConfiguration(gameBoard);
     }
 
     #endregion
