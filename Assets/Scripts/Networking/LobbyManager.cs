@@ -15,17 +15,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         PhotonNetwork.AutomaticallySyncScene = true;
     }
 
-    private void Update()
-    {
-        if (!PhotonNetwork.IsConnected)
-            return;
-        if(PhotonNetwork.InRoom && PhotonNetwork.CurrentRoom.PlayerCount == 2)
-        {
-            statusText.text = "Waiting on Host to Start!";
-            Debug.Log("Waiting on Host to Start!");
-        }
-    }
-
     private void Start()
     {
         statusText.text = "Connecting to Room";
@@ -117,7 +106,32 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         GameObject player = PhotonNetwork.Instantiate("NetworkPlayer", new Vector3(0, 0, 0), Quaternion.identity, 0);
         Debug.Log("Successfully Joined Room");
+        PhotonNetwork.LoadLevel("GameScene");
     }
+
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
+        {
+            PhotonNetwork.CurrentRoom.IsOpen = false;
+            PhotonNetwork.CurrentRoom.IsVisible = false;
+            if (PhotonNetwork.LocalPlayer.IsMasterClient)
+            {
+                statusText.text = "Player joined, ready to Start Game...";
+            }
+        }
+    }
+
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
+        {
+            statusText.text = "Player left, waiting for new player to join...";
+            PhotonNetwork.CurrentRoom.IsOpen = true;
+            PhotonNetwork.CurrentRoom.IsVisible = true;
+        }
+    }
+
     #endregion
 
     #region Failure Functions
