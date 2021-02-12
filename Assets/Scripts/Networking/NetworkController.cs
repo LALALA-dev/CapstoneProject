@@ -27,12 +27,12 @@ public class NetworkController : MonoBehaviourPunCallbacks
         Debug.Log("Your opponent's name is " + netOpponentsName + "!");
     }
 
-    public void SendOpponentBoardConfiguration(GameBoard gameBoard)
+    public void SendOpponentBoardConfiguration(string gameBoard)
     {
         NetworkPlayer.player.SendHostBoardConfiguration(gameBoard);
     }
 
-    public void SetClientBoardConfiguration(GameBoard gameBoard)
+    public void SetClientBoardConfiguration(string gameBoard)
     {
         if (!GameInformation.playerIsHost)
             gameController.SetBoardConfiguration(gameBoard);

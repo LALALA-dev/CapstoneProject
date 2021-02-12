@@ -22,7 +22,7 @@ public class GameController : MonoBehaviour
         networkController = NetworkController.NetController;
 
         if(GameInformation.playerIsHost)
-            networkController.SendOpponentBoardConfiguration(getGameBoard());
+            networkController.SendOpponentBoardConfiguration(getGameBoard().ToString());
     }
 
     public static GameController getInstance()
@@ -116,9 +116,9 @@ public class GameController : MonoBehaviour
         return branchConfigString;
     }
 
-    public void SetBoardConfiguration(GameBoard hostGameBoard)
+    public void SetBoardConfiguration(string hostGameBoard)
     {
-        gameBoard = hostGameBoard;
+        gameBoard.StringToConfiguration(hostGameBoard);
         Debug.Log("BoardState: \n\t" + getCurrentSquareConfig() + "\n\t" + getCurrentNodeConfig() + "\n\t" + getCurrentBranchConfig());
     }
 }

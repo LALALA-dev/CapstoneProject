@@ -34,7 +34,7 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
             pView.RPC("RPC_SendPlayerMove", RpcTarget.All /*, MoveObject param*/);
     }
 
-    public void SendHostBoardConfiguration(GameBoard boardConfig)
+    public void SendHostBoardConfiguration(string boardConfig)
     {
         if (pView.IsMine)
             pView.RPC("RPC_SendBoardConfig", RpcTarget.All, boardConfig);
@@ -56,11 +56,11 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    void RPC_SendBoardConfig(GameBoard boardConfig)
+    void RPC_SendBoardConfig(string boardConfig)
     {
         Debug.Log("RPC_SendBoardConfig() was called");
-        if(GameInformation.playerIsHost)
-            pView.RPC("RPC_SendBoardConfig", RpcTarget.All, boardConfig);
+        if (GameInformation.playerIsHost)
+            networkController.SetClientBoardConfiguration(boardConfig);
     }
     #endregion
 
