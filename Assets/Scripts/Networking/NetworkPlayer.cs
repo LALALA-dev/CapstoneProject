@@ -59,7 +59,7 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
     void RPC_SendBoardConfig(string boardConfig)
     {
         Debug.Log("RPC_SendBoardConfig() was called");
-        if (GameInformation.playerIsHost)
+        if (!GameInformation.playerIsHost)
             networkController.SetClientBoardConfiguration(boardConfig);
     }
     #endregion
