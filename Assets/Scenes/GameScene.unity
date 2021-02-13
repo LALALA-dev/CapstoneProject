@@ -5511,6 +5511,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -6626603275084973407, guid: 27892c25cdc21ed479416d031055ac7d, type: 3}
+      propertyPath: gameController
+      value: 
+      objectReference: {fileID: 5244961930142952292}
     - target: {fileID: 359717166443509323, guid: 27892c25cdc21ed479416d031055ac7d, type: 3}
       propertyPath: m_Name
       value: NetworkController
@@ -6684,6 +6688,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e55a20909337c38468549bc1e47e2caa, type: 3}
+--- !u!114 &5244961930142952292 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5244961931443105675, guid: e55a20909337c38468549bc1e47e2caa, type: 3}
+  m_PrefabInstance: {fileID: 5244961930142952291}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 730f9c20268d5e142a9d8ad58f107354, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5456678409887937905
 PrefabInstance:
   m_ObjectHideFlags: 0
