@@ -1,19 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.SceneManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
-
-    public void LoadNetworkScene()
+    public void LoadNextScene()
     {
-        SceneManager.LoadScene("NetworkScene");
-    }
-
-    public void LoadLocalGameScene()
-    {
-        SceneManager.LoadScene("GameScene");
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(currentSceneIndex + 1);
     }
 
     public void LoadMenuScene()
@@ -21,9 +16,23 @@ public class SceneLoader : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
     }
 
-    public void LoadNextScene()
+    public void LoadNetworkScene()
     {
-        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        SceneManager.LoadScene(currentSceneIndex + 1);
+        SceneManager.LoadScene("MultiplayerPreferences");
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
+    public void LoadLocalGameScene()
+    {
+        SceneManager.LoadScene("GameScene");
+    }
+
+    public void LoadNetworkLobbyScene()
+    {
+        SceneManager.LoadScene("NetworkLobbyScene");
     }
 }
