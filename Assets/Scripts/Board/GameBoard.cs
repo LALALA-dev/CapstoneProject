@@ -77,6 +77,8 @@ public class GameBoard
 
     public SquareState[] ShuffleSquares()
     {
+        boardState.squareStates = Reference.defaultSquareState;
+
         for (int i = 0; i < MAX_SQUARES; i++)
         {
             SquareState tmp = boardState.squareStates[i];
