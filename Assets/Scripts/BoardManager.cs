@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GameObjectProperties;
 
 public class BoardManager : MonoBehaviour
 {
@@ -17,24 +18,35 @@ public class BoardManager : MonoBehaviour
 
     public void ReshuffleBoard()
     {
-        for (int i = 0; i < images.Length; i++)
-        {
-            Sprite tmp = images[i];
-            int r = Random.Range(i, images.Length);
-            images[i] = images[r];
-            images[r] = tmp;
-        }
+        // TODO: CALL GAMECONTROLLER.NEWGAME
 
-        for(int i = 0; i < spriteRenderers.Length; i++)
-        {
-            spriteRenderers[i].sprite = images[i];
-        }
+        // TODO: GET SQUARES' STATE FROM GAMECONTROLLER
+
+
+
+        //for (int i = 0; i < images.Length; i++)
+        //{
+        //    Sprite tmp = images[i];
+        //    int r = Random.Range(i, images.Length);
+        //    images[i] = images[r];
+        //    images[r] = tmp;
+        //}
+
+        //for(int i = 0; i < spriteRenderers.Length; i++)
+        //{
+        //    spriteRenderers[i].sprite = images[i];
+        //}
     }
 
     public void EndCurrentPlayersTurn()
     {
         Game.playerOneTurn = !Game.playerOneTurn;
         gameController.endTurn();
+    }
+
+    public void SetSquareSpite(SquareState squareInfo, SpriteRenderer squareSprite)
+    {
+
     }
 
 }
