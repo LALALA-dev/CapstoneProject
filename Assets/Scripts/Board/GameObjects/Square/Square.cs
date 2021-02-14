@@ -11,7 +11,7 @@ public class Square : MonoBehaviour
     public int id;
     public SquareState squareState;
 
-    private GameController gameController;
+    public GameController gameController;
 
     void Start()
     {

@@ -21,7 +21,7 @@ public class GameController : MonoBehaviour
         gameController = new GameController();
         networkController = NetworkController.NetController;
 
-        if(GameInformation.playerIsHost)
+        if(GameInformation.playerIsHost && GameInformation.gameType == 'N')
             networkController.SendOpponentBoardConfiguration(getGameBoard().ToString());
     }
 

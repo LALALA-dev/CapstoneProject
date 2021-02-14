@@ -97,6 +97,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 0
+  gameController: {fileID: 5244961931443105675, guid: e55a20909337c38468549bc1e47e2caa, type: 3}
 --- !u!114 &-6525711907203767462
 MonoBehaviour:
   m_ObjectHideFlags: 0
