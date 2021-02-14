@@ -121,5 +121,10 @@ public class GameController : MonoBehaviour
         gameBoard.StringToConfiguration(hostGameBoard);
         Debug.Log("BoardState: \n\t" + getCurrentSquareConfig() + "\n\t" + getCurrentNodeConfig() + "\n\t" + getCurrentBranchConfig());
     }
+
+    public SquareState[] NewGame()
+    {
+        return gameBoard.ShuffleSquares();
+    }
 }
 

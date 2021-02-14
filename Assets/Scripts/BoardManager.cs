@@ -18,24 +18,12 @@ public class BoardManager : MonoBehaviour
 
     public void ReshuffleBoard()
     {
-        // TODO: CALL GAMECONTROLLER.NEWGAME
+        SquareState[] squares = gameController.NewGame();
 
-        // TODO: GET SQUARES' STATE FROM GAMECONTROLLER
-
-
-
-        //for (int i = 0; i < images.Length; i++)
-        //{
-        //    Sprite tmp = images[i];
-        //    int r = Random.Range(i, images.Length);
-        //    images[i] = images[r];
-        //    images[r] = tmp;
-        //}
-
-        //for(int i = 0; i < spriteRenderers.Length; i++)
-        //{
-        //    spriteRenderers[i].sprite = images[i];
-        //}
+        for(int i = 0; i < 13; i++)
+        {
+            SetSquareSpite(squares[i], spriteRenderers[i]);
+        }
     }
 
     public void EndCurrentPlayersTurn()

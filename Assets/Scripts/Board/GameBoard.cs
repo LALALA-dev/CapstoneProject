@@ -75,6 +75,24 @@ public class GameBoard
         return boardState;
     }
 
+    public SquareState[] ShuffleSquares()
+    {
+        for (int i = 0; i < MAX_SQUARES; i++)
+        {
+            SquareState tmp = boardState.squareStates[i];
+            int r = Random.Range(i, MAX_SQUARES);
+            boardState.squareStates[i] = boardState.squareStates[r];
+            boardState.squareStates[r] = tmp;
+        }
+
+        for(int i = 0; i < MAX_SQUARES; i++)
+        {
+            boardState.squareStates[i].location = i;
+        }
+
+        return boardState.squareStates; 
+    }
+
     public override string ToString()
     {
         string gameBoardString = "";
