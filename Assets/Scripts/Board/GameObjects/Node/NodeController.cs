@@ -19,8 +19,21 @@ public class NodeController : MonoBehaviour
 
     private void OnMouseDown()
     {
-        // Determine if current player can place here. (As of now simply meaning you can't override
-        if (isNodeBlank())
+        if (GameInformation.openingSequence)
+        {
+            if(isNodeBlank() && !GameInformation.openingMoveNodeSet)
+            {
+                nodeEntity.nodeState.nodeColor = nodeEntity.gameController.getCurrentPlayerColor();
+                GameInformation.openingMoveNodeSet = true;
+
+                if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
+                    ClaimNode(playerOneSprite);
+                else
+                    ClaimNode(playerTwoSprite);
+            }
+
+        }
+        else if (isNodeBlank())
         {
             nodeEntity.nodeState.nodeColor = nodeEntity.gameController.getCurrentPlayerColor();
 
@@ -37,15 +50,6 @@ public class NodeController : MonoBehaviour
 
             ClaimNode(blankSprite);
         }
-
-        // Print
-        print("You clicked on:\n" + this.GetComponent<Renderer>().name + ", ID: " + nodeEntity.id + ", Color: ");
-        if (GetComponent<SpriteRenderer>().sprite == playerOneSprite)
-            print("Orange\n");
-        else if (GetComponent<SpriteRenderer>().sprite == playerTwoSprite)
-            print("Purple\n");
-        else
-            print("Blank\n");
     }
 
     private void ClaimNode(Sprite playerColor)

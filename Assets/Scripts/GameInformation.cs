@@ -24,4 +24,9 @@ public class GameInformation
     public static bool openingSequence = true;
 
     public static int turnNumber = 1;
+
+    public static bool openingMoveNodeSet = false;
+
+    public static bool openingMoveBranchSet = false;
+
 }

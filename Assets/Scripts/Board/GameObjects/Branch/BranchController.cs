@@ -19,8 +19,22 @@ public class BranchController : MonoBehaviour
 
     private void OnMouseDown()
     {
-        // Determine if current player can place here. (As of now simply meaning you can't override
-        if(isBranchBlank() || isBranchSurroundedByCurrentPlayer())
+        if(GameInformation.openingSequence)
+        {
+            if(GameInformation.openingMoveNodeSet && !GameInformation.openingMoveBranchSet && isBranchBlank())
+            {
+                GameInformation.openingMoveBranchSet = true;
+                branchEntity.branchState.ownerColor = branchEntity.gameController.getCurrentPlayerColor();
+                branchEntity.branchState.branchColor = branchEntity.gameController.getCurrentPlayerColor();
+
+                if (branchEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
+                    ClaimBranch(playerOneSprite);
+                else
+                    ClaimBranch(playerTwoSprite);
+            }
+
+        }
+        else if(isBranchBlank() || isBranchSurroundedByCurrentPlayer())
         {
             branchEntity.branchState.ownerColor = branchEntity.gameController.getCurrentPlayerColor();
             branchEntity.branchState.branchColor = branchEntity.gameController.getCurrentPlayerColor();
@@ -39,15 +53,6 @@ public class BranchController : MonoBehaviour
 
             ClaimBranch(blankSprite);
         }
-
-        // Print
-        print("You clicked on:\n" + this.GetComponent<Renderer>().name + ", ID: " + branchEntity.id + ", Color: ");
-        if (GetComponent<SpriteRenderer>().sprite == playerOneSprite)
-            print("Orange\n");
-        else if (GetComponent<SpriteRenderer>().sprite == playerTwoSprite)
-            print("Purple\n");
-        else
-            print("Blank\n");
     }
 
     private void ClaimBranch(Sprite playerColor)
@@ -70,4 +75,5 @@ public class BranchController : MonoBehaviour
     {
         return branchEntity.branchState.branchColor == branchEntity.gameController.getCurrentPlayerColor();
     }
+
 }

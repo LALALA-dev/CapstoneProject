@@ -40,27 +40,36 @@ public class GameController
     {
         GameInformation.turnNumber++;
 
-        if (!GameInformation.openingSequence)
+        if (!GameInformation.openingSequence || GameInformation.turnNumber == 5)
         {
+            GameInformation.openingSequence = false;
             if (currentPlayerColor == PlayerColor.Orange)
                 currentPlayerColor = PlayerColor.Purple;
             else
                 currentPlayerColor = PlayerColor.Orange;
         }
-        else if(GameInformation.turnNumber == 2)
+        else if (GameInformation.turnNumber == 2)
+        {
             currentPlayerColor = PlayerColor.Purple;
+            GameInformation.openingMoveBranchSet = false;
+            GameInformation.openingMoveNodeSet = false;
+        }
         else if (GameInformation.turnNumber == 3)
+        {
             currentPlayerColor = PlayerColor.Purple;
+            GameInformation.openingMoveBranchSet = false;
+            GameInformation.openingMoveNodeSet = false;
+        }
         else if (GameInformation.turnNumber == 4)
         {
             currentPlayerColor = PlayerColor.Orange;
-            GameInformation.openingSequence = false;
+            GameInformation.openingMoveBranchSet = false;
+            GameInformation.openingMoveNodeSet = false;
         }
 
 
         Debug.Log("BoardState: \n\t" + getCurrentSquareConfig() + "\n\t" + getCurrentNodeConfig() + "\n\t" + getCurrentBranchConfig());
     }
-
 
     /*  Methods for sending the board state to the console. Demonstrats how board is stored.    */
     private string getCurrentSquareConfig()
