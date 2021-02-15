@@ -258,4 +258,18 @@ public class GameBoard
     {
         return boardState.branchStates;
     }
+
+    public List<int> GetPlayersBranches(PlayerColor playerColor)
+    {
+        List<int> ownedBranches = new List<int>();
+
+        foreach(BranchState branch in boardState.branchStates)
+        {
+            if(branch.branchColor == playerColor)
+            {
+                ownedBranches.Add(branch.location);
+            }
+        }
+        return ownedBranches;
+    }
 }

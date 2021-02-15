@@ -48,6 +48,7 @@ public class GameController
             else
                 currentPlayerColor = PlayerColor.Orange;
             CollectCurrentPlayerResources();
+            Debug.Log("CURRENT PLAYER NETWORK: " + CalculatePlayerLongestNetwork());
         }
         else if (GameInformation.turnNumber == 2)
         {
@@ -201,5 +202,39 @@ public class GameController
         
     }
 
+    public int CalculatePlayerLongestNetwork()
+    {
+        int longestNetwork = 0;
+        int currentNetwork = 0;
+        List<int> runningNetworkBranches = new List<int>();
+
+        List<int> playerBranches = gameBoard.GetPlayersBranches(getCurrentPlayerColor());
+
+        runningNetworkBranches.Add(playerBranches[0]);
+        currentNetwork++;
+        foreach(int ownedBranch in playerBranches)
+        {
+            if(!runningNetworkBranches.Contains(ownedBranch))
+            {
+                longestNetwork = currentNetwork;
+                currentNetwork = 0;
+                runningNetworkBranches.Clear();
+            }
+
+            int[] touchingBranches = ReferenceScript.branchConnectsToTheseBranches[ownedBranch];
+            foreach(int touchedBranch in touchingBranches)
+            {
+                if(!runningNetworkBranches.Contains(touchedBranch) && playerBranches.Contains(touchedBranch))
+                {
+                    runningNetworkBranches.Add(touchedBranch);
+                    currentNetwork++;
+                }
+            }
+        }
+        if(currentNetwork > longestNetwork)
+            longestNetwork = currentNetwork;
+
+        return longestNetwork;
+    }
 }
 
