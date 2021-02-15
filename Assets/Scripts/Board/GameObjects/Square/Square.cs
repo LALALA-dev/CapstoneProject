@@ -15,14 +15,8 @@ public class Square : MonoBehaviour
 
     void Start()
     {
-        squareState.location = id;
-        squareState.ownerColor = PlayerColor.Blank;
-        squareState.resourceState = SquareStatus.Open;
-
         gameController = GameController.getInstance();
         gameController.getGameBoard().squares[id] = this;
-
-        squareState.resourceColor = gameController.getRandomResourceColor();
-        squareState.resourceAmount = gameController.getRandomResourceAmount(squareState.resourceColor);
+        squareState = gameController.GetSquareStates()[id];
     }
 }

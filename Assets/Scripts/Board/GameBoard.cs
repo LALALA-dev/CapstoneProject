@@ -242,4 +242,9 @@ public class GameBoard
             stringIndex++;
         }
     }
+
+    public SquareState[] GetSquareStates()
+    {
+        return boardState.squareStates;
+    }
 }

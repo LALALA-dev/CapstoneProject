@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using static GameObjectProperties;
 
-public class GameController : MonoBehaviour
+public class GameController
 {
     private static GameController gameController;
-    private NetworkController networkController;
     private GameBoard gameBoard;
 
     private PlayerColor currentPlayerColor;
@@ -14,15 +13,7 @@ public class GameController : MonoBehaviour
     private GameController()
     {
         gameBoard = new GameBoard();
-    }
-
-    private void Start()
-    {
-        gameController = new GameController();
-        networkController = NetworkController.NetController;
-
-        if(GameInformation.playerIsHost && GameInformation.gameType == 'N')
-            networkController.SendOpponentBoardConfiguration(getGameBoard().ToString());
+        gameBoard.ShuffleSquares();
     }
 
     public static GameController getInstance()
@@ -125,6 +116,11 @@ public class GameController : MonoBehaviour
     public SquareState[] NewGame()
     {
         return gameBoard.ShuffleSquares();
+    }
+
+    public SquareState[] GetSquareStates()
+    {
+        return gameBoard.GetSquareStates();
     }
 }
 
