@@ -13,7 +13,6 @@ public class BranchController : MonoBehaviour
 
     void Start()
     {
-        // Mark Branch Unowned at start
         ClaimBranch(blankSprite);
     }
 
