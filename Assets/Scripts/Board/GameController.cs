@@ -47,6 +47,7 @@ public class GameController
                 currentPlayerColor = PlayerColor.Purple;
             else
                 currentPlayerColor = PlayerColor.Orange;
+            CollectCurrentPlayerResources();
         }
         else if (GameInformation.turnNumber == 2)
         {
@@ -71,7 +72,6 @@ public class GameController
         Debug.Log("BoardState: \n\t" + getCurrentSquareConfig() + "\n\t" + getCurrentNodeConfig() + "\n\t" + getCurrentBranchConfig());
     }
 
-    /*  Methods for sending the board state to the console. Demonstrats how board is stored.    */
     private string getCurrentSquareConfig()
     {
         SquareState[] squareStates = gameBoard.getBoardState().squareStates;
@@ -126,6 +126,70 @@ public class GameController
     public SquareState[] GetSquareStates()
     {
         return gameBoard.GetSquareStates();
+    }
+
+    public NodeState[] GetNodeStates()
+    {
+        return gameBoard.GetNodeStates();
+    }
+
+    public void CollectCurrentPlayerResources()
+    {
+        List<NodeState> currentNodes = new List<NodeState>();
+        foreach (NodeState node in GetNodeStates())
+        {
+            if(node.nodeColor == getCurrentPlayerColor())
+                currentNodes.Add(node);
+        }
+
+        List<SquareState> squares = new List<SquareState>();
+        foreach(NodeState node in currentNodes)
+        {
+            foreach(int squareId in ReferenceScript.nodeConnectToTheseTiles[node.location])
+            {
+                if(GetSquareStates()[squareId].resourceState == SquareStatus.Open)
+                    squares.Add(GetSquareStates()[squareId]);
+            }
+        }
+
+        int[] resources = new int[4] { 0, 0, 0, 0 };
+        foreach(SquareState square in squares)
+        {
+            switch (square.resourceColor)
+            {
+                case SquareResourceColor.Red:
+                    resources[0]++;
+                    break;
+                case SquareResourceColor.Blue:
+                    resources[1]++;
+                    break;
+                case SquareResourceColor.Yellow:
+                    resources[2]++;
+                    break;
+                case SquareResourceColor.Green:
+                    resources[3]++;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        if (getCurrentPlayerColor() == PlayerColor.Orange)
+        {
+            GameInformation.playerOneResources[0] += resources[0];
+            GameInformation.playerOneResources[1] += resources[1];
+            GameInformation.playerOneResources[2] += resources[2];
+            GameInformation.playerOneResources[3] += resources[3];
+        }
+        else
+        {
+            GameInformation.playerTwoResources[0] += resources[0];
+            GameInformation.playerTwoResources[1] += resources[1];
+            GameInformation.playerTwoResources[2] += resources[2];
+            GameInformation.playerTwoResources[3] += resources[3];
+        }
+
+        Debug.Log("RESOURCES- Red: " + resources[0] + " Blue: " + resources[1] + " Yellow: " + resources[2] + " Green: " + resources[3]);
     }
 
 }

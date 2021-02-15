@@ -40,7 +40,35 @@ public class ReferenceScript
         new int[4] {28, 31, 32, 34},
         new int[2] {29, 32},
         new int[2] {33, 35},
-        new int[2] {34, 35},
+        new int[2] {34, 35}
+    };
+
+    public static int[][] nodeConnectToTheseTiles = new int[][]
+    {
+        new int[1] {0},
+        new int[1] {0},
+        new int[1] {1},
+        new int[3] {0, 1, 2},
+        new int[3] {0, 2, 3},
+        new int[1] {3},
+        new int[1] {4},
+        new int[3] {1, 4, 5},
+        new int[4] {1, 2, 5, 6},
+        new int[4] {2, 3, 6, 7},
+        new int[3] {3, 7, 8},
+        new int[1] {8},
+        new int[1] {4},
+        new int[3] {4, 5, 9},
+        new int[4] {5, 6, 9, 10},
+        new int[4] {6, 7, 10, 11},
+        new int[3] {7, 8, 11},
+        new int[1] {8},
+        new int[1] {9},
+        new int[3] {9, 10, 12},
+        new int[3] {10, 11, 12},
+        new int[1] {11},
+        new int[1] {12},
+        new int[1] {12}
     };
 
     public int[][] tileConnectsToTheseNodes = new int[][] { };

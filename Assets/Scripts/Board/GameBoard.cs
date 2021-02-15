@@ -26,8 +26,6 @@ public class GameBoard
         boardState.branchStates = new BranchState[MAX_BRANCHES];
     }
 
-    // Given an array of ResourceState, sets each square on the board to that layout.
-    // Used to set up a custom gameboard.
     public void setSquares(SquareState[] squareStates)
     {
         int i = 0;
@@ -38,8 +36,6 @@ public class GameBoard
         }
     }
 
-    // Sets the board up as per the given arrays of SquareState, NodeState, and BranchState.
-    // Used to set up a custom gameboard with pieces in desired locations.
     public void setBoard(SquareState[] resourceStates, NodeState[] nodeStates, BranchState[] branchStates)
     {
         int nodeIndex = 0, branchIndex = 0;
@@ -62,6 +58,11 @@ public class GameBoard
         foreach (Square square in squares)
         {
             boardState.squareStates[square.id] = square.squareState;
+        }
+
+        foreach (Node node in nodes)
+        {
+            boardState.nodeStates[node.id] = node.nodeState;
         }
 
         foreach (Branch branch in branches)
@@ -246,5 +247,10 @@ public class GameBoard
     public SquareState[] GetSquareStates()
     {
         return boardState.squareStates;
+    }
+
+    public NodeState[] GetNodeStates()
+    {
+        return boardState.nodeStates;
     }
 }

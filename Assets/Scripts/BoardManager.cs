@@ -13,7 +13,13 @@ public class BoardManager : MonoBehaviour
     private void Start()
     {
         gameController = GameController.getInstance();
-        ReshuffleBoard();
+
+        SquareState[] squares = gameController.GetSquareStates();
+
+        for (int i = 0; i < 13; i++)
+        {
+            SetSquareSpite(squares[i], spriteRenderers[i]);
+        }
     }
 
     public void ReshuffleBoard()
