@@ -134,6 +134,16 @@ public class BranchController : MonoBehaviour
 
     public bool isBranchConnectedToBranch()
     {
+        int[] branchConnections = ReferenceScript.branchConnectsToTheseBranches[branchEntity.id];
+
+        foreach (int branchId in branchConnections)
+        {
+            if (branchEntity.gameController.GetBranchState(branchId).branchColor == branchEntity.gameController.getCurrentPlayerColor())
+            {
+                return true;
+            }
+        }
+
         return false;
     }
 }

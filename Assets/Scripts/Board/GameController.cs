@@ -133,6 +133,11 @@ public class GameController
         return gameBoard.GetNodeStates();
     }
 
+    public BranchState GetBranchState(int id)
+    {
+        return gameBoard.GetBranchStates()[id];
+    }
+
     public void CollectCurrentPlayerResources()
     {
         List<NodeState> currentNodes = new List<NodeState>();
@@ -180,6 +185,8 @@ public class GameController
             GameInformation.playerOneResources[1] += resources[1];
             GameInformation.playerOneResources[2] += resources[2];
             GameInformation.playerOneResources[3] += resources[3];
+            Debug.Log("RESOURCES- Red: " + GameInformation.playerOneResources[0] + " Blue: " + GameInformation.playerOneResources[1] + 
+                " Yellow: " + GameInformation.playerOneResources[2] + " Green: " + GameInformation.playerOneResources[3]);
         }
         else
         {
@@ -187,9 +194,11 @@ public class GameController
             GameInformation.playerTwoResources[1] += resources[1];
             GameInformation.playerTwoResources[2] += resources[2];
             GameInformation.playerTwoResources[3] += resources[3];
+            Debug.Log("RESOURCES- Red: " + GameInformation.playerTwoResources[0] + " Blue: " + GameInformation.playerTwoResources[1]
+                + " Yellow: " + GameInformation.playerTwoResources[2] + " Green: " + GameInformation.playerTwoResources[3]);
         }
 
-        Debug.Log("RESOURCES- Red: " + resources[0] + " Blue: " + resources[1] + " Yellow: " + resources[2] + " Green: " + resources[3]);
+        
     }
 
 }
