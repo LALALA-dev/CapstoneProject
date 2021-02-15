@@ -36,35 +36,40 @@ public class GameController
         return currentPlayerColor;
     }
 
-    // TODO: Fill out this stub. Should return a random color based off of currently unused colors.
-    public SquareResourceColor getRandomResourceColor()
-    {
-        return SquareResourceColor.Blank;
-    }
-
-    // TODO: Fill out this stub. Given a resource color, should return a random amount based off of
-    //  currently unused amounts for that color. 
-    public SquareResourceAmount getRandomResourceAmount(SquareResourceColor resourceColor)
-    {
-        return SquareResourceAmount.Blank;
-    }
-
     public void endTurn()
     {
-        if (currentPlayerColor == PlayerColor.Orange)
+        GameInformation.turnNumber++;
+
+        if (!GameInformation.openingSequence || GameInformation.turnNumber == 5)
+        {
+            GameInformation.openingSequence = false;
+            if (currentPlayerColor == PlayerColor.Orange)
+                currentPlayerColor = PlayerColor.Purple;
+            else
+                currentPlayerColor = PlayerColor.Orange;
+        }
+        else if (GameInformation.turnNumber == 2)
         {
             currentPlayerColor = PlayerColor.Purple;
+            GameInformation.openingMoveBranchSet = false;
+            GameInformation.openingMoveNodeSet = false;
         }
-        else
+        else if (GameInformation.turnNumber == 3)
+        {
+            currentPlayerColor = PlayerColor.Purple;
+            GameInformation.openingMoveBranchSet = false;
+            GameInformation.openingMoveNodeSet = false;
+        }
+        else if (GameInformation.turnNumber == 4)
         {
             currentPlayerColor = PlayerColor.Orange;
+            GameInformation.openingMoveBranchSet = false;
+            GameInformation.openingMoveNodeSet = false;
         }
+
 
         Debug.Log("BoardState: \n\t" + getCurrentSquareConfig() + "\n\t" + getCurrentNodeConfig() + "\n\t" + getCurrentBranchConfig());
     }
-
-
-
 
     /*  Methods for sending the board state to the console. Demonstrats how board is stored.    */
     private string getCurrentSquareConfig()
@@ -122,5 +127,6 @@ public class GameController
     {
         return gameBoard.GetSquareStates();
     }
+
 }
 

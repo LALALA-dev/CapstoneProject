@@ -861,7 +861,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1820888909}
+      - m_Target: {fileID: 1764314738}
         m_TargetAssemblyTypeName: BoardManager, Assembly-CSharp
         m_MethodName: EndCurrentPlayersTurn
         m_Mode: 1
@@ -947,7 +947,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 231, y: -163}
+  m_AnchoredPosition: {x: -846, y: 476}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &351755820
@@ -3286,7 +3286,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1820888909}
+      - m_Target: {fileID: 1764314738}
         m_TargetAssemblyTypeName: BoardManager, Assembly-CSharp
         m_MethodName: ReshuffleBoard
         m_Mode: 1
@@ -5207,6 +5207,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1764314737}
+  - component: {fileID: 1764314738}
   m_Layer: 0
   m_Name: BoardParent
   m_TagString: Untagged
@@ -5231,6 +5232,46 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1764314738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1764314736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 800fbd6796b59ac4ba6863d3954bda84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  images:
+  - {fileID: 21300000, guid: be219fd636bcfe740a1fe74e880229ae, type: 3}
+  - {fileID: 21300000, guid: 9cf4b9cb15285a54aaf15367a6deb2dd, type: 3}
+  - {fileID: 21300000, guid: 696086e93d6e4ab4ebdb380586920a39, type: 3}
+  - {fileID: 21300000, guid: 14339bf26f9f34f4a9a0ead38e658cd1, type: 3}
+  - {fileID: 21300000, guid: 711f74bcbd01e044ea61f0bbb6f68d97, type: 3}
+  - {fileID: 21300000, guid: 6300a63aa08aed44f900c74ff620239e, type: 3}
+  - {fileID: 21300000, guid: 9e77dcd409e448b4188b5e7e9f4aa2dc, type: 3}
+  - {fileID: 21300000, guid: bb27034b2ac5da34da97f53c0ef20524, type: 3}
+  - {fileID: 21300000, guid: 849d256f04d0028448e69b8a8b93d6c5, type: 3}
+  - {fileID: 21300000, guid: cf68f21e7ec3ce34ea83ca86a7d728e5, type: 3}
+  - {fileID: 21300000, guid: 1c3a87cfc1483a64fa5c9bc2bbd55d09, type: 3}
+  - {fileID: 21300000, guid: b19a0d09f2a2cd94f9b65b0ab382b52c, type: 3}
+  - {fileID: 21300000, guid: f7f5b863d8f4ca14bb9c44aa69c3e1d3, type: 3}
+  spriteRenderers:
+  - {fileID: 1176017516}
+  - {fileID: 1822587760}
+  - {fileID: 631582531}
+  - {fileID: 442223734}
+  - {fileID: 999013006}
+  - {fileID: 238692095}
+  - {fileID: 2045036257}
+  - {fileID: 999542986}
+  - {fileID: 448323850}
+  - {fileID: 1679245300}
+  - {fileID: 1221834374}
+  - {fileID: 481211862}
+  - {fileID: 2126842580}
 --- !u!1001 &1809483596
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5390,7 +5431,6 @@ GameObject:
   - component: {fileID: 1820888908}
   - component: {fileID: 1820888907}
   - component: {fileID: 1820888906}
-  - component: {fileID: 1820888909}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -5463,46 +5503,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1820888909
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1820888905}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 800fbd6796b59ac4ba6863d3954bda84, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  images:
-  - {fileID: 21300000, guid: be219fd636bcfe740a1fe74e880229ae, type: 3}
-  - {fileID: 21300000, guid: 9cf4b9cb15285a54aaf15367a6deb2dd, type: 3}
-  - {fileID: 21300000, guid: 696086e93d6e4ab4ebdb380586920a39, type: 3}
-  - {fileID: 21300000, guid: 14339bf26f9f34f4a9a0ead38e658cd1, type: 3}
-  - {fileID: 21300000, guid: 711f74bcbd01e044ea61f0bbb6f68d97, type: 3}
-  - {fileID: 21300000, guid: 6300a63aa08aed44f900c74ff620239e, type: 3}
-  - {fileID: 21300000, guid: cf68f21e7ec3ce34ea83ca86a7d728e5, type: 3}
-  - {fileID: 21300000, guid: 1c3a87cfc1483a64fa5c9bc2bbd55d09, type: 3}
-  - {fileID: 21300000, guid: b19a0d09f2a2cd94f9b65b0ab382b52c, type: 3}
-  - {fileID: 21300000, guid: 9e77dcd409e448b4188b5e7e9f4aa2dc, type: 3}
-  - {fileID: 21300000, guid: bb27034b2ac5da34da97f53c0ef20524, type: 3}
-  - {fileID: 21300000, guid: 849d256f04d0028448e69b8a8b93d6c5, type: 3}
-  - {fileID: 21300000, guid: f7f5b863d8f4ca14bb9c44aa69c3e1d3, type: 3}
-  spriteRenderers:
-  - {fileID: 1176017516}
-  - {fileID: 1822587760}
-  - {fileID: 631582531}
-  - {fileID: 442223734}
-  - {fileID: 999013006}
-  - {fileID: 238692095}
-  - {fileID: 2045036257}
-  - {fileID: 999542986}
-  - {fileID: 448323850}
-  - {fileID: 1679245300}
-  - {fileID: 1221834374}
-  - {fileID: 481211862}
-  - {fileID: 2126842580}
 --- !u!212 &1822587760 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 5177666182526677977, guid: d797cffd6fd17144c9fe75d4ef066d2c, type: 3}

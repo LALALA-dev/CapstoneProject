@@ -19,13 +19,38 @@ public class NodeController : MonoBehaviour
 
     private void OnMouseDown()
     {
-        // Determine if current player can place here. (As of now simply meaning you can't override
-        if (isNodeBlank())
+        if (GameInformation.openingSequence)
+        {
+            if(isNodeBlank() && !GameInformation.openingMoveNodeSet)
+            {
+                nodeEntity.nodeState.nodeColor = nodeEntity.gameController.getCurrentPlayerColor();
+                GameInformation.openingMoveNodeSet = true;
+                GameInformation.openingNodeId = nodeEntity.id;
+
+                if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
+                    ClaimNode(playerOneSprite);
+                else
+                    ClaimNode(playerTwoSprite);
+            }
+            else if(isNodeColorOfCurrentPlayer() && GameInformation.openingMoveNodeSet && GameInformation.openingNodeId == nodeEntity.id)
+            {
+                nodeEntity.nodeState.nodeColor = PlayerColor.Blank;
+                GameInformation.openingMoveNodeSet = false;
+                ClaimNode(blankSprite);
+
+                if(GameInformation.openingMoveBranchSet)
+                {
+                    SendMessageUpwards("BranchUIUpdate", GameInformation.openingBranchId);
+                    GameInformation.openingMoveBranchSet = false;
+                }
+            }
+        }
+        else if (isNodeBlank())
         {
             nodeEntity.nodeState.nodeColor = nodeEntity.gameController.getCurrentPlayerColor();
 
             // Change color
-            if (Game.playerOneTurn)
+            if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
                 ClaimNode(playerOneSprite);
             else
                 ClaimNode(playerTwoSprite);
@@ -37,15 +62,6 @@ public class NodeController : MonoBehaviour
 
             ClaimNode(blankSprite);
         }
-
-        // Print
-        print("You clicked on:\n" + this.GetComponent<Renderer>().name + ", ID: " + nodeEntity.id + ", Color: ");
-        if (GetComponent<SpriteRenderer>().sprite == playerOneSprite)
-            print("Orange\n");
-        else if (GetComponent<SpriteRenderer>().sprite == playerTwoSprite)
-            print("Purple\n");
-        else
-            print("Blank\n");
     }
 
     private void ClaimNode(Sprite playerColor)

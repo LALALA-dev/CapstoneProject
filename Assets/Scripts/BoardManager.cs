@@ -28,8 +28,18 @@ public class BoardManager : MonoBehaviour
 
     public void EndCurrentPlayersTurn()
     {
-        Game.playerOneTurn = !Game.playerOneTurn;
-        gameController.endTurn();
+        if(GameInformation.openingSequence)
+        {
+            if(OpeningMoveSatisfied())
+            {
+                gameController.endTurn();
+            }
+        }
+        else
+        {
+            gameController.endTurn();
+        }
+        
     }
 
     public void SetSquareSpite(SquareState squareInfo, SpriteRenderer squareSprite)
@@ -98,4 +108,23 @@ public class BoardManager : MonoBehaviour
         }
     }
 
+    public bool OpeningMoveSatisfied()
+    {
+        return OpeningMovePlacedNode() && OpeningMovePlacedConnectingBranch();
+    }
+
+    public bool OpeningMovePlacedNode()
+    {
+        return GameInformation.openingMoveNodeSet;
+    }
+
+    public bool OpeningMovePlacedConnectingBranch()
+    {
+        return GameInformation.openingMoveBranchSet;
+    }
+
+    public void BranchUIUpdate(int branchID)
+    {
+        BroadcastMessage("BranchUIUpdate", branchID);
+    }
 }

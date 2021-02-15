@@ -19,14 +19,39 @@ public class BranchController : MonoBehaviour
 
     private void OnMouseDown()
     {
-        // Determine if current player can place here. (As of now simply meaning you can't override
-        if(isBranchBlank() || isBranchSurroundedByCurrentPlayer())
+        if(GameInformation.openingSequence)
+        {
+            if(GameInformation.openingMoveNodeSet && !GameInformation.openingMoveBranchSet && isBranchBlank())
+            {
+                if (isOpeningBranchConnectedToNewNode())
+                {
+                    GameInformation.openingMoveBranchSet = true;
+                    GameInformation.openingBranchId = branchEntity.id;
+                    branchEntity.branchState.ownerColor = branchEntity.gameController.getCurrentPlayerColor();
+                    branchEntity.branchState.branchColor = branchEntity.gameController.getCurrentPlayerColor();
+
+                    if (branchEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
+                        ClaimBranch(playerOneSprite);
+                    else
+                        ClaimBranch(playerTwoSprite);
+                }
+            }
+            else if(isBranchColorOfCurrentPlayer() && GameInformation.openingMoveBranchSet && GameInformation.openingBranchId == branchEntity.id)
+            {
+                branchEntity.branchState.ownerColor = PlayerColor.Blank;
+                branchEntity.branchState.branchColor = PlayerColor.Blank;
+                GameInformation.openingMoveBranchSet = false;
+                ClaimBranch(blankSprite);
+            }
+
+        }
+        else if(isBranchBlank() || isBranchSurroundedByCurrentPlayer())
         {
             branchEntity.branchState.ownerColor = branchEntity.gameController.getCurrentPlayerColor();
             branchEntity.branchState.branchColor = branchEntity.gameController.getCurrentPlayerColor();
 
             // Change color
-            if (Game.playerOneTurn)
+            if (branchEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
                 ClaimBranch(playerOneSprite);
             else
                 ClaimBranch(playerTwoSprite);
@@ -39,15 +64,6 @@ public class BranchController : MonoBehaviour
 
             ClaimBranch(blankSprite);
         }
-
-        // Print
-        print("You clicked on:\n" + this.GetComponent<Renderer>().name + ", ID: " + branchEntity.id + ", Color: ");
-        if (GetComponent<SpriteRenderer>().sprite == playerOneSprite)
-            print("Orange\n");
-        else if (GetComponent<SpriteRenderer>().sprite == playerTwoSprite)
-            print("Purple\n");
-        else
-            print("Blank\n");
     }
 
     private void ClaimBranch(Sprite playerColor)
@@ -69,5 +85,28 @@ public class BranchController : MonoBehaviour
     private bool isBranchColorOfCurrentPlayer()
     {
         return branchEntity.branchState.branchColor == branchEntity.gameController.getCurrentPlayerColor();
+    }
+
+    private bool isOpeningBranchConnectedToNewNode()
+    {
+        bool result = false;
+        int[] nodeConnections = ReferenceScript.nodeConnectsToTheseBranches[GameInformation.openingNodeId];
+        foreach(int branch in nodeConnections)
+        {
+            if (branch == branchEntity.id)
+                result = true;
+        }
+
+        return result;
+    }
+
+    public void BranchUIUpdate(int id)
+    {
+        if(id == branchEntity.id)
+        {
+            branchEntity.branchState.ownerColor = PlayerColor.Blank;
+            branchEntity.branchState.branchColor = PlayerColor.Blank;
+            ClaimBranch(blankSprite);
+        }
     }
 }
