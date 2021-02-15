@@ -47,6 +47,7 @@ public class GameController
                 currentPlayerColor = PlayerColor.Purple;
             else
                 currentPlayerColor = PlayerColor.Orange;
+            CollectCurrentPlayerResources();
         }
         else if (GameInformation.turnNumber == 2)
         {
@@ -126,6 +127,11 @@ public class GameController
     public SquareState[] GetSquareStates()
     {
         return gameBoard.GetSquareStates();
+    }
+
+    public void CollectCurrentPlayerResources()
+    {
+
     }
 
 }

@@ -33,4 +33,8 @@ public class GameInformation
 
     public static int openingBranchId = 0;
 
+    public static int[] playerOneResources = new int[4] { 0, 0, 0, 0 };
+
+    public static int[] playerTwoResources = new int[4] { 0, 0, 0, 0 };
+
 }
