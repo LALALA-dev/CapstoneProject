@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GameObjectProperties;
 
 public class BoardManager : MonoBehaviour
 {
@@ -17,17 +18,11 @@ public class BoardManager : MonoBehaviour
 
     public void ReshuffleBoard()
     {
-        for (int i = 0; i < images.Length; i++)
-        {
-            Sprite tmp = images[i];
-            int r = Random.Range(i, images.Length);
-            images[i] = images[r];
-            images[r] = tmp;
-        }
+        SquareState[] squares = gameController.NewGame();
 
-        for(int i = 0; i < spriteRenderers.Length; i++)
+        for(int i = 0; i < 13; i++)
         {
-            spriteRenderers[i].sprite = images[i];
+            SetSquareSpite(squares[i], spriteRenderers[i]);
         }
     }
 
@@ -35,6 +30,72 @@ public class BoardManager : MonoBehaviour
     {
         Game.playerOneTurn = !Game.playerOneTurn;
         gameController.endTurn();
+    }
+
+    public void SetSquareSpite(SquareState squareInfo, SpriteRenderer squareSprite)
+    {
+        switch(squareInfo.resourceColor)
+        {
+            case SquareResourceColor.Red:
+                switch (squareInfo.resourceAmount)
+                {
+                    case SquareResourceAmount.One:
+                        squareSprite.sprite = images[0];
+                        break;
+                    case SquareResourceAmount.Two:
+                        squareSprite.sprite = images[1];
+                        break;
+                    case SquareResourceAmount.Three:
+                        squareSprite.sprite = images[2];
+                        break;
+                }
+                break;
+            case SquareResourceColor.Blue:
+                switch (squareInfo.resourceAmount)
+                {
+                    case SquareResourceAmount.One:
+                        squareSprite.sprite = images[3];
+                        break;
+                    case SquareResourceAmount.Two:
+                        squareSprite.sprite = images[4];
+                        break;
+                    case SquareResourceAmount.Three:
+                        squareSprite.sprite = images[5];
+                        break;
+                }
+                break;
+            case SquareResourceColor.Yellow:
+                switch (squareInfo.resourceAmount)
+                {
+                    case SquareResourceAmount.One:
+                        squareSprite.sprite = images[6];
+                        break;
+                    case SquareResourceAmount.Two:
+                        squareSprite.sprite = images[7];
+                        break;
+                    case SquareResourceAmount.Three:
+                        squareSprite.sprite = images[8];
+                        break;
+                }
+                break;
+            case SquareResourceColor.Green:
+                switch (squareInfo.resourceAmount)
+                {
+                    case SquareResourceAmount.One:
+                        squareSprite.sprite = images[9];
+                        break;
+                    case SquareResourceAmount.Two:
+                        squareSprite.sprite = images[10];
+                        break;
+                    case SquareResourceAmount.Three:
+                        squareSprite.sprite = images[11];
+                        break;
+                }
+                break;
+            case SquareResourceColor.Blank:
+                squareSprite.sprite = images[12];
+                break;
+        }
     }
 
 }

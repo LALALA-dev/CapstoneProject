@@ -63,16 +63,33 @@ public class GameBoard
         {
             boardState.squareStates[square.id] = square.squareState;
         }
-        foreach (Node node in nodes)
-        {
-            boardState.nodeStates[node.id] = node.nodeState;
-        }
+
         foreach (Branch branch in branches)
         {
             boardState.branchStates[branch.id] = branch.branchState;
         }
 
         return boardState;
+    }
+
+    public SquareState[] ShuffleSquares()
+    {
+        boardState.squareStates = Reference.defaultSquareState;
+
+        for (int i = 0; i < MAX_SQUARES; i++)
+        {
+            SquareState tmp = boardState.squareStates[i];
+            int r = Random.Range(i, MAX_SQUARES);
+            boardState.squareStates[i] = boardState.squareStates[r];
+            boardState.squareStates[r] = tmp;
+        }
+
+        for(int i = 0; i < MAX_SQUARES; i++)
+        {
+            boardState.squareStates[i].location = i;
+        }
+
+        return boardState.squareStates; 
     }
 
     public override string ToString()
@@ -224,5 +241,10 @@ public class GameBoard
             }
             stringIndex++;
         }
+    }
+
+    public SquareState[] GetSquareStates()
+    {
+        return boardState.squareStates;
     }
 }

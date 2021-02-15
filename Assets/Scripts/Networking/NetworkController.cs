@@ -15,6 +15,7 @@ public class NetworkController : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.AutomaticallySyncScene = true;
         NetController = this;
+        gameController = GameController.getInstance();
     }
 
     #endregion

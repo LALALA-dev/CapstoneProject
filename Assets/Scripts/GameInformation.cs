@@ -18,4 +18,6 @@ public class GameInformation
     public static NetworkGameType networkGameType = NetworkGameType.Public;
 
     public static bool playerIsHost = false;
+
+    public static char gameType = 'L';
 }
