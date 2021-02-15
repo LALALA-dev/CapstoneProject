@@ -72,7 +72,6 @@ public class GameController
         Debug.Log("BoardState: \n\t" + getCurrentSquareConfig() + "\n\t" + getCurrentNodeConfig() + "\n\t" + getCurrentBranchConfig());
     }
 
-    /*  Methods for sending the board state to the console. Demonstrats how board is stored.    */
     private string getCurrentSquareConfig()
     {
         SquareState[] squareStates = gameBoard.getBoardState().squareStates;
