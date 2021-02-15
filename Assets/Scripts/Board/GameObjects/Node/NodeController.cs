@@ -13,7 +13,6 @@ public class NodeController : MonoBehaviour
 
     void Start()
     {
-        // Mark Node Unowned at start
         ClaimNode(blankSprite);
     }
 

@@ -60,6 +60,11 @@ public class GameBoard
             boardState.squareStates[square.id] = square.squareState;
         }
 
+        foreach (Node node in nodes)
+        {
+            boardState.nodeStates[node.id] = node.nodeState;
+        }
+
         foreach (Branch branch in branches)
         {
             boardState.branchStates[branch.id] = branch.branchState;
