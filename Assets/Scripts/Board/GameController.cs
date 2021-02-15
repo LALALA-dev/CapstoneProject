@@ -175,9 +175,20 @@ public class GameController
         }
 
         if (getCurrentPlayerColor() == PlayerColor.Orange)
-            GameInformation.playerOneResources = resources;
+        {
+            GameInformation.playerOneResources[0] += resources[0];
+            GameInformation.playerOneResources[1] += resources[1];
+            GameInformation.playerOneResources[2] += resources[2];
+            GameInformation.playerOneResources[3] += resources[3];
+        }
         else
-            GameInformation.playerTwoResources = resources;
+        {
+            GameInformation.playerTwoResources[0] += resources[0];
+            GameInformation.playerTwoResources[1] += resources[1];
+            GameInformation.playerTwoResources[2] += resources[2];
+            GameInformation.playerTwoResources[3] += resources[3];
+        }
+
         Debug.Log("RESOURCES- Red: " + resources[0] + " Blue: " + resources[1] + " Yellow: " + resources[2] + " Green: " + resources[3]);
     }
 

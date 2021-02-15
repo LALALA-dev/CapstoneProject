@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private NetworkController networkController;
     private GameController gameController;
+
+    public TMP_Text playerOneResources;
+    public TMP_Text playerTwoResources;
 
     private void Awake()
     {
