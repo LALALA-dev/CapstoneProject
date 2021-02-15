@@ -41,6 +41,7 @@ public class NodeController : MonoBehaviour
                 if(GameInformation.openingMoveBranchSet)
                 {
                     SendMessageUpwards("BranchUIUpdate", GameInformation.openingBranchId);
+                    GameInformation.openingMoveBranchSet = false;
                 }
             }
         }
