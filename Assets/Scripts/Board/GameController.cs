@@ -129,9 +129,58 @@ public class GameController
         return gameBoard.GetSquareStates();
     }
 
+    public NodeState[] GetNodeStates()
+    {
+        return gameBoard.GetNodeStates();
+    }
+
     public void CollectCurrentPlayerResources()
     {
+        List<NodeState> currentNodes = new List<NodeState>();
+        foreach (NodeState node in GetNodeStates())
+        {
+            if(node.nodeColor == getCurrentPlayerColor())
+            {
+                currentNodes.Add(node);
+            }
+        }
 
+        List<SquareState> squares = new List<SquareState>();
+        foreach(NodeState node in currentNodes)
+        {
+            foreach(int squareId in ReferenceScript.nodeConnectToTheseTiles[node.location])
+            {
+                squares.Add(GetSquareStates()[squareId]);
+            }
+        }
+
+        int[] resources = new int[4] { 0, 0, 0, 0 };
+        foreach(SquareState square in squares)
+        {
+            switch (square.resourceColor)
+            {
+                case SquareResourceColor.Red:
+                    resources[0]++;
+                    break;
+                case SquareResourceColor.Blue:
+                    resources[1]++;
+                    break;
+                case SquareResourceColor.Yellow:
+                    resources[2]++;
+                    break;
+                case SquareResourceColor.Green:
+                    resources[3]++;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        if (getCurrentPlayerColor() == PlayerColor.Orange)
+            GameInformation.playerOneResources = resources;
+        else
+            GameInformation.playerTwoResources = resources;
+        Debug.Log("RESOURCES- Red: " + resources[0] + " Blue: " + resources[1] + " Yellow: " + resources[2] + "Green: " + resources[3]);
     }
 
 }

@@ -247,4 +247,9 @@ public class GameBoard
     {
         return boardState.squareStates;
     }
+
+    public NodeState[] GetNodeStates()
+    {
+        return boardState.nodeStates;
+    }
 }
