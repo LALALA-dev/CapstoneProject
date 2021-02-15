@@ -44,7 +44,7 @@ public class NodeController : MonoBehaviour
                 }
             }
         }
-        else if (isNodeBlank())
+        else if (hasEnoughResources() && isNodeConnectedToBranch() && isNodeBlank())
         {
             nodeEntity.nodeState.nodeColor = nodeEntity.gameController.getCurrentPlayerColor();
 
@@ -78,5 +78,35 @@ public class NodeController : MonoBehaviour
     private bool isNodeColorOfCurrentPlayer()
     {
         return nodeEntity.nodeState.nodeColor == nodeEntity.gameController.getCurrentPlayerColor();
+    }
+
+    public bool hasEnoughResources()
+    {
+        int[] resources = new int[4];
+        if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
+        {
+            resources = GameInformation.playerOneResources;
+        }
+        else
+        {
+            resources = GameInformation.playerTwoResources;
+        }
+
+        return (resources[2] >= 2 && resources[3] >= 2);
+    }
+
+    public bool isNodeConnectedToBranch()
+    {
+        int[] branchConnections = ReferenceScript.nodeConnectsToTheseBranches[nodeEntity.id];
+
+        foreach(int branchId in branchConnections)
+        {
+            if(nodeEntity.gameController.GetBranchState(branchId).branchColor == nodeEntity.gameController.getCurrentPlayerColor())
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

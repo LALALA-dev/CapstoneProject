@@ -253,4 +253,9 @@ public class GameBoard
     {
         return boardState.nodeStates;
     }
+
+    public BranchState[] GetBranchStates()
+    {
+        return boardState.branchStates;
+    }
 }
