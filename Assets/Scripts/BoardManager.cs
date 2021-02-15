@@ -28,7 +28,6 @@ public class BoardManager : MonoBehaviour
 
     public void EndCurrentPlayersTurn()
     {
-        Game.playerOneTurn = !Game.playerOneTurn;
         gameController.endTurn();
     }
 

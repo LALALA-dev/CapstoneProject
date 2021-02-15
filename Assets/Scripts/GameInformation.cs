@@ -20,4 +20,8 @@ public class GameInformation
     public static bool playerIsHost = false;
 
     public static char gameType = 'L';
+
+    public static bool openingSequence = true;
+
+    public static int turnNumber = 1;
 }

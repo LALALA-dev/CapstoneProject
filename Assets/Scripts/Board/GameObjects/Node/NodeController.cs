@@ -25,7 +25,7 @@ public class NodeController : MonoBehaviour
             nodeEntity.nodeState.nodeColor = nodeEntity.gameController.getCurrentPlayerColor();
 
             // Change color
-            if (Game.playerOneTurn)
+            if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
                 ClaimNode(playerOneSprite);
             else
                 ClaimNode(playerTwoSprite);

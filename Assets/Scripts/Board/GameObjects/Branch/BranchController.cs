@@ -26,7 +26,7 @@ public class BranchController : MonoBehaviour
             branchEntity.branchState.branchColor = branchEntity.gameController.getCurrentPlayerColor();
 
             // Change color
-            if (Game.playerOneTurn)
+            if (branchEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
                 ClaimBranch(playerOneSprite);
             else
                 ClaimBranch(playerTwoSprite);
