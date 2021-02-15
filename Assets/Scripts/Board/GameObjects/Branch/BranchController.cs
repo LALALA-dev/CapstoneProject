@@ -44,16 +44,24 @@ public class BranchController : MonoBehaviour
             }
 
         }
-        else if(isBranchBlank() || isBranchSurroundedByCurrentPlayer())
+        else if((isBranchBlank() && hasEnoughResources()) || isBranchSurroundedByCurrentPlayer())
         {
             branchEntity.branchState.ownerColor = branchEntity.gameController.getCurrentPlayerColor();
             branchEntity.branchState.branchColor = branchEntity.gameController.getCurrentPlayerColor();
 
             // Change color
             if (branchEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
+            {
                 ClaimBranch(playerOneSprite);
+                GameInformation.playerOneResources[0]--;
+                GameInformation.playerOneResources[1]--;
+            }
             else
+            {
                 ClaimBranch(playerTwoSprite);
+                GameInformation.playerTwoResources[0]--;
+                GameInformation.playerTwoResources[1]--;
+            }    
         }
         // Are you trying to undo a selection?
         else if (isBranchColorOfCurrentPlayer())
@@ -107,5 +115,20 @@ public class BranchController : MonoBehaviour
             branchEntity.branchState.branchColor = PlayerColor.Blank;
             ClaimBranch(blankSprite);
         }
+    }
+
+    public bool hasEnoughResources()
+    {
+        int[] resources = new int[4];
+        if(branchEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
+        {
+            resources = GameInformation.playerOneResources;
+        }
+        else
+        {
+            resources = GameInformation.playerTwoResources;
+        }
+
+        return (resources[0] >= 1 && resources[1] >= 1);
     }
 }
