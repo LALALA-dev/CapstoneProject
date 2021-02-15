@@ -44,7 +44,7 @@ public class BranchController : MonoBehaviour
             }
 
         }
-        else if((isBranchBlank() && hasEnoughResources()) || isBranchSurroundedByCurrentPlayer())
+        else if((isBranchBlank() && hasEnoughResources() && isBranchConnectedToBranch()) || isBranchSurroundedByCurrentPlayer())
         {
             branchEntity.branchState.ownerColor = branchEntity.gameController.getCurrentPlayerColor();
             branchEntity.branchState.branchColor = branchEntity.gameController.getCurrentPlayerColor();
@@ -130,5 +130,10 @@ public class BranchController : MonoBehaviour
         }
 
         return (resources[0] >= 1 && resources[1] >= 1);
+    }
+
+    public bool isBranchConnectedToBranch()
+    {
+        return false;
     }
 }
