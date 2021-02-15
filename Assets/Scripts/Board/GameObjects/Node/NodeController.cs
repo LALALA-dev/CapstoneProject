@@ -32,6 +32,17 @@ public class NodeController : MonoBehaviour
                 else
                     ClaimNode(playerTwoSprite);
             }
+            else if(isNodeColorOfCurrentPlayer() && GameInformation.openingMoveNodeSet && GameInformation.openingNodeId == nodeEntity.id)
+            {
+                nodeEntity.nodeState.nodeColor = PlayerColor.Blank;
+                GameInformation.openingMoveNodeSet = false;
+                ClaimNode(blankSprite);
+
+                if(GameInformation.openingMoveBranchSet)
+                {
+                    SendMessageUpwards("BranchUIUpdate", GameInformation.openingBranchId);
+                }
+            }
         }
         else if (isNodeBlank())
         {

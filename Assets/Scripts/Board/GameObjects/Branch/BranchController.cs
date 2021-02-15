@@ -36,6 +36,13 @@ public class BranchController : MonoBehaviour
                         ClaimBranch(playerTwoSprite);
                 }
             }
+            else if(isBranchColorOfCurrentPlayer() && GameInformation.openingMoveBranchSet && GameInformation.openingBranchId == branchEntity.id)
+            {
+                branchEntity.branchState.ownerColor = PlayerColor.Blank;
+                branchEntity.branchState.branchColor = PlayerColor.Blank;
+                GameInformation.openingMoveBranchSet = false;
+                ClaimBranch(blankSprite);
+            }
 
         }
         else if(isBranchBlank() || isBranchSurroundedByCurrentPlayer())
@@ -91,5 +98,15 @@ public class BranchController : MonoBehaviour
         }
 
         return result;
+    }
+
+    public void BranchUIUpdate(int id)
+    {
+        if(id == branchEntity.id)
+        {
+            branchEntity.branchState.ownerColor = PlayerColor.Blank;
+            branchEntity.branchState.branchColor = PlayerColor.Blank;
+            ClaimBranch(blankSprite);
+        }
     }
 }

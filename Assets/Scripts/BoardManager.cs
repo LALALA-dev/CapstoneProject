@@ -122,4 +122,9 @@ public class BoardManager : MonoBehaviour
     {
         return GameInformation.openingMoveBranchSet;
     }
+
+    public void BranchUIUpdate(int branchID)
+    {
+        BroadcastMessage("BranchUIUpdate", branchID);
+    }
 }

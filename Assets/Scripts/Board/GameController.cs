@@ -127,5 +127,6 @@ public class GameController
     {
         return gameBoard.GetSquareStates();
     }
+
 }
 
