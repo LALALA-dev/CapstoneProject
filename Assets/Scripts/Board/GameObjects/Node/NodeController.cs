@@ -25,13 +25,13 @@ public class NodeController : MonoBehaviour
             {
                 nodeEntity.nodeState.nodeColor = nodeEntity.gameController.getCurrentPlayerColor();
                 GameInformation.openingMoveNodeSet = true;
+                GameInformation.openingNodeId = nodeEntity.id;
 
                 if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
                     ClaimNode(playerOneSprite);
                 else
                     ClaimNode(playerTwoSprite);
             }
-
         }
         else if (isNodeBlank())
         {

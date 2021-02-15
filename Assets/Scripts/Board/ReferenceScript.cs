@@ -15,7 +15,14 @@ public class ReferenceScript
 
     };
 
-    public int[][] nodeConnectsToTheseBranches = new int[][] { };
+    public static int[][] nodeConnectsToTheseBranches = new int[][]
+    {
+        new int[2] {0, 1},
+        new int[2] {0, 2},
+        new int[2] {3, 6},
+        new int[4] {1, 3, 4, 7},
+        new int[4] {2, 4, 5, 8}
+    };
 
     public int[][] tileConnectsToTheseNodes = new int[][] { };
 

@@ -29,4 +29,8 @@ public class GameInformation
 
     public static bool openingMoveBranchSet = false;
 
+    public static int openingNodeId = 0;
+
+    public static int openingBranchId = 0;
+
 }

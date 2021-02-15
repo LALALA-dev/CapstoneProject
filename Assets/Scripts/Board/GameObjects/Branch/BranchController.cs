@@ -23,14 +23,18 @@ public class BranchController : MonoBehaviour
         {
             if(GameInformation.openingMoveNodeSet && !GameInformation.openingMoveBranchSet && isBranchBlank())
             {
-                GameInformation.openingMoveBranchSet = true;
-                branchEntity.branchState.ownerColor = branchEntity.gameController.getCurrentPlayerColor();
-                branchEntity.branchState.branchColor = branchEntity.gameController.getCurrentPlayerColor();
+                if (isOpeningBranchConnectedToNewNode())
+                {
+                    GameInformation.openingMoveBranchSet = true;
+                    GameInformation.openingBranchId = branchEntity.id;
+                    branchEntity.branchState.ownerColor = branchEntity.gameController.getCurrentPlayerColor();
+                    branchEntity.branchState.branchColor = branchEntity.gameController.getCurrentPlayerColor();
 
-                if (branchEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
-                    ClaimBranch(playerOneSprite);
-                else
-                    ClaimBranch(playerTwoSprite);
+                    if (branchEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
+                        ClaimBranch(playerOneSprite);
+                    else
+                        ClaimBranch(playerTwoSprite);
+                }
             }
 
         }
@@ -76,4 +80,16 @@ public class BranchController : MonoBehaviour
         return branchEntity.branchState.branchColor == branchEntity.gameController.getCurrentPlayerColor();
     }
 
+    private bool isOpeningBranchConnectedToNewNode()
+    {
+        bool result = false;
+        int[] nodeConnections = ReferenceScript.nodeConnectsToTheseBranches[GameInformation.openingNodeId];
+        foreach(int branch in nodeConnections)
+        {
+            if (branch == branchEntity.id)
+                result = true;
+        }
+
+        return result;
+    }
 }
