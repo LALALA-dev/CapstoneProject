@@ -74,7 +74,6 @@ public class NodeController : MonoBehaviour
         return nodeEntity.nodeState.nodeColor == PlayerColor.Blank;
     }
 
-
     private bool isNodeColorOfCurrentPlayer()
     {
         return nodeEntity.nodeState.nodeColor == nodeEntity.gameController.getCurrentPlayerColor();

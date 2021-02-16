@@ -8,7 +8,7 @@ public class GameController
     private static GameController gameController;
     private GameBoard gameBoard;
 
-    private PlayerColor currentPlayerColor;
+    private PlayerColor currentPlayerColor = PlayerColor.Orange;
 
     private GameController()
     {
@@ -43,6 +43,8 @@ public class GameController
         if (!GameInformation.openingSequence || GameInformation.turnNumber == 5)
         {
             GameInformation.openingSequence = false;
+            GameInformation.openingMoveBranchSet = false;
+            GameInformation.openingMoveNodeSet = false;
             if (currentPlayerColor == PlayerColor.Orange)
                 currentPlayerColor = PlayerColor.Purple;
             else
@@ -68,7 +70,6 @@ public class GameController
             GameInformation.openingMoveBranchSet = false;
             GameInformation.openingMoveNodeSet = false;
         }
-
 
         Debug.Log("BoardState: \n\t" + getCurrentSquareConfig() + "\n\t" + getCurrentNodeConfig() + "\n\t" + getCurrentBranchConfig());
     }
