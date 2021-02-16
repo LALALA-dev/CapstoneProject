@@ -107,7 +107,7 @@ public class TradingPanelManager : MonoBehaviour
 
     public void EnablePanel()
     {
-        if(GameInformation.resourceTrade)
+        if(!GameInformation.resourceTrade)
         {
             if (GameInformation.turnNumber % 2 == 0)
                 GameInformation.maxTradeResources = GameInformation.playerOneResources;
