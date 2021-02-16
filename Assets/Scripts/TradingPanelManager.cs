@@ -20,7 +20,6 @@ public class TradingPanelManager : MonoBehaviour
     public void OnConfirmClick()
     {
         ApplyResourceChanges();
-
         numberOfTilesSelected = 0;
         resources = new int[4] { 0, 0, 0, 0 };
         panel.SetActive(false);
@@ -36,8 +35,20 @@ public class TradingPanelManager : MonoBehaviour
     public void AddColorTile(int colorId)
     {
         int numSelected = int.Parse(tilesSelected[colorId].text);
-        numSelected++;
-        tilesSelected[colorId].text = numSelected.ToString();
+        if(numSelected < 3)
+        {
+            numSelected++;
+            tilesSelected[colorId].text = numSelected.ToString();
+            resources[colorId]++;
+            numberOfTilesSelected++;
+        }
+        else
+        {
+            numSelected = 0;
+            numberOfTilesSelected = 0;
+            resources[colorId] = 0;
+            tilesSelected[colorId].text = numSelected.ToString();
+        }
     }
 
     public void ApplyResourceChanges()
