@@ -10,15 +10,13 @@ public class TradingPanelManager : MonoBehaviour
     public Button[] createResourceBtn;
     public GameObject panel;
 
-    int numberOfTilesSelected = 0;
-    int[] resources = new int[4] { 0, 0, 0, 0 };
+    private int numberOfTilesSelected = 0;
+    private int[] resources = new int[4] { 0, 0, 0, 0 };
 
     void Start()
     {
         for (int i = 0; i < 4; i++)
-        {
             createResourceBtn[i].gameObject.SetActive(false);
-        }
     }
 
     public void OnConfirmClick()
@@ -28,9 +26,7 @@ public class TradingPanelManager : MonoBehaviour
         resources = new int[4] { 0, 0, 0, 0 };
 
         for (int i = 0; i < 4; i++)
-        {
             createResourceBtn[i].gameObject.SetActive(false);
-        }
 
         panel.SetActive(false);
     }
@@ -41,9 +37,7 @@ public class TradingPanelManager : MonoBehaviour
         resources = new int[4] { 0, 0, 0, 0 };
 
         for (int i = 0; i < 4; i++)
-        {
             createResourceBtn[i].gameObject.SetActive(false);
-        }
 
         panel.SetActive(false);
     }
@@ -66,9 +60,7 @@ public class TradingPanelManager : MonoBehaviour
             tilesSelected[colorId].text = numSelected.ToString();
 
             for (int i = 0; i < 4; i++)
-            {
                 createResourceBtn[i].gameObject.SetActive(false);
-            }
         }
 
         if(numberOfTilesSelected == 3)
@@ -80,10 +72,8 @@ public class TradingPanelManager : MonoBehaviour
     public void RenderCreateBtnChoices()
     {
         for (int i = 0; i < 4; i++)
-        {
             if (resources[i] == 0)
                 createResourceBtn[i].gameObject.SetActive(true);
-        }
     }
 
     public void ApplyResourceChanges()
