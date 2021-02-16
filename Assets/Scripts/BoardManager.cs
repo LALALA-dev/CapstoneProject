@@ -13,7 +13,7 @@ public class BoardManager : MonoBehaviour
 
     private void Start()
     {
-        tradingPanel.gameObject.SetActive(false);
+        //tradingPanel.gameObject.SetActive(false);
         gameController = GameController.getInstance();
 
         SquareState[] squares = gameController.GetSquareStates();
