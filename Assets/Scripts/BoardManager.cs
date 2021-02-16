@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using static GameObjectProperties;
 
 public class BoardManager : MonoBehaviour
@@ -9,6 +11,9 @@ public class BoardManager : MonoBehaviour
 
     public Sprite[] images;
     public SpriteRenderer[] spriteRenderers;
+
+    public Text[] playerOneResources;
+    public Text[] playerTwoResources;
 
     private void Start()
     {
@@ -34,9 +39,9 @@ public class BoardManager : MonoBehaviour
 
     public void EndCurrentPlayersTurn()
     {
-        if(GameInformation.openingSequence)
+        if (GameInformation.openingSequence)
         {
-            if(OpeningMoveSatisfied())
+            if (OpeningMoveSatisfied())
             {
                 gameController.endTurn();
             }
@@ -46,6 +51,10 @@ public class BoardManager : MonoBehaviour
             gameController.endTurn();
         }
         
+        if(GameInformation.turnNumber + 1 > 4)
+        {
+            UpdateResourcesUI();
+        }
     }
 
     public void SetSquareSpite(SquareState squareInfo, SpriteRenderer squareSprite)
@@ -132,5 +141,21 @@ public class BoardManager : MonoBehaviour
     public void BranchUIUpdate(int branchID)
     {
         BroadcastMessage("BranchUIUpdate", branchID);
+    }
+
+    public void UpdateResourcesUI()
+    {
+        if(gameController.getCurrentPlayerColor() == PlayerColor.Orange)
+            UpdatePlayerResources(playerOneResources, GameInformation.playerOneResources);
+        else
+            UpdatePlayerResources(playerTwoResources, GameInformation.playerTwoResources);
+    }
+
+    private void UpdatePlayerResources(Text[] labels, int[] resources)
+    {
+        for(int i = 0; i < 4; i++)
+        {
+            labels[i].text = resources[i].ToString();
+        }
     }
 }
