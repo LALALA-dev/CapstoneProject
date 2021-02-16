@@ -15,9 +15,6 @@ public class TradingPanelManager : MonoBehaviour
 
     void Start()
     {
-        for(int i = 0; i < 4; i++)
-            createResourceBtn[i].onClick.AddListener(() => AddColorTile(i));
-        
     }
 
     public void OnConfirmClick()
