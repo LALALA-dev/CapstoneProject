@@ -25,4 +25,12 @@ public class Reference
 
        new SquareState(){location=12, ownerColor=PlayerColor.Blank, resourceAmount=SquareResourceAmount.One, resourceColor=SquareResourceColor.Blank, resourceState=SquareStatus.Open},
     };
+
+    public static readonly int[,] branchesOnSquareConnections = new int[,] {
+                                                 { 0, 1, 2, 4 },
+                             { 3, 6, 7, 11 },    { 4, 7, 8, 12 },    { 5, 8, 9, 13 },
+        { 10, 15, 16, 21 }, { 11, 16, 17, 22 }, { 12, 17, 18, 23 }, { 13, 18, 19, 24 }, { 14, 19, 20, 25 },
+                            { 22, 26, 27, 30 }, { 23, 27, 28, 31 }, { 24, 28, 29, 32 },
+                                                { 31, 33, 34, 35 }
+    };
 }
