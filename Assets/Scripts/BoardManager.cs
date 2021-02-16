@@ -6,14 +6,12 @@ using static GameObjectProperties;
 public class BoardManager : MonoBehaviour
 {
     private GameController gameController;
-    public GameObject tradingPanel;
 
     public Sprite[] images;
     public SpriteRenderer[] spriteRenderers;
 
     private void Start()
     {
-        //tradingPanel.gameObject.SetActive(false);
         gameController = GameController.getInstance();
 
         SquareState[] squares = gameController.GetSquareStates();

@@ -15,20 +15,9 @@ public class TradingPanelManager : MonoBehaviour
 
     void Start()
     {
-        for (int i = 0; i < 4; i++)
-            createResourceBtn[i].gameObject.SetActive(false);
-    }
-
-    public void OnConfirmClick()
-    {
-        ApplyResourceChanges();
-        numberOfTilesSelected = 0;
-        resources = new int[4] { 0, 0, 0, 0 };
-
-        for (int i = 0; i < 4; i++)
-            createResourceBtn[i].gameObject.SetActive(false);
-
         panel.SetActive(false);
+        for (int i = 0; i < 4; i++)
+            createResourceBtn[i].gameObject.SetActive(false);
     }
 
     public void OnCancelClick()
@@ -37,7 +26,10 @@ public class TradingPanelManager : MonoBehaviour
         resources = new int[4] { 0, 0, 0, 0 };
 
         for (int i = 0; i < 4; i++)
+        {
             createResourceBtn[i].gameObject.SetActive(false);
+            tilesSelected[i].text = "0";
+        }
 
         panel.SetActive(false);
     }
@@ -45,39 +37,83 @@ public class TradingPanelManager : MonoBehaviour
     public void AddColorTile(int colorId)
     {
         int numSelected = int.Parse(tilesSelected[colorId].text);
-        if(numSelected < 3)
+        if(numSelected < 3 && numberOfTilesSelected < 3 && numSelected <= GameInformation.maxTradeResources[colorId])
         {
             numSelected++;
             tilesSelected[colorId].text = numSelected.ToString();
             resources[colorId]++;
             numberOfTilesSelected++;
         }
-        else
+        else if(numSelected == 3)
         {
             numSelected = 0;
             numberOfTilesSelected = 0;
             resources[colorId] = 0;
             tilesSelected[colorId].text = numSelected.ToString();
+        }
+        else if(numSelected < 3 && numberOfTilesSelected == 3)
+        {
+            numberOfTilesSelected -= numSelected;
+            numSelected = 0;
+            resources[colorId] = 0;
+            tilesSelected[colorId].text = numSelected.ToString();
 
-            for (int i = 0; i < 4; i++)
+            for(int i = 0; i < 4; i++)
                 createResourceBtn[i].gameObject.SetActive(false);
         }
 
-        if(numberOfTilesSelected == 3)
-        {
-            RenderCreateBtnChoices();
-        }
+        RenderCreateBtnChoices();
     }
 
     public void RenderCreateBtnChoices()
     {
-        for (int i = 0; i < 4; i++)
-            if (resources[i] == 0)
-                createResourceBtn[i].gameObject.SetActive(true);
+        if(numberOfTilesSelected == 3)
+            for (int i = 0; i < 4; i++)
+                if (resources[i] == 0)
+                    createResourceBtn[i].gameObject.SetActive(true);
     }
 
-    public void ApplyResourceChanges()
+    public void CreateBtnClick(int colorId)
     {
+        ApplyResourceChanges(colorId);
+        numberOfTilesSelected = 0;
+        resources = new int[4] { 0, 0, 0, 0 };
 
+        for (int i = 0; i < 4; i++)
+        {
+            createResourceBtn[i].gameObject.SetActive(false);
+            tilesSelected[i].text = "0";
+        }
+            
+        panel.SetActive(false);
+        GameInformation.resourceTrade = true;
+    }
+
+    public void ApplyResourceChanges(int colorId)
+    {
+        if(GameInformation.turnNumber % 2 == 0)
+        {
+            GameInformation.playerOneResources[colorId]++;
+            for (int i = 0; i < 4; i++)
+                GameInformation.playerOneResources[i] -= resources[i];
+        }
+        else
+        {
+            GameInformation.playerTwoResources[colorId]++;
+            for (int i = 0; i < 4; i++)
+                GameInformation.playerTwoResources[i] -= resources[i];
+        }
+    }
+
+    public void EnablePanel()
+    {
+        if(GameInformation.resourceTrade)
+        {
+            if (GameInformation.turnNumber % 2 == 0)
+                GameInformation.maxTradeResources = GameInformation.playerOneResources;
+            else
+                GameInformation.maxTradeResources = GameInformation.playerTwoResources;
+            panel.SetActive(true);
+        }
     }
 }
