@@ -326,4 +326,57 @@ public class GameBoard
             }
         };
     }
+
+    private void DetectMultiTileCaptures()
+{
+        // States are currently unknown, so every square has the chance of being captured.
+        List<int> possibleCaptures = new List<int>();
+        for (int i = 0; i < MAX_SQUARES; ++i)
+        {
+            possibleCaptures.Add(i);
+        }
+
+        for (int currentSquare = 0; currentSquare < MAX_SQUARES; ++currentSquare)
+        {
+            bool isCaptured = true;
+            PlayerColor currentCaptureColor = branches[Reference.branchesOnSquareConnections[currentSquare, 0]].branchState.branchColor;
+
+            for (int connectedBranch = 0; connectedBranch < 4 && isCaptured; ++connectedBranch)
+            {
+                Branch currentBranch = branches[Reference.branchesOnSquareConnections[currentSquare, connectedBranch]];
+                
+                // If the node has an unclaimed branch boardering the edge of the board then it cannot be captured.
+                if (currentBranch.branchState.branchColor == PlayerColor.Blank && Reference.squareOnSquareConnections[currentSquare, connectedBranch] == -1)
+                {
+                    possibleCaptures.Remove(currentSquare);
+                    isCaptured = false;
+                }
+                // If a connecting branch belongs to the opponent then it cannot be captured.
+                else if (currentCaptureColor != PlayerColor.Blank && currentBranch.branchState.branchColor != currentCaptureColor)
+                {
+                    possibleCaptures.Remove(currentSquare);
+                    isCaptured = false;
+                }
+                // If a connecting branch is blank and there's a tile on the otherside, we need to check that tile for capture.
+                else if (currentBranch.branchState.branchColor == PlayerColor.Blank)
+                {
+                    if (!isConnectedTileCaptured(possibleCaptures, Reference.squareOnSquareConnections[currentSquare, connectedBranch]))
+                    {
+                        possibleCaptures.Remove(currentSquare);
+                        isCaptured = false;
+                    }
+                }
+            }
+        }
+    }
+
+    // Check a connecting tile to see if it is surrounded by the player's color except from where you came from.
+    //  Should recurse.
+    private bool isConnectedTileCaptured(List<int> possibleCaptures, int square)
+    {
+        if (!possibleCaptures.Contains(square))
+        {
+            return false;
+        }
+    }
 }
