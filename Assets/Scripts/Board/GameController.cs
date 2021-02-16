@@ -43,12 +43,11 @@ public class GameController
         if (!GameInformation.openingSequence || GameInformation.turnNumber == 5)
         {
             GameInformation.openingSequence = false;
-            GameInformation.openingMoveBranchSet = false;
-            GameInformation.openingMoveNodeSet = false;
             if (currentPlayerColor == PlayerColor.Orange)
                 currentPlayerColor = PlayerColor.Purple;
             else
                 currentPlayerColor = PlayerColor.Orange;
+            GameInformation.resourceTrade = false;
             UpdateScores();
             CollectCurrentPlayerResources();
         }
