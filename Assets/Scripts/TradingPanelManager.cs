@@ -50,6 +50,8 @@ public class TradingPanelManager : MonoBehaviour
             numberOfTilesSelected = 0;
             resources[colorId] = 0;
             tilesSelected[colorId].text = numSelected.ToString();
+            for (int i = 0; i < 4; i++)
+                createResourceBtn[i].gameObject.SetActive(false);
         }
         else if(numSelected < 3 && numberOfTilesSelected == 3)
         {
