@@ -272,4 +272,32 @@ public class GameBoard
         }
         return ownedBranches;
     }
+
+    public int GetNumberOfPlayerNodes(PlayerColor playerColor)
+    {
+        int ownedNodes = 0;
+
+        foreach (NodeState node in boardState.nodeStates)
+        {
+            if (node.nodeColor == playerColor)
+            {
+                ownedNodes++;
+            }
+        }
+        return ownedNodes;
+    }
+
+    public int GetNumberOfPlayerCapturedTiles(PlayerColor playerColor)
+    {
+        int ownedTiles = 0;
+
+        foreach (SquareState square in boardState.squareStates)
+        {
+            if (square.resourceState == SquareStatus.Captured && square.ownerColor == playerColor)
+            {
+                ownedTiles++;
+            }
+        }
+        return ownedTiles;
+    }
 }

@@ -8,7 +8,7 @@ public class GameController
     private static GameController gameController;
     private GameBoard gameBoard;
 
-    private PlayerColor currentPlayerColor;
+    private PlayerColor currentPlayerColor = PlayerColor.Orange;
 
     private GameController()
     {
@@ -43,12 +43,14 @@ public class GameController
         if (!GameInformation.openingSequence || GameInformation.turnNumber == 5)
         {
             GameInformation.openingSequence = false;
+            GameInformation.openingMoveBranchSet = false;
+            GameInformation.openingMoveNodeSet = false;
             if (currentPlayerColor == PlayerColor.Orange)
                 currentPlayerColor = PlayerColor.Purple;
             else
                 currentPlayerColor = PlayerColor.Orange;
+            UpdateScores();
             CollectCurrentPlayerResources();
-            Debug.Log("CURRENT PLAYER NETWORK: " + CalculatePlayerLongestNetwork());
         }
         else if (GameInformation.turnNumber == 2)
         {
@@ -68,7 +70,6 @@ public class GameController
             GameInformation.openingMoveBranchSet = false;
             GameInformation.openingMoveNodeSet = false;
         }
-
 
         Debug.Log("BoardState: \n\t" + getCurrentSquareConfig() + "\n\t" + getCurrentNodeConfig() + "\n\t" + getCurrentBranchConfig());
     }
@@ -202,13 +203,13 @@ public class GameController
         
     }
 
-    public int CalculatePlayerLongestNetwork()
+    public int CalculatePlayerLongestNetwork(PlayerColor playerColor)
     {
         int longestNetwork = 0;
         int currentNetwork = 0;
         List<int> runningNetworkBranches = new List<int>();
 
-        List<int> playerBranches = gameBoard.GetPlayersBranches(getCurrentPlayerColor());
+        List<int> playerBranches = gameBoard.GetPlayersBranches(playerColor);
 
         runningNetworkBranches.Add(playerBranches[0]);
         currentNetwork++;
@@ -235,6 +236,23 @@ public class GameController
             longestNetwork = currentNetwork;
 
         return longestNetwork;
+    }
+
+    public void UpdateScores()
+    {
+        GameInformation.playerOneScore = gameBoard.GetNumberOfPlayerNodes(PlayerColor.Orange);
+        GameInformation.playerTwoScore = gameBoard.GetNumberOfPlayerNodes(PlayerColor.Purple);
+        GameInformation.playerOneScore += gameBoard.GetNumberOfPlayerCapturedTiles(PlayerColor.Orange);
+        GameInformation.playerTwoScore += gameBoard.GetNumberOfPlayerCapturedTiles(PlayerColor.Purple);
+
+        int playerOneNetwork = CalculatePlayerLongestNetwork(PlayerColor.Orange);
+        int playerTwoNetwork = CalculatePlayerLongestNetwork(PlayerColor.Purple);
+
+        if (playerOneNetwork > playerTwoNetwork)
+            GameInformation.playerOneScore += 2;
+        else if (playerOneNetwork < playerTwoNetwork)
+            GameInformation.playerTwoScore += 2;
+        Debug.Log("SCORES:\nPLAYER ONE: " + GameInformation.playerOneScore + "\nPLAYER TWO: " + GameInformation.playerTwoScore);
     }
 }
 
