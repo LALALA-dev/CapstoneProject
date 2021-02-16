@@ -59,6 +59,4 @@ public class GameObjectProperties
         public PlayerColor branchColor;
         public PlayerColor ownerColor;
     }
-
-
 }
