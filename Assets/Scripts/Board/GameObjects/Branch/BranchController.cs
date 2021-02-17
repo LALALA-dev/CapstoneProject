@@ -61,7 +61,8 @@ public class BranchController : MonoBehaviour
                 ClaimBranch(playerTwoSprite);
                 GameInformation.playerTwoResources[0]--;
                 GameInformation.playerTwoResources[1]--;
-            }    
+            }
+            SendMessageUpwards("UpdateResourcesUI");
         }
         // Are you trying to undo a selection?
         else if (isBranchColorOfCurrentPlayer())
@@ -69,6 +70,17 @@ public class BranchController : MonoBehaviour
             branchEntity.branchState.ownerColor = PlayerColor.Blank;
             branchEntity.branchState.branchColor = PlayerColor.Blank;
 
+            if(branchEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
+            {
+                GameInformation.playerOneResources[0]++;
+                GameInformation.playerOneResources[1]++;
+            }
+            else
+            {
+                GameInformation.playerTwoResources[0]++;
+                GameInformation.playerTwoResources[1]++;
+            }
+            SendMessageUpwards("UpdateResourcesUI");
             ClaimBranch(blankSprite);
         }
     }

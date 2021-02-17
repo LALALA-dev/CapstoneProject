@@ -50,15 +50,34 @@ public class NodeController : MonoBehaviour
 
             // Change color
             if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
+            {
                 ClaimNode(playerOneSprite);
+                GameInformation.playerOneResources[2] -= 2;
+                GameInformation.playerOneResources[3] -= 2;
+            }  
             else
+            {
                 ClaimNode(playerTwoSprite);
+                GameInformation.playerOneResources[2] -= 2;
+                GameInformation.playerOneResources[3] -= 2;
+            }
+            SendMessageUpwards("UpdateResourcesUI");
         }
         // Are you trying to undo a selection?
         else if (isNodeColorOfCurrentPlayer())
         {
             nodeEntity.nodeState.nodeColor = PlayerColor.Blank;
-
+            if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
+            {
+                GameInformation.playerOneResources[2] += 2;
+                GameInformation.playerOneResources[3] += 2;
+            }
+            else
+            {
+                GameInformation.playerTwoResources[2] += 2;
+                GameInformation.playerTwoResources[3] += 2;
+            }
+            SendMessageUpwards("UpdateResourcesUI");
             ClaimNode(blankSprite);
         }
     }
