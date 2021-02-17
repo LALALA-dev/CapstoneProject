@@ -339,7 +339,7 @@ public class GameBoard
 
                 foreach(int node in connectedNodes)
                 {
-                    if (boardState.nodeStates[node].nodeColor != PlayerColor.Blank)
+                    if (nodes[node].nodeState.nodeColor != PlayerColor.Blank)
                         numberOwnedNodes++;
                 }
 

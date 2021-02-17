@@ -208,24 +208,24 @@ public class BoardManager : MonoBehaviour
 
     private void DetectNewTileBlocks()
     {
-        SquareState[] squares = gameController.GetSquareStates();
-        foreach (SquareState square in squares)
+        Square[] squares = gameController.getGameBoard().squares;
+        foreach (Square square in squares)
         {
-            if (square.resourceState == SquareStatus.Blocked)
+            if (square.squareState.resourceState == SquareStatus.Blocked)
             {
-                switch (square.resourceColor)
+                switch (square.squareState.resourceColor)
                 {
                     case SquareResourceColor.Red:
-                        spriteRenderers[square.location].sprite = resourceBlock[0];
+                        spriteRenderers[square.squareState.location].sprite = resourceBlock[0];
                         break;
                     case SquareResourceColor.Blue:
-                        spriteRenderers[square.location].sprite = resourceBlock[1];
+                        spriteRenderers[square.squareState.location].sprite = resourceBlock[1];
                         break;
                     case SquareResourceColor.Yellow:
-                        spriteRenderers[square.location].sprite = resourceBlock[2];
+                        spriteRenderers[square.squareState.location].sprite = resourceBlock[2];
                         break;
                     case SquareResourceColor.Green:
-                        spriteRenderers[square.location].sprite = resourceBlock[3];
+                        spriteRenderers[square.squareState.location].sprite = resourceBlock[3];
                         break;
 
                 }
