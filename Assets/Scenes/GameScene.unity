@@ -9835,6 +9835,11 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 61eb28bdf7432294da5b0c0e396e5b24, type: 3}
   - {fileID: 21300000, guid: 3f5779463d0827344ad4dae3525e9541, type: 3}
   - {fileID: 21300000, guid: 3a7d385cf56ec0f499dcc544697bf6d3, type: 3}
+  resourceBlock:
+  - {fileID: 21300000, guid: b6c93199269f591438b7063488b2d510, type: 3}
+  - {fileID: 21300000, guid: 00da135d94c2aca47b1bed980c8ced89, type: 3}
+  - {fileID: 21300000, guid: e5fd24a320bb7a243b2c3e9afb1dfeca, type: 3}
+  - {fileID: 21300000, guid: dfee47b309ad7f3478542c4638c1bbed, type: 3}
   spriteRenderers:
   - {fileID: 1176017516}
   - {fileID: 1822587760}

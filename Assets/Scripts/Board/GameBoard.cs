@@ -332,10 +332,10 @@ public class GameBoard
         for (int i = 0; i < MAX_SQUARES; i++)
         {
             int numberOwnedNodes = 0;
-            if(boardState.squareStates[i].resourceState == SquareStatus.Open)
+            if(squares[i].squareState.resourceState == SquareStatus.Open)
             {
                 bool isBlocked = false;
-                int[] connectedNodes = ReferenceScript.tileConnectsToTheseNodes[boardState.squareStates[i].location];
+                int[] connectedNodes = ReferenceScript.tileConnectsToTheseNodes[i];
 
                 foreach(int node in connectedNodes)
                 {
@@ -343,7 +343,7 @@ public class GameBoard
                         numberOwnedNodes++;
                 }
 
-                switch(boardState.squareStates[i].resourceAmount)
+                switch(squares[i].squareState.resourceAmount)
                 {
                     case SquareResourceAmount.One:
                         if (numberOwnedNodes >= 2)
@@ -361,7 +361,7 @@ public class GameBoard
 
                 if(isBlocked)
                 {
-                    boardState.squareStates[i].resourceState = SquareStatus.Blocked;
+                   squares[i].squareState.resourceState = SquareStatus.Blocked;
                 }
             }
         }
