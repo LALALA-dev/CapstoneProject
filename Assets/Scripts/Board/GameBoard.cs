@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using static GameObjectProperties;
 
@@ -333,6 +334,7 @@ public class GameBoard
         //  indicate if the surrounding branch in each direction is empty (true) or owned by the player (false).
         //  { up, left, right, bottom }
         List<(int, bool[])> possibleCaptures = new List<(int, bool[])>();
+        List<int> captures = new List<int>();
 
         for (int currentSquare = 0; currentSquare < MAX_SQUARES; ++currentSquare)
         {
@@ -382,11 +384,29 @@ public class GameBoard
             // If the node can possibly be captured, add it along with any unknowns to possibleCaptures.
             if (couldBeCaptured)
             {
-                possibleCaptures.Add((currentSquare, connectedBranchStates));
+                // If the none of the branches connected to the tile are blank, it's a single tile capture.
+                if (!connectedBranchStates.Contains(true))
+                {
+                    captures.Add(currentSquare);
+                }
+                else
+                {
+                    possibleCaptures.Add((currentSquare, connectedBranchStates));
+                }
             }
         }
 
         // TODO: Add some fancy algorithm to check through the possibleCaptures, adding points for single tile captures and
         //  checking the connecting tiles with blank branches to search for area captures. 
+        do
+        {
+            foreach ((int tile, bool[] directions) in possibleCaptures)
+            {
+                for (int direction = 0; direction < 4; ++direction)
+                {
+                    if ()
+                }
+            }
+        } while (possibleCaptures.Count > 0);
     }
 }
