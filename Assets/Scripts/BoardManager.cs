@@ -10,6 +10,8 @@ public class BoardManager : MonoBehaviour
     private GameController gameController;
 
     public Sprite[] images;
+    public Sprite[] playerOneCapture;
+    public Sprite[] playerTwoCapture;
     public SpriteRenderer[] spriteRenderers;
 
     public Text[] playerOneResources;
@@ -48,8 +50,9 @@ public class BoardManager : MonoBehaviour
         }
         else
         {
+            DetectNewBlockCaptures();
             gameController.endTurn();
-
+            
             if (GameInformation.playerOneScore >= 10 || GameInformation.playerTwoScore >= 10)
             {
                 GameInformation.gameOver = true;
@@ -161,6 +164,39 @@ public class BoardManager : MonoBehaviour
         for(int i = 0; i < 4; i++)
         {
             labels[i].text = resources[i].ToString();
+        }
+    }
+
+    private void DetectNewBlockCaptures()
+    {
+        SquareState[] squares = gameController.GetSquareStates();
+        Sprite[] captureImages;
+
+        if (gameController.getCurrentPlayerColor() == PlayerColor.Orange)
+            captureImages = playerOneCapture;
+        else
+            captureImages = playerTwoCapture;
+
+        foreach(SquareState square in squares)
+        {
+            if(square.resourceState == SquareStatus.Captured && square.ownerColor == gameController.getCurrentPlayerColor())
+            {
+                switch (square.resourceColor)
+                {
+                    case SquareResourceColor.Red:
+                        spriteRenderers[square.location].sprite = captureImages[0];
+                        break;
+                    case SquareResourceColor.Blue:
+                        spriteRenderers[square.location].sprite = captureImages[1];
+                        break;
+                    case SquareResourceColor.Yellow:
+                        spriteRenderers[square.location].sprite = captureImages[2];
+                        break;
+                    case SquareResourceColor.Green:
+                        spriteRenderers[square.location].sprite = captureImages[3];
+                        break;
+                }
+            }
         }
     }
 }
