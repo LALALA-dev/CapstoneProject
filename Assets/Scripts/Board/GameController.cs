@@ -146,10 +146,10 @@ public class GameController
     public void CollectCurrentPlayerResources()
     {
         List<NodeState> currentNodes = new List<NodeState>();
-        foreach (NodeState node in GetNodeStates())
+        foreach (Node node in gameBoard.nodes)
         {
-            if(node.nodeColor == getCurrentPlayerColor())
-                currentNodes.Add(node);
+            if(node.nodeState.nodeColor == getCurrentPlayerColor())
+                currentNodes.Add(node.nodeState);
         }
 
         List<SquareState> squares = new List<SquareState>();
@@ -157,7 +157,7 @@ public class GameController
         {
             foreach(int squareId in ReferenceScript.nodeConnectToTheseTiles[node.location])
             {
-                if(GetSquareStates()[squareId].resourceState == SquareStatus.Open || (GetSquareStates()[squareId].ownerColor == getCurrentPlayerColor()))
+                if(gameBoard.squares[squareId].squareState.resourceState == SquareStatus.Open || (gameBoard.squares[squareId].squareState.ownerColor == getCurrentPlayerColor()))
                     squares.Add(GetSquareStates()[squareId]);
             }
         }
