@@ -12,6 +12,7 @@ public class BoardManager : MonoBehaviour
     public Sprite[] images;
     public Sprite[] playerOneCapture;
     public Sprite[] playerTwoCapture;
+    public Sprite[] resourceBlock;
     public SpriteRenderer[] spriteRenderers;
 
     public Text[] playerOneResources;
@@ -46,11 +47,13 @@ public class BoardManager : MonoBehaviour
             if (OpeningMoveSatisfied())
             {
                 gameController.endTurn();
+                DetectNewTileBlocks();
             }
         }
         else
         {
             gameController.endTurn();
+            DetectNewTileBlocks();
             DetectNewBlockCaptures();
             if (GameInformation.playerOneScore >= 10 || GameInformation.playerTwoScore >= 10)
             {
@@ -196,6 +199,33 @@ public class BoardManager : MonoBehaviour
                         break;
                     default:
                         spriteRenderers[square.location].sprite = captureImages[4];
+                        break;
+
+                }
+            }
+        }
+    }
+
+    private void DetectNewTileBlocks()
+    {
+        SquareState[] squares = gameController.GetSquareStates();
+        foreach (SquareState square in squares)
+        {
+            if (square.resourceState == SquareStatus.Blocked)
+            {
+                switch (square.resourceColor)
+                {
+                    case SquareResourceColor.Red:
+                        spriteRenderers[square.location].sprite = resourceBlock[0];
+                        break;
+                    case SquareResourceColor.Blue:
+                        spriteRenderers[square.location].sprite = resourceBlock[1];
+                        break;
+                    case SquareResourceColor.Yellow:
+                        spriteRenderers[square.location].sprite = resourceBlock[2];
+                        break;
+                    case SquareResourceColor.Green:
+                        spriteRenderers[square.location].sprite = resourceBlock[3];
                         break;
 
                 }

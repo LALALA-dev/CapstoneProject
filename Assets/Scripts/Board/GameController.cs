@@ -39,7 +39,7 @@ public class GameController
     public void endTurn()
     {
         GameInformation.turnNumber++;
-
+        gameBoard.DetectTileOverloads();
         if (!GameInformation.openingSequence || GameInformation.turnNumber == 5)
         {
             GameInformation.openingSequence = false;
@@ -48,6 +48,7 @@ public class GameController
             else
                 currentPlayerColor = PlayerColor.Orange;
             GameInformation.resourceTrade = false;
+            gameBoard.DetectTileOverloads();
             UpdateScores();
             CollectCurrentPlayerResources();
         }
@@ -56,18 +57,21 @@ public class GameController
             currentPlayerColor = PlayerColor.Purple;
             GameInformation.openingMoveBranchSet = false;
             GameInformation.openingMoveNodeSet = false;
+            gameBoard.DetectTileOverloads();
         }
         else if (GameInformation.turnNumber == 3)
         {
             currentPlayerColor = PlayerColor.Purple;
             GameInformation.openingMoveBranchSet = false;
             GameInformation.openingMoveNodeSet = false;
+            gameBoard.DetectTileOverloads();
         }
         else if (GameInformation.turnNumber == 4)
         {
             currentPlayerColor = PlayerColor.Orange;
             GameInformation.openingMoveBranchSet = false;
             GameInformation.openingMoveNodeSet = false;
+            gameBoard.DetectTileOverloads();
         }
 
         Debug.Log("BoardState: \n\t" + getCurrentSquareConfig() + "\n\t" + getCurrentNodeConfig() + "\n\t" + getCurrentBranchConfig());

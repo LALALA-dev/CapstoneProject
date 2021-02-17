@@ -326,4 +326,44 @@ public class GameBoard
             }
         };
     }
+
+    public void DetectTileOverloads()
+    {
+        for (int i = 0; i < MAX_SQUARES; i++)
+        {
+            int numberOwnedNodes = 0;
+            if(boardState.squareStates[i].resourceState == SquareStatus.Open)
+            {
+                bool isBlocked = false;
+                int[] connectedNodes = ReferenceScript.tileConnectsToTheseNodes[boardState.squareStates[i].location];
+
+                foreach(int node in connectedNodes)
+                {
+                    if (boardState.nodeStates[node].nodeColor != PlayerColor.Blank)
+                        numberOwnedNodes++;
+                }
+
+                switch(boardState.squareStates[i].resourceAmount)
+                {
+                    case SquareResourceAmount.One:
+                        if (numberOwnedNodes >= 2)
+                            isBlocked = true;
+                        break;
+                    case SquareResourceAmount.Two:
+                        if (numberOwnedNodes >= 3)
+                            isBlocked = true;
+                        break;
+                    case SquareResourceAmount.Three:
+                        if (numberOwnedNodes >= 4)
+                            isBlocked = true;
+                        break;
+                }
+
+                if(isBlocked)
+                {
+                    boardState.squareStates[i].resourceState = SquareStatus.Blocked;
+                }
+            }
+        }
+    }
 }
