@@ -45,4 +45,6 @@ public class GameInformation
 
     public static int playerTwoScore = 0;
 
+    public static bool gameOver = false;
+
 }

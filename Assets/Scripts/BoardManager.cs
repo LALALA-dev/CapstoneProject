@@ -49,9 +49,14 @@ public class BoardManager : MonoBehaviour
         else
         {
             gameController.endTurn();
+
+            if (GameInformation.playerOneScore >= 10 || GameInformation.playerTwoScore >= 10)
+            {
+                GameInformation.gameOver = true;
+            }
         }
         
-        if(GameInformation.turnNumber + 1 > 4)
+        if(GameInformation.turnNumber + 1 > 4 && !GameInformation.gameOver)
         {
             UpdateResourcesUI();
         }
