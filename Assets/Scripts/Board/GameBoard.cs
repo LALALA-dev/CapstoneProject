@@ -277,9 +277,9 @@ public class GameBoard
     {
         int ownedNodes = 0;
 
-        foreach (NodeState node in boardState.nodeStates)
+        foreach (Node node in nodes)
         {
-            if (node.nodeColor == playerColor)
+            if (node.nodeState.nodeColor == playerColor)
             {
                 ownedNodes++;
             }
