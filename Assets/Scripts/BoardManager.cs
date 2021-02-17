@@ -50,9 +50,8 @@ public class BoardManager : MonoBehaviour
         }
         else
         {
-            DetectNewBlockCaptures();
             gameController.endTurn();
-            
+            DetectNewBlockCaptures();
             if (GameInformation.playerOneScore >= 10 || GameInformation.playerTwoScore >= 10)
             {
                 GameInformation.gameOver = true;
@@ -173,13 +172,13 @@ public class BoardManager : MonoBehaviour
         Sprite[] captureImages;
 
         if (gameController.getCurrentPlayerColor() == PlayerColor.Orange)
-            captureImages = playerOneCapture;
-        else
             captureImages = playerTwoCapture;
+        else
+            captureImages = playerOneCapture;
 
         foreach(SquareState square in squares)
         {
-            if(square.resourceState == SquareStatus.Captured && square.ownerColor == gameController.getCurrentPlayerColor())
+            if(square.resourceState == SquareStatus.Captured && square.ownerColor != gameController.getCurrentPlayerColor())
             {
                 switch (square.resourceColor)
                 {
@@ -195,6 +194,10 @@ public class BoardManager : MonoBehaviour
                     case SquareResourceColor.Green:
                         spriteRenderers[square.location].sprite = captureImages[3];
                         break;
+                    default:
+                        spriteRenderers[square.location].sprite = captureImages[4];
+                        break;
+
                 }
             }
         }
