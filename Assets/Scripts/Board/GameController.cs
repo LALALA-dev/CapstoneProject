@@ -251,7 +251,6 @@ public class GameController
             GameInformation.playerOneScore += 2;
         else if (playerOneNetwork < playerTwoNetwork)
             GameInformation.playerTwoScore += 2;
-        Debug.Log("SCORES:\nPLAYER ONE: " + GameInformation.playerOneScore + "\nPLAYER TWO: " + GameInformation.playerTwoScore);
     }
 }
 
