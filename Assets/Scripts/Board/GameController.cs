@@ -39,7 +39,7 @@ public class GameController
     public void endTurn()
     {
         GameInformation.turnNumber++;
-
+        gameBoard.DetectTileOverloads();
         if (!GameInformation.openingSequence || GameInformation.turnNumber == 5)
         {
             GameInformation.openingSequence = false;
@@ -48,6 +48,7 @@ public class GameController
             else
                 currentPlayerColor = PlayerColor.Orange;
             GameInformation.resourceTrade = false;
+            gameBoard.DetectTileOverloads();
             UpdateScores();
             CollectCurrentPlayerResources();
         }
@@ -56,18 +57,21 @@ public class GameController
             currentPlayerColor = PlayerColor.Purple;
             GameInformation.openingMoveBranchSet = false;
             GameInformation.openingMoveNodeSet = false;
+            gameBoard.DetectTileOverloads();
         }
         else if (GameInformation.turnNumber == 3)
         {
             currentPlayerColor = PlayerColor.Purple;
             GameInformation.openingMoveBranchSet = false;
             GameInformation.openingMoveNodeSet = false;
+            gameBoard.DetectTileOverloads();
         }
         else if (GameInformation.turnNumber == 4)
         {
             currentPlayerColor = PlayerColor.Orange;
             GameInformation.openingMoveBranchSet = false;
             GameInformation.openingMoveNodeSet = false;
+            gameBoard.DetectTileOverloads();
         }
 
         Debug.Log("BoardState: \n\t" + getCurrentSquareConfig() + "\n\t" + getCurrentNodeConfig() + "\n\t" + getCurrentBranchConfig());
@@ -142,10 +146,10 @@ public class GameController
     public void CollectCurrentPlayerResources()
     {
         List<NodeState> currentNodes = new List<NodeState>();
-        foreach (NodeState node in GetNodeStates())
+        foreach (Node node in gameBoard.nodes)
         {
-            if(node.nodeColor == getCurrentPlayerColor())
-                currentNodes.Add(node);
+            if(node.nodeState.nodeColor == getCurrentPlayerColor())
+                currentNodes.Add(node.nodeState);
         }
 
         List<SquareState> squares = new List<SquareState>();
@@ -153,7 +157,7 @@ public class GameController
         {
             foreach(int squareId in ReferenceScript.nodeConnectToTheseTiles[node.location])
             {
-                if(GetSquareStates()[squareId].resourceState == SquareStatus.Open)
+                if(gameBoard.squares[squareId].squareState.resourceState == SquareStatus.Open || (gameBoard.squares[squareId].squareState.ownerColor == getCurrentPlayerColor()))
                     squares.Add(GetSquareStates()[squareId]);
             }
         }
@@ -186,8 +190,6 @@ public class GameController
             GameInformation.playerOneResources[1] += resources[1];
             GameInformation.playerOneResources[2] += resources[2];
             GameInformation.playerOneResources[3] += resources[3];
-            Debug.Log("RESOURCES- Red: " + GameInformation.playerOneResources[0] + " Blue: " + GameInformation.playerOneResources[1] + 
-                " Yellow: " + GameInformation.playerOneResources[2] + " Green: " + GameInformation.playerOneResources[3]);
         }
         else
         {
@@ -195,8 +197,6 @@ public class GameController
             GameInformation.playerTwoResources[1] += resources[1];
             GameInformation.playerTwoResources[2] += resources[2];
             GameInformation.playerTwoResources[3] += resources[3];
-            Debug.Log("RESOURCES- Red: " + GameInformation.playerTwoResources[0] + " Blue: " + GameInformation.playerTwoResources[1]
-                + " Yellow: " + GameInformation.playerTwoResources[2] + " Green: " + GameInformation.playerTwoResources[3]);
         }
 
         

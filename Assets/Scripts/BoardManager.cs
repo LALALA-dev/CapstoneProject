@@ -10,6 +10,9 @@ public class BoardManager : MonoBehaviour
     private GameController gameController;
 
     public Sprite[] images;
+    public Sprite[] playerOneCapture;
+    public Sprite[] playerTwoCapture;
+    public Sprite[] resourceBlock;
     public SpriteRenderer[] spriteRenderers;
 
     public Text[] playerOneResources;
@@ -44,14 +47,21 @@ public class BoardManager : MonoBehaviour
             if (OpeningMoveSatisfied())
             {
                 gameController.endTurn();
+                DetectNewTileBlocks();
             }
         }
         else
         {
             gameController.endTurn();
+            DetectNewTileBlocks();
+            DetectNewBlockCaptures();
+            if (GameInformation.playerOneScore >= 10 || GameInformation.playerTwoScore >= 10)
+            {
+                GameInformation.gameOver = true;
+            }
         }
         
-        if(GameInformation.turnNumber + 1 > 4)
+        if(GameInformation.turnNumber + 1 > 4 && !GameInformation.gameOver)
         {
             UpdateResourcesUI();
         }
@@ -156,6 +166,70 @@ public class BoardManager : MonoBehaviour
         for(int i = 0; i < 4; i++)
         {
             labels[i].text = resources[i].ToString();
+        }
+    }
+
+    private void DetectNewBlockCaptures()
+    {
+        SquareState[] squares = gameController.GetSquareStates();
+        Sprite[] captureImages;
+
+        if (gameController.getCurrentPlayerColor() == PlayerColor.Orange)
+            captureImages = playerTwoCapture;
+        else
+            captureImages = playerOneCapture;
+
+        foreach(SquareState square in squares)
+        {
+            if(square.resourceState == SquareStatus.Captured && square.ownerColor != gameController.getCurrentPlayerColor())
+            {
+                switch (square.resourceColor)
+                {
+                    case SquareResourceColor.Red:
+                        spriteRenderers[square.location].sprite = captureImages[0];
+                        break;
+                    case SquareResourceColor.Blue:
+                        spriteRenderers[square.location].sprite = captureImages[1];
+                        break;
+                    case SquareResourceColor.Yellow:
+                        spriteRenderers[square.location].sprite = captureImages[2];
+                        break;
+                    case SquareResourceColor.Green:
+                        spriteRenderers[square.location].sprite = captureImages[3];
+                        break;
+                    default:
+                        spriteRenderers[square.location].sprite = captureImages[4];
+                        break;
+
+                }
+            }
+        }
+    }
+
+    private void DetectNewTileBlocks()
+    {
+        Square[] squares = gameController.getGameBoard().squares;
+        foreach (Square square in squares)
+        {
+            if (square.squareState.resourceState == SquareStatus.Blocked)
+            {
+                switch (square.squareState.resourceColor)
+                {
+                    case SquareResourceColor.Red:
+                        spriteRenderers[square.squareState.location].sprite = resourceBlock[0];
+                        break;
+                    case SquareResourceColor.Blue:
+                        spriteRenderers[square.squareState.location].sprite = resourceBlock[1];
+                        break;
+                    case SquareResourceColor.Yellow:
+                        spriteRenderers[square.squareState.location].sprite = resourceBlock[2];
+                        break;
+                    case SquareResourceColor.Green:
+                        spriteRenderers[square.squareState.location].sprite = resourceBlock[3];
+                        break;
+
+                }
+            }
         }
     }
 }

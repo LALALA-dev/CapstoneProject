@@ -277,9 +277,9 @@ public class GameBoard
     {
         int ownedNodes = 0;
 
-        foreach (NodeState node in boardState.nodeStates)
+        foreach (Node node in nodes)
         {
-            if (node.nodeColor == playerColor)
+            if (node.nodeState.nodeColor == playerColor)
             {
                 ownedNodes++;
             }
@@ -325,5 +325,45 @@ public class GameBoard
                 squares[currentSquare].squareState.resourceState = SquareStatus.Captured;
             }
         };
+    }
+
+    public void DetectTileOverloads()
+    {
+        for (int i = 0; i < MAX_SQUARES; i++)
+        {
+            int numberOwnedNodes = 0;
+            if(squares[i].squareState.resourceState == SquareStatus.Open)
+            {
+                bool isBlocked = false;
+                int[] connectedNodes = ReferenceScript.tileConnectsToTheseNodes[i];
+
+                foreach(int node in connectedNodes)
+                {
+                    if (nodes[node].nodeState.nodeColor != PlayerColor.Blank)
+                        numberOwnedNodes++;
+                }
+
+                switch(squares[i].squareState.resourceAmount)
+                {
+                    case SquareResourceAmount.One:
+                        if (numberOwnedNodes >= 2)
+                            isBlocked = true;
+                        break;
+                    case SquareResourceAmount.Two:
+                        if (numberOwnedNodes >= 3)
+                            isBlocked = true;
+                        break;
+                    case SquareResourceAmount.Three:
+                        if (numberOwnedNodes >= 4)
+                            isBlocked = true;
+                        break;
+                }
+
+                if(isBlocked)
+                {
+                   squares[i].squareState.resourceState = SquareStatus.Blocked;
+                }
+            }
+        }
     }
 }
