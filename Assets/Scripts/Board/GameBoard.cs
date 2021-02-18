@@ -304,7 +304,7 @@ public class GameBoard
 
     // A fail fast method that checks the branches surrounding each square and stops detection on a square, moving to the next if it
     //  encounters either a blank branch or one owned by the opposing player.
-    private void DetectTileCaptures()
+    public void DetectTileCaptures()
     {
         for (int currentSquare = 0; currentSquare < MAX_SQUARES; ++currentSquare)
         {

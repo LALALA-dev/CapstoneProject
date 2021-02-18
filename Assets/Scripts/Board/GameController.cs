@@ -41,6 +41,7 @@ public class GameController
     {
         GameInformation.turnNumber++;
         gameBoard.DetectTileOverloads();
+        gameBoard.DetectTileCaptures();
         if (!GameInformation.openingSequence || GameInformation.turnNumber == 5)
         {
             GameInformation.openingSequence = false;
