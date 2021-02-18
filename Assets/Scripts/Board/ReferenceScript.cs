@@ -117,8 +117,21 @@ public class ReferenceScript
         new int[4] {19, 20, 22, 23}
     };
 
-    public int[][] tileConnectsToTheseBranches = new int[][] { };
-
-
+    public static int[][] tileConnectsToTheseBranches = new int[][] 
+    {
+        new int[4] {0, 1, 3, 4},
+        new int[4] {3, 6, 7, 11},
+        new int[4] {4, 7, 8, 12},
+        new int[4] {5, 8, 9, 13},
+        new int[4] {10, 15, 16, 21},
+        new int[4] {11, 16, 17, 22},
+        new int[4] {12, 17, 18, 23},
+        new int[4] {13, 18, 19, 24},
+        new int[4] {14, 19, 20, 25},
+        new int[4] {22, 26, 27, 30},
+        new int[4] {23, 27, 28, 31},
+        new int[4] {24, 28, 29, 32},
+        new int[4] {31, 33, 34, 35}
+    };
 
 }

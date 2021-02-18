@@ -19,7 +19,7 @@ public class GameInformation
 
     public static bool playerIsHost = false;
 
-    public static char gameType = 'L';
+    public static char gameType = 'A';
 
     public static bool openingSequence = true;
 

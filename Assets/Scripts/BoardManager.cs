@@ -232,4 +232,9 @@ public class BoardManager : MonoBehaviour
             }
         }
     }
+
+    public void UpdateWithAIMove()
+    {
+
+    }
 }

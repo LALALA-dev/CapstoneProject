@@ -6,7 +6,9 @@ using static GameObjectProperties;
 public class GameController
 {
     private static GameController gameController;
+    public BoardManager boardManager;
     private GameBoard gameBoard;
+    private BeginnerAI beginnerAI;
 
     private PlayerColor currentPlayerColor = PlayerColor.Orange;
 
@@ -14,6 +16,7 @@ public class GameController
     {
         gameBoard = new GameBoard();
         gameBoard.ShuffleSquares();
+
     }
 
     public static GameController getInstance()
@@ -54,16 +57,39 @@ public class GameController
         }
         else if (GameInformation.turnNumber == 2)
         {
-            currentPlayerColor = PlayerColor.Purple;
-            GameInformation.openingMoveBranchSet = false;
-            GameInformation.openingMoveNodeSet = false;
+            // AI OPENING TEST 
+            if (GameInformation.gameType == 'A')
+            {
+                gameController.beginnerAI = new BeginnerAI(PlayerColor.Purple, gameController.getGameBoard().getBoardState());
+                BoardState aiMove = beginnerAI.MakeRandomOpeningMove();
+                gameBoard.setBoard(aiMove.squareStates, aiMove.nodeStates, aiMove.branchStates);
+                boardManager.UpdateWithAIMove();
+            }
+            else
+            {
+                currentPlayerColor = PlayerColor.Purple;
+                GameInformation.openingMoveBranchSet = false;
+                GameInformation.openingMoveNodeSet = false;
+            }
+
             gameBoard.DetectTileOverloads();
         }
         else if (GameInformation.turnNumber == 3)
         {
-            currentPlayerColor = PlayerColor.Purple;
-            GameInformation.openingMoveBranchSet = false;
-            GameInformation.openingMoveNodeSet = false;
+            // AI OPENING TEST 
+            if (GameInformation.gameType == 'A')
+            {
+                gameController.beginnerAI = new BeginnerAI(PlayerColor.Purple, gameController.getGameBoard().getBoardState());
+                BoardState aiMove = beginnerAI.MakeRandomOpeningMove();
+                gameBoard.setBoard(aiMove.squareStates, aiMove.nodeStates, aiMove.branchStates);
+                boardManager.UpdateWithAIMove();
+            }
+            else
+            {
+                currentPlayerColor = PlayerColor.Purple;
+                GameInformation.openingMoveBranchSet = false;
+                GameInformation.openingMoveNodeSet = false;
+            }
             gameBoard.DetectTileOverloads();
         }
         else if (GameInformation.turnNumber == 4)
