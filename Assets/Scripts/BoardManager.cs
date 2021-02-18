@@ -30,6 +30,20 @@ public class BoardManager : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if(GameInformation.isAIMoveFinished)
+        {
+            GameInformation.isAIMoveFinished = false;
+            RefreshForAIMoves();
+        }
+        if(GameInformation.waitingForAI)
+        {
+            // HARDCORE FOR NOW
+            UpdatePlayerResources(playerTwoResources, GameInformation.playerTwoResources);
+        }
+    }
+
     public void ReshuffleBoard()
     {
         SquareState[] squares = gameController.NewGame();
@@ -52,6 +66,12 @@ public class BoardManager : MonoBehaviour
         }
         else
         {
+            if (GameInformation.gameType == 'A')
+            {
+                GameInformation.waitingForAI = true;
+                DetectNewBlockCaptures();
+            }
+
             gameController.endTurn();
             DetectNewTileBlocks();
             DetectNewBlockCaptures();
@@ -150,7 +170,7 @@ public class BoardManager : MonoBehaviour
 
     public void BranchUIUpdate(int branchID)
     {
-        BroadcastMessage("BranchUIUpdate", branchID);
+        BroadcastMessage("ResetBranchUpdate", branchID);
     }
 
     public void UpdateResourcesUI()
@@ -174,14 +194,39 @@ public class BoardManager : MonoBehaviour
         SquareState[] squares = gameController.GetSquareStates();
         Sprite[] captureImages;
 
-        if (gameController.getCurrentPlayerColor() == PlayerColor.Orange)
-            captureImages = playerTwoCapture;
-        else
-            captureImages = playerOneCapture;
+       captureImages = playerOneCapture;
 
         foreach(SquareState square in squares)
         {
-            if(square.resourceState == SquareStatus.Captured && square.ownerColor != gameController.getCurrentPlayerColor())
+            if(square.resourceState == SquareStatus.Captured && square.ownerColor != PlayerColor.Purple)
+            {
+                switch (square.resourceColor)
+                {
+                    case SquareResourceColor.Red:
+                        spriteRenderers[square.location].sprite = captureImages[0];
+                        break;
+                    case SquareResourceColor.Blue:
+                        spriteRenderers[square.location].sprite = captureImages[1];
+                        break;
+                    case SquareResourceColor.Yellow:
+                        spriteRenderers[square.location].sprite = captureImages[2];
+                        break;
+                    case SquareResourceColor.Green:
+                        spriteRenderers[square.location].sprite = captureImages[3];
+                        break;
+                    default:
+                        spriteRenderers[square.location].sprite = captureImages[4];
+                        break;
+
+                }
+            }
+        }
+
+        captureImages = playerTwoCapture;
+
+        foreach (SquareState square in squares)
+        {
+            if (square.resourceState == SquareStatus.Captured && square.ownerColor != PlayerColor.Orange)
             {
                 switch (square.resourceColor)
                 {
@@ -231,5 +276,10 @@ public class BoardManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void RefreshForAIMoves()
+    {
+        BroadcastMessage("UpdateAIGUI", PlayerColor.Purple);
     }
 }

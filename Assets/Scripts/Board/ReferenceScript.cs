@@ -57,7 +57,7 @@ public class ReferenceScript
         new int[4] {7, 11, 12, 17},
         new int[4] {8, 12, 13, 18},
         new int[4] {9, 13, 14, 19},
-        new int[2] {4, 20 },
+        new int[2] {14, 20 },
         new int[2] {15, 21},
         new int[4] {16, 21, 22, 26},
         new int[4] {17, 22, 23, 27},
@@ -117,8 +117,61 @@ public class ReferenceScript
         new int[4] {19, 20, 22, 23}
     };
 
-    public int[][] tileConnectsToTheseBranches = new int[][] { };
+    public static int[][] tileConnectsToTheseBranches = new int[][] 
+    {
+        new int[4] {0, 1, 3, 4},
+        new int[4] {3, 6, 7, 11},
+        new int[4] {4, 7, 8, 12},
+        new int[4] {5, 8, 9, 13},
+        new int[4] {10, 15, 16, 21},
+        new int[4] {11, 16, 17, 22},
+        new int[4] {12, 17, 18, 23},
+        new int[4] {13, 18, 19, 24},
+        new int[4] {14, 19, 20, 25},
+        new int[4] {22, 26, 27, 30},
+        new int[4] {23, 27, 28, 31},
+        new int[4] {24, 28, 29, 32},
+        new int[4] {31, 33, 34, 35}
+    };
 
-
+    public static int[][] branchesConnectToTheseNodes = new int[][]
+    {
+        new int[2] {0, 1},
+        new int[2] {0, 3},
+        new int[2] {1, 4},
+        new int[2] {2, 3},
+        new int[2] {3, 4},
+        new int[2] {4, 5},
+        new int[2] {2, 7},
+        new int[2] {3, 8},
+        new int[2] {4, 9},
+        new int[2] {5, 10},
+        new int[2] {6, 7},
+        new int[2] {7, 8},
+        new int[2] {8, 9},
+        new int[2] {9, 10},
+        new int[2] {10, 11},
+        new int[2] {6, 12},
+        new int[2] {7, 13},
+        new int[2] {8, 14},
+        new int[2] {9, 15},
+        new int[2] {10, 16},
+        new int[2] {11, 17},
+        new int[2] {12, 13},
+        new int[2] {13, 14},
+        new int[2] {14, 15},
+        new int[2] {15, 16},
+        new int[2] {16, 17},
+        new int[2] {13, 18},
+        new int[2] {14, 19},
+        new int[2] {15, 20},
+        new int[2] {16, 21},
+        new int[2] {18, 19},
+        new int[2] {19, 20},
+        new int[2] {20, 21},
+        new int[2] {19, 22},
+        new int[2] {20, 23},
+        new int[2] {22, 23}
+    };
 
 }

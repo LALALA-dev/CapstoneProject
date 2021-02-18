@@ -19,7 +19,7 @@ public class GameInformation
 
     public static bool playerIsHost = false;
 
-    public static char gameType = 'L';
+    public static char gameType = 'A';
 
     public static bool openingSequence = true;
 
@@ -46,5 +46,9 @@ public class GameInformation
     public static int playerTwoScore = 0;
 
     public static bool gameOver = false;
+
+    public static bool isAIMoveFinished = false;
+
+    public static bool waitingForAI = true;
 
 }

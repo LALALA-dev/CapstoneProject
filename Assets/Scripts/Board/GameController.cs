@@ -7,6 +7,7 @@ public class GameController
 {
     private static GameController gameController;
     private GameBoard gameBoard;
+    private BeginnerAI beginnerAI;
 
     private PlayerColor currentPlayerColor = PlayerColor.Orange;
 
@@ -40,30 +41,75 @@ public class GameController
     {
         GameInformation.turnNumber++;
         gameBoard.DetectTileOverloads();
+        gameBoard.DetectTileCaptures();
         if (!GameInformation.openingSequence || GameInformation.turnNumber == 5)
         {
             GameInformation.openingSequence = false;
             if (currentPlayerColor == PlayerColor.Orange)
-                currentPlayerColor = PlayerColor.Purple;
+            {
+                if (GameInformation.gameType == 'L')
+                {
+                    currentPlayerColor = PlayerColor.Purple;
+                }
+                else
+                {
+                    currentPlayerColor = PlayerColor.Purple;
+                    gameBoard.DetectTileOverloads();
+                    UpdateScores();
+                    CollectCurrentPlayerResources();
+                    BoardState aiMove = beginnerAI.RandomMove(gameBoard.getBoardState(), GameInformation.playerTwoResources);
+                    gameBoard.setBoard(aiMove.squareStates, aiMove.nodeStates, aiMove.branchStates);
+                    GameInformation.isAIMoveFinished = true;
+                    endTurn();
+                }
+            }
             else
+            {
                 currentPlayerColor = PlayerColor.Orange;
-            GameInformation.resourceTrade = false;
-            gameBoard.DetectTileOverloads();
-            UpdateScores();
-            CollectCurrentPlayerResources();
+                GameInformation.resourceTrade = false;
+                gameBoard.DetectTileOverloads();
+                UpdateScores();
+                CollectCurrentPlayerResources();
+            }   
+
         }
         else if (GameInformation.turnNumber == 2)
         {
-            currentPlayerColor = PlayerColor.Purple;
-            GameInformation.openingMoveBranchSet = false;
-            GameInformation.openingMoveNodeSet = false;
+            // AI OPENING TEST 
+            if (GameInformation.gameType == 'A')
+            {
+                gameController.beginnerAI = new BeginnerAI(PlayerColor.Purple, gameController.getGameBoard().getBoardState());
+                BoardState aiMove = beginnerAI.MakeRandomOpeningMove(gameController.getGameBoard().getBoardState());
+                gameBoard.setBoard(aiMove.squareStates, aiMove.nodeStates, aiMove.branchStates);
+                GameInformation.isAIMoveFinished = true;
+                endTurn();
+            }
+            else
+            {
+                currentPlayerColor = PlayerColor.Purple;
+                GameInformation.openingMoveBranchSet = false;
+                GameInformation.openingMoveNodeSet = false;
+            }
+
             gameBoard.DetectTileOverloads();
         }
         else if (GameInformation.turnNumber == 3)
         {
-            currentPlayerColor = PlayerColor.Purple;
-            GameInformation.openingMoveBranchSet = false;
-            GameInformation.openingMoveNodeSet = false;
+            // AI OPENING TEST 
+            if (GameInformation.gameType == 'A')
+            {
+                System.Threading.Thread.Sleep(2000);
+                BoardState aiMove = beginnerAI.MakeRandomOpeningMove(gameController.getGameBoard().getBoardState());
+                gameBoard.setBoard(aiMove.squareStates, aiMove.nodeStates, aiMove.branchStates);
+                GameInformation.isAIMoveFinished = true;
+                endTurn();
+            }
+            else
+            {
+                currentPlayerColor = PlayerColor.Purple;
+                GameInformation.openingMoveBranchSet = false;
+                GameInformation.openingMoveNodeSet = false;
+            }
             gameBoard.DetectTileOverloads();
         }
         else if (GameInformation.turnNumber == 4)

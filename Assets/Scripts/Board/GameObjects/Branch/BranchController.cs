@@ -122,13 +122,27 @@ public class BranchController : MonoBehaviour
         return result;
     }
 
-    public void BranchUIUpdate(int id)
+    public void ResetBranchUpdate(int id)
     {
         if(id == branchEntity.id)
         {
             branchEntity.branchState.ownerColor = PlayerColor.Blank;
             branchEntity.branchState.branchColor = PlayerColor.Blank;
             ClaimBranch(blankSprite);
+        }
+    }
+
+    public void UpdateAIGUI(PlayerColor color)
+    {
+        if (branchEntity.branchState.branchColor == color)
+        {
+            branchEntity.branchState.ownerColor = color;
+            branchEntity.branchState.branchColor = color;
+
+            if (color == PlayerColor.Orange)
+                ClaimBranch(playerOneSprite);
+            else
+                ClaimBranch(playerTwoSprite);
         }
     }
 
