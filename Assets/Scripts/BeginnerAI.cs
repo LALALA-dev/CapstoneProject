@@ -15,33 +15,35 @@ public class BeginnerAI
         currentBoardState = openningBoardState;
     }
 
-    private List<BoardState> CalculatePossibleMoves(GameBoard currentBoard, int[] aiResources)
+    private List<BoardState> CalculatePossibleMoves(BoardState currentBoard, int[] aiResources)
     {
         List<BoardState> moves = new List<BoardState>();
-        List<Branch> aiOwnedBranches = new List<Branch>();
+        List<int> aiOwnedBranches = new List<int>();
    
-        foreach(Branch branch in currentBoard.branches)
+        foreach(BranchState branch in currentBoard.branchStates)
         {
-            if(branch.branchState.branchColor == AIcolor || branch.branchState.ownerColor == AIcolor)
+            if(branch.branchColor == AIcolor || branch.ownerColor == AIcolor)
             {
-                aiOwnedBranches.Add(branch);
+                aiOwnedBranches.Add(branch.location);
             }
         }
 
-        List<Branch> possibleBranchMoves = new List<Branch>();
+        List<int> possibleBranchMoves = new List<int>();
         List<Branch> possibleNodeMoves = new List<Branch>();
 
         if(aiResources[0] >= 1 && aiResources[1] >= 1)
         {
-            foreach(Branch ownedBranch in aiOwnedBranches)
+            GameInformation.playerTwoResources[0]--;
+            GameInformation.playerTwoResources[1]--;
+            foreach(int ownedBranch in aiOwnedBranches)
             {
-                int[] connectingBranches = ReferenceScript.branchConnectsToTheseBranches[ownedBranch.id];
+                int[] connectingBranches = ReferenceScript.branchConnectsToTheseBranches[ownedBranch];
 
                 foreach(int branch in connectingBranches)
                 {
-                    if(currentBoard.getBoardState().branchStates[branch].branchColor == PlayerColor.Blank)
+                    if(currentBoard.branchStates[branch].branchColor == PlayerColor.Blank)
                     {
-                        possibleBranchMoves.Add(currentBoard.branches[branch]);
+                        possibleBranchMoves.Add(currentBoard.branchStates[branch].location);
                     }
                 }
             }
@@ -54,18 +56,18 @@ public class BeginnerAI
 
         for(int i = 0; i < possibleBranchMoves.Count; i++)
         {
-            BoardState newMove = currentBoard.getBoardState();
-            newMove.branchStates[possibleBranchMoves[i].id].branchColor = AIcolor;
-            newMove.branchStates[possibleBranchMoves[i].id].ownerColor = AIcolor;
+            BoardState newMove = currentBoard;
+            newMove.branchStates[possibleBranchMoves[i]].branchColor = AIcolor;
+            newMove.branchStates[possibleBranchMoves[i]].ownerColor = AIcolor;
 
             moves.Add(newMove);
         }
-
         return moves;
     }
 
     public BoardState MakeRandomOpeningMove(BoardState currentBoard)
     {
+        currentBoardState = currentBoard;
         BoardState result = new BoardState();
 
         if (GameInformation.openingSequence)
@@ -78,12 +80,7 @@ public class BeginnerAI
                     unownedNodes.Add(i);
                 }
             }
-
             result = OpeningMove(unownedNodes);
-        }
-        else
-        {
-            result = RandomMove();
         }
         return result;
     }
@@ -112,13 +109,20 @@ public class BeginnerAI
         currentBoardState = result;
         return result;
     }
-    private BoardState RandomMove()
+    public BoardState RandomMove(BoardState currentBoard, int[] aiResources)
     {
-        List<BoardState> possibleMoves = new List<BoardState>(); // CalculatePossibleMoves(currentBoard, aiResources);
+        currentBoardState = currentBoard;
+        List<BoardState> possibleMoves = CalculatePossibleMoves(currentBoard, aiResources);
 
         TimeSpan t = (DateTime.UtcNow - new DateTime(1970, 1, 1));
         var rand = new System.Random(t.Seconds);
 
-        return possibleMoves[rand.Next(possibleMoves.Count)]; 
+        if (possibleMoves.Count > 0)
+        {
+            int index = rand.Next(possibleMoves.Count);
+            return possibleMoves[index];
+        }
+        else
+            return currentBoard;
     }
 }

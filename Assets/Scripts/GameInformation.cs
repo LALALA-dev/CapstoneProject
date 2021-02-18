@@ -49,4 +49,6 @@ public class GameInformation
 
     public static bool isAIMoveFinished = false;
 
+    public static bool waitingForAI = true;
+
 }

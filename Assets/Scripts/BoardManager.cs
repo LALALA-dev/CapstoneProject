@@ -37,6 +37,11 @@ public class BoardManager : MonoBehaviour
             GameInformation.isAIMoveFinished = false;
             RefreshForAIMoves();
         }
+        if(GameInformation.waitingForAI)
+        {
+            // HARDCORE FOR NOW
+            UpdatePlayerResources(playerTwoResources, GameInformation.playerTwoResources);
+        }
     }
 
     public void ReshuffleBoard()
@@ -61,6 +66,11 @@ public class BoardManager : MonoBehaviour
         }
         else
         {
+            if (GameInformation.gameType == 'A')
+            {
+                GameInformation.waitingForAI = true;
+            }
+
             gameController.endTurn();
             DetectNewTileBlocks();
             DetectNewBlockCaptures();
@@ -246,5 +256,4 @@ public class BoardManager : MonoBehaviour
     {
         BroadcastMessage("UpdateAIGUI", PlayerColor.Purple);
     }
-
 }
