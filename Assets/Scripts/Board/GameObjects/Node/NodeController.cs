@@ -130,4 +130,17 @@ public class NodeController : MonoBehaviour
 
         return false;
     }
+
+    public void UpdateAIGUI(PlayerColor color)
+    {
+        if (nodeEntity.nodeState.nodeColor == color)
+        {
+            nodeEntity.nodeState.nodeColor = color;
+
+            if (color == PlayerColor.Orange)
+                ClaimNode(playerOneSprite);
+            else
+                ClaimNode(playerTwoSprite);
+        }
+    }
 }

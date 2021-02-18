@@ -64,14 +64,14 @@ public class BeginnerAI
         return moves;
     }
 
-    public BoardState MakeRandomOpeningMove()
+    public BoardState MakeRandomOpeningMove(BoardState currentBoard)
     {
         BoardState result = new BoardState();
 
         if (GameInformation.openingSequence)
         {
             List<NodeState> unownedNodes = new List<NodeState>();
-            foreach (NodeState i in currentBoardState.nodeStates)
+            foreach (NodeState i in currentBoard.nodeStates)
             {
                 if (i.nodeColor == PlayerColor.Blank)
                 {
@@ -97,13 +97,14 @@ public class BeginnerAI
         int index = rand.Next(possibleMoves.Count);
         result.nodeStates[possibleMoves[index].location].nodeColor = AIcolor;
 
-        int[] connectedBranches = ReferenceScript.nodeConnectsToTheseBranches[index];
+        int[] connectedBranches = ReferenceScript.nodeConnectsToTheseBranches[possibleMoves[index].location];
         List<int> branchChoices = new List<int>();
 
         foreach(int branch in connectedBranches)
             if (currentBoardState.branchStates[branch].branchColor == PlayerColor.Blank)
                 branchChoices.Add(branch);
 
+        rand = new System.Random(t.Seconds);
         index = rand.Next(branchChoices.Count);
         result.branchStates[branchChoices[index]].branchColor = AIcolor;
         result.branchStates[branchChoices[index]].ownerColor = AIcolor;

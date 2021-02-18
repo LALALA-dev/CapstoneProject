@@ -47,4 +47,6 @@ public class GameInformation
 
     public static bool gameOver = false;
 
+    public static bool isAIMoveFinished = false;
+
 }

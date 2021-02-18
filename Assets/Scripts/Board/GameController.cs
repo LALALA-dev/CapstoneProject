@@ -15,7 +15,6 @@ public class GameController
     {
         gameBoard = new GameBoard();
         gameBoard.ShuffleSquares();
-
     }
 
     public static GameController getInstance()
@@ -60,8 +59,9 @@ public class GameController
             if (GameInformation.gameType == 'A')
             {
                 gameController.beginnerAI = new BeginnerAI(PlayerColor.Purple, gameController.getGameBoard().getBoardState());
-                BoardState aiMove = beginnerAI.MakeRandomOpeningMove();
+                BoardState aiMove = beginnerAI.MakeRandomOpeningMove(gameController.getGameBoard().getBoardState());
                 gameBoard.setBoard(aiMove.squareStates, aiMove.nodeStates, aiMove.branchStates);
+                GameInformation.isAIMoveFinished = true;
                 endTurn();
             }
             else
@@ -78,9 +78,10 @@ public class GameController
             // AI OPENING TEST 
             if (GameInformation.gameType == 'A')
             {
-                gameController.beginnerAI = new BeginnerAI(PlayerColor.Purple, gameController.getGameBoard().getBoardState());
-                BoardState aiMove = beginnerAI.MakeRandomOpeningMove();
+                System.Threading.Thread.Sleep(2000);
+                BoardState aiMove = beginnerAI.MakeRandomOpeningMove(gameController.getGameBoard().getBoardState());
                 gameBoard.setBoard(aiMove.squareStates, aiMove.nodeStates, aiMove.branchStates);
+                GameInformation.isAIMoveFinished = true;
                 endTurn();
             }
             else

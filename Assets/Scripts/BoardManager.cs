@@ -30,6 +30,15 @@ public class BoardManager : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if(GameInformation.isAIMoveFinished)
+        {
+            GameInformation.isAIMoveFinished = false;
+            RefreshForAIMoves();
+        }
+    }
+
     public void ReshuffleBoard()
     {
         SquareState[] squares = gameController.NewGame();
@@ -150,7 +159,7 @@ public class BoardManager : MonoBehaviour
 
     public void BranchUIUpdate(int branchID)
     {
-        BroadcastMessage("BranchUIUpdate", branchID);
+        BroadcastMessage("ResetBranchUpdate", branchID);
     }
 
     public void UpdateResourcesUI()
@@ -233,8 +242,9 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    public void UpdateWithAIMove()
+    public void RefreshForAIMoves()
     {
-        // gameObject.transform.FindChild()
+        BroadcastMessage("UpdateAIGUI", PlayerColor.Purple);
     }
+
 }
