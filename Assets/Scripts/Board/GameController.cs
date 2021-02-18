@@ -6,7 +6,6 @@ using static GameObjectProperties;
 public class GameController
 {
     private static GameController gameController;
-    public BoardManager boardManager;
     private GameBoard gameBoard;
     private BeginnerAI beginnerAI;
 
@@ -63,7 +62,7 @@ public class GameController
                 gameController.beginnerAI = new BeginnerAI(PlayerColor.Purple, gameController.getGameBoard().getBoardState());
                 BoardState aiMove = beginnerAI.MakeRandomOpeningMove();
                 gameBoard.setBoard(aiMove.squareStates, aiMove.nodeStates, aiMove.branchStates);
-                boardManager.UpdateWithAIMove();
+                endTurn();
             }
             else
             {
@@ -82,7 +81,7 @@ public class GameController
                 gameController.beginnerAI = new BeginnerAI(PlayerColor.Purple, gameController.getGameBoard().getBoardState());
                 BoardState aiMove = beginnerAI.MakeRandomOpeningMove();
                 gameBoard.setBoard(aiMove.squareStates, aiMove.nodeStates, aiMove.branchStates);
-                boardManager.UpdateWithAIMove();
+                endTurn();
             }
             else
             {
