@@ -29,7 +29,7 @@ public class BeginnerAI
         }
 
         List<int> possibleBranchMoves = new List<int>();
-        List<Branch> possibleNodeMoves = new List<Branch>();
+        List<int> possibleNodeMoves = new List<int>();
 
         if(aiResources[0] >= 1 && aiResources[1] >= 1)
         {
@@ -51,14 +51,85 @@ public class BeginnerAI
 
         if (aiResources[2] >= 2 && aiResources[3] >= 2)
         {
-            // ADD ALL POSSIBLE NODES
+            GameInformation.playerTwoResources[2] -= 2;
+            GameInformation.playerTwoResources[3] -= 2;
+
+            foreach (int ownedBranch in aiOwnedBranches)
+            {
+                int[] connectingNodes = ReferenceScript.branchesConnectToTheseNodes[ownedBranch];
+
+                foreach (int node in connectingNodes)
+                {
+                    if (currentBoard.nodeStates[node].nodeColor == PlayerColor.Blank)
+                    {
+                        possibleNodeMoves.Add(currentBoard.nodeStates[node].location);
+                    }
+                }
+            }
+        }
+
+        if(aiResources[0] < 1 && aiResources[1] < 1 && aiResources[2] < 2 && aiResources[3] < 2)
+        {
+            // Trade resource
         }
 
         for(int i = 0; i < possibleBranchMoves.Count; i++)
         {
-            BoardState newMove = currentBoard;
-            newMove.branchStates[possibleBranchMoves[i]].branchColor = AIcolor;
-            newMove.branchStates[possibleBranchMoves[i]].ownerColor = AIcolor;
+            BoardState newMove = new BoardState();
+            newMove.branchStates = new BranchState[36];
+            newMove.nodeStates = new NodeState[24];
+            newMove.squareStates = new SquareState[13];
+
+            for(int j = 0; j < 36; j++)
+            {
+                newMove.branchStates[j].branchColor = currentBoard.branchStates[j].branchColor;
+                newMove.branchStates[j].ownerColor = currentBoard.branchStates[j].ownerColor;
+                newMove.branchStates[j].location = j;
+            }
+            for (int j = 0; j < 24; j++)
+            {
+                newMove.nodeStates[j].nodeColor = currentBoard.nodeStates[j].nodeColor;
+                newMove.nodeStates[j].location = j;
+            }
+
+            newMove.squareStates = currentBoard.squareStates;
+
+            BranchState newBranch = new BranchState();
+            newBranch.branchColor = AIcolor;
+            newBranch.ownerColor = AIcolor;
+            newBranch.location = possibleBranchMoves[i];
+
+            newMove.branchStates[possibleBranchMoves[i]] = newBranch;
+
+            moves.Add(newMove);
+        }
+
+        for (int i = 0; i < possibleNodeMoves.Count; i++)
+        {
+            BoardState newMove = new BoardState();
+            newMove.branchStates = new BranchState[36];
+            newMove.nodeStates = new NodeState[24];
+            newMove.squareStates = new SquareState[13];
+
+            for (int j = 0; j < 36; j++)
+            {
+                newMove.branchStates[j].branchColor = currentBoard.branchStates[j].branchColor;
+                newMove.branchStates[j].ownerColor = currentBoard.branchStates[j].ownerColor;
+                newMove.branchStates[j].location = j;
+            }
+            for (int j = 0; j < 24; j++)
+            {
+                newMove.nodeStates[j].nodeColor = currentBoard.nodeStates[j].nodeColor;
+                newMove.nodeStates[j].location = j;
+            }
+
+            newMove.squareStates = currentBoard.squareStates;
+
+            NodeState newNode = new NodeState();
+            newNode.nodeColor = AIcolor;
+            newNode.location = possibleNodeMoves[i];
+
+            newMove.nodeStates[possibleNodeMoves[i]] = newNode;
 
             moves.Add(newMove);
         }
