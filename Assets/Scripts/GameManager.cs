@@ -13,7 +13,6 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        networkController = NetworkController.NetController;
         gameController = GameController.getInstance();
     }
 
