@@ -330,16 +330,15 @@ public class GameBoard
 
     private void DetectMultiTileCaptures()
     {
-        // List of pairs where first is the tileID and second is an array of four bool which
-        //  indicate if the surrounding branch in each direction is empty (true) or owned by the player (false).
-        //  { up, left, right, bottom }
-        List<(int, bool[])> possibleCaptures = new List<(int, bool[])>();
+        // List of pairs where first is the tileID and second is a List of int that holds
+        //  the IDs of a square's blank branches.
+        List<(int, List<int>)> possibleCaptures = new List<(int, List<int>)>();
         List<int> captures = new List<int>();
 
         for (int currentSquare = 0; currentSquare < MAX_SQUARES; ++currentSquare)
         {
             bool couldBeCaptured = true;
-            bool[] connectedBranchStates = new bool[4];
+            List<int> blankBranches = new List<int>();
             // The color of the first branch found on the square with a player's piece associated with it.
             PlayerColor currentCaptureColor = branches[Reference.branchesOnSquareConnections[currentSquare, 0]].branchState.branchColor;
             // Look for a player's color.
@@ -372,26 +371,22 @@ public class GameBoard
                 // If a connecting branch is blank and there's a tile on the otherside, we need to check that tile for capture.
                 else if (currentBranch.branchState.branchColor == PlayerColor.Blank)
                 {
-                    connectedBranchStates[connectedBranch] = true;
+                    blankBranches.Add(currentBranch.branchState.location);
                 }
-                // Else the branch should belong to the currentCaptureColor.
-                else
-                {
-                    connectedBranchStates[connectedBranch] = false;
-                }
+                // Otherwise the branch should belong to the currentCaptureColor and nothing needs to happen.
             }
 
             // If the node can possibly be captured, add it along with any unknowns to possibleCaptures.
             if (couldBeCaptured)
             {
                 // If the none of the branches connected to the tile are blank, it's a single tile capture.
-                if (!connectedBranchStates.Contains(true))
+                if (blankBranches.Count == 0)
                 {
                     captures.Add(currentSquare);
                 }
                 else
                 {
-                    possibleCaptures.Add((currentSquare, connectedBranchStates));
+                    possibleCaptures.Add((currentSquare, blankBranches));
                 }
             }
         }
@@ -400,13 +395,58 @@ public class GameBoard
         //  checking the connecting tiles with blank branches to search for area captures. 
         do
         {
-            foreach ((int tile, bool[] directions) in possibleCaptures)
+            // Check each possible capture for if it’s actually a capture.
+            foreach ((int square, List<int> blankBranches) in possibleCaptures)
             {
-                for (int direction = 0; direction < 4; ++direction)
+                // Check each direction on the square for where each blank branch is. 
+                for (int blankBranchDirection = 0; blankBranches.Count > 0; ++blankBranchDirection)
                 {
-                    if ()
+                    // If the branch in the given direction is blank then ask the square in that direction if it
+                    //  is possibly captured.
+                    if (blankBranches.Contains(Reference.branchesOnSquareConnections[square, blankBranchDirection]))
+                    {
+                        // Refactor below to be able to use if connectedSquare in possibleCaptures. Would remove the following foreach and for.
+                        // Go through each square that can possibly be captured...
+                        foreach ((int connectedSquare, List<int> connectedSquareBranches) in possibleCaptures)
+                        {
+                            // ...and see if it's the one that shares the blank branch with the current square.
+                            if (connectedSquare == Reference.squareOnSquareConnections[square, blankBranchDirection])
+                            {
+                                // If it is, then check it for 
+
+                                // Check if the connectedSquare has more than just the one blank branch,
+                                //  because if not, then maybe it should report possibility of complete
+                                //  capture.
+                            }
+                        }
+                    }
                 }
+                
             }
         } while (possibleCaptures.Count > 0);
+    }
+
+
+    private void RemoveAllBlankBranchConnectedNodesFromList(int square, List<int> blankBranches, List<(int, List<int>)> possibleCaptures)
+    {
+        // Lambda expression that takes two ints, a List of int, and a List of int, List of int pairs.
+        System.Action<int, int, List<int>, List<(int, List<int>)>> checkAndRemoveConnectedPossibles = (int sharedBranchId, int checkSquare, List<int> checkBlankBranches, List<(int, List<int>)> possibleCaptures) =>
+        {
+            // Maybe use this for the recursion? 
+            
+            // Remove the sharedBranchId from checkBlankBranches.
+            // Check the checkBlankBranches for every direction in which there is a blank branch, 
+                // if that connecting square is in the possible captures list then call this function again with its details.
+                // else discard that blank branch and look for the next.
+
+            // Remove own id from possibleCaptures before returning.
+        };
+
+        while (blankBranches.Count > 0)
+        {
+            // Check if the square in the direction of the first blank branch in blankBranches is in possibleCaptures.
+                //  If it is, need to check it for any square connected to it via blankBranches to see if they are in possibleCaptures (minus the branch in the direction from which it came) (recursion)
+            // Remove front from blankBranches.
+        }
     }
 }
