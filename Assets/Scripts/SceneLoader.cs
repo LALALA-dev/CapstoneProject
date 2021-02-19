@@ -21,6 +21,8 @@ public class SceneLoader : MonoBehaviour
         GameInformation.playerTwoScore = 0;
         GameInformation.playerOneResources = new int[4] { 0, 0, 0, 0 };
         GameInformation.playerTwoResources = new int[4] { 0, 0, 0, 0 };
+        GameInformation.openingMoveBranchSet = false;
+        GameInformation.openingMoveNodeSet = false;
         SceneManager.LoadScene("MainMenu");
     }
 
