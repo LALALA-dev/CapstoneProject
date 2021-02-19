@@ -24,7 +24,7 @@ public class WinController : MonoBehaviour
 
     public void EnableWinPanel()
     {
-        if (GameInformation.playerOneScore > GameInformation.playerTwoScore && GameInformation.playerTwoScore >= 10)
+        if (GameInformation.playerOneScore > GameInformation.playerTwoScore && GameInformation.playerOneScore >= 10)
         {
             winnerText.text = "Player One Wins!";
         }

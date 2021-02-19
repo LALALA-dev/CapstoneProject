@@ -13,6 +13,12 @@ public class SceneLoader : MonoBehaviour
 
     public void LoadMenuScene()
     {
+        GameInformation.gameOver = false;
+        GameInformation.openingSequence = true;
+        GameInformation.playerOneScore = 0;
+        GameInformation.playerTwoScore = 0;
+        GameInformation.playerOneResources = new int[4] { 0, 0, 0, 0 };
+        GameInformation.playerTwoResources = new int[4] { 0, 0, 0, 0 };
         SceneManager.LoadScene("MainMenu");
     }
 
