@@ -26,6 +26,15 @@ public class GameController
         }
         return gameController;
     }
+    
+    public static GameController Destroy()
+    {
+        if(gameController != null)
+        {
+            gameController = null;
+        }
+        return gameController;
+    }
 
     public GameBoard getGameBoard()
     {

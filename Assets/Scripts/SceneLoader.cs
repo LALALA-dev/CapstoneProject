@@ -13,6 +13,7 @@ public class SceneLoader : MonoBehaviour
 
     public void LoadMenuScene()
     {
+        GameController.Destroy();
         GameInformation.gameOver = false;
         GameInformation.openingSequence = true;
         GameInformation.turnNumber = 0;
