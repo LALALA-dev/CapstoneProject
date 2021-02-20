@@ -19,6 +19,12 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         if (GameInformation.playerIsHost && GameInformation.gameType == 'N')
-            networkController.SendOpponentBoardConfiguration(gameController.getGameBoard().ToString());
+        {
+            networkController.SendOpeningBoardConfiguration(gameController.getGameBoard().ToString());
+        }
+        else if(!GameInformation.playerIsHost && GameInformation.gameType == 'N')
+        {
+            gameController.SetBoardConfiguration(networkController.GetMove());
+        }
     }
 }

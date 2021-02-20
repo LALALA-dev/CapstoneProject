@@ -10,7 +10,6 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
     private PhotonView pView;
 
     public static NetworkPlayer player;
-    public string playerName;
 
     void Awake()
     {
@@ -22,22 +21,16 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
         DontDestroyOnLoad(this.gameObject);
     }
 
-    public void SendPlayerInfo(string playerName)
+    public void SendInfo(string name)
     {
         if (pView.IsMine)
-            pView.RPC("RPC_SendInfo", RpcTarget.AllBuffered, playerName);
+            pView.RPC("RPC_SendInfo", RpcTarget.OthersBuffered, name);
     }
 
-    public void SendPlayerMove(/*MoveObject Param*/)
+    public void SendMove(string boardConfig)
     {
         if (pView.IsMine)
-            pView.RPC("RPC_SendPlayerMove", RpcTarget.All /*, MoveObject param*/);
-    }
-
-    public void SendHostBoardConfiguration(string boardConfig)
-    {
-        if (pView.IsMine)
-            pView.RPC("RPC_SendBoardConfig", RpcTarget.AllBuffered, boardConfig);
+            pView.RPC("RPC_SendMove", RpcTarget.All, boardConfig);
     }
 
     #region RPC Functions
@@ -45,22 +38,18 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
     void RPC_SendInfo(string playerName)
     {
         Debug.Log("RPC_SendInfo() was called with playName = " + playerName);
+        if (!photonView.IsMine)
+            return;
         networkController.GetOpponentInfo(playerName);
     }
 
     [PunRPC]
-    void RPC_SendMove(/*MoveObject Param*/)
+    void RPC_SendMove(string boardConfig)
     {
         Debug.Log("RPC_SendMove() was called");
-        // TODO: SEND A MOVE
-    }
-
-    [PunRPC]
-    void RPC_SendBoardConfig(string boardConfig)
-    {
-        Debug.Log("RPC_SendBoardConfig() was called");
-        if (!GameInformation.playerIsHost)
-            networkController.SetClientBoardConfiguration(boardConfig);
+        if (!photonView.IsMine)
+            return;
+        networkController.SetMove(boardConfig);
     }
     #endregion
 
