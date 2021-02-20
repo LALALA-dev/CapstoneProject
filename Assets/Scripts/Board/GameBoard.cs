@@ -75,7 +75,14 @@ public class GameBoard
 
     public SquareState[] ShuffleSquares()
     {
-        boardState.squareStates = Reference.defaultSquareState;
+        for(int i = 0; i < MAX_SQUARES; i++)
+        {
+            boardState.squareStates[i].location = i;
+            boardState.squareStates[i].ownerColor = PlayerColor.Blank;
+            boardState.squareStates[i].resourceState = SquareStatus.Open;
+            boardState.squareStates[i].resourceColor = Reference.defaultSquareState[i].resourceColor;
+            boardState.squareStates[i].resourceAmount = Reference.defaultSquareState[i].resourceAmount;
+        }
 
         for (int i = 0; i < MAX_SQUARES; i++)
         {
