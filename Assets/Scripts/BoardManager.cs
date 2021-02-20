@@ -46,7 +46,7 @@ public class BoardManager : MonoBehaviour
 
     public void ReshuffleBoard()
     {
-        SquareState[] squares = gameController.NewGame();
+        SquareState[] squares = gameController.GetSquareStates();
 
         for(int i = 0; i < 13; i++)
         {

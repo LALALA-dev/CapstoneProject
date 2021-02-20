@@ -8,7 +8,7 @@ public class NetworkController : MonoBehaviourPunCallbacks
     public static NetworkController networkController;
     public GameController gameController;
 
-    public string boardState = "";
+    public static string boardState;
     public static string netPlayerName = "";
     public static string netOpponentsName = "";
 
@@ -29,9 +29,11 @@ public class NetworkController : MonoBehaviourPunCallbacks
         NetworkPlayer.player.SendMove(boardState);
     }
 
-    public void SetMove(string boardState)
+    public void SetMove(string move)
     {
-        networkController.boardState = boardState;
+        Debug.Log("HOST = " + GameInformation.playerIsHost + " SETMOVE() CALLED, BOARDCONFIG = " + move);
+        boardState = move;
+
     }
 
     public string GetMove()

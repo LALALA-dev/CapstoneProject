@@ -30,7 +30,7 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
     public void SendMove(string boardConfig)
     {
         if (pView.IsMine)
-            pView.RPC("RPC_SendMove", RpcTarget.All, boardConfig);
+            pView.RPC("RPC_SendMove", RpcTarget.AllBuffered, boardConfig);
     }
 
     #region RPC Functions
@@ -47,8 +47,6 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
     void RPC_SendMove(string boardConfig)
     {
         Debug.Log("RPC_SendMove() was called");
-        if (!photonView.IsMine)
-            return;
         networkController.SetMove(boardConfig);
     }
     #endregion
