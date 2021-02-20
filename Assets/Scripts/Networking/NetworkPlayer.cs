@@ -24,7 +24,7 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
     public void SendInfo(string name)
     {
         if (pView.IsMine)
-            pView.RPC("RPC_SendInfo", RpcTarget.OthersBuffered, name);
+            pView.RPC("RPC_SendInfo", RpcTarget.All, name);
     }
 
     public void SendMove(string boardConfig)

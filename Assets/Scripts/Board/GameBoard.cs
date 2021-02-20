@@ -173,19 +173,19 @@ public class GameBoard
 
         for (int i = 0; i < MAX_SQUARES; i++)
         {
-            boardState.squareStates[i].location = stringIndex;
+            squares[i].squareState.location = i;
             stringIndex++;
 
             switch (networkBoardConfig[stringIndex])
             {
                 case 'B':
-                    boardState.squareStates[i].ownerColor = PlayerColor.Blank;
+                    squares[i].squareState.ownerColor = PlayerColor.Blank;
                     break;
                 case 'O':
-                    boardState.squareStates[i].ownerColor = PlayerColor.Orange;
+                    squares[i].squareState.ownerColor = PlayerColor.Orange;
                     break;
                 case 'P':
-                    boardState.squareStates[i].ownerColor = PlayerColor.Purple;
+                    squares[i].squareState.ownerColor = PlayerColor.Purple;
                     break;
             }
             stringIndex++;
@@ -193,13 +193,13 @@ public class GameBoard
             switch (networkBoardConfig[stringIndex])
             {
                 case 'O':
-                    boardState.squareStates[i].resourceState = SquareStatus.Open;
+                    squares[i].squareState.resourceState = SquareStatus.Open;
                     break;
                 case 'C':
-                    boardState.squareStates[i].resourceState = SquareStatus.Captured;
+                    squares[i].squareState.resourceState = SquareStatus.Captured;
                     break;
                 case 'B':
-                    boardState.squareStates[i].resourceState = SquareStatus.Blocked;
+                    squares[i].squareState.resourceState = SquareStatus.Blocked;
                     break;
             }
             stringIndex++;
@@ -207,16 +207,16 @@ public class GameBoard
             switch (networkBoardConfig[stringIndex])
             {
                 case '0':
-                    boardState.squareStates[i].resourceAmount = SquareResourceAmount.Blank;
+                    squares[i].squareState.resourceAmount = SquareResourceAmount.Blank;
                     break;
                 case '1':
-                    boardState.squareStates[i].resourceAmount = SquareResourceAmount.One;
+                    squares[i].squareState.resourceAmount = SquareResourceAmount.One;
                     break;
                 case '2':
-                    boardState.squareStates[i].resourceAmount = SquareResourceAmount.Two;
+                    squares[i].squareState.resourceAmount = SquareResourceAmount.Two;
                     break;
                 case '3':
-                    boardState.squareStates[i].resourceAmount = SquareResourceAmount.Three;
+                    squares[i].squareState.resourceAmount = SquareResourceAmount.Three;
                     break;
 
             }
@@ -225,19 +225,19 @@ public class GameBoard
             switch (networkBoardConfig[stringIndex])
             {
                 case 'B':
-                    boardState.squareStates[i].resourceColor = SquareResourceColor.Blue;
+                    squares[i].squareState.resourceColor = SquareResourceColor.Blue;
                     break;
                 case 'R':
-                    boardState.squareStates[i].resourceColor = SquareResourceColor.Red;
+                    squares[i].squareState.resourceColor = SquareResourceColor.Red;
                     break;
                 case 'Y':
-                    boardState.squareStates[i].resourceColor = SquareResourceColor.Yellow;
+                    squares[i].squareState.resourceColor = SquareResourceColor.Yellow;
                     break;
                 case 'G':
-                    boardState.squareStates[i].resourceColor = SquareResourceColor.Green;
+                    squares[i].squareState.resourceColor = SquareResourceColor.Green;
                     break;
                 case 'L':
-                    boardState.squareStates[i].resourceColor = SquareResourceColor.Blue;
+                    squares[i].squareState.resourceColor = SquareResourceColor.Blue;
                     break;
             }
             stringIndex++;

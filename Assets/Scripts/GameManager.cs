@@ -20,10 +20,13 @@ public class GameManager : MonoBehaviour
     {
         if (GameInformation.playerIsHost && GameInformation.gameType == 'N')
         {
+            networkController.SetInfo("Host");
             networkController.SendOpeningBoardConfiguration(gameController.getGameBoard().ToString());
+            gameController.SetBoardConfiguration(networkController.GetMove());
         }
         else if(!GameInformation.playerIsHost && GameInformation.gameType == 'N')
         {
+            networkController.SetInfo("Client");
             gameController.SetBoardConfiguration(networkController.GetMove());
         }
     }
