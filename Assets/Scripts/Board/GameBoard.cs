@@ -244,7 +244,7 @@ public class GameBoard
                     squares[i].squareState.resourceColor = SquareResourceColor.Green;
                     break;
                 case 'L':
-                    squares[i].squareState.resourceColor = SquareResourceColor.Blue;
+                    squares[i].squareState.resourceColor = SquareResourceColor.Blank;
                     break;
             }
             stringIndex++;
