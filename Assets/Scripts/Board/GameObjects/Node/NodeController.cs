@@ -18,67 +18,70 @@ public class NodeController : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (GameInformation.openingSequence)
+        if(!GameInformation.gameOver)
         {
-            if(isNodeBlank() && !GameInformation.openingMoveNodeSet)
+            if (GameInformation.openingSequence)
             {
-                nodeEntity.nodeState.nodeColor = nodeEntity.gameController.getCurrentPlayerColor();
-                GameInformation.openingMoveNodeSet = true;
-                GameInformation.openingNodeId = nodeEntity.id;
-
-                if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
-                    ClaimNode(playerOneSprite);
-                else
-                    ClaimNode(playerTwoSprite);
-            }
-            else if(isNodeColorOfCurrentPlayer() && GameInformation.openingMoveNodeSet && GameInformation.openingNodeId == nodeEntity.id)
-            {
-                nodeEntity.nodeState.nodeColor = PlayerColor.Blank;
-                GameInformation.openingMoveNodeSet = false;
-                ClaimNode(blankSprite);
-
-                if(GameInformation.openingMoveBranchSet)
+                if (isNodeBlank() && !GameInformation.openingMoveNodeSet)
                 {
-                    SendMessageUpwards("BranchUIUpdate", GameInformation.openingBranchId);
-                    GameInformation.openingMoveBranchSet = false;
+                    nodeEntity.nodeState.nodeColor = nodeEntity.gameController.getCurrentPlayerColor();
+                    GameInformation.openingMoveNodeSet = true;
+                    GameInformation.openingNodeId = nodeEntity.id;
+
+                    if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
+                        ClaimNode(playerOneSprite);
+                    else
+                        ClaimNode(playerTwoSprite);
+                }
+                else if (isNodeColorOfCurrentPlayer() && GameInformation.openingMoveNodeSet && GameInformation.openingNodeId == nodeEntity.id)
+                {
+                    nodeEntity.nodeState.nodeColor = PlayerColor.Blank;
+                    GameInformation.openingMoveNodeSet = false;
+                    ClaimNode(blankSprite);
+
+                    if (GameInformation.openingMoveBranchSet)
+                    {
+                        SendMessageUpwards("BranchUIUpdate", GameInformation.openingBranchId);
+                        GameInformation.openingMoveBranchSet = false;
+                    }
                 }
             }
-        }
-        else if (hasEnoughResources() && isNodeConnectedToBranch() && isNodeBlank())
-        {
-            nodeEntity.nodeState.nodeColor = nodeEntity.gameController.getCurrentPlayerColor();
+            else if (hasEnoughResources() && isNodeConnectedToBranch() && isNodeBlank())
+            {
+                nodeEntity.nodeState.nodeColor = nodeEntity.gameController.getCurrentPlayerColor();
 
-            // Change color
-            if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
-            {
-                ClaimNode(playerOneSprite);
-                GameInformation.playerOneResources[2] -= 2;
-                GameInformation.playerOneResources[3] -= 2;
-            }  
-            else
-            {
-                ClaimNode(playerTwoSprite);
-                GameInformation.playerOneResources[2] -= 2;
-                GameInformation.playerOneResources[3] -= 2;
+                // Change color
+                if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
+                {
+                    ClaimNode(playerOneSprite);
+                    GameInformation.playerOneResources[2] -= 2;
+                    GameInformation.playerOneResources[3] -= 2;
+                }
+                else
+                {
+                    ClaimNode(playerTwoSprite);
+                    GameInformation.playerOneResources[2] -= 2;
+                    GameInformation.playerOneResources[3] -= 2;
+                }
+                SendMessageUpwards("UpdateResourcesUI");
             }
-            SendMessageUpwards("UpdateResourcesUI");
-        }
-        // Are you trying to undo a selection?
-        else if (isNodeColorOfCurrentPlayer())
-        {
-            nodeEntity.nodeState.nodeColor = PlayerColor.Blank;
-            if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
+            // Are you trying to undo a selection?
+            else if (isNodeColorOfCurrentPlayer())
             {
-                GameInformation.playerOneResources[2] += 2;
-                GameInformation.playerOneResources[3] += 2;
+                nodeEntity.nodeState.nodeColor = PlayerColor.Blank;
+                if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
+                {
+                    GameInformation.playerOneResources[2] += 2;
+                    GameInformation.playerOneResources[3] += 2;
+                }
+                else
+                {
+                    GameInformation.playerTwoResources[2] += 2;
+                    GameInformation.playerTwoResources[3] += 2;
+                }
+                SendMessageUpwards("UpdateResourcesUI");
+                ClaimNode(blankSprite);
             }
-            else
-            {
-                GameInformation.playerTwoResources[2] += 2;
-                GameInformation.playerTwoResources[3] += 2;
-            }
-            SendMessageUpwards("UpdateResourcesUI");
-            ClaimNode(blankSprite);
         }
     }
 
@@ -126,5 +129,18 @@ public class NodeController : MonoBehaviour
         }
 
         return false;
+    }
+
+    public void UpdateAIGUI(PlayerColor color)
+    {
+        if (nodeEntity.nodeState.nodeColor == color)
+        {
+            nodeEntity.nodeState.nodeColor = color;
+
+            if (color == PlayerColor.Orange)
+                ClaimNode(playerOneSprite);
+            else
+                ClaimNode(playerTwoSprite);
+        }
     }
 }

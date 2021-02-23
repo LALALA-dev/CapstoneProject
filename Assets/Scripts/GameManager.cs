@@ -6,20 +6,41 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private NetworkController networkController;
+    [SerializeField] private BoardManager boardManager;
     private GameController gameController;
 
-    public TMP_Text playerOneResources;
-    public TMP_Text playerTwoResources;
+    public GameObject RenderBtn;
 
     private void Awake()
     {
-        networkController = NetworkController.NetController;
         gameController = GameController.getInstance();
+
+        if (GameInformation.playerIsHost)
+            RenderBtn.gameObject.SetActive(false);
     }
 
     void Start()
     {
         if (GameInformation.playerIsHost && GameInformation.gameType == 'N')
-            networkController.SendOpponentBoardConfiguration(gameController.getGameBoard().ToString());
+        {
+            networkController.SetInfo("Host");
+            networkController.SendOpeningBoardConfiguration(gameController.getGameBoard().ToString());
+        }
+        else if(!GameInformation.playerIsHost && GameInformation.gameType == 'N')
+        {
+            //gameController.SetBoardConfiguration(networkController.GetMove());
+        }
+    }
+
+    public void RenderHostBoard()
+    {
+        if (!GameInformation.playerIsHost && GameInformation.gameType == 'N')
+        {
+            string hostBoard = networkController.GetMove();
+            gameController.SetBoardConfiguration(hostBoard);
+            RenderBtn.gameObject.SetActive(false);
+            boardManager.ReshuffleBoard();
+
+        }
     }
 }

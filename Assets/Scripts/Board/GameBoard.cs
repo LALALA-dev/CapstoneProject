@@ -76,7 +76,14 @@ public class GameBoard
 
     public SquareState[] ShuffleSquares()
     {
-        boardState.squareStates = Reference.defaultSquareState;
+        for(int i = 0; i < MAX_SQUARES; i++)
+        {
+            boardState.squareStates[i].location = i;
+            boardState.squareStates[i].ownerColor = PlayerColor.Blank;
+            boardState.squareStates[i].resourceState = SquareStatus.Open;
+            boardState.squareStates[i].resourceColor = Reference.defaultSquareState[i].resourceColor;
+            boardState.squareStates[i].resourceAmount = Reference.defaultSquareState[i].resourceAmount;
+        }
 
         for (int i = 0; i < MAX_SQUARES; i++)
         {
@@ -174,19 +181,19 @@ public class GameBoard
 
         for (int i = 0; i < MAX_SQUARES; i++)
         {
-            boardState.squareStates[i].location = stringIndex;
+            squares[i].squareState.location = i;
             stringIndex++;
 
             switch (networkBoardConfig[stringIndex])
             {
                 case 'B':
-                    boardState.squareStates[i].ownerColor = PlayerColor.Blank;
+                    squares[i].squareState.ownerColor = PlayerColor.Blank;
                     break;
                 case 'O':
-                    boardState.squareStates[i].ownerColor = PlayerColor.Orange;
+                    squares[i].squareState.ownerColor = PlayerColor.Orange;
                     break;
                 case 'P':
-                    boardState.squareStates[i].ownerColor = PlayerColor.Purple;
+                    squares[i].squareState.ownerColor = PlayerColor.Purple;
                     break;
             }
             stringIndex++;
@@ -194,13 +201,13 @@ public class GameBoard
             switch (networkBoardConfig[stringIndex])
             {
                 case 'O':
-                    boardState.squareStates[i].resourceState = SquareStatus.Open;
+                    squares[i].squareState.resourceState = SquareStatus.Open;
                     break;
                 case 'C':
-                    boardState.squareStates[i].resourceState = SquareStatus.Captured;
+                    squares[i].squareState.resourceState = SquareStatus.Captured;
                     break;
                 case 'B':
-                    boardState.squareStates[i].resourceState = SquareStatus.Blocked;
+                    squares[i].squareState.resourceState = SquareStatus.Blocked;
                     break;
             }
             stringIndex++;
@@ -208,16 +215,16 @@ public class GameBoard
             switch (networkBoardConfig[stringIndex])
             {
                 case '0':
-                    boardState.squareStates[i].resourceAmount = SquareResourceAmount.Blank;
+                    squares[i].squareState.resourceAmount = SquareResourceAmount.Blank;
                     break;
                 case '1':
-                    boardState.squareStates[i].resourceAmount = SquareResourceAmount.One;
+                    squares[i].squareState.resourceAmount = SquareResourceAmount.One;
                     break;
                 case '2':
-                    boardState.squareStates[i].resourceAmount = SquareResourceAmount.Two;
+                    squares[i].squareState.resourceAmount = SquareResourceAmount.Two;
                     break;
                 case '3':
-                    boardState.squareStates[i].resourceAmount = SquareResourceAmount.Three;
+                    squares[i].squareState.resourceAmount = SquareResourceAmount.Three;
                     break;
 
             }
@@ -226,19 +233,19 @@ public class GameBoard
             switch (networkBoardConfig[stringIndex])
             {
                 case 'B':
-                    boardState.squareStates[i].resourceColor = SquareResourceColor.Blue;
+                    squares[i].squareState.resourceColor = SquareResourceColor.Blue;
                     break;
                 case 'R':
-                    boardState.squareStates[i].resourceColor = SquareResourceColor.Red;
+                    squares[i].squareState.resourceColor = SquareResourceColor.Red;
                     break;
                 case 'Y':
-                    boardState.squareStates[i].resourceColor = SquareResourceColor.Yellow;
+                    squares[i].squareState.resourceColor = SquareResourceColor.Yellow;
                     break;
                 case 'G':
-                    boardState.squareStates[i].resourceColor = SquareResourceColor.Green;
+                    squares[i].squareState.resourceColor = SquareResourceColor.Green;
                     break;
                 case 'L':
-                    boardState.squareStates[i].resourceColor = SquareResourceColor.Blue;
+                    squares[i].squareState.resourceColor = SquareResourceColor.Blue;
                     break;
             }
             stringIndex++;
@@ -278,9 +285,9 @@ public class GameBoard
     {
         int ownedNodes = 0;
 
-        foreach (NodeState node in boardState.nodeStates)
+        foreach (Node node in nodes)
         {
-            if (node.nodeColor == playerColor)
+            if (node.nodeState.nodeColor == playerColor)
             {
                 ownedNodes++;
             }
@@ -305,7 +312,7 @@ public class GameBoard
 
     // A fail fast method that checks the branches surrounding each square and stops detection on a square, moving to the next if it
     //  encounters either a blank branch or one owned by the opposing player.
-    private void DetectTileCaptures()
+    public void DetectTileCaptures()
     {
         for (int currentSquare = 0; currentSquare < MAX_SQUARES; ++currentSquare)
         {
@@ -447,6 +454,48 @@ public class GameBoard
             // Check if the square in the direction of the first blank branch in blankBranches is in possibleCaptures.
                 //  If it is, need to check it for any square connected to it via blankBranches to see if they are in possibleCaptures (minus the branch in the direction from which it came) (recursion)
             // Remove front from blankBranches.
+        }
+    }
+
+
+
+    public void DetectTileOverloads()
+    {
+        for (int i = 0; i < MAX_SQUARES; i++)
+        {
+            int numberOwnedNodes = 0;
+            if(squares[i].squareState.resourceState == SquareStatus.Open)
+            {
+                bool isBlocked = false;
+                int[] connectedNodes = ReferenceScript.tileConnectsToTheseNodes[i];
+
+                foreach(int node in connectedNodes)
+                {
+                    if (nodes[node].nodeState.nodeColor != PlayerColor.Blank)
+                        numberOwnedNodes++;
+                }
+
+                switch(squares[i].squareState.resourceAmount)
+                {
+                    case SquareResourceAmount.One:
+                        if (numberOwnedNodes >= 2)
+                            isBlocked = true;
+                        break;
+                    case SquareResourceAmount.Two:
+                        if (numberOwnedNodes >= 3)
+                            isBlocked = true;
+                        break;
+                    case SquareResourceAmount.Three:
+                        if (numberOwnedNodes >= 4)
+                            isBlocked = true;
+                        break;
+                }
+
+                if(isBlocked)
+                {
+                   squares[i].squareState.resourceState = SquareStatus.Blocked;
+                }
+            }
         }
     }
 }

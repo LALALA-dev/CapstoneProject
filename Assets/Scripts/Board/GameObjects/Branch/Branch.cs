@@ -10,7 +10,7 @@ public class Branch : MonoBehaviour
 
     public GameController gameController;
 
-    void Start()
+    void Awake()
     {
         branchState.location = id;
         branchState.ownerColor = branchState.branchColor = PlayerColor.Blank;

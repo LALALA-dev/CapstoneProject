@@ -17,6 +17,7 @@ public class NetworkUIController : MonoBehaviour
         }
         hostCreateRoomNameField.gameObject.SetActive(false);
         privateRoomNameField.gameObject.SetActive(false);
+        GameInformation.gameType = 'N';
     }
 
     public void SetName()
@@ -63,7 +64,7 @@ public class NetworkUIController : MonoBehaviour
                 // TODO: ERROR MESSAGE
             }
         }
-        else
+        else if(privateRoomNameField.IsActive())
         {
             if (privateRoomNameField.text.Trim() != "")
             {
@@ -74,6 +75,10 @@ public class NetworkUIController : MonoBehaviour
             {
                 // TODO: ERROR MESSAGE
             }
+        }
+        else
+        {
+            GameInformation.networkGameType = NetworkGameType.Public;
         }
     }
 }

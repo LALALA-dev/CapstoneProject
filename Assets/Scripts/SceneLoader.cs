@@ -13,6 +13,19 @@ public class SceneLoader : MonoBehaviour
 
     public void LoadMenuScene()
     {
+        GameController.Destroy();
+        GameInformation.gameOver = false;
+        GameInformation.openingSequence = true;
+        GameInformation.turnNumber = 1;
+        GameInformation.playerOneScore = 0;
+        GameInformation.playerTwoScore = 0;
+        GameInformation.playerOneResources = new int[4] { 0, 0, 0, 0 };
+        GameInformation.playerTwoResources = new int[4] { 0, 0, 0, 0 };
+        GameInformation.openingMoveBranchSet = false;
+        GameInformation.openingMoveNodeSet = false;
+        GameInformation.gameType = 'A';
+        GameInformation.isAIMoveFinished = false;
+        GameInformation.waitingForAI = true;
         SceneManager.LoadScene("MainMenu");
     }
 

@@ -13,7 +13,7 @@ public class Square : MonoBehaviour
 
     public GameController gameController;
 
-    void Start()
+    void Awake()
     {
         gameController = GameController.getInstance();
         gameController.getGameBoard().squares[id] = this;
