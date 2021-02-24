@@ -298,7 +298,7 @@ public class GameBoard
     public int GetNumberOfPlayerCapturedTiles(PlayerColor playerColor)
     {
         int ownedTiles = 0;
-        DetectTileCaptures();
+        DetectMultiTileCaptures();
 
         foreach (SquareState square in boardState.squareStates)
         {
@@ -335,12 +335,16 @@ public class GameBoard
         };
     }
 
-    private void DetectMultiTileCaptures()
+
+
+//-------------------------------------------------------------------------------
+
+
+
+    public void DetectMultiTileCaptures()
     {
-        // List of pairs where first is the tileID and second is a List of int that holds
-        //  the IDs of a square's blank branches.
-        List<(int, List<int>)> possibleCaptures = new List<(int, List<int>)>();
         List<int> captures = new List<int>();
+        List<int> possibleCaptures = new List<int>();        
 
         for (int currentSquare = 0; currentSquare < MAX_SQUARES; ++currentSquare)
         {
@@ -359,31 +363,30 @@ public class GameBoard
                 couldBeCaptured = false;
             }
 
-            // If there is at least one branch that has a player's piece on it then consider the other branches on the node for
-            //  as long as a capture is possible. 
+            // If there is at least one branch that has a player's piece on it then check if the other branches are either blank or that color.
             for (int connectedBranch = 0; connectedBranch < 4 && couldBeCaptured; ++connectedBranch)
             {
-                Branch currentBranch = branches[Reference.branchesOnSquareConnections[currentSquare, connectedBranch]];
+                BranchState currentBranchState = branches[Reference.branchesOnSquareConnections[currentSquare, connectedBranch]].branchState;
                 
                 // If the node has an unclaimed branch boardering the edge of the board then it cannot be captured.
-                if (currentBranch.branchState.branchColor == PlayerColor.Blank && Reference.squareOnSquareConnections[currentSquare, connectedBranch] == -1)
+                if (currentBranchState.branchColor == PlayerColor.Blank && Reference.squareOnSquareConnections[currentSquare, connectedBranch] == -1)
                 {
                     couldBeCaptured = false;
                 }
                 // If a connecting branch belongs to the opponent then it cannot be captured.
-                else if (currentBranch.branchState.branchColor != currentCaptureColor)
+                else if (currentBranchState.branchColor == getOpponentColor(currentCaptureColor))
                 {
                     couldBeCaptured = false;
                 }
                 // If a connecting branch is blank and there's a tile on the otherside, we need to check that tile for capture.
-                else if (currentBranch.branchState.branchColor == PlayerColor.Blank)
+                else if (currentBranchState.branchColor == PlayerColor.Blank)
                 {
-                    blankBranches.Add(currentBranch.branchState.location);
+                    blankBranches.Add(currentBranchState.location);
                 }
                 // Otherwise the branch should belong to the currentCaptureColor and nothing needs to happen.
             }
 
-            // If the node can possibly be captured, add it along with any unknowns to possibleCaptures.
+            // If the node can possibly be captured, add it to possibleCaptures.
             if (couldBeCaptured)
             {
                 // If the none of the branches connected to the tile are blank, it's a single tile capture.
@@ -393,69 +396,168 @@ public class GameBoard
                 }
                 else
                 {
-                    possibleCaptures.Add((currentSquare, blankBranches));
+                    possibleCaptures.Add(currentSquare);
                 }
             }
         }
 
-        // TODO: Add some fancy algorithm to check through the possibleCaptures, adding points for single tile captures and
-        //  checking the connecting tiles with blank branches to search for area captures. 
-        do
+        Debug.Log("The possible captures are: ");
+        foreach (int possibleCapture in possibleCaptures)
         {
-            // Check each possible capture for if it’s actually a capture.
-            foreach ((int square, List<int> blankBranches) in possibleCaptures)
+            Debug.Log(possibleCapture + ", ");
+        }
+
+        // Check the list of possible captures for actual captures.
+        while (possibleCaptures.Count > 0)
+        {
+            int square = possibleCaptures.First();
+            Debug.Log("Possible Capture: Square " + square);
+            if (isCaptured(square, captures, possibleCaptures))
             {
-                // Check each direction on the square for where each blank branch is. 
-                for (int blankBranchDirection = 0; blankBranches.Count > 0; ++blankBranchDirection)
-                {
-                    // If the branch in the given direction is blank then ask the square in that direction if it
-                    //  is possibly captured.
-                    if (blankBranches.Contains(Reference.branchesOnSquareConnections[square, blankBranchDirection]))
-                    {
-                        // Refactor below to be able to use if connectedSquare in possibleCaptures. Would remove the following foreach and for.
-                        // Go through each square that can possibly be captured...
-                        foreach ((int connectedSquare, List<int> connectedSquareBranches) in possibleCaptures)
-                        {
-                            // ...and see if it's the one that shares the blank branch with the current square.
-                            if (connectedSquare == Reference.squareOnSquareConnections[square, blankBranchDirection])
-                            {
-                                // If it is, then check it for 
-
-                                // Check if the connectedSquare has more than just the one blank branch,
-                                //  because if not, then maybe it should report possibility of complete
-                                //  capture.
-                            }
-                        }
-                    }
-                }
-                
+                possibleCaptures.Remove(square);
+                captures.Add(square);
             }
-        } while (possibleCaptures.Count > 0);
-    }
+            else
+            {
+                possibleCaptures.Remove(square);
+            }
+        }
 
-
-    private void RemoveAllBlankBranchConnectedNodesFromList(int square, List<int> blankBranches, List<(int, List<int>)> possibleCaptures)
-    {
-        // Lambda expression that takes two ints, a List of int, and a List of int, List of int pairs.
-        System.Action<int, int, List<int>, List<(int, List<int>)>> checkAndRemoveConnectedPossibles = (int sharedBranchId, int checkSquare, List<int> checkBlankBranches, List<(int, List<int>)> possibleCaptures) =>
+        foreach (int squareId in captures)
         {
-            // Maybe use this for the recursion? 
-            
-            // Remove the sharedBranchId from checkBlankBranches.
-            // Check the checkBlankBranches for every direction in which there is a blank branch, 
-                // if that connecting square is in the possible captures list then call this function again with its details.
-                // else discard that blank branch and look for the next.
+            PlayerColor captureColor = getCapturedSquareOwner(squareId);
 
-            // Remove own id from possibleCaptures before returning.
-        };
 
-        while (blankBranches.Count > 0)
-        {
-            // Check if the square in the direction of the first blank branch in blankBranches is in possibleCaptures.
-                //  If it is, need to check it for any square connected to it via blankBranches to see if they are in possibleCaptures (minus the branch in the direction from which it came) (recursion)
-            // Remove front from blankBranches.
+            Debug.Log("Square " + squareId + " is owned by " + captureColor + " because branch " + getCapturedSquareOwner(squareId) + " is " + 
+                branches[Reference.branchesOnSquareConnections[squareId, 0]].branchState.branchColor);
+
+
+            squares[squareId].squareState.ownerColor = captureColor;
+            squares[squareId].squareState.resourceState = SquareStatus.Captured;
         }
     }
+
+    // Given the ID of a square known to be captured, returns the PlayerColor of the owner.
+    private PlayerColor getCapturedSquareOwner(int squareId)
+    {
+        PlayerColor captureColor;
+        // Check the surrounding branches for an owner color.
+        for (int branch = 0; branch < 4; ++branch)
+        {
+            captureColor = branches[Reference.branchesOnSquareConnections[squareId, branch]].branchState.branchColor;
+            // If found, return it.
+            if (captureColor != PlayerColor.Blank)
+            {
+                return captureColor;
+            }
+        }
+        // If all surrounding branches are blank, go to the square above and check it for an owner color. 
+        return getCapturedSquareOwner(Reference.squareOnSquareConnections[squareId, 0]);
+    }
+
+    // Checks the given square and any blank branch connecting squares for capture. 
+    //  Returns true if captured, having already modifed the given lists to reflect the capture state
+    //  of connected squares (but not itself). Ever heard the tragedy of Darth Plagueis the Wise?
+    private bool isCaptured(int startingSquare, List<int> captures, List<int> possibleCaptures)
+    {
+        List<int> blankBranches = getBlankBranches(startingSquare);
+        List<int> checkedSquares = new List<int>();
+        checkedSquares.Add(startingSquare);
+
+        foreach (int blankBranch in blankBranches)
+        {
+            int connectedSquareId = getConnectedSquare(blankBranch, startingSquare);
+            if (!possibleCaptures.Contains(connectedSquareId) ||
+                !isConnectedSquareCaptured(connectedSquareId, checkedSquares, captures, possibleCaptures))
+            {
+                Debug.Log("The square, " + startingSquare + " cannot be captured. [startingSquare]");
+                possibleCaptures.Remove(startingSquare);
+                return false;
+            }
+        }
+        Debug.Log("The square, " + startingSquare + " can be captured! [startingSquare]");
+        return true;
+    }
+
+    // Given a square ID, returns a List of the branch IDs that are blank and connected to that square.
+    private List<int> getBlankBranches(int squareId)
+    {
+        List<int> blankBranches = new List<int>();
+        for (int branch = 0; branch < 4; ++branch)
+        {
+            int branchId = Reference.branchesOnSquareConnections[squareId, branch];
+            if (branches[branchId].branchState.branchColor == PlayerColor.Blank)
+            {
+                blankBranches.Add(branchId);
+            }
+        }
+        return blankBranches;
+    }
+
+    // Given a branch ID and a connected square ID, returns the ID of the square on the otherside of the branch.
+    private int getConnectedSquare(int branchId, int squareId)
+    {
+        int branchDirection = -1;
+        for (int i = 0; branchDirection == -1 && i < 4; ++i)
+        {
+            if (Reference.branchesOnSquareConnections[squareId, i] == branchId)
+            {
+                branchDirection = i;
+            }
+        }
+        return Reference.squareOnSquareConnections[squareId, branchDirection];
+    }
+
+    // A recursive method that checks for any connected squares that could be captured and checks to see if they're captured. 
+    private bool isConnectedSquareCaptured(int square, List<int> checkedSquares, List<int> captures, List<int> possibleCaptures)
+    {
+        List<int> blankBranches = getBlankBranches(square);
+        checkedSquares.Add(square);
+
+        foreach (int blankBranchId in blankBranches)
+        {
+            int connectedSquareId = getConnectedSquare(blankBranchId, square);
+            if (!checkedSquares.Contains(connectedSquareId))
+            {
+                if (!possibleCaptures.Contains(connectedSquareId) ||
+                    !isConnectedSquareCaptured(connectedSquareId, checkedSquares, captures, possibleCaptures))
+                {
+                    Debug.Log("The square, " + square + " cannot be captured. [recursive]");
+                    possibleCaptures.Remove(square);
+                    return false;
+                }
+            }
+        }
+        Debug.Log("The square, " + square + " can be captured! [recursive]");
+        possibleCaptures.Remove(square);
+        captures.Add(square);
+        return true;
+    }
+
+    // Given one player's color, returns the other player's color. Not meant to take blank.
+    private PlayerColor getOpponentColor(PlayerColor currentPlayer)
+    {
+        if (currentPlayer == PlayerColor.Blank)
+        {
+            Debug.Log("getOpponentColor() is not meant to receive PlayerColor.Blank.");
+            return PlayerColor.Blank;
+        }
+
+        if (currentPlayer == PlayerColor.Orange)
+        {
+            return PlayerColor.Purple;
+        }
+        else
+        {
+            return PlayerColor.Orange;
+        }
+    }
+
+
+
+
+//---------------------------------------------------------------------------------
+
 
 
 
