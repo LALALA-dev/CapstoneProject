@@ -159,6 +159,7 @@ public class GameManager : MonoBehaviour
                 if(GameInformation.turnNumber == 2)
                 {
                     GameInformation.turnNumber++;
+                    gameController.FlipColors();
                     BeginHumanOpenningMove();
                 }
                 else if(GameInformation.turnNumber == 3)
