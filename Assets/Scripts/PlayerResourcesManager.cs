@@ -9,16 +9,6 @@ public class PlayerResourcesManager : MonoBehaviour
     public Text[] playerOneResources;
     public Text[] playerTwoResources;
 
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        
-    }
-
     public void UpdateResourcesUI(PlayerColor playerColor)
     {
         if (playerColor == PlayerColor.Orange)

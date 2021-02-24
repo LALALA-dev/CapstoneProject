@@ -90,6 +90,7 @@ public class TradingPanelManager : MonoBehaviour
             
         panel.SetActive(false);
         GameInformation.resourceTrade = true;
+        GameInformation.tradeHasBeenMade = true;
     }
 
     public void ApplyResourceChanges(int colorId)
