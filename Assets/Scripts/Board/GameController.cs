@@ -50,7 +50,7 @@ public class GameController
     {
         GameInformation.turnNumber++;
         gameBoard.DetectTileOverloads();
-        gameBoard.DetectTileCaptures();
+        gameBoard.DetectMultiTileCaptures();
         if (!GameInformation.openingSequence || GameInformation.turnNumber == 5)
         {
             GameInformation.openingSequence = false;
