@@ -142,6 +142,7 @@ public class GameManager : MonoBehaviour
                     gameController.FlipColors();
 
                     gameController.CollectCurrentPlayerResources();
+                    gameController.UpdateScores();
 
                     int[] AIResources;
                     if (!GameInformation.playerIsHost)
@@ -190,6 +191,7 @@ public class GameManager : MonoBehaviour
                     GameInformation.humanMoveFinished = false;
                     gameController.FlipColors();
                     gameController.CollectCurrentPlayerResources();
+                    gameController.UpdateScores();
                     playerResourcesManager.UpdateBothPlayersResources();
                 }
             }
