@@ -335,12 +335,6 @@ public class GameBoard
         };
     }
 
-
-
-//-------------------------------------------------------------------------------
-
-
-
     public void DetectMultiTileCaptures()
     {
         List<int> captures = new List<int>();
@@ -357,10 +351,12 @@ public class GameBoard
             {
                 currentCaptureColor = branches[Reference.branchesOnSquareConnections[currentSquare, connectedBranch]].branchState.branchColor;
             }
-            // If no player has placed a branch along this square then skip it; it cannot be captured.
+            // If no player has placed a branch along this square then it can be captured, but only if it's surrounded by captured squares,
+            //  so we'll assign it's possible color later and ignore the following for loop. 
             if (currentCaptureColor == PlayerColor.Blank)
             {
                 couldBeCaptured = false;
+                possibleCaptures.Add(currentSquare);
             }
 
             // If there is at least one branch that has a player's piece on it then check if the other branches are either blank or that color.
@@ -401,21 +397,13 @@ public class GameBoard
             }
         }
 
-        Debug.Log("The possible captures are: ");
-        foreach (int possibleCapture in possibleCaptures)
-        {
-            Debug.Log(possibleCapture + ", ");
-        }
-
         // Check the list of possible captures for actual captures.
         while (possibleCaptures.Count > 0)
         {
             int square = possibleCaptures.First();
-            Debug.Log("Possible Capture: Square " + square);
             if (isCaptured(square, captures, possibleCaptures))
             {
-                possibleCaptures.Remove(square);
-                captures.Add(square);
+                captureArea(square, possibleCaptures, captures);
             }
             else
             {
@@ -427,13 +415,27 @@ public class GameBoard
         {
             PlayerColor captureColor = getCapturedSquareOwner(squareId);
 
-
-            Debug.Log("Square " + squareId + " is owned by " + captureColor + " because branch " + getCapturedSquareOwner(squareId) + " is " + 
-                branches[Reference.branchesOnSquareConnections[squareId, 0]].branchState.branchColor);
-
-
             squares[squareId].squareState.ownerColor = captureColor;
             squares[squareId].squareState.resourceState = SquareStatus.Captured;
+        }
+    }
+
+    // Given a square ID from which to start and the lists of possible captures and captures, will remove
+    //  all squares connected to the startSquare by a blank branch and add them to captures.
+    private void captureArea(int startSquare, List<int> possibleCaptures, List<int> captures)
+    {
+        List<int> blankBranches = getBlankBranches(startSquare);
+        possibleCaptures.Remove(startSquare);
+        captures.Add(startSquare);
+
+        // For every blank branch on this captured square...
+        foreach (int blankBranch in blankBranches)
+        {
+            // If the connected square hasn't yet been moved from possible to captured then move it.
+            if (possibleCaptures.Contains(getConnectedSquare(blankBranch, startSquare)))
+            {
+                captureArea(getConnectedSquare(blankBranch, startSquare), possibleCaptures, captures);
+            }
         }
     }
 
@@ -470,12 +472,10 @@ public class GameBoard
             if (!possibleCaptures.Contains(connectedSquareId) ||
                 !isConnectedSquareCaptured(connectedSquareId, checkedSquares, captures, possibleCaptures))
             {
-                Debug.Log("The square, " + startingSquare + " cannot be captured. [startingSquare]");
                 possibleCaptures.Remove(startingSquare);
                 return false;
             }
         }
-        Debug.Log("The square, " + startingSquare + " can be captured! [startingSquare]");
         return true;
     }
 
@@ -522,15 +522,11 @@ public class GameBoard
                 if (!possibleCaptures.Contains(connectedSquareId) ||
                     !isConnectedSquareCaptured(connectedSquareId, checkedSquares, captures, possibleCaptures))
                 {
-                    Debug.Log("The square, " + square + " cannot be captured. [recursive]");
                     possibleCaptures.Remove(square);
                     return false;
                 }
             }
         }
-        Debug.Log("The square, " + square + " can be captured! [recursive]");
-        possibleCaptures.Remove(square);
-        captures.Add(square);
         return true;
     }
 
@@ -552,14 +548,6 @@ public class GameBoard
             return PlayerColor.Orange;
         }
     }
-
-
-
-
-//---------------------------------------------------------------------------------
-
-
-
 
     public void DetectTileOverloads()
     {
