@@ -310,31 +310,6 @@ public class GameBoard
         return ownedTiles;
     }
 
-    // A fail fast method that checks the branches surrounding each square and stops detection on a square, moving to the next if it
-    //  encounters either a blank branch or one owned by the opposing player.
-    public void DetectTileCaptures()
-    {
-        for (int currentSquare = 0; currentSquare < MAX_SQUARES; ++currentSquare)
-        {
-            bool isCaptured = true;
-            PlayerColor currentCaptureColor = branches[Reference.branchesOnSquareConnections[currentSquare, 0]].branchState.branchColor;
-            for (int connectedBranch = 0; connectedBranch < 4 && isCaptured; ++connectedBranch)
-            {
-                Branch currentBranch = branches[Reference.branchesOnSquareConnections[currentSquare, connectedBranch]];
-                if (currentBranch.branchState.branchColor != currentCaptureColor || currentCaptureColor == PlayerColor.Blank)
-                {
-                    isCaptured = false;
-                }
-            }
-
-            if (isCaptured)
-            {
-                squares[currentSquare].squareState.ownerColor = currentCaptureColor;
-                squares[currentSquare].squareState.resourceState = SquareStatus.Captured;
-            }
-        };
-    }
-
     public void DetectMultiTileCaptures()
     {
         List<int> captures = new List<int>();
