@@ -87,13 +87,15 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-
-
     public void BranchUIUpdate(int branchID)
     {
         BroadcastMessage("ResetBranchUpdate", branchID);
     }
 
+    public void SendMessageToGameManager(string message)
+    {
+        SendMessageUpwards(message);
+    }
     public void DetectNewBlockCaptures(SquareState[] squares)
     {
         Sprite[] captureImages;

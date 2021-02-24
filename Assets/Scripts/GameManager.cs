@@ -260,10 +260,8 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void RefreshGameBoardUI()
+    public void UpdateResourcesUI()
     {
-        playerResourcesManager.UpdateResourcesUI(PlayerColor.Orange);
-        playerResourcesManager.UpdateResourcesUI(PlayerColor.Purple);
         playerResourcesManager.UpdateBothPlayersResources();
     }
 

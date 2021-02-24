@@ -64,7 +64,7 @@ public class BranchController : MonoBehaviour
                     GameInformation.playerTwoResources[0]--;
                     GameInformation.playerTwoResources[1]--;
                 }
-                SendMessageUpwards("UpdateResourcesUI");
+                SendMessageUpwards("SendMessageToGameManager", "UpdateResourcesUI");
             }
             // Are you trying to undo a selection?
             else if (isBranchColorOfCurrentPlayer())
@@ -82,7 +82,7 @@ public class BranchController : MonoBehaviour
                     GameInformation.playerTwoResources[0]++;
                     GameInformation.playerTwoResources[1]++;
                 }
-                SendMessageUpwards("UpdateResourcesUI");
+                SendMessageUpwards("SendMessageToGameManager", "UpdateResourcesUI");
                 ClaimBranch(blankSprite);
             }
         }
