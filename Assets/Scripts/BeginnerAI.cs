@@ -103,8 +103,8 @@ public class BeginnerAI
                     result += 1;
                 }
             }
-           // Debug.Log(temp.location + ": " + result);
-            Debug.Log("i: " + temp.location + " color: " + col[0] + " " + col[1] + " " + col[2] + " " + col[3]);
+            Debug.Log(temp.location + ": " + result);
+            //Debug.Log("i: " + temp.location + " color: " + col[0] + " " + col[1] + " " + col[2] + " " + col[3]);
             if (temp.nodeColor == PlayerColor.Blank)
             {
                 res.Add(result);
@@ -120,9 +120,8 @@ public class BeginnerAI
         return res;
     }
 
-    private List<BoardState> CalculatePossibleMoves(BoardState currentBoard, int[] aiResources)
+    private List<int> CalculatePossibleBranches(BoardState currentBoard, int[] aiResources)
     {
-        List<BoardState> moves = new List<BoardState>();
         List<int> aiOwnedBranches = new List<int>();
 
         foreach (BranchState branch in currentBoard.branchStates)
@@ -134,7 +133,6 @@ public class BeginnerAI
         }
 
         List<int> possibleBranchMoves = new List<int>();
-        List<int> possibleNodeMoves = new List<int>();
 
         if (aiResources[0] >= 1 && aiResources[1] >= 1)
         {
@@ -153,6 +151,22 @@ public class BeginnerAI
                 }
             }
         }
+        return possibleBranchMoves;
+    }
+
+    private List<int> CalculatePossibleNodes(BoardState currentBoard, int[] aiResources)
+    {
+        List<int> aiOwnedBranches = new List<int>();
+
+        foreach (BranchState branch in currentBoard.branchStates)
+        {
+            if (branch.branchColor == AIcolor || branch.ownerColor == AIcolor)
+            {
+                aiOwnedBranches.Add(branch.location);
+            }
+        }
+
+        List<int> possibleNodeMoves = new List<int>();
 
         if (aiResources[2] >= 2 && aiResources[3] >= 2)
         {
@@ -171,74 +185,9 @@ public class BeginnerAI
                     }
                 }
             }
+            
         }
-
-        if (aiResources[0] < 1 && aiResources[1] < 1 && aiResources[2] < 2 && aiResources[3] < 2)
-        {
-            // Trade resource
-        }
-
-        for (int i = 0; i < possibleBranchMoves.Count; i++)
-        {
-            BoardState newMove = new BoardState();
-            newMove.branchStates = new BranchState[36];
-            newMove.nodeStates = new NodeState[24];
-            newMove.squareStates = new SquareState[13];
-
-            for (int j = 0; j < 36; j++)
-            {
-                newMove.branchStates[j].branchColor = currentBoard.branchStates[j].branchColor;
-                newMove.branchStates[j].ownerColor = currentBoard.branchStates[j].ownerColor;
-                newMove.branchStates[j].location = j;
-            }
-            for (int j = 0; j < 24; j++)
-            {
-                newMove.nodeStates[j].nodeColor = currentBoard.nodeStates[j].nodeColor;
-                newMove.nodeStates[j].location = j;
-            }
-
-            newMove.squareStates = currentBoard.squareStates;
-
-            BranchState newBranch = new BranchState();
-            newBranch.branchColor = AIcolor;
-            newBranch.ownerColor = AIcolor;
-            newBranch.location = possibleBranchMoves[i];
-
-            newMove.branchStates[possibleBranchMoves[i]] = newBranch;
-
-            moves.Add(newMove);
-        }
-
-        for (int i = 0; i < possibleNodeMoves.Count; i++)
-        {
-            BoardState newMove = new BoardState();
-            newMove.branchStates = new BranchState[36];
-            newMove.nodeStates = new NodeState[24];
-            newMove.squareStates = new SquareState[13];
-
-            for (int j = 0; j < 36; j++)
-            {
-                newMove.branchStates[j].branchColor = currentBoard.branchStates[j].branchColor;
-                newMove.branchStates[j].ownerColor = currentBoard.branchStates[j].ownerColor;
-                newMove.branchStates[j].location = j;
-            }
-            for (int j = 0; j < 24; j++)
-            {
-                newMove.nodeStates[j].nodeColor = currentBoard.nodeStates[j].nodeColor;
-                newMove.nodeStates[j].location = j;
-            }
-
-            newMove.squareStates = currentBoard.squareStates;
-
-            NodeState newNode = new NodeState();
-            newNode.nodeColor = AIcolor;
-            newNode.location = possibleNodeMoves[i];
-
-            newMove.nodeStates[possibleNodeMoves[i]] = newNode;
-
-            moves.Add(newMove);
-        }
-        return moves;
+        return possibleNodeMoves;
     }
 
     public BoardState MakeRandomOpeningMove(BoardState currentBoard)
@@ -304,36 +253,61 @@ public class BeginnerAI
         currentBoardState = result;
         return result;
     }
-    public BoardState RandomMove(BoardState currentBoard, int[] aiResources)
+
+    private BoardState subRandomMove(BoardState currentBoard, int[] aiResources,ref int flag)
     {
-        DateTime beforDT = System.DateTime.Now;
+        //DateTime beforDT = System.DateTime.Now;
         currentBoardState = currentBoard;
-        List<BoardState> possibleMoves = CalculatePossibleMoves(currentBoard, aiResources);
+        List<int> possibleBranchMoves = CalculatePossibleBranches(currentBoard, aiResources);
+        System.Random rand = new System.Random();
 
-        TimeSpan t = (DateTime.UtcNow - new DateTime(1970, 1, 1));
-
-        var rand = new System.Random(t.Seconds);
-
-        if (possibleMoves.Count > 0)
+        if (possibleBranchMoves.Count > 0)
         {
+            int index = rand.Next(0, possibleBranchMoves.Count);
+            currentBoard.branchStates[possibleBranchMoves[index]].ownerColor = AIcolor;
+            currentBoard.branchStates[possibleBranchMoves[index]].branchColor = AIcolor;
+            flag = 1;
+            List<int> possibleNodeMoves = CalculatePossibleNodes(currentBoard, aiResources);
+            if (possibleNodeMoves.Count > 0)
+            {
+                index = rand.Next(0, possibleNodeMoves.Count);
+                currentBoard.nodeStates[possibleNodeMoves[index]].nodeColor = AIcolor;
+                flag = 1;
+            }
 
-            int index = rand.Next(possibleMoves.Count);
-
-            DateTime afterDT = System.DateTime.Now;
-            TimeSpan ts = afterDT.Subtract(beforDT);
+            //DateTime afterDT = System.DateTime.Now;
+            //TimeSpan ts = afterDT.Subtract(beforDT);
             // Debug.Log(ts);
             //   Debug.Log("beforDT: "+ beforDT + "\nafterDT: " + afterDT);
-            return possibleMoves[index];
         }
         else
         {
-            DateTime afterDT = System.DateTime.Now;
-            TimeSpan ts = afterDT.Subtract(beforDT);
+            List<int> possibleNodeMoves = CalculatePossibleNodes(currentBoard, aiResources);
+            if (possibleNodeMoves.Count > 0)
+            {
+                int index = rand.Next(0, possibleNodeMoves.Count);
+                currentBoard.nodeStates[possibleNodeMoves[index]].nodeColor = AIcolor;
+                flag = 1;
+            }
+            //DateTime afterDT = System.DateTime.Now;
+            //TimeSpan ts = afterDT.Subtract(beforDT);
             // Debug.Log(ts);
             //  Debug.Log("beforDT: " + beforDT + "\nafterDT: " + afterDT);
-
-            return currentBoard;
         }
+        return currentBoard;
+    }
+
+    public BoardState RandomMove(BoardState currentBoard, int[] aiResources)
+    {
+        int flag = 0;
+        currentBoard = subRandomMove(currentBoard, aiResources, ref flag);
+        while(flag == 1)
+        {
+            flag = 0;
+            currentBoard = subRandomMove(currentBoard, aiResources, ref flag);
+        }
+
+        return currentBoard;
 
     }
 }
