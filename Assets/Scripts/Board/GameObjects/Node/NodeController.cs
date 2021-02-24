@@ -60,10 +60,10 @@ public class NodeController : MonoBehaviour
                 else
                 {
                     ClaimNode(playerTwoSprite);
-                    GameInformation.playerOneResources[2] -= 2;
-                    GameInformation.playerOneResources[3] -= 2;
+                    GameInformation.playerTwoResources[2] -= 2;
+                    GameInformation.playerTwoResources[3] -= 2;
                 }
-                SendMessageUpwards("UpdateResourcesUI");
+                SendMessageUpwards("SendMessageToGameManager", "UpdateResourcesUI");
             }
             // Are you trying to undo a selection?
             else if (isNodeColorOfCurrentPlayer())
@@ -79,7 +79,7 @@ public class NodeController : MonoBehaviour
                     GameInformation.playerTwoResources[2] += 2;
                     GameInformation.playerTwoResources[3] += 2;
                 }
-                SendMessageUpwards("UpdateResourcesUI");
+                SendMessageUpwards("SendMessageToGameManager", "UpdateResourcesUI");
                 ClaimNode(blankSprite);
             }
         }
