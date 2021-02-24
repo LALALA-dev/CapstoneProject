@@ -11,19 +11,12 @@ public class Square : MonoBehaviour
     public int id;
     public SquareState squareState;
 
-    private GameController gameController;
+    public GameController gameController;
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         gameController = GameController.getInstance();
-
-        squareState.location = id;
-        squareState.ownerColor = PlayerColor.Blank;
-        squareState.resourceState = SquareStatus.Open;
-        squareState.resourceColor = gameController.getRandomResourceColor();
-        squareState.resourceAmount = gameController.getRandomResourceAmount(squareState.resourceColor);
-
         gameController.getGameBoard().squares[id] = this;
+        squareState = gameController.GetSquareStates()[id];
     }
 }

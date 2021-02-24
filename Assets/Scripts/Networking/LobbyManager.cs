@@ -122,7 +122,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         Debug.Log("Player is Host = " + GameInformation.playerIsHost);
 
         Debug.Log("Successfully Joined Room");
-        // PhotonNetwork.LoadLevel("GameScene");
+        //PhotonNetwork.LoadLevel("GameScene");
     }
 
     public override void OnLeftRoom()

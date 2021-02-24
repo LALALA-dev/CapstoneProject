@@ -13,39 +13,76 @@ public class NodeController : MonoBehaviour
 
     void Start()
     {
-        // Mark Node Unowned at start
         ClaimNode(blankSprite);
     }
 
     private void OnMouseDown()
     {
-        // Determine if current player can place here. (As of now simply meaning you can't override
-        if (isNodeBlank())
+        if(!GameInformation.gameOver)
         {
-            nodeEntity.nodeState.nodeColor = nodeEntity.gameController.getCurrentPlayerColor();
+            if (GameInformation.openingSequence)
+            {
+                if (isNodeBlank() && !GameInformation.openingMoveNodeSet)
+                {
+                    nodeEntity.nodeState.nodeColor = nodeEntity.gameController.getCurrentPlayerColor();
+                    GameInformation.openingMoveNodeSet = true;
+                    GameInformation.openingNodeId = nodeEntity.id;
 
-            // Change color
-            if (Game.playerOneTurn)
-                ClaimNode(playerOneSprite);
-            else
-                ClaimNode(playerTwoSprite);
+                    if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
+                        ClaimNode(playerOneSprite);
+                    else
+                        ClaimNode(playerTwoSprite);
+                }
+                else if (isNodeColorOfCurrentPlayer() && GameInformation.openingMoveNodeSet && GameInformation.openingNodeId == nodeEntity.id)
+                {
+                    nodeEntity.nodeState.nodeColor = PlayerColor.Blank;
+                    GameInformation.openingMoveNodeSet = false;
+                    ClaimNode(blankSprite);
+
+                    if (GameInformation.openingMoveBranchSet)
+                    {
+                        SendMessageUpwards("BranchUIUpdate", GameInformation.openingBranchId);
+                        GameInformation.openingMoveBranchSet = false;
+                    }
+                }
+            }
+            else if (hasEnoughResources() && isNodeConnectedToBranch() && isNodeBlank())
+            {
+                nodeEntity.nodeState.nodeColor = nodeEntity.gameController.getCurrentPlayerColor();
+
+                // Change color
+                if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
+                {
+                    ClaimNode(playerOneSprite);
+                    GameInformation.playerOneResources[2] -= 2;
+                    GameInformation.playerOneResources[3] -= 2;
+                }
+                else
+                {
+                    ClaimNode(playerTwoSprite);
+                    GameInformation.playerOneResources[2] -= 2;
+                    GameInformation.playerOneResources[3] -= 2;
+                }
+                SendMessageUpwards("UpdateResourcesUI");
+            }
+            // Are you trying to undo a selection?
+            else if (isNodeColorOfCurrentPlayer())
+            {
+                nodeEntity.nodeState.nodeColor = PlayerColor.Blank;
+                if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
+                {
+                    GameInformation.playerOneResources[2] += 2;
+                    GameInformation.playerOneResources[3] += 2;
+                }
+                else
+                {
+                    GameInformation.playerTwoResources[2] += 2;
+                    GameInformation.playerTwoResources[3] += 2;
+                }
+                SendMessageUpwards("UpdateResourcesUI");
+                ClaimNode(blankSprite);
+            }
         }
-        // Are you trying to undo a selection?
-        else if (isNodeColorOfCurrentPlayer())
-        {
-            nodeEntity.nodeState.nodeColor = PlayerColor.Blank;
-
-            ClaimNode(blankSprite);
-        }
-
-        // Print
-        print("You clicked on:\n" + this.GetComponent<Renderer>().name + ", ID: " + nodeEntity.id + ", Color: ");
-        if (GetComponent<SpriteRenderer>().sprite == playerOneSprite)
-            print("Orange\n");
-        else if (GetComponent<SpriteRenderer>().sprite == playerTwoSprite)
-            print("Purple\n");
-        else
-            print("Blank\n");
     }
 
     private void ClaimNode(Sprite playerColor)
@@ -59,9 +96,51 @@ public class NodeController : MonoBehaviour
         return nodeEntity.nodeState.nodeColor == PlayerColor.Blank;
     }
 
-
     private bool isNodeColorOfCurrentPlayer()
     {
         return nodeEntity.nodeState.nodeColor == nodeEntity.gameController.getCurrentPlayerColor();
+    }
+
+    public bool hasEnoughResources()
+    {
+        int[] resources = new int[4];
+        if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
+        {
+            resources = GameInformation.playerOneResources;
+        }
+        else
+        {
+            resources = GameInformation.playerTwoResources;
+        }
+
+        return (resources[2] >= 2 && resources[3] >= 2);
+    }
+
+    public bool isNodeConnectedToBranch()
+    {
+        int[] branchConnections = ReferenceScript.nodeConnectsToTheseBranches[nodeEntity.id];
+
+        foreach(int branchId in branchConnections)
+        {
+            if(nodeEntity.gameController.GetBranchState(branchId).branchColor == nodeEntity.gameController.getCurrentPlayerColor())
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public void UpdateAIGUI(PlayerColor color)
+    {
+        if (nodeEntity.nodeState.nodeColor == color)
+        {
+            nodeEntity.nodeState.nodeColor = color;
+
+            if (color == PlayerColor.Orange)
+                ClaimNode(playerOneSprite);
+            else
+                ClaimNode(playerTwoSprite);
+        }
     }
 }

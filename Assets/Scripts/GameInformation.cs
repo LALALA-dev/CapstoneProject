@@ -18,4 +18,37 @@ public class GameInformation
     public static NetworkGameType networkGameType = NetworkGameType.Public;
 
     public static bool playerIsHost = false;
+
+    public static char gameType = 'A';
+
+    public static bool openingSequence = true;
+
+    public static int turnNumber = 1;
+
+    public static bool openingMoveNodeSet = false;
+
+    public static bool openingMoveBranchSet = false;
+
+    public static int openingNodeId = 0;
+
+    public static int openingBranchId = 0;
+
+    public static int[] playerOneResources = new int[4] { 0, 0, 0, 0 };
+
+    public static int[] playerTwoResources = new int[4] { 0, 0, 0, 0 };
+
+    public static int[] maxTradeResources = new int[4] { 0, 0, 0, 0 };
+
+    public static bool resourceTrade = false;
+
+    public static int playerOneScore = 0;
+
+    public static int playerTwoScore = 0;
+
+    public static bool gameOver = false;
+
+    public static bool isAIMoveFinished = false;
+
+    public static bool waitingForAI = true;
+
 }
