@@ -47,8 +47,8 @@ public class GameInformation
 
     public static bool gameOver = false;
 
-    public static bool isAIMoveFinished = false;
+    public static string currentPlayer = "AI";
 
-    public static bool waitingForAI = true;
+    public static bool humanMoveFinished = false;
 
 }

@@ -7,83 +7,17 @@ using static GameObjectProperties;
 
 public class BoardManager : MonoBehaviour
 {
-    private GameController gameController;
-
     public Sprite[] images;
     public Sprite[] playerOneCapture;
     public Sprite[] playerTwoCapture;
     public Sprite[] resourceBlock;
     public SpriteRenderer[] spriteRenderers;
 
-    public Text[] playerOneResources;
-    public Text[] playerTwoResources;
-
-    private void Start()
+    public void SetSquareUI(SquareState[] squares)
     {
-        gameController = GameController.getInstance();
-
-        SquareState[] squares = gameController.GetSquareStates();
-
-        for (int i = 0; i < 13; i++)
-        {
-            SetSquareSpite(squares[i], spriteRenderers[i]);
-        }
-    }
-
-    private void Update()
-    {
-        if(GameInformation.isAIMoveFinished)
-        {
-            GameInformation.isAIMoveFinished = false;
-            RefreshForAIMoves();
-        }
-        if(GameInformation.waitingForAI)
-        {
-            // HARDCORE FOR NOW
-            UpdatePlayerResources(playerTwoResources, GameInformation.playerTwoResources);
-        }
-    }
-
-    public void ReshuffleBoard()
-    {
-        SquareState[] squares = gameController.GetSquareStates();
-
         for(int i = 0; i < 13; i++)
         {
             SetSquareSpite(squares[i], spriteRenderers[i]);
-        }
-    }
-
-    public void EndCurrentPlayersTurn()
-    {
-        if (GameInformation.openingSequence)
-        {
-            if (OpeningMoveSatisfied())
-            {
-                gameController.endTurn();
-                DetectNewTileBlocks();
-            }
-        }
-        else
-        {
-            if (GameInformation.gameType == 'A')
-            {
-                GameInformation.waitingForAI = true;
-                DetectNewBlockCaptures();
-            }
-
-            gameController.endTurn();
-            DetectNewTileBlocks();
-            DetectNewBlockCaptures();
-            if (GameInformation.playerOneScore >= 10 || GameInformation.playerTwoScore >= 10)
-            {
-                GameInformation.gameOver = true;
-            }
-        }
-        
-        if(GameInformation.turnNumber + 1 > 4 && !GameInformation.gameOver)
-        {
-            UpdateResourcesUI();
         }
     }
 
@@ -153,45 +87,15 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    public bool OpeningMoveSatisfied()
-    {
-        return OpeningMovePlacedNode() && OpeningMovePlacedConnectingBranch();
-    }
 
-    public bool OpeningMovePlacedNode()
-    {
-        return GameInformation.openingMoveNodeSet;
-    }
-
-    public bool OpeningMovePlacedConnectingBranch()
-    {
-        return GameInformation.openingMoveBranchSet;
-    }
 
     public void BranchUIUpdate(int branchID)
     {
         BroadcastMessage("ResetBranchUpdate", branchID);
     }
 
-    public void UpdateResourcesUI()
+    public void DetectNewBlockCaptures(SquareState[] squares)
     {
-        if(gameController.getCurrentPlayerColor() == PlayerColor.Orange)
-            UpdatePlayerResources(playerOneResources, GameInformation.playerOneResources);
-        else
-            UpdatePlayerResources(playerTwoResources, GameInformation.playerTwoResources);
-    }
-
-    private void UpdatePlayerResources(Text[] labels, int[] resources)
-    {
-        for(int i = 0; i < 4; i++)
-        {
-            labels[i].text = resources[i].ToString();
-        }
-    }
-
-    private void DetectNewBlockCaptures()
-    {
-        SquareState[] squares = gameController.GetSquareStates();
         Sprite[] captureImages;
 
        captureImages = playerOneCapture;
@@ -251,9 +155,8 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    private void DetectNewTileBlocks()
+    public void DetectNewTileBlocks(Square[] squares)
     {
-        Square[] squares = gameController.getGameBoard().squares;
         foreach (Square square in squares)
         {
             if (square.squareState.resourceState == SquareStatus.Blocked)
@@ -280,6 +183,15 @@ public class BoardManager : MonoBehaviour
 
     public void RefreshForAIMoves()
     {
-        BroadcastMessage("UpdateAIGUI", PlayerColor.Purple);
+        if(GameInformation.playerIsHost)
+            BroadcastMessage("UpdateAIGUI", PlayerColor.Purple);
+        else
+            BroadcastMessage("UpdateAIGUI", PlayerColor.Orange);
     }
+
+    public void UpdateGameBoardUI()
+    {
+
+    }
+
 }

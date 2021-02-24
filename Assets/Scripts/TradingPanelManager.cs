@@ -37,7 +37,7 @@ public class TradingPanelManager : MonoBehaviour
     public void AddColorTile(int colorId)
     {
         int numSelected = int.Parse(tilesSelected[colorId].text);
-        if(numSelected < 3 && numberOfTilesSelected < 3 && numSelected <= GameInformation.maxTradeResources[colorId])
+        if(numSelected < 3 && numberOfTilesSelected < 3 && numSelected + 1 <= GameInformation.maxTradeResources[colorId])
         {
             numSelected++;
             tilesSelected[colorId].text = numSelected.ToString();
@@ -63,6 +63,7 @@ public class TradingPanelManager : MonoBehaviour
             for(int i = 0; i < 4; i++)
                 createResourceBtn[i].gameObject.SetActive(false);
         }
+            
 
         RenderCreateBtnChoices();
     }

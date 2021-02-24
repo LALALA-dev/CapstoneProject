@@ -24,8 +24,6 @@ public class SceneLoader : MonoBehaviour
         GameInformation.openingMoveBranchSet = false;
         GameInformation.openingMoveNodeSet = false;
         GameInformation.gameType = 'A';
-        GameInformation.isAIMoveFinished = false;
-        GameInformation.waitingForAI = true;
         SceneManager.LoadScene("MainMenu");
     }
 

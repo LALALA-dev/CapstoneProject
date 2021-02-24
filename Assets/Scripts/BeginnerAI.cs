@@ -6,7 +6,7 @@ using static GameObjectProperties;
 
 public class BeginnerAI
 {
-    private PlayerColor AIcolor;
+    public PlayerColor AIcolor;
     private BoardState currentBoardState;
 
     public BeginnerAI(PlayerColor aiColor, BoardState openningBoardState)
