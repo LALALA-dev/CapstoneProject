@@ -237,7 +237,7 @@ public class GameController
 
     public void RefreshCapturedTiles()
     {
-        gameBoard.DetectTileCaptures();
+        gameBoard.DetectMultiTileCaptures();
     }
 
     public void RefreshBlockedTiles()
