@@ -50,7 +50,6 @@ public class BranchController : MonoBehaviour
             {
                 branchEntity.branchState.ownerColor = branchEntity.gameController.getCurrentPlayerColor();
                 branchEntity.branchState.branchColor = branchEntity.gameController.getCurrentPlayerColor();
-
                 // Change color
                 if (branchEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
                 {
@@ -64,7 +63,7 @@ public class BranchController : MonoBehaviour
                     GameInformation.playerTwoResources[0]--;
                     GameInformation.playerTwoResources[1]--;
                 }
-                SendMessageUpwards("UpdateResourcesUI");
+                SendMessageUpwards("SendMessageToGameManager", "UpdateResourcesUI");
             }
             // Are you trying to undo a selection?
             else if (isBranchColorOfCurrentPlayer())
@@ -82,7 +81,7 @@ public class BranchController : MonoBehaviour
                     GameInformation.playerTwoResources[0]++;
                     GameInformation.playerTwoResources[1]++;
                 }
-                SendMessageUpwards("UpdateResourcesUI");
+                SendMessageUpwards("SendMessageToGameManager", "UpdateResourcesUI");
                 ClaimBranch(blankSprite);
             }
         }
@@ -167,7 +166,7 @@ public class BranchController : MonoBehaviour
 
         foreach (int branchId in branchConnections)
         {
-            if (branchEntity.gameController.GetBranchState(branchId).branchColor == branchEntity.gameController.getCurrentPlayerColor())
+            if (branchEntity.gameController.getGameBoard().branches[branchId].branchState.branchColor == branchEntity.gameController.getCurrentPlayerColor())
             {
                 return true;
             }
