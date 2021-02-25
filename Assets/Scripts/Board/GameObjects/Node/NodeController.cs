@@ -60,10 +60,10 @@ public class NodeController : MonoBehaviour
                 else
                 {
                     ClaimNode(playerTwoSprite);
-                    GameInformation.playerOneResources[2] -= 2;
-                    GameInformation.playerOneResources[3] -= 2;
+                    GameInformation.playerTwoResources[2] -= 2;
+                    GameInformation.playerTwoResources[3] -= 2;
                 }
-                SendMessageUpwards("UpdateResourcesUI");
+                SendMessageUpwards("SendMessageToGameManager", "UpdateResourcesUI");
             }
             // Are you trying to undo a selection?
             else if (isNodeColorOfCurrentPlayer())
@@ -79,7 +79,7 @@ public class NodeController : MonoBehaviour
                     GameInformation.playerTwoResources[2] += 2;
                     GameInformation.playerTwoResources[3] += 2;
                 }
-                SendMessageUpwards("UpdateResourcesUI");
+                SendMessageUpwards("SendMessageToGameManager", "UpdateResourcesUI");
                 ClaimNode(blankSprite);
             }
         }
@@ -122,7 +122,7 @@ public class NodeController : MonoBehaviour
 
         foreach(int branchId in branchConnections)
         {
-            if(nodeEntity.gameController.GetBranchState(branchId).branchColor == nodeEntity.gameController.getCurrentPlayerColor())
+            if(nodeEntity.gameController.getGameBoard().branches[branchId].branchState.branchColor == nodeEntity.gameController.getCurrentPlayerColor())
             {
                 return true;
             }

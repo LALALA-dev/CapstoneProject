@@ -107,7 +107,7 @@ public class GameBoard
 
         foreach (SquareState square in boardState.squareStates)
         {
-            gameBoardString += square.location.ToString();
+            // gameBoardString += square.location.ToString();
 
             switch (square.ownerColor)
             {
@@ -182,7 +182,7 @@ public class GameBoard
         for (int i = 0; i < MAX_SQUARES; i++)
         {
             squares[i].squareState.location = i;
-            stringIndex++;
+            // stringIndex++;
 
             switch (networkBoardConfig[stringIndex])
             {
@@ -245,7 +245,7 @@ public class GameBoard
                     squares[i].squareState.resourceColor = SquareResourceColor.Green;
                     break;
                 case 'L':
-                    squares[i].squareState.resourceColor = SquareResourceColor.Blue;
+                    squares[i].squareState.resourceColor = SquareResourceColor.Blank;
                     break;
             }
             stringIndex++;
