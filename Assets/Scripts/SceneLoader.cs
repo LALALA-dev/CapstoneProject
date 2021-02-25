@@ -44,7 +44,7 @@ public class SceneLoader : MonoBehaviour
         SceneManager.LoadScene("GameScene");
     }
 
-    public void LoadNetworkLobbyScene()
+    public static void LoadNetworkLobbyScene()
     {
         SceneManager.LoadScene("NetworkLobbyScene");
     }

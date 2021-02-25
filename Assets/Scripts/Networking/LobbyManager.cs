@@ -161,16 +161,27 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
         Debug.Log("Joined Room Failed");
+        // TODO output message parameter
+        Invoke("AutoNavigate", 3.0f);
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
         Debug.Log("Room Creation Failed");
+        // TODO output message parameter
+        Invoke("AutoNavigate", 3.0f);
     }
 
     public override void OnDisconnected(DisconnectCause cause)
     {
         Debug.Log("Disconnected from server because: " + cause.ToString());
+        // TODO output cause parameter
+        Invoke("AutoNavigate", 3.0f);
+    }
+
+    public void AutoNavigate()
+    {
+        SceneLoader.LoadNetworkScene();
     }
 
     #endregion
