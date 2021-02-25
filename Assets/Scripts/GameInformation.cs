@@ -17,7 +17,7 @@ public class GameInformation
 
     public static NetworkGameType networkGameType = NetworkGameType.Public;
 
-    public static bool playerIsHost = false;
+    public static bool playerIsHost = true;
 
     public static char gameType = 'A';
 
@@ -47,8 +47,9 @@ public class GameInformation
 
     public static bool gameOver = false;
 
-    public static bool isAIMoveFinished = false;
+    public static string currentPlayer = "HUMAN";
 
-    public static bool waitingForAI = true;
+    public static bool humanMoveFinished = false;
 
+    public static bool tradeHasBeenMade = false;
 }
