@@ -103,8 +103,6 @@ public class BeginnerAI
                     result += 1;
                 }
             }
-            Debug.Log(temp.location + ": " + result);
-            //Debug.Log("i: " + temp.location + " color: " + col[0] + " " + col[1] + " " + col[2] + " " + col[3]);
             if (temp.nodeColor == PlayerColor.Blank)
             {
                 res.Add(result);
@@ -144,7 +142,7 @@ public class BeginnerAI
 
                 foreach (int branch in connectingBranches)
                 {
-                    if (currentBoard.branchStates[branch].branchColor == PlayerColor.Blank)
+                    if (currentBoard.branchStates[branch].branchColor == PlayerColor.Blank && (currentBoard.branchStates[branch].ownerColor == PlayerColor.Blank || currentBoard.branchStates[branch].ownerColor == AIcolor))
                     {
                         possibleBranchMoves.Add(currentBoard.branchStates[branch].location);
                     }
@@ -216,7 +214,7 @@ public class BeginnerAI
         BoardState result = currentBoardState;
 
         TimeSpan t = (DateTime.UtcNow - new DateTime(1970, 1, 1));
-        var rand = new System.Random(t.Seconds);
+        var rand = new System.Random();
         int index = rand.Next(possibleMoves.Count);
 
         //*********************
@@ -225,7 +223,6 @@ public class BeginnerAI
         int loc = -1;
         for (int i = 0; i < temp.Count; i++)
         {
-            //Debug.Log(i+ ": " + temp[i]);
             if (temp[i] >= max)
             {
                 loc = i;
@@ -235,20 +232,14 @@ public class BeginnerAI
         }
 
         //*********************
-        //result.nodeStates[possibleMoves[index].location].nodeColor = AIcolor;
         result.nodeStates[loc].nodeColor = AIcolor;
-        //int[] connectedBranches = ReferenceScript.nodeConnectsToTheseBranches[possibleMoves[index].location];
         int[] connectedBranches = ReferenceScript.nodeConnectsToTheseBranches[loc];
-        List<int> branchChoices = new List<int>();
 
-        foreach (int branch in connectedBranches)
-            if (currentBoardState.branchStates[branch].branchColor == PlayerColor.Blank)
-                branchChoices.Add(branch);
 
         rand = new System.Random(t.Seconds);
-        index = rand.Next(branchChoices.Count);
-        result.branchStates[branchChoices[index]].branchColor = AIcolor;
-        result.branchStates[branchChoices[index]].ownerColor = AIcolor;
+        index = rand.Next(0,connectedBranches.Length);
+        result.branchStates[connectedBranches[index]].branchColor = AIcolor;
+        result.branchStates[connectedBranches[index]].ownerColor = AIcolor;
 
         currentBoardState = result;
         return result;
@@ -256,8 +247,6 @@ public class BeginnerAI
 
     private BoardState subRandomMove(BoardState currentBoard, int[] aiResources,ref int flag)
     {
-        //DateTime beforDT = System.DateTime.Now;
-        currentBoardState = currentBoard;
         List<int> possibleBranchMoves = CalculatePossibleBranches(currentBoard, aiResources);
         System.Random rand = new System.Random();
 
@@ -273,12 +262,9 @@ public class BeginnerAI
                 index = rand.Next(0, possibleNodeMoves.Count);
                 currentBoard.nodeStates[possibleNodeMoves[index]].nodeColor = AIcolor;
                 flag = 1;
+                DetectLocalTileOverloads(currentBoard, possibleNodeMoves[index]);
             }
 
-            //DateTime afterDT = System.DateTime.Now;
-            //TimeSpan ts = afterDT.Subtract(beforDT);
-            // Debug.Log(ts);
-            //   Debug.Log("beforDT: "+ beforDT + "\nafterDT: " + afterDT);
         }
         else
         {
@@ -288,26 +274,236 @@ public class BeginnerAI
                 int index = rand.Next(0, possibleNodeMoves.Count);
                 currentBoard.nodeStates[possibleNodeMoves[index]].nodeColor = AIcolor;
                 flag = 1;
+                DetectLocalTileOverloads(currentBoard, possibleNodeMoves[index]);
             }
-            //DateTime afterDT = System.DateTime.Now;
-            //TimeSpan ts = afterDT.Subtract(beforDT);
-            // Debug.Log(ts);
-            //  Debug.Log("beforDT: " + beforDT + "\nafterDT: " + afterDT);
         }
         return currentBoard;
     }
 
-    public BoardState RandomMove(BoardState currentBoard, int[] aiResources)
+    private void ResourceTraiding(int[] aiResources, int[] initialResources)
     {
-        int flag = 0;
-        currentBoard = subRandomMove(currentBoard, aiResources, ref flag);
-        while(flag == 1)
+        
+        for (int i = 0; i < initialResources.Length; i++)
         {
-            flag = 0;
-            currentBoard = subRandomMove(currentBoard, aiResources, ref flag);
+            if (initialResources[i] == 0 || aiResources[0] + aiResources[1] + aiResources[2] + aiResources[3]>8)
+            {
+                switch (i)
+                {
+                    case 0:
+                        if (aiResources[i] == 0)
+                        {
+                            if (aiResources[1] + aiResources[2] + aiResources[3] >= 3)
+                            {
+                                if (initialResources[2] != 0 || ((initialResources[2] == 0) && aiResources[2] > 1))
+                                {
+                                    for (int j = 0; j < 3; j++)
+                                    {
+                                        int max = -1;
+                                        int ind = -1;
+                                        for (int k = 0; k < 4; k++)
+                                        {
+                                            if(max < aiResources[k] && k != i)
+                                            {
+                                                ind = k;
+                                                max = aiResources[k];
+                                            }
+                                        }
+                                        aiResources[ind]--;
+                                    }
+                                    aiResources[i]++;
+                                }
+                            }
+                        }
+                        break;
+                    case 1:
+                        if (aiResources[i] < 2)
+                        {
+                            if (aiResources[0] + aiResources[2] + aiResources[3] >= 3)
+                            {
+                                if (initialResources[3] != 0 || ((initialResources[3] == 0) && aiResources[3] > 2))
+                                {
+                                    for (int j = 0; j < 3; j++)
+                                    {
+                                        int max = -1;
+                                        int ind = -1;
+                                        for (int k = 0; k < 4; k++)
+                                        {
+                                            if (max < aiResources[k] && k != i)
+                                            {
+                                                ind = k;
+                                                max = aiResources[k];
+                                            }
+                                        }
+                                        aiResources[ind]--;
+                                    }
+                                    aiResources[i]++;
+                                }
+                            }
+                        }
+                        break;
+                    case 2:
+                        if (aiResources[i] == 0)
+                        {
+                            if (aiResources[0] + aiResources[1] + aiResources[3] >= 3)
+                            {
+                                if (initialResources[0] != 0 || ((initialResources[0] == 0) && aiResources[0] > 1))
+                                {
+                                    for (int j = 0; j < 3; j++)
+                                    {
+                                        int max = -1;
+                                        int ind = -1;
+                                        for (int k = 0; k < 4; k++)
+                                        {
+                                            if (max < aiResources[k] && k != i)
+                                            {
+                                                ind = k;
+                                                max = aiResources[k];
+                                            }
+                                        }
+                                        aiResources[ind]--;
+                                    }
+                                    aiResources[i]++;
+                                }
+                            }
+                        }
+                        break;
+                    case 3:
+                        if (aiResources[i] < 2)
+                        {
+                            if (aiResources[0] + aiResources[1] + aiResources[2] >= 3)
+                            {
+                                if (initialResources[1] != 0 || ((initialResources[1] == 0) && aiResources[1] > 2))
+                                {
+                                    for (int j = 0; j < 3; j++)
+                                    {
+                                        int max = -1;
+                                        int ind = -1;
+                                        for (int k = 0; k < 4; k++)
+                                        {
+                                            if (max < aiResources[k] && k != i)
+                                            {
+                                                ind = k;
+                                                max = aiResources[k];
+                                            }
+                                        }
+                                        aiResources[ind]--;
+                                    }
+                                    aiResources[i]++;
+                                }
+                            }
+                        }
+                        break;
+                }
+            }
         }
 
+    }
+
+    public BoardState RandomMove(BoardState currentBoard, int[] aiResources)
+    {
+        int[] initialResources = CollectCurrentPlayerResources(currentBoard, AIcolor);
+        Debug.Log(initialResources[0]+ " " + initialResources[1]+" " + initialResources[2] + " " + initialResources[3]);
+        int flag = 0;
+        currentBoard = subRandomMove(currentBoard, aiResources, ref flag);
+        ResourceTraiding(aiResources, initialResources);
+        while (flag == 1)
+        {
+            flag = 0;;
+            currentBoard = subRandomMove(currentBoard, aiResources, ref flag);
+        }
+        
+
+
+
         return currentBoard;
+
+    }
+
+    //********************************************
+    static public int[] CollectCurrentPlayerResources(BoardState gameBoard, PlayerColor CurrentPlayerColor)
+    {
+        List<NodeState> currentNodes = new List<NodeState>();
+        foreach (NodeState node in gameBoard.nodeStates)
+        {
+            if (node.nodeColor == CurrentPlayerColor)
+                currentNodes.Add(node);
+        }
+
+        List<SquareState> squares = new List<SquareState>();
+        foreach (NodeState node in currentNodes)
+        {
+            foreach (int squareId in ReferenceScript.nodeConnectToTheseTiles[node.location])
+            {
+                if (gameBoard.squareStates[squareId].resourceState == SquareStatus.Open || (gameBoard.squareStates[squareId].ownerColor == CurrentPlayerColor))
+                    squares.Add(gameBoard.squareStates[squareId]);
+            }
+        }
+
+        int[] resources = new int[4] { 0, 0, 0, 0 };
+        foreach (SquareState square in squares)
+        {
+            switch (square.resourceColor)
+            {
+                case SquareResourceColor.Red:
+                    resources[0]++;
+                    break;
+                case SquareResourceColor.Yellow:
+                    resources[1]++;
+                    break;
+                case SquareResourceColor.Blue:
+                    resources[2]++;
+                    break;
+                case SquareResourceColor.Green:
+                    resources[3]++;
+                    break;
+                default:
+                    break;
+            }
+        }
+        return resources;
+    }
+    //********************************************
+
+    public void DetectLocalTileOverloads(BoardState currentBoarrd, int currentNodeLocation)
+    {
+        foreach (int loc in nodeConnectToTheseTiles[currentNodeLocation])
+        {
+            int i = loc;
+            int numberOwnedNodes = 0;
+            if (currentBoarrd.squareStates[i].resourceState == SquareStatus.Open)
+            {
+                bool isBlocked = false;
+                int[] connectedNodes = ReferenceScript.tileConnectsToTheseNodes[i];
+
+                foreach (int node in connectedNodes)
+                {
+                    if (currentBoarrd.nodeStates[node].nodeColor != PlayerColor.Blank)
+                        numberOwnedNodes++;
+                }
+
+                switch (currentBoarrd.squareStates[i].resourceAmount)
+                {
+                    case SquareResourceAmount.One:
+                        if (numberOwnedNodes >= 2)
+                            isBlocked = true;
+                        break;
+                    case SquareResourceAmount.Two:
+                        if (numberOwnedNodes >= 3)
+                            isBlocked = true;
+                        break;
+                    case SquareResourceAmount.Three:
+                        if (numberOwnedNodes >= 4)
+                            isBlocked = true;
+                        break;
+                }
+
+                if (isBlocked)
+                {
+                    currentBoarrd.squareStates[i].resourceState = SquareStatus.Blocked;
+                }
+            }
+
+        }
 
     }
 }
