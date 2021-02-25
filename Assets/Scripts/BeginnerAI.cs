@@ -33,8 +33,17 @@ public class BeginnerAI
 
         if(aiResources[0] >= 1 && aiResources[1] >= 1)
         {
-            GameInformation.playerTwoResources[0]--;
-            GameInformation.playerTwoResources[1]--;
+            if(GameInformation.playerIsHost)
+            {
+                GameInformation.playerTwoResources[0]--;
+                GameInformation.playerTwoResources[1]--;
+            }
+            else
+            {
+                GameInformation.playerOneResources[0]--;
+                GameInformation.playerOneResources[1]--;
+            }
+            
             foreach(int ownedBranch in aiOwnedBranches)
             {
                 int[] connectingBranches = ReferenceScript.branchConnectsToTheseBranches[ownedBranch];
@@ -51,8 +60,16 @@ public class BeginnerAI
 
         if (aiResources[2] >= 2 && aiResources[3] >= 2)
         {
-            GameInformation.playerTwoResources[2] -= 2;
-            GameInformation.playerTwoResources[3] -= 2;
+            if (GameInformation.playerIsHost)
+            {
+                GameInformation.playerTwoResources[2] -= 2;
+                GameInformation.playerTwoResources[3] -= 2;
+            }
+            else
+            {
+                GameInformation.playerOneResources[2] -= 2;
+                GameInformation.playerOneResources[3] -= 2;
+            }
 
             foreach (int ownedBranch in aiOwnedBranches)
             {
