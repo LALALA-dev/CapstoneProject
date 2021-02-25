@@ -29,6 +29,7 @@ public class SceneLoader : MonoBehaviour
         GameInformation.openingMoveBranchSet = false;
         GameInformation.openingMoveNodeSet = false;
         GameInformation.gameType = 'A';
+        GameInformation.HumanNetworkProtocol = false;
         SceneManager.LoadScene("MainMenu");
     }
 

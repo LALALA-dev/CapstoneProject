@@ -52,4 +52,6 @@ public class GameInformation
     public static bool humanMoveFinished = false;
 
     public static bool tradeHasBeenMade = false;
+
+    public static bool HumanNetworkProtocol = false;
 }

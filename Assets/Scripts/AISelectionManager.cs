@@ -19,4 +19,13 @@ public class AISelectionManager : MonoBehaviour
 
         SceneLoader.LoadLocalGameScene();
     }
+
+    public void OnHNPSelect()
+    {
+        GameInformation.playerIsHost = true;
+        GameInformation.currentPlayer = "HUMAN";
+        GameInformation.HumanNetworkProtocol = true;
+        GameInformation.gameType = 'P';
+        SceneLoader.LoadLocalGameScene();
+    }
 }

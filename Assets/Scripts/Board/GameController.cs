@@ -95,7 +95,10 @@ public class GameController
 
     public void SetBoardConfiguration(string hostGameBoard)
     {
-        gameBoard.StringToConfiguration(hostGameBoard);
+        if (!GameInformation.HumanNetworkProtocol)
+            gameBoard.StringToConfiguration(hostGameBoard);
+        else
+            gameBoard.SetHNP(hostGameBoard);
         Debug.Log("BoardState: \n\t" + getCurrentSquareConfig() + "\n\t" + getCurrentNodeConfig() + "\n\t" + getCurrentBranchConfig());
     }
 
@@ -237,7 +240,7 @@ public class GameController
 
     public void RefreshCapturedTiles()
     {
-        gameBoard.DetectTileCaptures();
+        gameBoard.DetectMultiTileCaptures();
     }
 
     public void RefreshBlockedTiles()
