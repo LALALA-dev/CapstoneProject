@@ -227,30 +227,31 @@ public class GameManager : MonoBehaviour
             boardManager.DetectNewBlockCaptures(gameController.getGameBoard().GetSquareStates());
 
             GameInformation.resourceTrade = false;
+            if (GameInformation.currentPlayer == "HUMAN")
+            {
+                GameInformation.currentPlayer = "AI";
+                gameController.FlipColors();
+            }
+            else
+            {
+                GameInformation.currentPlayer = "HUMAN";
+                gameController.FlipColors();
+            }
             gameController.CollectCurrentPlayerResources();
             playerResourcesManager.UpdateBothPlayersResources();
             gameController.UpdateScores();
+
+            if (GameInformation.currentPlayer == "AI")
+            {
+                RandomAIMove();
+                EndCurrentPlayersTurn();
+            }
 
             if (GameInformation.playerOneScore >= 10 || GameInformation.playerTwoScore >= 10)
             {
                 GameInformation.gameOver = true;
                 return;
             }
-
-            if (GameInformation.currentPlayer == "HUMAN")
-            {
-                GameInformation.currentPlayer = "AI";
-                gameController.FlipColors();
-                RandomAIMove();
-                EndCurrentPlayersTurn();
-            }  
-            else
-            {
-                GameInformation.currentPlayer = "HUMAN";
-                gameController.FlipColors();
-            }
-
-
         }
     }
 
@@ -265,7 +266,6 @@ public class GameManager : MonoBehaviour
 
     public void RandomAIMove()
     {
-        GameInformation.currentPlayer = "AI";
         int[] AIResources;
         if (!GameInformation.playerIsHost)
             AIResources = GameInformation.playerOneResources;

@@ -232,7 +232,8 @@ public class GameController
 
     public void UpdateGameBoard()
     {
-
+        RefreshBlockedTiles();
+        RefreshCapturedTiles();
     }
 
     public void RefreshCapturedTiles()
