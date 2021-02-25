@@ -312,6 +312,7 @@ public class GameManager : MonoBehaviour
     {
         gameController.SetBoardConfiguration(HNPInput.text.Trim());
         boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
+        HNPInput.gameObject.SetActive(false);
         BeginnerAIGame();
     }
 }

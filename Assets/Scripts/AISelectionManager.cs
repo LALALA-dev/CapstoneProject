@@ -22,8 +22,8 @@ public class AISelectionManager : MonoBehaviour
 
     public void OnHNPSelect()
     {
-        GameInformation.playerIsHost = false;
-        GameInformation.currentPlayer = "AI";
+        GameInformation.playerIsHost = true;
+        GameInformation.currentPlayer = "HUMAN";
         GameInformation.HumanNetworkProtocol = true;
         GameInformation.gameType = 'P';
         SceneLoader.LoadLocalGameScene();
