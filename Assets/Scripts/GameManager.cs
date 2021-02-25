@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     private GameController gameController;
     private BeginnerAI beginnerAI;
 
-
+    public TMP_InputField HNPInput;
     public GameObject RenderBtn;
 
     #region Setup
@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour
 
         if (GameInformation.playerIsHost)
             RenderBtn.gameObject.SetActive(false);
+        if(!GameInformation.HumanNetworkProtocol)
+            HNPInput.gameObject.SetActive(false);
     }
 
     void Start()
@@ -38,6 +40,10 @@ public class GameManager : MonoBehaviour
         else if(GameInformation.gameType == 'E')
         {
             ExpertAIGame();
+        }
+        else if (GameInformation.HumanNetworkProtocol)
+        {
+            HNPInput.gameObject.SetActive(true);
         }
     }
     #endregion
@@ -303,4 +309,12 @@ public class GameManager : MonoBehaviour
         return GameInformation.openingMoveBranchSet;
     }
     #endregion
+
+    public void SetUpHNPGame()
+    {
+        gameController.SetBoardConfiguration(HNPInput.text.Trim());
+        boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
+        HNPInput.gameObject.SetActive(false);
+        BeginnerAIGame();
+    }
 }

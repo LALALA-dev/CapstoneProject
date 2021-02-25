@@ -175,6 +175,54 @@ public class GameBoard
         return gameBoardString;
     }
 
+    public void SetHNP(string boardConfig)
+    {
+        int stringIndex = 0;
+
+        for (int i = 0; i < MAX_SQUARES; i++)
+        {
+            squares[i].squareState.location = i;
+
+            switch (boardConfig[stringIndex])
+            {
+                case '0':
+                    squares[i].squareState.resourceAmount = SquareResourceAmount.Blank;
+                    break;
+                case '1':
+                    squares[i].squareState.resourceAmount = SquareResourceAmount.One;
+                    break;
+                case '2':
+                    squares[i].squareState.resourceAmount = SquareResourceAmount.Two;
+                    break;
+                case '3':
+                    squares[i].squareState.resourceAmount = SquareResourceAmount.Three;
+                    break;
+
+            }
+            stringIndex++;
+
+            switch (boardConfig[stringIndex])
+            {
+                case 'B':
+                    squares[i].squareState.resourceColor = SquareResourceColor.Blue;
+                    break;
+                case 'R':
+                    squares[i].squareState.resourceColor = SquareResourceColor.Red;
+                    break;
+                case 'Y':
+                    squares[i].squareState.resourceColor = SquareResourceColor.Yellow;
+                    break;
+                case 'G':
+                    squares[i].squareState.resourceColor = SquareResourceColor.Green;
+                    break;
+                case 'L':
+                    squares[i].squareState.resourceColor = SquareResourceColor.Blank;
+                    break;
+            }
+            stringIndex++;
+        }
+    }
+
     public void StringToConfiguration(string networkBoardConfig)
     {
         int stringIndex = 0;
