@@ -122,7 +122,7 @@ public class NodeController : MonoBehaviour
 
         foreach(int branchId in branchConnections)
         {
-            if(nodeEntity.gameController.GetBranchState(branchId).branchColor == nodeEntity.gameController.getCurrentPlayerColor())
+            if(nodeEntity.gameController.getGameBoard().branches[branchId].branchState.branchColor == nodeEntity.gameController.getCurrentPlayerColor())
             {
                 return true;
             }
