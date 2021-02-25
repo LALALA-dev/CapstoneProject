@@ -32,7 +32,7 @@ public class SceneLoader : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
     }
 
-    public void LoadNetworkScene()
+    public static void LoadNetworkScene()
     {
         SceneManager.LoadScene("MultiplayerPreferences");
     }

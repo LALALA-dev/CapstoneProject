@@ -98,6 +98,12 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         }
     }
 
+    public void LeaveRoom()
+    {
+        PhotonNetwork.LeaveRoom();
+        PhotonNetwork.Disconnect();
+    }
+
     public override void OnCreatedRoom()
     {
         statusText.text = "Waiting for opponent to join";
@@ -117,6 +123,11 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
         Debug.Log("Successfully Joined Room");
         //PhotonNetwork.LoadLevel("GameScene");
+    }
+
+    public override void OnLeftRoom()
+    {
+        SceneLoader.LoadNetworkScene();
     }
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
