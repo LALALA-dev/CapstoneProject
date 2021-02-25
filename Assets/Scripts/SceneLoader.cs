@@ -11,6 +11,11 @@ public class SceneLoader : MonoBehaviour
         SceneManager.LoadScene(currentSceneIndex + 1);
     }
 
+    public void LoadAIScene()
+    {
+        SceneManager.LoadScene("AISelectionScene");
+    }
+
     public void LoadMenuScene()
     {
         GameController.Destroy();
@@ -37,7 +42,7 @@ public class SceneLoader : MonoBehaviour
         Application.Quit();
     }
 
-    public void LoadLocalGameScene()
+    public static void LoadLocalGameScene()
     {
         SceneManager.LoadScene("GameScene");
     }

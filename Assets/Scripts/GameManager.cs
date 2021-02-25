@@ -156,6 +156,7 @@ public class GameManager : MonoBehaviour
                     BoardState AIMove = beginnerAI.RandomMove(gameController.getGameBoard().getBoardState(), AIResources);
                     gameController.getGameBoard().setBoard(AIMove.squareStates, AIMove.nodeStates, AIMove.branchStates);
                     boardManager.RefreshForAIMoves();
+                    EndCurrentPlayersTurn();
                 }
             }
             else
