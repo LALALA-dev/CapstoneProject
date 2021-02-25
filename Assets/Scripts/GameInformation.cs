@@ -52,4 +52,10 @@ public class GameInformation
     public static bool humanMoveFinished = false;
 
     public static bool tradeHasBeenMade = false;
+
+    public static bool HumanNetworkProtocol = false;
+
+    public static List<int> currentRoundPlacedNodes = new List<int>();
+
+    public static List<int> currentRoundPlacedBranches = new List<int>();
 }

@@ -63,10 +63,11 @@ public class BranchController : MonoBehaviour
                     GameInformation.playerTwoResources[0]--;
                     GameInformation.playerTwoResources[1]--;
                 }
+                GameInformation.currentRoundPlacedBranches.Add(branchEntity.id);
                 SendMessageUpwards("SendMessageToGameManager", "UpdateResourcesUI");
             }
             // Are you trying to undo a selection?
-            else if (isBranchColorOfCurrentPlayer())
+            else if (isBranchColorOfCurrentPlayer() && isUndoAttemptOnBranchPlaceThisRound())
             {
                 branchEntity.branchState.ownerColor = PlayerColor.Blank;
                 branchEntity.branchState.branchColor = PlayerColor.Blank;
@@ -119,6 +120,16 @@ public class BranchController : MonoBehaviour
         }
 
         return result;
+    }
+
+    private bool isUndoAttemptOnBranchPlaceThisRound()
+    {
+        if(GameInformation.currentRoundPlacedBranches.Contains(branchEntity.id))
+        {
+            return true;
+        }
+
+        return false;
     }
 
     public void ResetBranchUpdate(int id)

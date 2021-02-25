@@ -63,10 +63,12 @@ public class NodeController : MonoBehaviour
                     GameInformation.playerTwoResources[2] -= 2;
                     GameInformation.playerTwoResources[3] -= 2;
                 }
+
+                GameInformation.currentRoundPlacedNodes.Add(nodeEntity.id);
                 SendMessageUpwards("SendMessageToGameManager", "UpdateResourcesUI");
             }
             // Are you trying to undo a selection?
-            else if (isNodeColorOfCurrentPlayer())
+            else if (isNodeColorOfCurrentPlayer() && isUndoAttemptOnNodePlaceThisRound())
             {
                 nodeEntity.nodeState.nodeColor = PlayerColor.Blank;
                 if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
@@ -89,6 +91,16 @@ public class NodeController : MonoBehaviour
     {
         SpriteRenderer sprite = GetComponent<SpriteRenderer>();
         sprite.sprite = playerColor;
+    }
+
+    private bool isUndoAttemptOnNodePlaceThisRound()
+    {
+        if (GameInformation.currentRoundPlacedNodes.Contains(nodeEntity.id))
+        {
+            return true;
+        }
+
+        return false;
     }
 
     private bool isNodeBlank()

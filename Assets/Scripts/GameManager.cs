@@ -226,6 +226,8 @@ public class GameManager : MonoBehaviour
             boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
             gameController.RefreshCapturedTiles();
             boardManager.DetectNewBlockCaptures(gameController.getGameBoard().GetSquareStates());
+            GameInformation.currentRoundPlacedNodes.Clear();
+            GameInformation.currentRoundPlacedBranches.Clear();
 
             GameInformation.resourceTrade = false;
             if (GameInformation.currentPlayer == "HUMAN")
