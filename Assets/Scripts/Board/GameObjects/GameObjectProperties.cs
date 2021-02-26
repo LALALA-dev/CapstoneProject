@@ -31,6 +31,13 @@ public class GameObjectProperties
         Two,
         Three
     }
+
+    public struct SquareCaptureDetect
+    {
+        public int square;
+        public List<int> blankBranches;
+    }
+
     public struct SquareState
     {
         public int location;
