@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using static GameObjectProperties;
 using UnityEngine;
@@ -232,8 +233,17 @@ public class BeginnerAI
 
         //*********************
         result.nodeStates[loc].nodeColor = AIcolor;
-        int[] connectedBranches = ReferenceScript.nodeConnectsToTheseBranches[loc];
+        int[] connectedBranche = ReferenceScript.nodeConnectsToTheseBranches[loc];
+        int[] connectedBranches = new int[4];
+        for (int i = 0, j = 0; i < connectedBranche.Length; i++)
+        {
 
+            if (result.branchStates[i].ownerColor == PlayerColor.Blank)
+            {
+                connectedBranches[j] = connectedBranche[i];
+                j++;
+            }
+        }
 
         rand = new System.Random(t.Seconds);
         index = rand.Next(0,connectedBranches.Length);
@@ -281,7 +291,7 @@ public class BeginnerAI
 
     private void ResourceTraiding(int[] aiResources, int[] initialResources)
     {
-        
+        int trad = 0;
         for (int i = 0; i < initialResources.Length; i++)
         {
             if (initialResources[i] == 0 || aiResources[0] + aiResources[1] + aiResources[2] + aiResources[3]>8)
@@ -289,7 +299,7 @@ public class BeginnerAI
                 switch (i)
                 {
                     case 0:
-                        if (aiResources[i] == 0)
+                        if (aiResources[i] == 0 && trad == 0) 
                         {
                             if (aiResources[1] + aiResources[2] + aiResources[3] >= 3)
                             {
@@ -310,12 +320,13 @@ public class BeginnerAI
                                         aiResources[ind]--;
                                     }
                                     aiResources[i]++;
+                                    trad = 1;
                                 }
                             }
                         }
                         break;
                     case 1:
-                        if (aiResources[i] < 2)
+                        if (aiResources[i] < 2 && trad == 0)
                         {
                             if (aiResources[0] + aiResources[2] + aiResources[3] >= 3)
                             {
@@ -336,12 +347,13 @@ public class BeginnerAI
                                         aiResources[ind]--;
                                     }
                                     aiResources[i]++;
+                                    trad = 1;
                                 }
                             }
                         }
                         break;
                     case 2:
-                        if (aiResources[i] == 0)
+                        if (aiResources[i] == 0 && trad == 0)
                         {
                             if (aiResources[0] + aiResources[1] + aiResources[3] >= 3)
                             {
@@ -362,12 +374,13 @@ public class BeginnerAI
                                         aiResources[ind]--;
                                     }
                                     aiResources[i]++;
+                                    trad = 1;
                                 }
                             }
                         }
                         break;
                     case 3:
-                        if (aiResources[i] < 2)
+                        if (aiResources[i] < 2 && trad == 0)
                         {
                             if (aiResources[0] + aiResources[1] + aiResources[2] >= 3)
                             {
@@ -388,6 +401,7 @@ public class BeginnerAI
                                         aiResources[ind]--;
                                     }
                                     aiResources[i]++;
+                                    trad = 1;
                                 }
                             }
                         }
