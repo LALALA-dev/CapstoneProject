@@ -183,11 +183,15 @@ public class BeginnerAI
         {
             if (GameInformation.playerIsHost)
             {
-                GameInformation.playerTwoResources[2] -= 2;
-                GameInformation.playerTwoResources[3] -= 2;
+                aiResources[2] -= 2;
+                aiResources[3] -= 2;
+                //GameInformation.playerTwoResources[2] -= 2;
+                //GameInformation.playerTwoResources[3] -= 2;
             }
             else
             {
+                aiResources[2] -= 2;
+                aiResources[3] -= 2;
                 GameInformation.playerOneResources[2] -= 2;
                 GameInformation.playerOneResources[3] -= 2;
             }
