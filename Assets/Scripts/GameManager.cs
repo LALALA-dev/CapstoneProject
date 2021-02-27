@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour
             GameInformation.tradeHasBeenMade = false;
             playerResourcesManager.UpdateBothPlayersResources();
         }
-        gameController.UpdateGameBoard();
+        // gameController.UpdateGameBoard();
     }
 
     #region Network Game

@@ -36,6 +36,7 @@ public class NodeController : MonoBehaviour
                 else if (isNodeColorOfCurrentPlayer() && GameInformation.openingMoveNodeSet && GameInformation.openingNodeId == nodeEntity.id)
                 {
                     nodeEntity.nodeState.nodeColor = PlayerColor.Blank;
+                    nodeEntity.gameController.getGameBoard().getBoardState().nodeStates[nodeEntity.id].nodeColor = PlayerColor.Blank;
                     GameInformation.openingMoveNodeSet = false;
                     ClaimNode(blankSprite);
 
@@ -71,6 +72,7 @@ public class NodeController : MonoBehaviour
             else if (isNodeColorOfCurrentPlayer() && isUndoAttemptOnNodePlaceThisRound())
             {
                 nodeEntity.nodeState.nodeColor = PlayerColor.Blank;
+                nodeEntity.gameController.getGameBoard().getBoardState().nodeStates[nodeEntity.id].nodeColor = PlayerColor.Blank;
                 if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
                 {
                     GameInformation.playerOneResources[2] += 2;
@@ -84,6 +86,7 @@ public class NodeController : MonoBehaviour
                 SendMessageUpwards("SendMessageToGameManager", "UpdateResourcesUI");
                 ClaimNode(blankSprite);
                 nodeEntity.nodeState.nodeColor = PlayerColor.Blank;
+                nodeEntity.gameController.getGameBoard().getBoardState().nodeStates[nodeEntity.id].nodeColor = PlayerColor.Blank;
             }
         }
     }
