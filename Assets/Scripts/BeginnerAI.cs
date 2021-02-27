@@ -306,7 +306,7 @@ public class BeginnerAI
         return currentBoard;
     }
 
-    private void ResourceTraiding(int[] aiResources, int[] initialResources)
+    private void ResourceTrading(int[] aiResources, int[] initialResources)
     {
         int trad = 0;
         for (int i = 0; i < initialResources.Length; i++)
@@ -435,7 +435,7 @@ public class BeginnerAI
         Debug.Log(initialResources[0]+ " " + initialResources[1]+" " + initialResources[2] + " " + initialResources[3]);
         int flag = 0;
         currentBoard = subRandomMove(currentBoard, aiResources, ref flag);
-        ResourceTraiding(aiResources, initialResources);
+        ResourceTrading(aiResources, initialResources);
         while (flag == 1)
         {
             flag = 0;;
