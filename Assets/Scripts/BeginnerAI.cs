@@ -192,8 +192,8 @@ public class BeginnerAI
             {
                 aiResources[2] -= 2;
                 aiResources[3] -= 2;
-                GameInformation.playerOneResources[2] -= 2;
-                GameInformation.playerOneResources[3] -= 2;
+                //GameInformation.playerOneResources[2] -= 2;
+                //GameInformation.playerOneResources[3] -= 2;
             }
 
             foreach (int ownedBranch in aiOwnedBranches)
