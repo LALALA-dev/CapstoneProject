@@ -266,7 +266,6 @@ public class BeginnerAI
         result.branchStates[connectedBranches[index]].ownerColor = AIcolor;
 
         currentBoardState = result;
-        //Debug.Log(connectedBranches[index] + " result: " + result.branchStates[connectedBranches[index]].branchColor);
         return result;
     }
 
@@ -320,18 +319,41 @@ public class BeginnerAI
                         {
                             if (aiResources[1] + aiResources[2] + aiResources[3] >= 3)
                             {
-                                if (initialResources[2] != 0 || ((initialResources[2] == 0) && aiResources[2] > 1))
+                                if (initialResources[1] != 0 || ((initialResources[1] == 0) && aiResources[1] > 1))
                                 {
                                     for (int j = 0; j < 3; j++)
                                     {
                                         int max = -1;
                                         int ind = -1;
+                                        int spec = -1;
                                         for (int k = 0; k < 4; k++)
                                         {
                                             if (max < aiResources[k] && k != i)
                                             {
-                                                ind = k;
-                                                max = aiResources[k];
+                                                if(aiResources[k] == 1 && k == 1)
+                                                {
+                                                    if(aiResources[2] == 1)
+                                                    {
+                                                        ind = 2;
+                                                        max = aiResources[2];
+                                                    }
+                                                    else if(aiResources[3] == 1)
+                                                    {
+                                                        ind = 3;
+                                                        max = aiResources[3];
+                                                    }
+                                                    else
+                                                    {
+                                                        ind = k;
+                                                        max = aiResources[k];
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    ind = k;
+                                                    max = aiResources[k];
+                                                }
+                                                
                                             }
                                         }
                                         aiResources[ind]--;
@@ -343,6 +365,54 @@ public class BeginnerAI
                         }
                         break;
                     case 1:
+                        if (aiResources[i] == 0 && trad == 0)
+                        {
+                            if (aiResources[0] + aiResources[1] + aiResources[3] >= 3)
+                            {
+                                if (initialResources[0] != 0 || ((initialResources[0] == 0) && aiResources[0] > 1))
+                                {
+                                    for (int j = 0; j < 3; j++)
+                                    {
+                                        int max = -1;
+                                        int ind = -1;
+                                        for (int k = 0; k < 4; k++)
+                                        {
+                                            if (max < aiResources[k] && k != i)
+                                            {
+                                                if (aiResources[k] == 1 && k == 0)
+                                                {
+                                                    if (aiResources[2] == 1)
+                                                    {
+                                                        ind = 2;
+                                                        max = aiResources[2];
+                                                    }
+                                                    else if (aiResources[3] == 1)
+                                                    {
+                                                        ind = 3;
+                                                        max = aiResources[3];
+                                                    }
+                                                    else
+                                                    {
+                                                        ind = k;
+                                                        max = aiResources[k];
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    ind = k;
+                                                    max = aiResources[k];
+                                                }
+                                            }
+                                        }
+                                        aiResources[ind]--;
+                                    }
+                                    aiResources[i]++;
+                                    trad = 1;
+                                }
+                            }
+                        }
+                        break;
+                    case 2:
                         if (aiResources[i] < 2 && trad == 0)
                         {
                             if (aiResources[0] + aiResources[2] + aiResources[3] >= 3)
@@ -369,39 +439,12 @@ public class BeginnerAI
                             }
                         }
                         break;
-                    case 2:
-                        if (aiResources[i] == 0 && trad == 0)
-                        {
-                            if (aiResources[0] + aiResources[1] + aiResources[3] >= 3)
-                            {
-                                if (initialResources[0] != 0 || ((initialResources[0] == 0) && aiResources[0] > 1))
-                                {
-                                    for (int j = 0; j < 3; j++)
-                                    {
-                                        int max = -1;
-                                        int ind = -1;
-                                        for (int k = 0; k < 4; k++)
-                                        {
-                                            if (max < aiResources[k] && k != i)
-                                            {
-                                                ind = k;
-                                                max = aiResources[k];
-                                            }
-                                        }
-                                        aiResources[ind]--;
-                                    }
-                                    aiResources[i]++;
-                                    trad = 1;
-                                }
-                            }
-                        }
-                        break;
                     case 3:
                         if (aiResources[i] < 2 && trad == 0)
                         {
                             if (aiResources[0] + aiResources[1] + aiResources[2] >= 3)
                             {
-                                if (initialResources[1] != 0 || ((initialResources[1] == 0) && aiResources[1] > 2))
+                                if (initialResources[2] != 0 || ((initialResources[2] == 0) && aiResources[2] > 2))
                                 {
                                     for (int j = 0; j < 3; j++)
                                     {
@@ -426,12 +469,13 @@ public class BeginnerAI
                 }
             }
         }
+        
         if(trad == 1)
         {
-            Debug.Log("0 = Red, 1 = Yellow, 2 = Blue, 3 = Green");
+            Debug.Log("0 = Red, 1 = Blue, 2 =Yellow , 3 = Green");
             for (int i = 0; i < aiResources.Length; i++)
             {
-                if (aiResources[i] < debug[i])
+                if (aiResources[i] <= debug[i])
                 {
                     Debug.Log("gave " + i + ": " + (debug[i] - aiResources[i]));
                 }
@@ -447,14 +491,16 @@ public class BeginnerAI
     public BoardState RandomMove(BoardState currentBoard, int[] aiResources)
     {
         int[] initialResources = CollectCurrentPlayerResources(currentBoard, AIcolor);
-        //Debug.Log(initialResources[0] + " " + initialResources[1] + " " + initialResources[2] + " " + initialResources[3]);
         int flag = 0;
         currentBoard = subRandomMove(currentBoard, aiResources, ref flag);
+       // Debug.Log(aiResources[0] + " " + aiResources[1] + " " + aiResources[2] + " " + aiResources[3]);
         ResourceTrading(aiResources, initialResources);
+       // Debug.Log(aiResources[0] + " " + aiResources[1] + " " + aiResources[2] + " " + aiResources[3]);
         while (flag == 1)
         {
             flag = 0; ;
             currentBoard = subRandomMove(currentBoard, aiResources, ref flag);
+        //    Debug.Log(aiResources[0] + " " + aiResources[1] + " " + aiResources[2] + " " + aiResources[3]);
         }
         return currentBoard;
     }
