@@ -21,23 +21,23 @@ public class BeginnerAI
         List<double> res = new List<double>();
         foreach (NodeState temp in currentBoard.nodeStates)
         {
-            
+
             double result = 0;
             int[] col = { 0, 0, 0, 0 };
 
             foreach (int tile in ReferenceScript.nodeConnectToTheseTiles[temp.location])
             {
-               
+
                 SquareResourceAmount flag = SquareResourceAmount.Blank;
-                
-                    foreach (int connectedNode in ReferenceScript.tileConnectsToTheseNodes[tile])
+
+                foreach (int connectedNode in ReferenceScript.tileConnectsToTheseNodes[tile])
+                {
+
+                    if (currentBoard.nodeStates[connectedNode].nodeColor != PlayerColor.Blank)
                     {
-                        
-                        if (currentBoard.nodeStates[connectedNode].nodeColor != PlayerColor.Blank)
-                            {
-                                flag++;
-                            }
+                        flag++;
                     }
+                }
                 if (flag < currentBoard.squareStates[tile].resourceAmount)
                 {
 
@@ -63,9 +63,9 @@ public class BeginnerAI
                     }
                 }
 
-                flag = 0;                  
-                
-                  
+                flag = 0;
+
+
             }
             if (col[0] > 0 && col[2] > 0)
             {
@@ -77,7 +77,7 @@ public class BeginnerAI
                 {
                     result += (1.5 + 1.5);
                 }
-                
+
                 if (col[1] > 0 && col[3] > 0)
                 {
                     result += (2 + 2);
@@ -96,9 +96,9 @@ public class BeginnerAI
                 }
 
             }
-            for(int i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
             {
-                if(col[i] > 0)
+                if (col[i] > 0)
                 {
                     result += 1;
                 }
@@ -114,7 +114,7 @@ public class BeginnerAI
 
             result = 0;
         }
-        
+
         return res;
     }
 
@@ -134,7 +134,7 @@ public class BeginnerAI
 
         if (aiResources[0] >= 1 && aiResources[1] >= 1)
         {
-            if(GameInformation.playerIsHost)
+            if (GameInformation.playerIsHost)
             {
                 GameInformation.playerTwoResources[0]--;
                 GameInformation.playerTwoResources[1]--;
@@ -144,7 +144,7 @@ public class BeginnerAI
                 GameInformation.playerOneResources[0]--;
                 GameInformation.playerOneResources[1]--;
             }
-            
+
             foreach (int ownedBranch in aiOwnedBranches)
             {
                 int[] connectingBranches = ReferenceScript.branchConnectsToTheseBranches[ownedBranch];
@@ -177,7 +177,7 @@ public class BeginnerAI
 
         if (aiResources[2] >= 2 && aiResources[3] >= 2)
         {
-            if(GameInformation.playerIsHost)
+            if (GameInformation.playerIsHost)
             {
                 GameInformation.playerTwoResources[2] -= 2;
                 GameInformation.playerTwoResources[3] -= 2;
@@ -200,14 +200,14 @@ public class BeginnerAI
                     }
                 }
             }
-            
+
         }
         return possibleNodeMoves;
     }
 
     public BoardState MakeRandomOpeningMove(BoardState currentBoard)
     {
-        
+
         currentBoardState = currentBoard;
         BoardState result = new BoardState();
 
@@ -255,15 +255,15 @@ public class BeginnerAI
         for (int i = 0, j = 0; i < connectedBranche.Length; i++)
         {
 
-            if (result.branchStates[i].ownerColor == PlayerColor.Blank)
+            if (result.branchStates[connectedBranche[i]].ownerColor == PlayerColor.Blank)
             {
                 connectedBranches[j] = connectedBranche[i];
                 j++;
             }
         }
-
+       
         rand = new System.Random(t.Seconds);
-        index = rand.Next(0,connectedBranches.Length);
+        index = rand.Next(0, connectedBranches.Length);
         result.branchStates[connectedBranches[index]].branchColor = AIcolor;
         result.branchStates[connectedBranches[index]].ownerColor = AIcolor;
 
@@ -271,7 +271,7 @@ public class BeginnerAI
         return result;
     }
 
-    private BoardState subRandomMove(BoardState currentBoard, int[] aiResources,ref int flag)
+    private BoardState subRandomMove(BoardState currentBoard, int[] aiResources, ref int flag)
     {
         List<int> possibleBranchMoves = CalculatePossibleBranches(currentBoard, aiResources);
         System.Random rand = new System.Random();
@@ -311,12 +311,12 @@ public class BeginnerAI
         int trad = 0;
         for (int i = 0; i < initialResources.Length; i++)
         {
-            if (initialResources[i] == 0 || aiResources[0] + aiResources[1] + aiResources[2] + aiResources[3]>8)
+            if (initialResources[i] == 0 || aiResources[0] + aiResources[1] + aiResources[2] + aiResources[3] > 8)
             {
                 switch (i)
                 {
                     case 0:
-                        if (aiResources[i] == 0 && trad == 0) 
+                        if (aiResources[i] == 0 && trad == 0)
                         {
                             if (aiResources[1] + aiResources[2] + aiResources[3] >= 3)
                             {
@@ -328,7 +328,7 @@ public class BeginnerAI
                                         int ind = -1;
                                         for (int k = 0; k < 4; k++)
                                         {
-                                            if(max < aiResources[k] && k != i)
+                                            if (max < aiResources[k] && k != i)
                                             {
                                                 ind = k;
                                                 max = aiResources[k];
@@ -432,13 +432,13 @@ public class BeginnerAI
     public BoardState RandomMove(BoardState currentBoard, int[] aiResources)
     {
         int[] initialResources = CollectCurrentPlayerResources(currentBoard, AIcolor);
-        Debug.Log(initialResources[0]+ " " + initialResources[1]+" " + initialResources[2] + " " + initialResources[3]);
+        Debug.Log(initialResources[0] + " " + initialResources[1] + " " + initialResources[2] + " " + initialResources[3]);
         int flag = 0;
         currentBoard = subRandomMove(currentBoard, aiResources, ref flag);
         ResourceTrading(aiResources, initialResources);
         while (flag == 1)
         {
-            flag = 0;;
+            flag = 0; ;
             currentBoard = subRandomMove(currentBoard, aiResources, ref flag);
         }
         return currentBoard;
