@@ -83,6 +83,7 @@ public class NodeController : MonoBehaviour
                 }
                 SendMessageUpwards("SendMessageToGameManager", "UpdateResourcesUI");
                 ClaimNode(blankSprite);
+                nodeEntity.nodeState.nodeColor = PlayerColor.Blank;
             }
         }
     }
