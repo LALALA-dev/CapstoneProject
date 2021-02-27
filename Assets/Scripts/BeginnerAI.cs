@@ -247,7 +247,6 @@ public class BeginnerAI
 
             }
         }
-
         //*********************
         result.nodeStates[loc].nodeColor = AIcolor;
         int[] connectedBranche = ReferenceScript.nodeConnectsToTheseBranches[loc];
@@ -261,13 +260,13 @@ public class BeginnerAI
                 j++;
             }
         }
-       
         rand = new System.Random(t.Seconds);
         index = rand.Next(0, connectedBranches.Length);
         result.branchStates[connectedBranches[index]].branchColor = AIcolor;
         result.branchStates[connectedBranches[index]].ownerColor = AIcolor;
 
         currentBoardState = result;
+        //Debug.Log(connectedBranches[index] + " result: " + result.branchStates[connectedBranches[index]].branchColor);
         return result;
     }
 
@@ -308,6 +307,7 @@ public class BeginnerAI
 
     private void ResourceTrading(int[] aiResources, int[] initialResources)
     {
+        int[] debug = (int[])aiResources.Clone();
         int trad = 0;
         for (int i = 0; i < initialResources.Length; i++)
         {
@@ -426,13 +426,28 @@ public class BeginnerAI
                 }
             }
         }
-
+        if(trad == 1)
+        {
+            Debug.Log("0 = Red, 1 = Yellow, 2 = Blue, 3 = Green");
+            for (int i = 0; i < aiResources.Length; i++)
+            {
+                if (aiResources[i] < debug[i])
+                {
+                    Debug.Log("gave " + i + ": " + (debug[i] - aiResources[i]));
+                }
+                else
+                {
+                    Debug.Log("got " +i + ": " + (aiResources[i] - debug[i]));
+                }
+            }
+        }
+      
     }
 
     public BoardState RandomMove(BoardState currentBoard, int[] aiResources)
     {
         int[] initialResources = CollectCurrentPlayerResources(currentBoard, AIcolor);
-        Debug.Log(initialResources[0] + " " + initialResources[1] + " " + initialResources[2] + " " + initialResources[3]);
+        //Debug.Log(initialResources[0] + " " + initialResources[1] + " " + initialResources[2] + " " + initialResources[3]);
         int flag = 0;
         currentBoard = subRandomMove(currentBoard, aiResources, ref flag);
         ResourceTrading(aiResources, initialResources);
