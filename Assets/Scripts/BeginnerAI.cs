@@ -136,13 +136,17 @@ public class BeginnerAI
         {
             if (GameInformation.playerIsHost)
             {
-                GameInformation.playerTwoResources[0]--;
-                GameInformation.playerTwoResources[1]--;
+                aiResources[0]--;
+                aiResources[1]--;
+                //GameInformation.playerTwoResources[0]--;
+                //GameInformation.playerTwoResources[1]--;
             }
             else
             {
-                GameInformation.playerOneResources[0]--;
-                GameInformation.playerOneResources[1]--;
+                aiResources[0]--;
+                aiResources[1]--;
+                //GameInformation.playerOneResources[0]--;
+                //GameInformation.playerOneResources[1]--;
             }
 
             foreach (int ownedBranch in aiOwnedBranches)
