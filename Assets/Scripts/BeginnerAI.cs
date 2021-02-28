@@ -118,6 +118,44 @@ public class BeginnerAI
         return res;
     }
 
+    private bool IsValidNodeMoves(BoardState currentBoard)
+    {
+       
+            List<int> aiOwnedBranches = new List<int>();
+
+            foreach (BranchState branch in currentBoard.branchStates)
+            {
+                if (branch.branchColor == AIcolor || branch.ownerColor == AIcolor)
+                {
+                    aiOwnedBranches.Add(branch.location);
+                }
+            }
+
+            List<int> possibleBranchMoves = new List<int>();
+
+            foreach (int ownedBranch in aiOwnedBranches)
+            {
+                int[] connectingBranches = ReferenceScript.branchConnectsToTheseBranches[ownedBranch];
+
+                foreach (int branch in connectingBranches)
+                {
+                    if (currentBoard.branchStates[branch].branchColor == PlayerColor.Blank && (currentBoard.branchStates[branch].ownerColor == PlayerColor.Blank || currentBoard.branchStates[branch].ownerColor == AIcolor))
+                    {
+                        possibleBranchMoves.Add(currentBoard.branchStates[branch].location);
+                    }
+                }
+            }
+        if (possibleBranchMoves.Count > 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+        
+    }
+
     private List<int> CalculatePossibleBranches(BoardState currentBoard, int[] aiResources)
     {
         List<int> aiOwnedBranches = new List<int>();
@@ -132,8 +170,6 @@ public class BeginnerAI
 
         List<int> possibleBranchMoves = new List<int>();
 
-       
-
             foreach (int ownedBranch in aiOwnedBranches)
             {
                 int[] connectingBranches = ReferenceScript.branchConnectsToTheseBranches[ownedBranch];
@@ -146,24 +182,14 @@ public class BeginnerAI
                     }
                 }
             }
-
         if (possibleBranchMoves.Count > 0 && aiResources[0] >= 1 && aiResources[1] >= 1)
         {
-            if (GameInformation.playerIsHost)
-            {
-                aiResources[0]--;
-                aiResources[1]--;
-                //GameInformation.playerTwoResources[0]--;
-                //GameInformation.playerTwoResources[1]--;
-            }
-            else
-            {
-                aiResources[0]--;
-                aiResources[1]--;
-                //GameInformation.playerOneResources[0]--;
-                //GameInformation.playerOneResources[1]--;
-            }
-
+            aiResources[0]--;
+            aiResources[1]--;
+        }
+        else
+        {
+            possibleBranchMoves.Clear();
         }
         return possibleBranchMoves;
     }
@@ -182,8 +208,6 @@ public class BeginnerAI
 
         List<int> possibleNodeMoves = new List<int>();
 
-
-
             foreach (int ownedBranch in aiOwnedBranches)
             {
                 int[] connectingNodes = ReferenceScript.branchesConnectToTheseNodes[ownedBranch];
@@ -198,20 +222,12 @@ public class BeginnerAI
             }
         if (possibleNodeMoves.Count > 0 && aiResources[2] >= 2 && aiResources[3] >= 2)
         {
-            if (GameInformation.playerIsHost)
-            {
-                aiResources[2] -= 2;
-                aiResources[3] -= 2;
-                //GameInformation.playerTwoResources[2] -= 2;
-                //GameInformation.playerTwoResources[3] -= 2;
-            }
-            else
-            {
-                aiResources[2] -= 2;
-                aiResources[3] -= 2;
-                //GameInformation.playerOneResources[2] -= 2;
-                //GameInformation.playerOneResources[3] -= 2;
-            }
+            aiResources[2] -= 2;
+            aiResources[3] -= 2;
+        }
+        else
+        {
+            possibleNodeMoves.Clear();
         }
         return possibleNodeMoves;
     }
@@ -424,7 +440,7 @@ public class BeginnerAI
                         }
                         break;
                     case 2:
-                        if (aiResources[i] < 2 && trad == 0)
+                        if (aiResources[i] < 2 && trad == 0 && IsValidNodeMoves(currentBoardState) == true )
                         {
                             if (aiResources[0] + aiResources[2] + aiResources[3] >= 3)
                             {
@@ -451,7 +467,7 @@ public class BeginnerAI
                         }
                         break;
                     case 3:
-                        if (aiResources[i] < 2 && trad == 0)
+                        if (aiResources[i] < 2 && trad == 0 && IsValidNodeMoves(currentBoardState) == true)
                         {
                             if (aiResources[0] + aiResources[1] + aiResources[2] >= 3)
                             {
@@ -504,14 +520,14 @@ public class BeginnerAI
         int[] initialResources = CollectCurrentPlayerResources(currentBoard, AIcolor);
         int flag = 0;
         currentBoard = subRandomMove(currentBoard, aiResources, ref flag);
-       // Debug.Log(aiResources[0] + " " + aiResources[1] + " " + aiResources[2] + " " + aiResources[3]);
+        //Debug.Log(aiResources[0] + " " + aiResources[1] + " " + aiResources[2] + " " + aiResources[3]);
         ResourceTrading(aiResources, initialResources);
-       // Debug.Log(aiResources[0] + " " + aiResources[1] + " " + aiResources[2] + " " + aiResources[3]);
+        //Debug.Log(aiResources[0] + " " + aiResources[1] + " " + aiResources[2] + " " + aiResources[3]);
         while (flag == 1)
         {
             flag = 0; ;
             currentBoard = subRandomMove(currentBoard, aiResources, ref flag);
-        //    Debug.Log(aiResources[0] + " " + aiResources[1] + " " + aiResources[2] + " " + aiResources[3]);
+         //   Debug.Log(aiResources[0] + " " + aiResources[1] + " " + aiResources[2] + " " + aiResources[3]);
         }
         return currentBoard;
     }
