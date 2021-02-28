@@ -132,7 +132,22 @@ public class BeginnerAI
 
         List<int> possibleBranchMoves = new List<int>();
 
-        if (aiResources[0] >= 1 && aiResources[1] >= 1)
+       
+
+            foreach (int ownedBranch in aiOwnedBranches)
+            {
+                int[] connectingBranches = ReferenceScript.branchConnectsToTheseBranches[ownedBranch];
+
+                foreach (int branch in connectingBranches)
+                {
+                    if (currentBoard.branchStates[branch].branchColor == PlayerColor.Blank && (currentBoard.branchStates[branch].ownerColor == PlayerColor.Blank || currentBoard.branchStates[branch].ownerColor == AIcolor))
+                    {
+                        possibleBranchMoves.Add(currentBoard.branchStates[branch].location);
+                    }
+                }
+            }
+
+        if (possibleBranchMoves.Length > 0 && aiResources[0] >= 1 && aiResources[1] >= 1)
         {
             if (GameInformation.playerIsHost)
             {
@@ -149,18 +164,6 @@ public class BeginnerAI
                 //GameInformation.playerOneResources[1]--;
             }
 
-            foreach (int ownedBranch in aiOwnedBranches)
-            {
-                int[] connectingBranches = ReferenceScript.branchConnectsToTheseBranches[ownedBranch];
-
-                foreach (int branch in connectingBranches)
-                {
-                    if (currentBoard.branchStates[branch].branchColor == PlayerColor.Blank && (currentBoard.branchStates[branch].ownerColor == PlayerColor.Blank || currentBoard.branchStates[branch].ownerColor == AIcolor))
-                    {
-                        possibleBranchMoves.Add(currentBoard.branchStates[branch].location);
-                    }
-                }
-            }
         }
         return possibleBranchMoves;
     }
@@ -179,7 +182,21 @@ public class BeginnerAI
 
         List<int> possibleNodeMoves = new List<int>();
 
-        if (aiResources[2] >= 2 && aiResources[3] >= 2)
+
+
+            foreach (int ownedBranch in aiOwnedBranches)
+            {
+                int[] connectingNodes = ReferenceScript.branchesConnectToTheseNodes[ownedBranch];
+
+                foreach (int node in connectingNodes)
+                {
+                    if (currentBoard.nodeStates[node].nodeColor == PlayerColor.Blank)
+                    {
+                        possibleNodeMoves.Add(currentBoard.nodeStates[node].location);
+                    }
+                }
+            }
+        if (possibleNodeMoves.Length > 0 && aiResources[2] >= 2 && aiResources[3] >= 2)
         {
             if (GameInformation.playerIsHost)
             {
@@ -195,20 +212,6 @@ public class BeginnerAI
                 //GameInformation.playerOneResources[2] -= 2;
                 //GameInformation.playerOneResources[3] -= 2;
             }
-
-            foreach (int ownedBranch in aiOwnedBranches)
-            {
-                int[] connectingNodes = ReferenceScript.branchesConnectToTheseNodes[ownedBranch];
-
-                foreach (int node in connectingNodes)
-                {
-                    if (currentBoard.nodeStates[node].nodeColor == PlayerColor.Blank)
-                    {
-                        possibleNodeMoves.Add(currentBoard.nodeStates[node].location);
-                    }
-                }
-            }
-
         }
         return possibleNodeMoves;
     }
