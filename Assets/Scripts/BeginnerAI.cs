@@ -147,7 +147,7 @@ public class BeginnerAI
                 }
             }
 
-        if (possibleBranchMoves.Length > 0 && aiResources[0] >= 1 && aiResources[1] >= 1)
+        if (possibleBranchMoves.Count > 0 && aiResources[0] >= 1 && aiResources[1] >= 1)
         {
             if (GameInformation.playerIsHost)
             {
@@ -196,7 +196,7 @@ public class BeginnerAI
                     }
                 }
             }
-        if (possibleNodeMoves.Length > 0 && aiResources[2] >= 2 && aiResources[3] >= 2)
+        if (possibleNodeMoves.Count > 0 && aiResources[2] >= 2 && aiResources[3] >= 2)
         {
             if (GameInformation.playerIsHost)
             {
