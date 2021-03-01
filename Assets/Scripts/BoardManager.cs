@@ -191,9 +191,9 @@ public class BoardManager : MonoBehaviour
             BroadcastMessage("UpdateAIGUI", PlayerColor.Orange);
     }
 
-    public void UpdateGameBoardUI()
+    public void ToggleNodeBranchTriggers()
     {
-
+        BroadcastMessage("ToggleTrigger");
     }
 
 }

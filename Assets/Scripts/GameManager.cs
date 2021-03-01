@@ -317,4 +317,9 @@ public class GameManager : MonoBehaviour
         HNPInput.gameObject.SetActive(false);
         BeginnerAIGame();
     }
+
+    public void ToogleTriggers()
+    {
+        BroadcastMessage("ToggleNodeBranchTriggers");
+    }
 }

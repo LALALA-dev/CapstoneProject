@@ -155,4 +155,18 @@ public class NodeController : MonoBehaviour
                 ClaimNode(playerTwoSprite);
         }
     }
+
+    public void ToggleTrigger()
+    {
+
+        BoxCollider2D boxCollider = gameObject.GetComponent<BoxCollider2D>();
+        if (boxCollider.enabled)
+        {
+            boxCollider.enabled = false;
+        }
+        else
+        {
+            boxCollider.enabled = true;
+        }
+    }
 }
