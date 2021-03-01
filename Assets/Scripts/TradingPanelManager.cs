@@ -31,6 +31,7 @@ public class TradingPanelManager : MonoBehaviour
             tilesSelected[i].text = "0";
         }
 
+        SendMessageUpwards("ToogleTriggers");
         panel.SetActive(false);
     }
 
@@ -118,6 +119,7 @@ public class TradingPanelManager : MonoBehaviour
             else
                 GameInformation.maxTradeResources = GameInformation.playerTwoResources;
             panel.SetActive(true);
+            SendMessageUpwards("ToogleTriggers");
         }
     }
 }
