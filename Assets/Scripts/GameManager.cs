@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour
             GameInformation.tradeHasBeenMade = false;
             playerResourcesManager.UpdateBothPlayersResources();
         }
-        gameController.UpdateGameBoard();
+        // gameController.UpdateGameBoard();
     }
 
     #region Network Game
@@ -118,7 +118,7 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void BeginHumanOpenningMove()
+    public void BeginHumanOpeningMove()
     {
         GameInformation.openingMoveBranchSet = false;
         GameInformation.openingMoveNodeSet = false;
@@ -138,7 +138,7 @@ public class GameManager : MonoBehaviour
                 if(GameInformation.turnNumber == 1)
                 {
                     GameInformation.turnNumber++;
-                    RandomAIOpenningMove();
+                    RandomAIOpeningMove();
 
                     GameInformation.humanMoveFinished = false;
                     EndCurrentPlayersTurn();
@@ -171,12 +171,12 @@ public class GameManager : MonoBehaviour
                 {
                     GameInformation.turnNumber++;
                     gameController.FlipColors();
-                    BeginHumanOpenningMove();
+                    BeginHumanOpeningMove();
                 }
                 else if(GameInformation.turnNumber == 3)
                 {
                     GameInformation.turnNumber++;
-                    RandomAIOpenningMove();
+                    RandomAIOpeningMove();
                     EndCurrentPlayersTurn();
                 }
             }
@@ -191,7 +191,7 @@ public class GameManager : MonoBehaviour
                 {
                     boardManager.RefreshForAIMoves();
                     GameInformation.turnNumber++;
-                    BeginHumanOpenningMove();
+                    BeginHumanOpeningMove();
                 }
                 else if (GameInformation.turnNumber == 4)
                 {
@@ -210,7 +210,7 @@ public class GameManager : MonoBehaviour
                 if (GameInformation.turnNumber == 2)
                 {
                     GameInformation.turnNumber++;
-                    RandomAIOpenningMove();
+                    RandomAIOpeningMove();
                     GameInformation.humanMoveFinished = false;
                     EndCurrentPlayersTurn();
                 }
@@ -221,16 +221,15 @@ public class GameManager : MonoBehaviour
                     gameController.FlipColors();
 
                     GameInformation.humanMoveFinished = false;
-                    BeginHumanOpenningMove();
+                    BeginHumanOpeningMove();
                 }
             }
         }
         else
         {
             GameInformation.turnNumber++;
-            gameController.RefreshBlockedTiles();
+            gameController.UpdateGameBoard();
             boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
-            gameController.RefreshCapturedTiles();
             boardManager.DetectNewBlockCaptures(gameController.getGameBoard().GetSquareStates());
             GameInformation.currentRoundPlacedNodes.Clear();
             GameInformation.currentRoundPlacedBranches.Clear();
@@ -239,32 +238,41 @@ public class GameManager : MonoBehaviour
             if (GameInformation.currentPlayer == "HUMAN")
             {
                 GameInformation.currentPlayer = "AI";
-                gameController.FlipColors();
             }
             else
             {
                 GameInformation.currentPlayer = "HUMAN";
-                gameController.FlipColors();
             }
+            gameController.FlipColors();
             gameController.CollectCurrentPlayerResources();
             playerResourcesManager.UpdateBothPlayersResources();
             gameController.UpdateScores();
-
-            if (GameInformation.currentPlayer == "AI")
-            {
-                RandomAIMove();
-                EndCurrentPlayersTurn();
-            }
 
             if (GameInformation.playerOneScore >= 10 || GameInformation.playerTwoScore >= 10)
             {
                 GameInformation.gameOver = true;
                 return;
             }
+
+            if (GameInformation.currentPlayer == "AI")
+            {
+                RandomAIMove();
+                    
+                gameController.UpdateGameBoard();
+                boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
+                boardManager.DetectNewBlockCaptures(gameController.getGameBoard().GetSquareStates());
+                if (GameInformation.playerOneScore >= 10 || GameInformation.playerTwoScore >= 10)
+                {
+                    GameInformation.gameOver = true;
+                    return;
+                }
+
+                EndCurrentPlayersTurn();
+            }
         }
     }
 
-    public void RandomAIOpenningMove()
+    public void RandomAIOpeningMove()
     {
         GameInformation.currentPlayer = "AI";
         gameController.FlipColors();
