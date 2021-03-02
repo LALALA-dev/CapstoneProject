@@ -52,4 +52,9 @@ public class SceneLoader : MonoBehaviour
     {
         SceneManager.LoadScene("NetworkLobbyScene");
     }
+
+    public void LoadTutorial()
+    {
+        SceneManager.LoadScene("Tutorial");
+    }
 }
