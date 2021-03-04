@@ -68,7 +68,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         }
         else
         {
-            // TODO: ADD GUI ERROR MESSAGE 
+            statusText.text = "Invalid Room Room, navigating back...";
         }
     }
 
@@ -94,7 +94,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         }
         else
         {
-            // TODO: ADD GUI ERROR MESSAGE 
+            statusText.text = "Invaild Room Name, navigating back...";
         }
     }
 
@@ -122,7 +122,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         Debug.Log("Player is Host = " + GameInformation.playerIsHost);
 
         Debug.Log("Successfully Joined Room");
-        //PhotonNetwork.LoadLevel("GameScene");
     }
 
     public override void OnLeftRoom()
@@ -161,16 +160,27 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
         Debug.Log("Joined Room Failed");
+        statusText.text = "Failed to join room, reason: " + message;
+        Invoke("AutoNavigate", 3.0f);
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
         Debug.Log("Room Creation Failed");
+        statusText.text = "Failed to create room, reason: " + message;
+        Invoke("AutoNavigate", 3.0f);
     }
 
     public override void OnDisconnected(DisconnectCause cause)
     {
         Debug.Log("Disconnected from server because: " + cause.ToString());
+        statusText.text = "Disconnected from server, navigating back...";
+        Invoke("AutoNavigate", 3.0f);
+    }
+
+    public void AutoNavigate()
+    {
+        SceneLoader.LoadNetworkScene();
     }
 
     #endregion
