@@ -172,6 +172,52 @@ public class GameBoard
 
         }
 
+        foreach(NodeState node in boardState.nodeStates)
+        {
+            switch (node.nodeColor)
+            {
+                case PlayerColor.Orange:
+                    gameBoardString += "O";
+                    break;
+                case PlayerColor.Purple:
+                    gameBoardString += "P";
+                    break;
+                case PlayerColor.Blank:
+                    gameBoardString += "L";
+                    break;
+            }
+        }
+
+        foreach (BranchState branch in boardState.branchStates)
+        {
+            switch (branch.branchColor)
+            {
+                case PlayerColor.Orange:
+                    gameBoardString += "O";
+                    break;
+                case PlayerColor.Purple:
+                    gameBoardString += "P";
+                    break;
+                case PlayerColor.Blank:
+                    gameBoardString += "B";
+                    break;
+            }
+
+            switch (branch.ownerColor)
+            {
+                case PlayerColor.Orange:
+                    gameBoardString += "O";
+                    break;
+                case PlayerColor.Purple:
+                    gameBoardString += "P";
+                    break;
+                case PlayerColor.Blank:
+                    gameBoardString += "B";
+                    break;
+            }
+
+        }
+
         return gameBoardString;
     }
 
@@ -246,6 +292,54 @@ public class GameBoard
                     break;
                 case 'L':
                     squares[i].squareState.resourceColor = SquareResourceColor.Blank;
+                    break;
+            }
+            stringIndex++;
+        }
+
+        for(int i = 0; i < MAX_NODES; i++)
+        {
+            switch (networkBoardConfig[stringIndex])
+            {
+                case 'B':
+                    nodes[i].nodeState.nodeColor = PlayerColor.Blank;
+                    break;
+                case 'O':
+                    nodes[i].nodeState.nodeColor = PlayerColor.Orange;
+                    break;
+                case 'P':
+                    nodes[i].nodeState.nodeColor = PlayerColor.Purple;
+                    break;
+            }
+            stringIndex++;
+        }
+
+        for (int i = 0; i < MAX_BRANCHES; i++)
+        {
+            switch (networkBoardConfig[stringIndex])
+            {
+                case 'B':
+                    branches[i].branchState.branchColor = PlayerColor.Blank;
+                    break;
+                case 'O':
+                    branches[i].branchState.branchColor = PlayerColor.Orange;
+                    break;
+                case 'P':
+                    branches[i].branchState.branchColor = PlayerColor.Purple;
+                    break;
+            }
+            stringIndex++;
+
+            switch (networkBoardConfig[stringIndex])
+            {
+                case 'B':
+                    branches[i].branchState.ownerColor = PlayerColor.Blank;
+                    break;
+                case 'O':
+                    branches[i].branchState.ownerColor = PlayerColor.Orange;
+                    break;
+                case 'P':
+                    branches[i].branchState.ownerColor = PlayerColor.Purple;
                     break;
             }
             stringIndex++;
