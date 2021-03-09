@@ -71,7 +71,6 @@ public class NetworkUIController : MonoBehaviour
             }
             else
             {
-                // TODO: ERROR MESSAGE
                 errorMessage.text = "Please Enter a Room Name";
             }
         }
@@ -85,7 +84,6 @@ public class NetworkUIController : MonoBehaviour
             }
             else
             {
-                // TODO: ERROR MESSAGE
                 errorMessage.text = "Please Enter a Room Name";
             }
         }

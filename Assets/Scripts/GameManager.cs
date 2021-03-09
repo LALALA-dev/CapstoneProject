@@ -13,15 +13,12 @@ public class GameManager : MonoBehaviour
     private BeginnerAI beginnerAI;
 
     public TMP_InputField HNPInput;
-    public GameObject RenderBtn;
 
     #region Setup
     private void Awake()
     {
         gameController = GameController.getInstance();
 
-        if (GameInformation.playerIsHost)
-            RenderBtn.gameObject.SetActive(false);
         if(!GameInformation.HumanNetworkProtocol)
             HNPInput.gameObject.SetActive(false);
     }
@@ -31,11 +28,11 @@ public class GameManager : MonoBehaviour
         if (GameInformation.playerIsHost && GameInformation.gameType == 'N')
         {
             networkController.SendOpeningBoardConfiguration(gameController.getGameBoard().ToString());
-            NetworkGame();
+            BeginNetworkGame();
         }
         else if(GameInformation.gameType == 'A')
         {
-            BeginnerAIGame();
+            BeginBeginnerAIGame();
         }
         else if(GameInformation.gameType == 'E')
         {
@@ -50,35 +47,35 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        if(GameInformation.renderClientBoard && GameInformation.gameType == 'N' && !GameInformation.playerIsHost)
+        {
+            RenderHostBoard();
+            GameInformation.renderClientBoard = false;
+        }
+
         if(GameInformation.tradeHasBeenMade)
         {
             GameInformation.tradeHasBeenMade = false;
             playerResourcesManager.UpdateBothPlayersResources();
         }
-        // gameController.UpdateGameBoard();
     }
 
     #region Network Game
-    public void NetworkGame()
+    public void BeginNetworkGame()
     {
-        RenderHostBoard();
-        NetworkOpeningSequence();
+        boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
+        networkController.InvokeClientsRenderHost();
 
-        while(!GameInformation.gameOver)
-        {
-            NetworkPlayerMove();
-        }
     }
 
     public void RenderHostBoard()
     {
-        if (!GameInformation.playerIsHost && GameInformation.gameType == 'N')
+        if (GameInformation.gameType == 'N' && !GameInformation.playerIsHost)
         {
             string hostBoard = networkController.GetMove();
             gameController.SetBoardConfiguration(hostBoard);
-            RenderBtn.gameObject.SetActive(false);
             boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
-
+            ToogleTriggers();
         }
     }
 
@@ -89,12 +86,24 @@ public class GameManager : MonoBehaviour
 
     public void NetworkPlayerMove()
     {
+        // Disable HOST and Enable CLIENT for two opening moves
+
+        // Disable CLIENT and Enable HOST for second opening move
+
+        // Opening Sequence set to false
+
+        // Allocate CLIENT's resources, Disable HOST and Enable CLIENT for first move
+    }
+
+    public void EndCurrentNetworkPlayersTurn()
+    {
 
     }
+
     #endregion
 
     #region AI Game
-    public void BeginnerAIGame()
+    public void BeginBeginnerAIGame()
     {
         PlayerColor aiColor;
         if (GameInformation.playerIsHost)
@@ -323,7 +332,7 @@ public class GameManager : MonoBehaviour
         gameController.SetBoardConfiguration(HNPInput.text.Trim());
         boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
         HNPInput.gameObject.SetActive(false);
-        BeginnerAIGame();
+        BeginBeginnerAIGame();
     }
 
     public void ToogleTriggers()
