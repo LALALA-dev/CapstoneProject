@@ -66,19 +66,6 @@ public class GameManager : MonoBehaviour
         boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
         networkController.InvokeClientsRenderHost();
 
-        // Disable CLIENT and Enable HOST to place opening move
-        if(!GameInformation.playerIsHost)
-            ToogleTriggers();
-
-        // Disable HOST and Enable CLIENT for two opening moves
-
-        // Disable CLIENT and Enable HOST for second opening move
-
-        // Opening Sequence set to false
-
-        // Allocate CLIENT's resources, Disable HOST and Enable CLIENT for first move
-
-
     }
 
     public void RenderHostBoard()
@@ -88,6 +75,7 @@ public class GameManager : MonoBehaviour
             string hostBoard = networkController.GetMove();
             gameController.SetBoardConfiguration(hostBoard);
             boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
+            ToogleTriggers();
         }
     }
 
@@ -98,19 +86,13 @@ public class GameManager : MonoBehaviour
 
     public void NetworkPlayerMove()
     {
+        // Disable HOST and Enable CLIENT for two opening moves
 
-    }
+        // Disable CLIENT and Enable HOST for second opening move
 
-    public void DisablePlayersGameBoard(string player)
-    {
-        if(player == "HOST" && GameInformation.playerIsHost)
-        {
+        // Opening Sequence set to false
 
-        }
-        else if (player == "CLIENT" && !GameInformation.playerIsHost)
-        {
-
-        }
+        // Allocate CLIENT's resources, Disable HOST and Enable CLIENT for first move
     }
 
     public void EndCurrentNetworkPlayersTurn()
