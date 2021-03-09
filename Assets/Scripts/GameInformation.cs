@@ -58,4 +58,6 @@ public class GameInformation
     public static List<int> currentRoundPlacedNodes = new List<int>();
 
     public static List<int> currentRoundPlacedBranches = new List<int>();
+
+    public static bool renderClientBoard = false;
 }
