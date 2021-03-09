@@ -58,6 +58,22 @@ public class GameManager : MonoBehaviour
             GameInformation.tradeHasBeenMade = false;
             playerResourcesManager.UpdateBothPlayersResources();
         }
+
+        if(GameInformation.gameType == 'N' && GameInformation.enableTriggers)
+        {
+            GameInformation.enableTriggers = false;
+            ToogleTriggers();
+        }
+
+        if (GameInformation.gameType == 'N' && GameInformation.newNetworkMoveSet)
+        {
+            GameInformation.newNetworkMoveSet = false;
+            Debug.Log("New Move Recieved");
+            string hostBoard = networkController.GetMove();
+            gameController.SetBoardConfiguration(hostBoard);
+            gameController.RefreshBlockedTiles();
+            boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
+        }
     }
 
     #region Network Game
@@ -65,7 +81,6 @@ public class GameManager : MonoBehaviour
     {
         boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
         networkController.InvokeClientsRenderHost();
-
     }
 
     public void RenderHostBoard()
@@ -75,29 +90,118 @@ public class GameManager : MonoBehaviour
             string hostBoard = networkController.GetMove();
             gameController.SetBoardConfiguration(hostBoard);
             boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
+            gameController.FlipColors();
             ToogleTriggers();
         }
     }
 
-    public void NetworkOpeningSequence()
+    private void EndCurrentNetworkPlayersTurn()
     {
+        if (GameInformation.openingSequence && GameInformation.currentPlayer == "HOST" && OpeningMoveSatisfied())
+        {
+            gameController.RefreshBlockedTiles();
+            boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
+            if (GameInformation.playerIsHost)
+            {
+                if (GameInformation.turnNumber == 1)
+                {
+                    GameInformation.turnNumber++;
+                    // TODO: SETUP CLIENT AS CURRENT PLAYER FOR THEIR FIRST OPENING MOVE
+                    GameInformation.currentPlayer = "CLIENT";
+                    // DISABLE INTERACTION WITH GUI
+                    ToogleTriggers();
+                    // TELL THE CLIENT TO ENABLE THEIR GUI
+                    networkController.EnableOpponentsTriggers();
+                    // SEND CLIENT MY BOARD STATE
+                    networkController.SendMove(gameController.getGameBoard().ToString());
+                }
+                else if (GameInformation.turnNumber == 4)
+                {
+                    GameInformation.openingSequence = false;
+                    GameInformation.turnNumber++;
 
-    }
+                    GameInformation.currentPlayer = "CLIENT";
+                    // DISABLE INTERACTION WITH GUI
+                    ToogleTriggers();
+                    // TELL THE CLIENT TO ENABLE THEIR GUI
+                    networkController.EnableOpponentsTriggers();
+                    // SEND CLIENT MY BOARD STATE
+                    networkController.SendMove(gameController.getGameBoard().ToString());
 
-    public void NetworkPlayerMove()
-    {
-        // Disable HOST and Enable CLIENT for two opening moves
+                    // TODO: COLLECT CLIENT'S RESOURCES AND BEGIN ACTUAL GAME
+                    gameController.CollectCurrentPlayerResources();
+                    gameController.UpdateScores();
+                }
+            }
+        }
+        else if (GameInformation.openingSequence && GameInformation.currentPlayer == "ClIENT" && OpeningMoveSatisfied())
+        {
+            gameController.RefreshBlockedTiles();
+            boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
+            if (!GameInformation.playerIsHost)
+            {
+                if (GameInformation.turnNumber == 2)
+                {
+                    GameInformation.turnNumber++;
+                    // TODO: CLIENT IS STILL CURRENT PLAYER FOR SECOND OPENING MOVE
+                    // SEND CLIENT MY BOARD STATE
+                    networkController.SendMove(gameController.getGameBoard().ToString());
+                    GameInformation.openingMoveBranchSet = false;
+                    GameInformation.openingMoveNodeSet = false;
 
-        // Disable CLIENT and Enable HOST for second opening move
+                }
+                else if (GameInformation.turnNumber == 3)
+                {
+                    GameInformation.turnNumber++;
+                    // TODO: SETUP HOST AS CURRENT PLAYER FOR THEIR SECOND OPENING MOVE
 
-        // Opening Sequence set to false
+                    GameInformation.currentPlayer = "HOST";
+                    // DISABLE INTERACTION WITH GUI
+                    ToogleTriggers();
+                    // TELL THE CLIENT TO ENABLE THEIR GUI
+                    networkController.EnableOpponentsTriggers();
+                    // SEND CLIENT MY BOARD STATE
+                    networkController.SendMove(gameController.getGameBoard().ToString());
+                }
+            }
+        }
+        else
+        {
+            // NORMAL GAMEPLAY
+            GameInformation.turnNumber++;
+            gameController.UpdateGameBoard();
+            boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
+            boardManager.DetectNewBlockCaptures(gameController.getGameBoard().GetSquareStates());
+            GameInformation.currentRoundPlacedNodes.Clear();
+            GameInformation.currentRoundPlacedBranches.Clear();
 
-        // Allocate CLIENT's resources, Disable HOST and Enable CLIENT for first move
-    }
+            GameInformation.resourceTrade = false;
+            if (GameInformation.currentPlayer == "HOST" && GameInformation.playerIsHost)
+            {
+                GameInformation.currentPlayer = "CLIENT";
+                ToogleTriggers();
+                networkController.EnableOpponentsTriggers();
+                networkController.SendMove(gameController.getGameBoard().ToString());
+            }
+            else
+            {
+                GameInformation.currentPlayer = "HOST";
+                ToogleTriggers();
+                networkController.EnableOpponentsTriggers();
+                networkController.SendMove(gameController.getGameBoard().ToString());
+            }
 
-    public void EndCurrentNetworkPlayersTurn()
-    {
+            gameController.FlipColors();
+            gameController.CollectCurrentPlayerResources();
+            playerResourcesManager.UpdateBothPlayersResources();
+            gameController.UpdateScores();
 
+            if (GameInformation.playerOneScore >= 10 || GameInformation.playerTwoScore >= 10)
+            {
+                GameInformation.gameOver = true;
+                return;
+            }
+        }
     }
 
     #endregion
@@ -118,7 +222,7 @@ public class GameManager : MonoBehaviour
         {
             BoardState AIMove = beginnerAI.MakeRandomOpeningMove(gameController.getGameBoard().getBoardState());
             gameController.getGameBoard().setBoard(AIMove.squareStates, AIMove.nodeStates, AIMove.branchStates);
-            EndCurrentPlayersTurn();
+            EndCurrentAIPlayersTurn();
         }
     }
 
@@ -136,7 +240,7 @@ public class GameManager : MonoBehaviour
         GameInformation.humanMoveFinished = false;
     }
 
-    public void EndCurrentPlayersTurn()
+    private void EndCurrentAIPlayersTurn()
     {
         if (GameInformation.openingSequence && GameInformation.currentPlayer == "HUMAN" && OpeningMoveSatisfied())
         {
@@ -150,7 +254,7 @@ public class GameManager : MonoBehaviour
                     RandomAIOpeningMove();
 
                     GameInformation.humanMoveFinished = false;
-                    EndCurrentPlayersTurn();
+                    EndCurrentAIPlayersTurn();
                 }
                 else if(GameInformation.turnNumber == 4)
                 {
@@ -171,7 +275,7 @@ public class GameManager : MonoBehaviour
                     BoardState AIMove = beginnerAI.RandomMove(gameController.getGameBoard().getBoardState(), AIResources);
                     gameController.getGameBoard().setBoard(AIMove.squareStates, AIMove.nodeStates, AIMove.branchStates);
                     boardManager.RefreshForAIMoves();
-                    EndCurrentPlayersTurn();
+                    EndCurrentAIPlayersTurn();
                 }
             }
             else
@@ -186,13 +290,13 @@ public class GameManager : MonoBehaviour
                 {
                     GameInformation.turnNumber++;
                     RandomAIOpeningMove();
-                    EndCurrentPlayersTurn();
+                    EndCurrentAIPlayersTurn();
                 }
             }
         }
         else if(GameInformation.openingSequence && GameInformation.currentPlayer == "AI")
         {
-            gameController.RefreshBlockedTiles();
+            gameController.RefreshBlockedTiles(); 
             boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
             if (!GameInformation.playerIsHost)
             {
@@ -221,7 +325,7 @@ public class GameManager : MonoBehaviour
                     GameInformation.turnNumber++;
                     RandomAIOpeningMove();
                     GameInformation.humanMoveFinished = false;
-                    EndCurrentPlayersTurn();
+                    EndCurrentAIPlayersTurn();
                 }
                 else if (GameInformation.turnNumber == 3)
                 {
@@ -276,7 +380,7 @@ public class GameManager : MonoBehaviour
                     return;
                 }
 
-                EndCurrentPlayersTurn();
+                EndCurrentAIPlayersTurn();
             }
         }
     }
@@ -338,5 +442,13 @@ public class GameManager : MonoBehaviour
     public void ToogleTriggers()
     {
         BroadcastMessage("ToggleNodeBranchTriggers");
+    }
+
+    public void EndTurnButtonClick()
+    {
+        if (GameInformation.gameType == 'N')
+            EndCurrentNetworkPlayersTurn();
+        else
+            EndCurrentAIPlayersTurn();
     }
 }

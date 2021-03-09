@@ -64,6 +64,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             GameInformation.playerIsHost = true;
             RoomOptions roomOptions = new RoomOptions();
             roomOptions.MaxPlayers = 2;
+            GameInformation.currentPlayer = "HOST";
             PhotonNetwork.CreateRoom(GameInformation.roomName.Trim(), roomOptions, TypedLobby.Default);
         }
         else
@@ -79,6 +80,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
         RoomOptions roomOptions = new RoomOptions();
         roomOptions.MaxPlayers = 2;
+        GameInformation.currentPlayer = "HOST";
         PhotonNetwork.JoinOrCreateRoom("StandardRoom", roomOptions, TypedLobby.Default);
     }
 
@@ -108,6 +110,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         statusText.text = "Waiting for opponent to join";
         Debug.Log("Waiting for opponent to join");
+        GameInformation.currentPlayer = "HOST";
     }
 
     public override void OnJoinedRoom()
@@ -135,6 +138,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         {
             PhotonNetwork.CurrentRoom.IsOpen = false;
             PhotonNetwork.CurrentRoom.IsVisible = false;
+            GameInformation.currentPlayer = "HOST";
             if (PhotonNetwork.LocalPlayer.IsMasterClient)
             {
                 statusText.text = "Player joined, ready to Start Game...";
