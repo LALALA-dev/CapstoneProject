@@ -24,6 +24,16 @@ public class NetworkController : MonoBehaviourPunCallbacks
 
     #region Public Functions
 
+    public void InvokeRenderHost()
+    {
+        // Send message to GameManager
+        if(!GameInformation.playerIsHost)
+        {
+            Debug.Log("Sending Message to GameManager");
+            GameInformation.renderClientBoard = true;
+        }
+    }
+
     public void SendMove()
     {
         NetworkPlayer.player.SendMove(boardState);
@@ -60,6 +70,11 @@ public class NetworkController : MonoBehaviourPunCallbacks
     public void SendOpeningBoardConfiguration(string openingBoardState)
     {
         NetworkPlayer.player.SendMove(openingBoardState);
+    }
+
+    public void InvokeClientsRenderHost()
+    {
+        NetworkPlayer.player.InvokeHostConfiguration();
     }
 
     #endregion

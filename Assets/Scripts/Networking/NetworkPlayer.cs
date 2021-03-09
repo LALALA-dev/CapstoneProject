@@ -33,6 +33,12 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
             pView.RPC("RPC_SendMove", RpcTarget.AllBuffered, boardConfig);
     }
 
+    public void InvokeHostConfiguration()
+    {
+        if (pView.IsMine)
+            pView.RPC("RPC_InvokeHostBoardRender", RpcTarget.AllBuffered);
+    }
+
     #region RPC Functions
     [PunRPC]
     void RPC_SendInfo(string playerName)
@@ -48,6 +54,13 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
     {
         Debug.Log("RPC_SendMove() was called");
         networkController.SetMove(boardConfig);
+    }
+
+    [PunRPC]
+    void RPC_InvokeHostBoardRender()
+    {
+        Debug.Log("RPC_InvokeHostBoardRender() was called");
+        networkController.InvokeRenderHost();
     }
     #endregion
 
