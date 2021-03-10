@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
     {
         if (GameInformation.playerIsHost && GameInformation.gameType == 'N')
         {
+            GameInformation.currentPlayer = "HOST";
             networkController.SendOpeningBoardConfiguration(gameController.getGameBoard().ToString());
             BeginNetworkGame();
         }
@@ -68,7 +69,6 @@ public class GameManager : MonoBehaviour
         if (GameInformation.gameType == 'N' && GameInformation.newNetworkMoveSet)
         {
             GameInformation.newNetworkMoveSet = false;
-            Debug.Log("New Move Recieved");
             string hostBoard = networkController.GetMove();
             gameController.SetBoardConfiguration(hostBoard);
             gameController.RefreshBlockedTiles();

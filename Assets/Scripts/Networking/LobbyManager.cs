@@ -92,6 +92,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         if (GameInformation.roomName.Trim() != "")
         {
             GameInformation.playerIsHost = false;
+            GameInformation.currentPlayer = "HOST";
             PhotonNetwork.JoinRoom(GameInformation.roomName.Trim());
         }
         else
