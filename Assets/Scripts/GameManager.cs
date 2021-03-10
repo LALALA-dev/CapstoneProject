@@ -70,6 +70,7 @@ public class GameManager : MonoBehaviour
         {
             GameInformation.newNetworkMoveSet = false;
             string hostBoard = networkController.GetMove();
+            GameInformation.currentPlayer = "CLIENT";
             gameController.SetBoardConfiguration(hostBoard);
             gameController.RefreshBlockedTiles();
             boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
@@ -106,13 +107,9 @@ public class GameManager : MonoBehaviour
                 if (GameInformation.turnNumber == 1)
                 {
                     GameInformation.turnNumber++;
-                    // TODO: SETUP CLIENT AS CURRENT PLAYER FOR THEIR FIRST OPENING MOVE
                     GameInformation.currentPlayer = "CLIENT";
-                    // DISABLE INTERACTION WITH GUI
                     ToogleTriggers();
-                    // TELL THE CLIENT TO ENABLE THEIR GUI
                     networkController.EnableOpponentsTriggers();
-                    // SEND CLIENT MY BOARD STATE
                     networkController.SendMove(gameController.getGameBoard().ToString());
                 }
                 else if (GameInformation.turnNumber == 4)
@@ -121,11 +118,8 @@ public class GameManager : MonoBehaviour
                     GameInformation.turnNumber++;
 
                     GameInformation.currentPlayer = "CLIENT";
-                    // DISABLE INTERACTION WITH GUI
                     ToogleTriggers();
-                    // TELL THE CLIENT TO ENABLE THEIR GUI
                     networkController.EnableOpponentsTriggers();
-                    // SEND CLIENT MY BOARD STATE
                     networkController.SendMove(gameController.getGameBoard().ToString());
 
                     // TODO: COLLECT CLIENT'S RESOURCES AND BEGIN ACTUAL GAME
@@ -144,7 +138,6 @@ public class GameManager : MonoBehaviour
                 {
                     GameInformation.turnNumber++;
                     // TODO: CLIENT IS STILL CURRENT PLAYER FOR SECOND OPENING MOVE
-                    // SEND CLIENT MY BOARD STATE
                     networkController.SendMove(gameController.getGameBoard().ToString());
                     GameInformation.openingMoveBranchSet = false;
                     GameInformation.openingMoveNodeSet = false;
@@ -156,11 +149,8 @@ public class GameManager : MonoBehaviour
                     // TODO: SETUP HOST AS CURRENT PLAYER FOR THEIR SECOND OPENING MOVE
 
                     GameInformation.currentPlayer = "HOST";
-                    // DISABLE INTERACTION WITH GUI
                     ToogleTriggers();
-                    // TELL THE CLIENT TO ENABLE THEIR GUI
                     networkController.EnableOpponentsTriggers();
-                    // SEND CLIENT MY BOARD STATE
                     networkController.SendMove(gameController.getGameBoard().ToString());
                 }
             }
