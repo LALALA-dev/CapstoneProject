@@ -60,4 +60,8 @@ public class GameInformation
     public static List<int> currentRoundPlacedBranches = new List<int>();
 
     public static bool renderClientBoard = false;
+
+    public static bool enableTriggers = false;
+
+    public static bool newNetworkMoveSet = false;
 }
