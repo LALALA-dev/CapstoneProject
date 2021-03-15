@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 using static GameObjectProperties;
 
 public class GameManager : MonoBehaviour
@@ -13,6 +14,11 @@ public class GameManager : MonoBehaviour
     private BeginnerAI beginnerAI;
 
     public TMP_InputField HNPInput;
+
+    public Image playerOneAvatar;
+    public Image playerTwoAvatar;
+
+    public Image[] avatars;
 
     #region Setup
     private void Awake()
@@ -43,6 +49,29 @@ public class GameManager : MonoBehaviour
         {
             HNPInput.gameObject.SetActive(true);
         }
+
+        switch(GameInformation.playerAvatar)
+        {
+
+        }
+
+        switch(GameInformation.opponentAvatar)
+        {
+            case "HAT":
+                playerTwoAvatar = avatars[0];
+                break;
+            case "BATTLESHIP":
+                break;
+            case "CAR":
+                break;
+            case "THIMBLE":
+                break;
+            case "WHEELBARREL":
+                break;
+            default:
+                break;
+        }
+
     }
     #endregion
 

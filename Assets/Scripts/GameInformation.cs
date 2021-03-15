@@ -66,4 +66,6 @@ public class GameInformation
     public static bool newNetworkMoveSet = false;
 
     public static string playerAvatar = "CAR";
+
+    public static string opponentAvatar = "WHEELBARREL";
 }
