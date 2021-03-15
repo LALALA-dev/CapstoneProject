@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     public Image playerOneAvatar;
     public Image playerTwoAvatar;
 
-    public Texture[] avatars;
+    public Sprite[] avatars;
 
     #region Setup
     private void Awake()
@@ -52,23 +52,23 @@ public class GameManager : MonoBehaviour
 
         switch(GameInformation.playerAvatar)
         {
-
-        }
-
-        switch(GameInformation.opponentAvatar)
-        {
             case "HAT":
-                //playerTwoAvatar = avatars[0].;
+                playerTwoAvatar.sprite = avatars[0];
                 break;
             case "BATTLESHIP":
+                playerOneAvatar.sprite = avatars[1];
                 break;
             case "CAR":
+                playerOneAvatar.sprite = avatars[2];
                 break;
             case "THIMBLE":
+                playerOneAvatar.sprite = avatars[3];
                 break;
             case "WHEELBARREL":
+                playerOneAvatar.sprite = avatars[4];
                 break;
             default:
+                playerOneAvatar.sprite = avatars[2];
                 break;
         }
 
