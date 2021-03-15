@@ -64,4 +64,6 @@ public class GameInformation
     public static bool enableTriggers = false;
 
     public static bool newNetworkMoveSet = false;
+
+    public static string playerAvatar = "CAR";
 }

@@ -1036,7 +1036,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 369627174}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 87658150}
+        m_TargetAssemblyTypeName: AISelectionManager, Assembly-CSharp
+        m_MethodName: OnShipSelect
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &369627174
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1608,7 +1620,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 950075094}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 87658150}
+        m_TargetAssemblyTypeName: AISelectionManager, Assembly-CSharp
+        m_MethodName: OnCarSelect
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &950075094
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1729,7 +1753,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1000140585}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 87658150}
+        m_TargetAssemblyTypeName: AISelectionManager, Assembly-CSharp
+        m_MethodName: OnThimbleSelect
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1000140585
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1850,7 +1886,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1009225024}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 87658150}
+        m_TargetAssemblyTypeName: AISelectionManager, Assembly-CSharp
+        m_MethodName: OnHatSelect
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1009225024
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2447,7 +2495,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1857067560}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 87658150}
+        m_TargetAssemblyTypeName: AISelectionManager, Assembly-CSharp
+        m_MethodName: OnWheelBarrelSelect
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1857067560
 MonoBehaviour:
   m_ObjectHideFlags: 0

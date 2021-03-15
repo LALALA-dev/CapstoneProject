@@ -28,4 +28,29 @@ public class AISelectionManager : MonoBehaviour
         GameInformation.gameType = 'P';
         SceneLoader.LoadLocalGameScene();
     }
+
+    public void OnHatSelect()
+    {
+        GameInformation.playerAvatar = "HAT";
+    }
+
+    public void OnCarSelect()
+    {
+        GameInformation.playerAvatar = "CAR";
+    }
+
+    public void OnShipSelect()
+    {
+        GameInformation.playerAvatar = "BATTLESHIP";
+    }
+
+    public void OnThimbleSelect()
+    {
+        GameInformation.playerAvatar = "THIMBLE";
+    }
+
+    public void OnWheelBarrelSelect()
+    {
+        GameInformation.playerAvatar = "WHEELBARREL";
+    }
 }
