@@ -487,6 +487,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4463c1516148164c9396b76d582693b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selector: {fileID: 462267172}
+  avatars:
+  - {fileID: 1009225021}
+  - {fileID: 369627171}
+  - {fileID: 950075091}
+  - {fileID: 1000140582}
+  - {fileID: 1857067557}
 --- !u!1 &157474053
 GameObject:
   m_ObjectHideFlags: 0

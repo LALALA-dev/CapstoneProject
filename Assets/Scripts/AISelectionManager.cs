@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class AISelectionManager : MonoBehaviour
 {
+
+    public GameObject selector;
+
+    public GameObject[] avatars;
+
     public void OnHostSelect()
     {
         GameInformation.playerIsHost = true;
@@ -34,14 +39,14 @@ public class AISelectionManager : MonoBehaviour
         GameInformation.playerAvatar = "HAT";
     }
 
-    public void OnCarSelect()
-    {
-        GameInformation.playerAvatar = "CAR";
-    }
-
     public void OnShipSelect()
     {
         GameInformation.playerAvatar = "BATTLESHIP";
+    }
+
+    public void OnCarSelect()
+    {
+        GameInformation.playerAvatar = "CAR";
     }
 
     public void OnThimbleSelect()
