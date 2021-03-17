@@ -1,3 +1,5 @@
+using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +11,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private NetworkController networkController;
     [SerializeField] private BoardManager boardManager;
     [SerializeField] private PlayerResourcesManager playerResourcesManager;
+    [SerializeField] private NetworkUIController uiController;
     private GameController gameController;
     private BeginnerAI beginnerAI;
 
@@ -50,6 +53,10 @@ public class GameManager : MonoBehaviour
             playerResourcesManager.UpdateBothPlayersResources();
         }
         gameController.UpdateGameBoard();
+        if (PhotonNetwork.CurrentRoom.PlayerCount < 2)
+        {
+            uiController.OtherPlayerDisconnected();
+        }
     }
 
     #region Network Game

@@ -59,6 +59,12 @@ public class NetworkUIController : MonoBehaviour
         }
     }
 
+    public void OtherPlayerDisconnected()
+    {
+        SceneLoader.LoadNetworkLobbyScene();
+        errorMessage.text = "Other player left room";
+    }
+
     public void SetRoomName()
     {
         if (hostCreateRoomNameField.IsActive())
@@ -71,7 +77,6 @@ public class NetworkUIController : MonoBehaviour
             }
             else
             {
-                // TODO: ERROR MESSAGE
                 errorMessage.text = "Please Enter a Room Name";
             }
         }
@@ -85,7 +90,6 @@ public class NetworkUIController : MonoBehaviour
             }
             else
             {
-                // TODO: ERROR MESSAGE
                 errorMessage.text = "Please Enter a Room Name";
             }
         }
