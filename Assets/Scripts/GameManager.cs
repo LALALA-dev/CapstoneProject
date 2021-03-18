@@ -50,47 +50,59 @@ public class GameManager : MonoBehaviour
             HNPInput.gameObject.SetActive(true);
         }
 
+        Image humanAvatar, aiAvatar;
+        if(GameInformation.playerIsHost)
+        {
+            humanAvatar = playerOneAvatar;
+            aiAvatar = playerTwoAvatar;
+        }
+        else
+        {
+            humanAvatar = playerTwoAvatar;
+            aiAvatar = playerOneAvatar;
+        }
+
         switch(GameInformation.playerAvatar)
         {
             case "HAT":
-                playerOneAvatar.sprite = avatars[0];
+                humanAvatar.sprite = avatars[0];
                 break;
             case "BATTLESHIP":
-                playerOneAvatar.sprite = avatars[1];
+                humanAvatar.sprite = avatars[1];
                 break;
             case "CAR":
-                playerOneAvatar.sprite = avatars[2];
+                humanAvatar.sprite = avatars[2];
                 break;
             case "THIMBLE":
-                playerOneAvatar.sprite = avatars[3];
+                humanAvatar.sprite = avatars[3];
                 break;
             case "WHEELBARREL":
-                playerOneAvatar.sprite = avatars[4];
+                humanAvatar.sprite = avatars[4];
                 break;
             default:
-                playerOneAvatar.sprite = avatars[2];
+                humanAvatar.sprite = avatars[2];
                 break;
         }
 
         switch (GameInformation.opponentAvatar)
         {
             case "HAT":
-                playerTwoAvatar.sprite = avatars[0];
+                aiAvatar.sprite = avatars[0];
                 break;
             case "BATTLESHIP":
-                playerTwoAvatar.sprite = avatars[1];
+                aiAvatar.sprite = avatars[1];
                 break;
             case "CAR":
-                playerTwoAvatar.sprite = avatars[2];
+                aiAvatar.sprite = avatars[2];
                 break;
             case "THIMBLE":
-                playerTwoAvatar.sprite = avatars[3];
+                aiAvatar.sprite = avatars[3];
                 break;
             case "WHEELBARREL":
-                playerTwoAvatar.sprite = avatars[4];
+                aiAvatar.sprite = avatars[4];
                 break;
             default:
-                playerTwoAvatar.sprite = avatars[2];
+                aiAvatar.sprite = avatars[2];
                 break;
         }
 
