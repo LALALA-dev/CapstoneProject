@@ -352,7 +352,6 @@ public class BeginnerAI
                                     {
                                         int max = -1;
                                         int ind = -1;
-                                        int spec = -1;
                                         for (int k = 0; k < 4; k++)
                                         {
                                             if (max < aiResources[k] && k != i)
