@@ -8,6 +8,7 @@ public class NetworkUIController : MonoBehaviour
     public TMP_InputField hostCreateRoomNameField;
     public TMP_InputField privateRoomNameField;
     public TMP_InputField setNameField;
+    public TextMeshProUGUI errorMessage;
 
     void Start()
     {
@@ -46,8 +47,16 @@ public class NetworkUIController : MonoBehaviour
     public void DisableInputs()
     {
         SetRoomName();
-        hostCreateRoomNameField.gameObject.SetActive(false);
-        privateRoomNameField.gameObject.SetActive(false);
+        if (hostCreateRoomNameField.text.Trim() != "")
+        {
+            hostCreateRoomNameField.gameObject.SetActive(false);
+            privateRoomNameField.gameObject.SetActive(false);
+            SceneLoader.LoadNetworkLobbyScene();
+        }
+        else
+        {
+            //SceneLoader.LoadNetworkScene();
+        }
     }
 
     public void SetRoomName()
@@ -58,10 +67,11 @@ public class NetworkUIController : MonoBehaviour
             {
                 GameInformation.roomName = hostCreateRoomNameField.text.Trim();
                 GameInformation.networkGameType = NetworkGameType.Host;
+                SceneLoader.LoadNetworkLobbyScene();
             }
             else
             {
-                // TODO: ERROR MESSAGE
+                errorMessage.text = "Please Enter a Room Name";
             }
         }
         else if(privateRoomNameField.IsActive())
@@ -70,10 +80,11 @@ public class NetworkUIController : MonoBehaviour
             {
                 GameInformation.roomName = privateRoomNameField.text.Trim();
                 GameInformation.networkGameType = NetworkGameType.Private;
+                SceneLoader.LoadNetworkLobbyScene();
             }
             else
             {
-                // TODO: ERROR MESSAGE
+                errorMessage.text = "Please Enter a Room Name";
             }
         }
         else

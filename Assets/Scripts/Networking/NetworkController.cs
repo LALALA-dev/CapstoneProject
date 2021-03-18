@@ -22,18 +22,12 @@ public class NetworkController : MonoBehaviourPunCallbacks
 
     #endregion
 
-    #region Public Functions
-
-    public void SendMove()
-    {
-        NetworkPlayer.player.SendMove(boardState);
-    }
-
+    #region Class Member Manipulation Functions
     public void SetMove(string move)
     {
         Debug.Log("HOST = " + GameInformation.playerIsHost + " SETMOVE() CALLED, BOARDCONFIG = " + move);
         boardState = move;
-
+        GameInformation.newNetworkMoveSet = true;
     }
 
     public string GetMove()
@@ -44,12 +38,33 @@ public class NetworkController : MonoBehaviourPunCallbacks
     public void GetOpponentInfo(string name)
     {
         netOpponentsName = name;
-        Debug.Log("Your opponent's name is " + netOpponentsName + "!");
     }
 
     public void SetInfo(string name)
     {
         netPlayerName = name;
+    }
+
+    public void InvokeRenderHost()
+    {
+        if (!GameInformation.playerIsHost)
+        {
+            GameInformation.renderClientBoard = true;
+        }
+    }
+
+    public void InvokeTriggerToggle()
+    {
+        GameInformation.enableTriggers = true;
+    }
+
+    #endregion
+
+    #region Network Broadcast Functions
+
+    public void SendMove()
+    {
+        NetworkPlayer.player.SendMove(boardState);
     }
 
     public void SendMove(string gameBoard)
@@ -60,6 +75,16 @@ public class NetworkController : MonoBehaviourPunCallbacks
     public void SendOpeningBoardConfiguration(string openingBoardState)
     {
         NetworkPlayer.player.SendMove(openingBoardState);
+    }
+
+    public void InvokeClientsRenderHost()
+    {
+        NetworkPlayer.player.InvokeHostConfiguration();
+    }
+
+    public void EnableOpponentsTriggers()
+    {
+        NetworkPlayer.player.InvokeEnableTriggers();
     }
 
     #endregion

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 using static GameObjectProperties;
 
 public class GameManager : MonoBehaviour
@@ -13,15 +14,17 @@ public class GameManager : MonoBehaviour
     private BeginnerAI beginnerAI;
 
     public TMP_InputField HNPInput;
-    public GameObject RenderBtn;
+
+    public Image playerOneAvatar;
+    public Image playerTwoAvatar;
+
+    public Sprite[] avatars;
 
     #region Setup
     private void Awake()
     {
         gameController = GameController.getInstance();
 
-        if (GameInformation.playerIsHost)
-            RenderBtn.gameObject.SetActive(false);
         if(!GameInformation.HumanNetworkProtocol)
             HNPInput.gameObject.SetActive(false);
     }
@@ -30,12 +33,13 @@ public class GameManager : MonoBehaviour
     {
         if (GameInformation.playerIsHost && GameInformation.gameType == 'N')
         {
+            GameInformation.currentPlayer = "HOST";
             networkController.SendOpeningBoardConfiguration(gameController.getGameBoard().ToString());
-            NetworkGame();
+            BeginNetworkGame();
         }
         else if(GameInformation.gameType == 'A')
         {
-            BeginnerAIGame();
+            BeginBeginnerAIGame();
         }
         else if(GameInformation.gameType == 'E')
         {
@@ -45,56 +49,206 @@ public class GameManager : MonoBehaviour
         {
             HNPInput.gameObject.SetActive(true);
         }
+
+        switch(GameInformation.playerAvatar)
+        {
+            case "HAT":
+                playerOneAvatar.sprite = avatars[0];
+                break;
+            case "BATTLESHIP":
+                playerOneAvatar.sprite = avatars[1];
+                break;
+            case "CAR":
+                playerOneAvatar.sprite = avatars[2];
+                break;
+            case "THIMBLE":
+                playerOneAvatar.sprite = avatars[3];
+                break;
+            case "WHEELBARREL":
+                playerOneAvatar.sprite = avatars[4];
+                break;
+            default:
+                playerOneAvatar.sprite = avatars[2];
+                break;
+        }
+
+        switch (GameInformation.opponentAvatar)
+        {
+            case "HAT":
+                playerTwoAvatar.sprite = avatars[0];
+                break;
+            case "BATTLESHIP":
+                playerTwoAvatar.sprite = avatars[1];
+                break;
+            case "CAR":
+                playerTwoAvatar.sprite = avatars[2];
+                break;
+            case "THIMBLE":
+                playerTwoAvatar.sprite = avatars[3];
+                break;
+            case "WHEELBARREL":
+                playerTwoAvatar.sprite = avatars[4];
+                break;
+            default:
+                playerTwoAvatar.sprite = avatars[2];
+                break;
+        }
+
     }
     #endregion
 
     private void Update()
     {
+        if(GameInformation.renderClientBoard && GameInformation.gameType == 'N' && !GameInformation.playerIsHost)
+        {
+            RenderHostBoard();
+            GameInformation.renderClientBoard = false;
+        }
+
         if(GameInformation.tradeHasBeenMade)
         {
             GameInformation.tradeHasBeenMade = false;
             playerResourcesManager.UpdateBothPlayersResources();
         }
-        // gameController.UpdateGameBoard();
+
+        if(GameInformation.gameType == 'N' && GameInformation.enableTriggers)
+        {
+            GameInformation.enableTriggers = false;
+            ToogleTriggers();
+        }
+
+        if (GameInformation.gameType == 'N' && GameInformation.newNetworkMoveSet)
+        {
+            GameInformation.newNetworkMoveSet = false;
+            string hostBoard = networkController.GetMove();
+            GameInformation.currentPlayer = "CLIENT";
+            gameController.SetBoardConfiguration(hostBoard);
+            gameController.RefreshBlockedTiles();
+            boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
+        }
     }
 
     #region Network Game
-    public void NetworkGame()
+    public void BeginNetworkGame()
     {
-        RenderHostBoard();
-        NetworkOpeningSequence();
-
-        while(!GameInformation.gameOver)
-        {
-            NetworkPlayerMove();
-        }
+        boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
+        networkController.InvokeClientsRenderHost();
     }
 
     public void RenderHostBoard()
     {
-        if (!GameInformation.playerIsHost && GameInformation.gameType == 'N')
+        if (GameInformation.gameType == 'N' && !GameInformation.playerIsHost)
         {
             string hostBoard = networkController.GetMove();
             gameController.SetBoardConfiguration(hostBoard);
-            RenderBtn.gameObject.SetActive(false);
             boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
-
+            gameController.FlipColors();
+            ToogleTriggers();
         }
     }
 
-    public void NetworkOpeningSequence()
+    private void EndCurrentNetworkPlayersTurn()
     {
+        if (GameInformation.openingSequence && GameInformation.currentPlayer == "HOST" && OpeningMoveSatisfied())
+        {
+            gameController.RefreshBlockedTiles();
+            boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
+            if (GameInformation.playerIsHost)
+            {
+                if (GameInformation.turnNumber == 1)
+                {
+                    GameInformation.turnNumber++;
+                    GameInformation.currentPlayer = "CLIENT";
+                    ToogleTriggers();
+                    networkController.EnableOpponentsTriggers();
+                    networkController.SendMove(gameController.getGameBoard().ToString());
+                }
+                else if (GameInformation.turnNumber == 4)
+                {
+                    GameInformation.openingSequence = false;
+                    GameInformation.turnNumber++;
 
+                    GameInformation.currentPlayer = "CLIENT";
+                    ToogleTriggers();
+                    networkController.EnableOpponentsTriggers();
+                    networkController.SendMove(gameController.getGameBoard().ToString());
+
+                    // TODO: COLLECT CLIENT'S RESOURCES AND BEGIN ACTUAL GAME
+                    gameController.CollectCurrentPlayerResources();
+                    gameController.UpdateScores();
+                }
+            }
+        }
+        else if (GameInformation.openingSequence && GameInformation.currentPlayer == "ClIENT" && OpeningMoveSatisfied())
+        {
+            gameController.RefreshBlockedTiles();
+            boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
+            if (!GameInformation.playerIsHost)
+            {
+                if (GameInformation.turnNumber == 2)
+                {
+                    GameInformation.turnNumber++;
+                    // TODO: CLIENT IS STILL CURRENT PLAYER FOR SECOND OPENING MOVE
+                    networkController.SendMove(gameController.getGameBoard().ToString());
+                    GameInformation.openingMoveBranchSet = false;
+                    GameInformation.openingMoveNodeSet = false;
+
+                }
+                else if (GameInformation.turnNumber == 3)
+                {
+                    GameInformation.turnNumber++;
+                    // TODO: SETUP HOST AS CURRENT PLAYER FOR THEIR SECOND OPENING MOVE
+
+                    GameInformation.currentPlayer = "HOST";
+                    ToogleTriggers();
+                    networkController.EnableOpponentsTriggers();
+                    networkController.SendMove(gameController.getGameBoard().ToString());
+                }
+            }
+        }
+        else
+        {
+            // NORMAL GAMEPLAY
+            GameInformation.turnNumber++;
+            gameController.UpdateGameBoard();
+            boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
+            boardManager.DetectNewBlockCaptures(gameController.getGameBoard().GetSquareStates());
+            GameInformation.currentRoundPlacedNodes.Clear();
+            GameInformation.currentRoundPlacedBranches.Clear();
+
+            GameInformation.resourceTrade = false;
+            if (GameInformation.currentPlayer == "HOST" && GameInformation.playerIsHost)
+            {
+                GameInformation.currentPlayer = "CLIENT";
+                ToogleTriggers();
+                networkController.EnableOpponentsTriggers();
+                networkController.SendMove(gameController.getGameBoard().ToString());
+            }
+            else
+            {
+                GameInformation.currentPlayer = "HOST";
+                ToogleTriggers();
+                networkController.EnableOpponentsTriggers();
+                networkController.SendMove(gameController.getGameBoard().ToString());
+            }
+
+            gameController.FlipColors();
+            gameController.CollectCurrentPlayerResources();
+            playerResourcesManager.UpdateBothPlayersResources();
+            gameController.UpdateScores();
+
+            if (GameInformation.playerOneScore >= 10 || GameInformation.playerTwoScore >= 10)
+            {
+                GameInformation.gameOver = true;
+                return;
+            }
+        }
     }
 
-    public void NetworkPlayerMove()
-    {
-
-    }
     #endregion
 
     #region AI Game
-    public void BeginnerAIGame()
+    public void BeginBeginnerAIGame()
     {
         PlayerColor aiColor;
         if (GameInformation.playerIsHost)
@@ -109,7 +263,7 @@ public class GameManager : MonoBehaviour
         {
             BoardState AIMove = beginnerAI.MakeRandomOpeningMove(gameController.getGameBoard().getBoardState());
             gameController.getGameBoard().setBoard(AIMove.squareStates, AIMove.nodeStates, AIMove.branchStates);
-            EndCurrentPlayersTurn();
+            EndCurrentAIPlayersTurn();
         }
     }
 
@@ -127,7 +281,7 @@ public class GameManager : MonoBehaviour
         GameInformation.humanMoveFinished = false;
     }
 
-    public void EndCurrentPlayersTurn()
+    private void EndCurrentAIPlayersTurn()
     {
         if (GameInformation.openingSequence && GameInformation.currentPlayer == "HUMAN" && OpeningMoveSatisfied())
         {
@@ -141,7 +295,7 @@ public class GameManager : MonoBehaviour
                     RandomAIOpeningMove();
 
                     GameInformation.humanMoveFinished = false;
-                    EndCurrentPlayersTurn();
+                    EndCurrentAIPlayersTurn();
                 }
                 else if(GameInformation.turnNumber == 4)
                 {
@@ -162,7 +316,7 @@ public class GameManager : MonoBehaviour
                     BoardState AIMove = beginnerAI.RandomMove(gameController.getGameBoard().getBoardState(), AIResources);
                     gameController.getGameBoard().setBoard(AIMove.squareStates, AIMove.nodeStates, AIMove.branchStates);
                     boardManager.RefreshForAIMoves();
-                    EndCurrentPlayersTurn();
+                    EndCurrentAIPlayersTurn();
                 }
             }
             else
@@ -177,13 +331,13 @@ public class GameManager : MonoBehaviour
                 {
                     GameInformation.turnNumber++;
                     RandomAIOpeningMove();
-                    EndCurrentPlayersTurn();
+                    EndCurrentAIPlayersTurn();
                 }
             }
         }
         else if(GameInformation.openingSequence && GameInformation.currentPlayer == "AI")
         {
-            gameController.RefreshBlockedTiles();
+            gameController.RefreshBlockedTiles(); 
             boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
             if (!GameInformation.playerIsHost)
             {
@@ -212,7 +366,7 @@ public class GameManager : MonoBehaviour
                     GameInformation.turnNumber++;
                     RandomAIOpeningMove();
                     GameInformation.humanMoveFinished = false;
-                    EndCurrentPlayersTurn();
+                    EndCurrentAIPlayersTurn();
                 }
                 else if (GameInformation.turnNumber == 3)
                 {
@@ -267,7 +421,7 @@ public class GameManager : MonoBehaviour
                     return;
                 }
 
-                EndCurrentPlayersTurn();
+                EndCurrentAIPlayersTurn();
             }
         }
     }
@@ -323,11 +477,19 @@ public class GameManager : MonoBehaviour
         gameController.SetBoardConfiguration(HNPInput.text.Trim());
         boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
         HNPInput.gameObject.SetActive(false);
-        BeginnerAIGame();
+        BeginBeginnerAIGame();
     }
 
     public void ToogleTriggers()
     {
         BroadcastMessage("ToggleNodeBranchTriggers");
+    }
+
+    public void EndTurnButtonClick()
+    {
+        if (GameInformation.gameType == 'N')
+            EndCurrentNetworkPlayersTurn();
+        else
+            EndCurrentAIPlayersTurn();
     }
 }
