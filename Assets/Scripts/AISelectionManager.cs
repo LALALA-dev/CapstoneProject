@@ -9,19 +9,8 @@ public class AISelectionManager : MonoBehaviour
 
     public GameObject[] avatars;
 
-    public void OnHostSelect()
+    public void OnGoSelect()
     {
-        GameInformation.playerIsHost = true;
-        GameInformation.currentPlayer = "HUMAN";
-
-        SceneLoader.LoadLocalGameScene();
-    }
-
-    public void OnAIHostSelect()
-    {
-        GameInformation.playerIsHost = false;
-        GameInformation.currentPlayer = "AI";
-
         SceneLoader.LoadLocalGameScene();
     }
 
