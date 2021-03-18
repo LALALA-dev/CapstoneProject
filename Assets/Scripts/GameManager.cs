@@ -88,6 +88,7 @@ public class GameManager : MonoBehaviour
     {
         if (GameInformation.gameType == 'N' && !GameInformation.playerIsHost)
         {
+            Debug.Log("Rendering Host's Board");
             string hostBoard = networkController.GetMove();
             gameController.SetBoardConfiguration(hostBoard);
             boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
