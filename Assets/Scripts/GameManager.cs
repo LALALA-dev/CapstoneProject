@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
         switch(GameInformation.playerAvatar)
         {
             case "HAT":
-                playerTwoAvatar.sprite = avatars[0];
+                playerOneAvatar.sprite = avatars[0];
                 break;
             case "BATTLESHIP":
                 playerOneAvatar.sprite = avatars[1];
@@ -69,6 +69,28 @@ public class GameManager : MonoBehaviour
                 break;
             default:
                 playerOneAvatar.sprite = avatars[2];
+                break;
+        }
+
+        switch (GameInformation.opponentAvatar)
+        {
+            case "HAT":
+                playerTwoAvatar.sprite = avatars[0];
+                break;
+            case "BATTLESHIP":
+                playerTwoAvatar.sprite = avatars[1];
+                break;
+            case "CAR":
+                playerTwoAvatar.sprite = avatars[2];
+                break;
+            case "THIMBLE":
+                playerTwoAvatar.sprite = avatars[3];
+                break;
+            case "WHEELBARREL":
+                playerTwoAvatar.sprite = avatars[4];
+                break;
+            default:
+                playerTwoAvatar.sprite = avatars[2];
                 break;
         }
 
