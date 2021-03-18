@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 using static GameObjectProperties;
 
 public class GameManager : MonoBehaviour
@@ -13,6 +14,11 @@ public class GameManager : MonoBehaviour
     private BeginnerAI beginnerAI;
 
     public TMP_InputField HNPInput;
+
+    public Image playerOneAvatar;
+    public Image playerTwoAvatar;
+
+    public Sprite[] avatars;
 
     #region Setup
     private void Awake()
@@ -43,6 +49,63 @@ public class GameManager : MonoBehaviour
         {
             HNPInput.gameObject.SetActive(true);
         }
+
+        Image humanAvatar, aiAvatar;
+        if(GameInformation.playerIsHost)
+        {
+            humanAvatar = playerOneAvatar;
+            aiAvatar = playerTwoAvatar;
+        }
+        else
+        {
+            humanAvatar = playerTwoAvatar;
+            aiAvatar = playerOneAvatar;
+        }
+
+        switch(GameInformation.playerAvatar)
+        {
+            case "HAT":
+                humanAvatar.sprite = avatars[0];
+                break;
+            case "BATTLESHIP":
+                humanAvatar.sprite = avatars[1];
+                break;
+            case "CAR":
+                humanAvatar.sprite = avatars[2];
+                break;
+            case "THIMBLE":
+                humanAvatar.sprite = avatars[3];
+                break;
+            case "WHEELBARREL":
+                humanAvatar.sprite = avatars[4];
+                break;
+            default:
+                humanAvatar.sprite = avatars[2];
+                break;
+        }
+
+        switch (GameInformation.opponentAvatar)
+        {
+            case "HAT":
+                aiAvatar.sprite = avatars[0];
+                break;
+            case "BATTLESHIP":
+                aiAvatar.sprite = avatars[1];
+                break;
+            case "CAR":
+                aiAvatar.sprite = avatars[2];
+                break;
+            case "THIMBLE":
+                aiAvatar.sprite = avatars[3];
+                break;
+            case "WHEELBARREL":
+                aiAvatar.sprite = avatars[4];
+                break;
+            default:
+                aiAvatar.sprite = avatars[2];
+                break;
+        }
+
     }
     #endregion
 

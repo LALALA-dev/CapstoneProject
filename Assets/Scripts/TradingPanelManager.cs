@@ -88,7 +88,8 @@ public class TradingPanelManager : MonoBehaviour
             createResourceBtn[i].gameObject.SetActive(false);
             tilesSelected[i].text = "0";
         }
-            
+        
+        SendMessageUpwards("ToogleTriggers");
         panel.SetActive(false);
         GameInformation.resourceTrade = true;
         GameInformation.tradeHasBeenMade = true;
