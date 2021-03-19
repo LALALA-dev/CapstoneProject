@@ -152,7 +152,6 @@ public class GameManager : MonoBehaviour
             boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
             boardManager.RefreshForAIMoves();
 
-            Debug.Log("Turn Number: " + GameInformation.turnNumber);
             if (GameInformation.openingSequence && !GameInformation.playerIsHost && GameInformation.turnNumber == 5)
             {
                 GameInformation.openingSequence = false;
@@ -167,9 +166,7 @@ public class GameManager : MonoBehaviour
     #region Network Game
     public void BeginNetworkGame()
     {
-        // Set Host's board visually
         boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
-        // Tell Client to render their board visually
         networkController.InvokeClientsRenderHost();
     }
 
@@ -256,7 +253,7 @@ public class GameManager : MonoBehaviour
             GameInformation.currentRoundPlacedBranches.Clear();
 
             GameInformation.resourceTrade = false;
-            if (GameInformation.currentPlayer == "HOST" && GameInformation.playerIsHost)
+            if (GameInformation.currentPlayer == "HOST")
             {
                 GameInformation.currentPlayer = "CLIENT";
                 ToogleTriggers();
@@ -271,7 +268,6 @@ public class GameManager : MonoBehaviour
                 networkController.SendMove(gameController.getGameBoard().ToString());
             }
 
-            // gameController.FlipColors();
             gameController.CollectCurrentPlayerResources();
             playerResourcesManager.UpdateBothPlayersResources();
             gameController.UpdateScores();
