@@ -140,7 +140,7 @@ public class GameManager : MonoBehaviour
                 GameInformation.openingMoveNodeSet = false;
                 GameInformation.openingMoveBranchSet = false;
             }
-            if (GameInformation.openingSequence && !GameInformation.playerIsHost && GameInformation.turnNumber == 1)
+            else if (GameInformation.openingSequence && !GameInformation.playerIsHost && GameInformation.turnNumber == 1)
             {
                 GameInformation.currentPlayer = "CLIENT";
             }
@@ -151,6 +151,16 @@ public class GameManager : MonoBehaviour
             gameController.RefreshBlockedTiles();
             boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
             boardManager.RefreshForAIMoves();
+
+            Debug.Log("Turn Number: " + GameInformation.turnNumber);
+            if (GameInformation.openingSequence && !GameInformation.playerIsHost && GameInformation.turnNumber == 5)
+            {
+                GameInformation.openingSequence = false;
+                GameInformation.currentPlayer = "CLIENT";
+
+                gameController.CollectCurrentPlayerResources();
+                playerResourcesManager.UpdateBothPlayersResources();
+            }
         }
     }
 
@@ -261,7 +271,7 @@ public class GameManager : MonoBehaviour
                 networkController.SendMove(gameController.getGameBoard().ToString());
             }
 
-            gameController.FlipColors();
+            // gameController.FlipColors();
             gameController.CollectCurrentPlayerResources();
             playerResourcesManager.UpdateBothPlayersResources();
             gameController.UpdateScores();
