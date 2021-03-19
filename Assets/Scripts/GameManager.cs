@@ -144,6 +144,7 @@ public class GameManager : MonoBehaviour
             gameController.SetBoardConfiguration(opponentBoard);
             gameController.RefreshBlockedTiles();
             boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
+            boardManager.RefreshForAIMoves();
         }
     }
 
@@ -172,8 +173,13 @@ public class GameManager : MonoBehaviour
 
     private void EndCurrentNetworkPlayersTurn()
     {
+        Debug.Log("Opening Sequence = " + GameInformation.openingSequence);
+        Debug.Log("Current Player = " + GameInformation.currentPlayer);
+        Debug.Log("Opening Move Satisfied = " + OpeningMoveSatisfied());
         if (GameInformation.openingSequence && GameInformation.currentPlayer == "HOST" && OpeningMoveSatisfied())
         {
+            Debug.Log("Host Opening Move Satisfied");
+            gameController.UpdateGameBoard();
             gameController.RefreshBlockedTiles();
             boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
             if (GameInformation.playerIsHost)

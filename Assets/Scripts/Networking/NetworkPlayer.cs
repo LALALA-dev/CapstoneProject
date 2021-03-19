@@ -36,7 +36,7 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
     public void SendMove(string boardConfig)
     {
         if (pView.IsMine)
-            pView.RPC("RPC_SendMove", RpcTarget.AllBuffered, boardConfig);
+            pView.RPC("RPC_SendMove", RpcTarget.Others, boardConfig);
     }
 
     public void InvokeHostConfiguration()
