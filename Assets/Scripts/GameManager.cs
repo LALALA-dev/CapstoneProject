@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour
     {
         if (GameInformation.playerIsHost && GameInformation.gameType == 'N')
         {
+            Debug.Log("Host is this machine");
             GameInformation.currentPlayer = "HOST";
             networkController.SendOpeningBoardConfiguration(gameController.getGameBoard().ToString());
             BeginNetworkGame();
@@ -131,10 +132,16 @@ public class GameManager : MonoBehaviour
 
         if (GameInformation.gameType == 'N' && GameInformation.newNetworkMoveSet)
         {
+            Debug.Log("New Network Move has been set");
             GameInformation.newNetworkMoveSet = false;
-            string hostBoard = networkController.GetMove();
+            Debug.Log("Retrieving new move");
+            string opponentBoard = networkController.GetMove();
+            Debug.Log("New Config: " + opponentBoard);
             GameInformation.currentPlayer = "CLIENT";
-            gameController.SetBoardConfiguration(hostBoard);
+            Debug.Log("Current Player is now: " + GameInformation.currentPlayer);
+            GameInformation.turnNumber++;
+            Debug.Log("Turn Number: " + GameInformation.turnNumber);
+            gameController.SetBoardConfiguration(opponentBoard);
             gameController.RefreshBlockedTiles();
             boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
         }
@@ -143,7 +150,9 @@ public class GameManager : MonoBehaviour
     #region Network Game
     public void BeginNetworkGame()
     {
+        // Set Host's board visually
         boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
+        // Tell Client to render their board visually
         networkController.InvokeClientsRenderHost();
     }
 
@@ -156,6 +165,7 @@ public class GameManager : MonoBehaviour
             gameController.SetBoardConfiguration(hostBoard);
             boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
             gameController.FlipColors();
+            Debug.Log("Current Player's Color is " + gameController.getCurrentPlayerColor());
             ToogleTriggers();
         }
     }
@@ -194,6 +204,7 @@ public class GameManager : MonoBehaviour
         }
         else if (GameInformation.openingSequence && GameInformation.currentPlayer == "ClIENT" && OpeningMoveSatisfied())
         {
+            Debug.Log("Network Client Opening Sequence Move Satisfied");
             gameController.RefreshBlockedTiles();
             boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
             if (!GameInformation.playerIsHost)
@@ -495,13 +506,17 @@ public class GameManager : MonoBehaviour
 
     public void ToogleTriggers()
     {
+        Debug.Log("Toggling Host = " + GameInformation.playerIsHost + "'s Triggers");
         BroadcastMessage("ToggleNodeBranchTriggers");
     }
 
     public void EndTurnButtonClick()
     {
         if (GameInformation.gameType == 'N')
+        {
+            Debug.Log("Ending Host = " + GameInformation.playerIsHost + "'s Network Turn");
             EndCurrentNetworkPlayersTurn();
+        }  
         else
             EndCurrentAIPlayersTurn();
     }

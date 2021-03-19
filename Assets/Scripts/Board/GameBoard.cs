@@ -230,7 +230,77 @@ public class GameBoard
         for (int i = 0; i < MAX_SQUARES; i++)
         {
             squares[i].squareState.location = i;
-            // stringIndex++;
+
+            switch (networkBoardConfig[stringIndex])
+            {
+                case 'B':
+                    squares[i].squareState.ownerColor = PlayerColor.Blank;
+                    break;
+                case 'O':
+                    squares[i].squareState.ownerColor = PlayerColor.Orange;
+                    break;
+                case 'P':
+                    squares[i].squareState.ownerColor = PlayerColor.Purple;
+                    break;
+            }
+            stringIndex++;
+
+            switch (networkBoardConfig[stringIndex])
+            {
+                case 'O':
+                    squares[i].squareState.resourceState = SquareStatus.Open;
+                    break;
+                case 'C':
+                    squares[i].squareState.resourceState = SquareStatus.Captured;
+                    break;
+                case 'B':
+                    squares[i].squareState.resourceState = SquareStatus.Blocked;
+                    break;
+            }
+            stringIndex++;
+
+            switch (networkBoardConfig[stringIndex])
+            {
+                case '0':
+                    squares[i].squareState.resourceAmount = SquareResourceAmount.Blank;
+                    break;
+                case '1':
+                    squares[i].squareState.resourceAmount = SquareResourceAmount.One;
+                    break;
+                case '2':
+                    squares[i].squareState.resourceAmount = SquareResourceAmount.Two;
+                    break;
+                case '3':
+                    squares[i].squareState.resourceAmount = SquareResourceAmount.Three;
+                    break;
+
+            }
+            stringIndex++;
+
+            switch (networkBoardConfig[stringIndex])
+            {
+                case 'B':
+                    squares[i].squareState.resourceColor = SquareResourceColor.Blue;
+                    break;
+                case 'R':
+                    squares[i].squareState.resourceColor = SquareResourceColor.Red;
+                    break;
+                case 'Y':
+                    squares[i].squareState.resourceColor = SquareResourceColor.Yellow;
+                    break;
+                case 'G':
+                    squares[i].squareState.resourceColor = SquareResourceColor.Green;
+                    break;
+                case 'L':
+                    squares[i].squareState.resourceColor = SquareResourceColor.Blank;
+                    break;
+            }
+            stringIndex++;
+        }
+
+        for (int i = 0; i < MAX_NODES; i++)
+        {
+            squares[i].squareState.location = i;
 
             switch (networkBoardConfig[stringIndex])
             {

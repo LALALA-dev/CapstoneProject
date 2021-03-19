@@ -27,6 +27,12 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
             pView.RPC("RPC_SendInfo", RpcTarget.All, name);
     }
 
+    public void SendOpeningBoardConfiguration(string openingBoard)
+    {
+        if (pView.IsMine)
+            pView.RPC("RPC_SendOpeningBoard", RpcTarget.AllBuffered, openingBoard);
+    }
+
     public void SendMove(string boardConfig)
     {
         if (pView.IsMine)
@@ -42,7 +48,7 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
     public void InvokeEnableTriggers()
     {
         if (pView.IsMine)
-            pView.RPC("RPC_InvokeHostBoardRender", RpcTarget.Others);
+            pView.RPC("RPC_InvokeOpponentTriggerToggle", RpcTarget.Others);
     }
 
     #region RPC Functions
@@ -53,6 +59,13 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
         if (!photonView.IsMine)
             return;
         networkController.GetOpponentInfo(playerName);
+    }
+
+    [PunRPC]
+    void RPC_SendOpeningBoard(string boardConfig)
+    {
+        Debug.Log("RPC_SendOpeningBoard() was called");
+        networkController.SetOpeningBoardConfiguration(boardConfig);
     }
 
     [PunRPC]
