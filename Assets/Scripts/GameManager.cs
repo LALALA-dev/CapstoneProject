@@ -33,7 +33,6 @@ public class GameManager : MonoBehaviour
     {
         if (GameInformation.playerIsHost && GameInformation.gameType == 'N')
         {
-            Debug.Log("Host is this machine");
             GameInformation.currentPlayer = "HOST";
             networkController.SendOpeningBoardConfiguration(gameController.getGameBoard().ToString());
             BeginNetworkGame();
@@ -174,12 +173,10 @@ public class GameManager : MonoBehaviour
     {
         if (GameInformation.gameType == 'N' && !GameInformation.playerIsHost)
         {
-            Debug.Log("Rendering Host's Board");
             string hostBoard = networkController.GetMove();
             gameController.SetBoardConfiguration(hostBoard);
             boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
             gameController.FlipColors();
-            Debug.Log("Current Player's Color is " + gameController.getCurrentPlayerColor());
             ToogleTriggers();
         }
     }
@@ -517,17 +514,13 @@ public class GameManager : MonoBehaviour
 
     public void ToogleTriggers()
     {
-        Debug.Log("Toggling Host = " + GameInformation.playerIsHost + "'s Triggers");
         BroadcastMessage("ToggleNodeBranchTriggers");
     }
 
     public void EndTurnButtonClick()
     {
         if (GameInformation.gameType == 'N')
-        {
-            Debug.Log("Ending Host = " + GameInformation.playerIsHost + "'s Network Turn");
             EndCurrentNetworkPlayersTurn();
-        }  
         else
             EndCurrentAIPlayersTurn();
     }
