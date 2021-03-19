@@ -132,15 +132,21 @@ public class GameManager : MonoBehaviour
 
         if (GameInformation.gameType == 'N' && GameInformation.newNetworkMoveSet)
         {
-            Debug.Log("New Network Move has been set");
             GameInformation.newNetworkMoveSet = false;
-            Debug.Log("Retrieving new move");
+
+            if (GameInformation.openingSequence && GameInformation.playerIsHost && GameInformation.turnNumber == 2)
+            {
+                GameInformation.currentPlayer = "HOST";
+                GameInformation.openingMoveNodeSet = false;
+                GameInformation.openingMoveBranchSet = false;
+            }
+            if (GameInformation.openingSequence && !GameInformation.playerIsHost && GameInformation.turnNumber == 1)
+            {
+                GameInformation.currentPlayer = "CLIENT";
+            }
+
             string opponentBoard = networkController.GetMove();
-            Debug.Log("New Config: " + opponentBoard);
-            GameInformation.currentPlayer = "CLIENT";
-            Debug.Log("Current Player is now: " + GameInformation.currentPlayer);
             GameInformation.turnNumber++;
-            Debug.Log("Turn Number: " + GameInformation.turnNumber);
             gameController.SetBoardConfiguration(opponentBoard);
             gameController.RefreshBlockedTiles();
             boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
@@ -173,12 +179,8 @@ public class GameManager : MonoBehaviour
 
     private void EndCurrentNetworkPlayersTurn()
     {
-        Debug.Log("Opening Sequence = " + GameInformation.openingSequence);
-        Debug.Log("Current Player = " + GameInformation.currentPlayer);
-        Debug.Log("Opening Move Satisfied = " + OpeningMoveSatisfied());
         if (GameInformation.openingSequence && GameInformation.currentPlayer == "HOST" && OpeningMoveSatisfied())
         {
-            Debug.Log("Host Opening Move Satisfied");
             gameController.UpdateGameBoard();
             gameController.RefreshBlockedTiles();
             boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
@@ -208,9 +210,9 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-        else if (GameInformation.openingSequence && GameInformation.currentPlayer == "ClIENT" && OpeningMoveSatisfied())
+        else if (GameInformation.openingSequence && GameInformation.currentPlayer == "CLIENT" && OpeningMoveSatisfied())
         {
-            Debug.Log("Network Client Opening Sequence Move Satisfied");
+            gameController.UpdateGameBoard();
             gameController.RefreshBlockedTiles();
             boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
             if (!GameInformation.playerIsHost)
@@ -218,7 +220,6 @@ public class GameManager : MonoBehaviour
                 if (GameInformation.turnNumber == 2)
                 {
                     GameInformation.turnNumber++;
-                    // TODO: CLIENT IS STILL CURRENT PLAYER FOR SECOND OPENING MOVE
                     networkController.SendMove(gameController.getGameBoard().ToString());
                     GameInformation.openingMoveBranchSet = false;
                     GameInformation.openingMoveNodeSet = false;
@@ -227,8 +228,6 @@ public class GameManager : MonoBehaviour
                 else if (GameInformation.turnNumber == 3)
                 {
                     GameInformation.turnNumber++;
-                    // TODO: SETUP HOST AS CURRENT PLAYER FOR THEIR SECOND OPENING MOVE
-
                     GameInformation.currentPlayer = "HOST";
                     ToogleTriggers();
                     networkController.EnableOpponentsTriggers();
