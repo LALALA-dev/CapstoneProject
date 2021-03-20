@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
 
     public Image playerOneAvatar;
     public Image playerTwoAvatar;
+    public Text playerOneScore;
+    public Text playerTwoScore;
 
     public Sprite[] avatars;
 
@@ -433,6 +435,9 @@ public class GameManager : MonoBehaviour
             gameController.CollectCurrentPlayerResources();
             playerResourcesManager.UpdateBothPlayersResources();
             gameController.UpdateScores();
+
+            playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
+            playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
 
             if (GameInformation.playerOneScore >= 10 || GameInformation.playerTwoScore >= 10)
             {
