@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     public Image playerTwoAvatar;
     public Text playerOneScore;
     public Text playerTwoScore;
+    public Text currentPlayerMessage;
 
     public Sprite[] avatars;
 
@@ -295,9 +296,14 @@ public class GameManager : MonoBehaviour
 
         if(!GameInformation.playerIsHost)
         {
+            currentPlayerMessage.text = "AI's Move";
             BoardState AIMove = beginnerAI.MakeRandomOpeningMove(gameController.getGameBoard().getBoardState());
             gameController.getGameBoard().setBoard(AIMove.squareStates, AIMove.nodeStates, AIMove.branchStates);
             EndCurrentAIPlayersTurn();
+        }
+        else
+        {
+            currentPlayerMessage.text = "Your Move";
         }
     }
 
@@ -325,6 +331,7 @@ public class GameManager : MonoBehaviour
             {
                 if(GameInformation.turnNumber == 1)
                 {
+                    currentPlayerMessage.text = "AI's Move";
                     GameInformation.turnNumber++;
                     RandomAIOpeningMove();
 
@@ -333,6 +340,7 @@ public class GameManager : MonoBehaviour
                 }
                 else if(GameInformation.turnNumber == 4)
                 {
+                    currentPlayerMessage.text = "AI's Move";
                     GameInformation.openingSequence = false;
                     GameInformation.turnNumber++;
                     GameInformation.currentPlayer = "AI"; 
@@ -357,12 +365,14 @@ public class GameManager : MonoBehaviour
             {
                 if(GameInformation.turnNumber == 2)
                 {
+                    currentPlayerMessage.text = "Your Move";
                     GameInformation.turnNumber++;
                     gameController.FlipColors();
                     BeginHumanOpeningMove();
                 }
                 else if(GameInformation.turnNumber == 3)
                 {
+                    currentPlayerMessage.text = "AI's Move";
                     GameInformation.turnNumber++;
                     RandomAIOpeningMove();
                     EndCurrentAIPlayersTurn();
@@ -379,10 +389,12 @@ public class GameManager : MonoBehaviour
                 {
                     boardManager.RefreshForAIMoves();
                     GameInformation.turnNumber++;
+                    currentPlayerMessage.text = "Your Move";
                     BeginHumanOpeningMove();
                 }
                 else if (GameInformation.turnNumber == 4)
                 {
+                    currentPlayerMessage.text = "Your Move";
                     GameInformation.openingSequence = false;
                     GameInformation.turnNumber++;
                     GameInformation.currentPlayer = "HUMAN";
@@ -397,6 +409,7 @@ public class GameManager : MonoBehaviour
             {
                 if (GameInformation.turnNumber == 2)
                 {
+                    currentPlayerMessage.text = "AI's Move";
                     GameInformation.turnNumber++;
                     RandomAIOpeningMove();
                     GameInformation.humanMoveFinished = false;
@@ -404,6 +417,7 @@ public class GameManager : MonoBehaviour
                 }
                 else if (GameInformation.turnNumber == 3)
                 {
+                    currentPlayerMessage.text = "Your Move";
                     GameInformation.turnNumber++;
                     GameInformation.currentPlayer = "HUMAN";
                     gameController.FlipColors();
@@ -426,10 +440,12 @@ public class GameManager : MonoBehaviour
             if (GameInformation.currentPlayer == "HUMAN")
             {
                 GameInformation.currentPlayer = "AI";
+                currentPlayerMessage.text = "AI's Move";
             }
             else
             {
                 GameInformation.currentPlayer = "HUMAN";
+                currentPlayerMessage.text = "Your Move";
             }
             gameController.FlipColors();
             gameController.CollectCurrentPlayerResources();
