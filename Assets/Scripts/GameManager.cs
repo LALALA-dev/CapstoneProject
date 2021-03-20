@@ -132,11 +132,33 @@ public class GameManager : MonoBehaviour
         if (GameInformation.gameType == 'N' && GameInformation.newNetworkMoveSet)
         {
             GameInformation.newNetworkMoveSet = false;
-            string hostBoard = networkController.GetMove();
-            GameInformation.currentPlayer = "CLIENT";
-            gameController.SetBoardConfiguration(hostBoard);
+
+            if (GameInformation.openingSequence && GameInformation.playerIsHost && GameInformation.turnNumber == 2)
+            {
+                GameInformation.currentPlayer = "HOST";
+                GameInformation.openingMoveNodeSet = false;
+                GameInformation.openingMoveBranchSet = false;
+            }
+            else if (GameInformation.openingSequence && !GameInformation.playerIsHost && GameInformation.turnNumber == 1)
+            {
+                GameInformation.currentPlayer = "CLIENT";
+            }
+
+            string opponentBoard = networkController.GetMove();
+            GameInformation.turnNumber++;
+            gameController.SetBoardConfiguration(opponentBoard);
             gameController.RefreshBlockedTiles();
             boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
+            boardManager.RefreshForAIMoves();
+
+            if (GameInformation.openingSequence && !GameInformation.playerIsHost && GameInformation.turnNumber == 5)
+            {
+                GameInformation.openingSequence = false;
+                GameInformation.currentPlayer = "CLIENT";
+
+                gameController.CollectCurrentPlayerResources();
+                playerResourcesManager.UpdateBothPlayersResources();
+            }
         }
     }
 
@@ -163,6 +185,7 @@ public class GameManager : MonoBehaviour
     {
         if (GameInformation.openingSequence && GameInformation.currentPlayer == "HOST" && OpeningMoveSatisfied())
         {
+            gameController.UpdateGameBoard();
             gameController.RefreshBlockedTiles();
             boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
             if (GameInformation.playerIsHost)
@@ -191,8 +214,9 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-        else if (GameInformation.openingSequence && GameInformation.currentPlayer == "ClIENT" && OpeningMoveSatisfied())
+        else if (GameInformation.openingSequence && GameInformation.currentPlayer == "CLIENT" && OpeningMoveSatisfied())
         {
+            gameController.UpdateGameBoard();
             gameController.RefreshBlockedTiles();
             boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
             if (!GameInformation.playerIsHost)
@@ -200,7 +224,6 @@ public class GameManager : MonoBehaviour
                 if (GameInformation.turnNumber == 2)
                 {
                     GameInformation.turnNumber++;
-                    // TODO: CLIENT IS STILL CURRENT PLAYER FOR SECOND OPENING MOVE
                     networkController.SendMove(gameController.getGameBoard().ToString());
                     GameInformation.openingMoveBranchSet = false;
                     GameInformation.openingMoveNodeSet = false;
@@ -209,8 +232,6 @@ public class GameManager : MonoBehaviour
                 else if (GameInformation.turnNumber == 3)
                 {
                     GameInformation.turnNumber++;
-                    // TODO: SETUP HOST AS CURRENT PLAYER FOR THEIR SECOND OPENING MOVE
-
                     GameInformation.currentPlayer = "HOST";
                     ToogleTriggers();
                     networkController.EnableOpponentsTriggers();
@@ -229,7 +250,7 @@ public class GameManager : MonoBehaviour
             GameInformation.currentRoundPlacedBranches.Clear();
 
             GameInformation.resourceTrade = false;
-            if (GameInformation.currentPlayer == "HOST" && GameInformation.playerIsHost)
+            if (GameInformation.currentPlayer == "HOST")
             {
                 GameInformation.currentPlayer = "CLIENT";
                 ToogleTriggers();
@@ -244,7 +265,6 @@ public class GameManager : MonoBehaviour
                 networkController.SendMove(gameController.getGameBoard().ToString());
             }
 
-            gameController.FlipColors();
             gameController.CollectCurrentPlayerResources();
             playerResourcesManager.UpdateBothPlayersResources();
             gameController.UpdateScores();

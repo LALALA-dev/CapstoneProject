@@ -105,11 +105,10 @@ public class GameBoard
     {
         string gameBoardString = "";
 
-        foreach (SquareState square in boardState.squareStates)
+        foreach (Square square in squares)
         {
-            // gameBoardString += square.location.ToString();
 
-            switch (square.ownerColor)
+            switch (square.squareState.ownerColor)
             {
                 case PlayerColor.Blank:
                     gameBoardString += "B";
@@ -122,7 +121,7 @@ public class GameBoard
                     break;
             }
 
-            switch (square.resourceState)
+            switch (square.squareState.resourceState)
             {
                 case SquareStatus.Open:
                     gameBoardString += "O";
@@ -135,7 +134,7 @@ public class GameBoard
                     break;
             }
 
-            switch (square.resourceAmount)
+            switch (square.squareState.resourceAmount)
             {
                 case SquareResourceAmount.Blank:
                     gameBoardString += "0";
@@ -151,7 +150,7 @@ public class GameBoard
                     break;
             }
 
-            switch (square.resourceColor)
+            switch (square.squareState.resourceColor)
             {
                 case SquareResourceColor.Blue:
                     gameBoardString += "B";
@@ -166,6 +165,52 @@ public class GameBoard
                     gameBoardString += "G";
                     break;
                 default:
+                    gameBoardString += "L";
+                    break;
+            }
+
+        }
+
+        foreach (Node node in nodes)
+        {
+            switch (node.nodeState.nodeColor)
+            {
+                case PlayerColor.Orange:
+                    gameBoardString += "O";
+                    break;
+                case PlayerColor.Purple:
+                    gameBoardString += "P";
+                    break;
+                case PlayerColor.Blank:
+                    gameBoardString += "L";
+                    break;
+            }
+        }
+
+        foreach (Branch branch in branches)
+        {
+            switch (branch.branchState.branchColor)
+            {
+                case PlayerColor.Orange:
+                    gameBoardString += "O";
+                    break;
+                case PlayerColor.Purple:
+                    gameBoardString += "P";
+                    break;
+                case PlayerColor.Blank:
+                    gameBoardString += "L";
+                    break;
+            }
+
+            switch (branch.branchState.ownerColor)
+            {
+                case PlayerColor.Orange:
+                    gameBoardString += "O";
+                    break;
+                case PlayerColor.Purple:
+                    gameBoardString += "P";
+                    break;
+                case PlayerColor.Blank:
                     gameBoardString += "L";
                     break;
             }
@@ -230,7 +275,6 @@ public class GameBoard
         for (int i = 0; i < MAX_SQUARES; i++)
         {
             squares[i].squareState.location = i;
-            // stringIndex++;
 
             switch (networkBoardConfig[stringIndex])
             {
@@ -298,7 +342,56 @@ public class GameBoard
             }
             stringIndex++;
         }
+
+        for (int i = 0; i < MAX_NODES; i++)
+        {
+            switch (networkBoardConfig[stringIndex])
+            {
+                case 'L':
+                    nodes[i].nodeState.nodeColor = PlayerColor.Blank;
+                    break;
+                case 'O':
+                    nodes[i].nodeState.nodeColor = PlayerColor.Orange;
+                    break;
+                case 'P':
+                    nodes[i].nodeState.nodeColor = PlayerColor.Purple;
+                    break;
+            }
+            stringIndex++;
+        }
+
+        for (int i = 0; i < MAX_BRANCHES; i++)
+        {
+            switch (networkBoardConfig[stringIndex])
+            {
+                case 'L':
+                    branches[i].branchState.branchColor = PlayerColor.Blank;
+                    break;
+                case 'O':
+                    branches[i].branchState.branchColor = PlayerColor.Orange;
+                    break;
+                case 'P':
+                    branches[i].branchState.branchColor = PlayerColor.Purple;
+                    break;
+            }
+            stringIndex++;
+
+            switch (networkBoardConfig[stringIndex])
+            {
+                case 'L':
+                    branches[i].branchState.ownerColor = PlayerColor.Blank;
+                    break;
+                case 'O':
+                    branches[i].branchState.ownerColor = PlayerColor.Orange;
+                    break;
+                case 'P':
+                    branches[i].branchState.ownerColor = PlayerColor.Purple;
+                    break;
+            }
+            stringIndex++;
+        }
     }
+
 
     public SquareState[] GetSquareStates()
     {

@@ -30,6 +30,12 @@ public class NetworkController : MonoBehaviourPunCallbacks
         GameInformation.newNetworkMoveSet = true;
     }
 
+    public void SetOpeningBoardConfiguration(string openingBoard)
+    {
+        Debug.Log("HOST = " + GameInformation.playerIsHost + " SETMOVE() CALLED, BOARDCONFIG = " + openingBoard);
+        boardState = openingBoard;
+    }
+
     public string GetMove()
     {
         return boardState;
@@ -74,7 +80,7 @@ public class NetworkController : MonoBehaviourPunCallbacks
 
     public void SendOpeningBoardConfiguration(string openingBoardState)
     {
-        NetworkPlayer.player.SendMove(openingBoardState);
+        NetworkPlayer.player.SendOpeningBoardConfiguration(openingBoardState);
     }
 
     public void InvokeClientsRenderHost()
