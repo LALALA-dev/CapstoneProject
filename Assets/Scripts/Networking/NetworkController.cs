@@ -11,6 +11,8 @@ public class NetworkController : MonoBehaviourPunCallbacks
     public static string boardState;
     public static string netPlayerName = "";
     public static string netOpponentsName = "";
+    public static int turnNumber = 1;
+    public static string opponentResources = "R0B0Y0G0";
 
     #region Set Up
     private void Awake()
@@ -51,6 +53,26 @@ public class NetworkController : MonoBehaviourPunCallbacks
         netPlayerName = name;
     }
 
+    public void SetTurnNumber(int turn)
+    {
+        turnNumber = turn;
+    }
+
+    public int GetTurnNumber()
+    {
+        return turnNumber;
+    }
+
+    public void SetOpponentResources(string resources)
+    {
+        opponentResources = resources;
+    }
+
+    public string GetOpponentResources()
+    {
+        return opponentResources;
+    }
+
     public void InvokeRenderHost()
     {
         if (!GameInformation.playerIsHost)
@@ -68,14 +90,10 @@ public class NetworkController : MonoBehaviourPunCallbacks
 
     #region Network Broadcast Functions
 
-    public void SendMove()
-    {
-        NetworkPlayer.player.SendMove(boardState);
-    }
-
-    public void SendMove(string gameBoard)
+    public void SendCurrentPlayerTurnInfo(string gameBoard, int turnNumber)
     {
         NetworkPlayer.player.SendMove(gameBoard);
+        NetworkPlayer.player.SendTurnNumber(turnNumber);
     }
 
     public void SendOpeningBoardConfiguration(string openingBoardState)

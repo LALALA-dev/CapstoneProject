@@ -11,8 +11,6 @@ public enum NetworkGameType
 
 public class GameInformation
 {
-    public static string username;
-
     public static string roomName = "StandardRoom";
 
     public static NetworkGameType networkGameType = NetworkGameType.Public;

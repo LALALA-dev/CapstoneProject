@@ -39,6 +39,18 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
             pView.RPC("RPC_SendMove", RpcTarget.Others, boardConfig);
     }
 
+    public void SendTurnNumber(int turn)
+    {
+        if (pView.IsMine)
+            pView.RPC("RPC_SendMove", RpcTarget.Others, turn);
+    }
+
+    public void SendResources(string resouces)
+    {
+        if (pView.IsMine)
+            pView.RPC("RPC_SendResources", RpcTarget.Others, resouces);
+    }
+
     public void InvokeHostConfiguration()
     {
         if (pView.IsMine)
@@ -73,6 +85,20 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
     {
         Debug.Log("RPC_SendMove() was called");
         networkController.SetMove(boardConfig);
+    }
+
+    [PunRPC]
+    void RPC_SendTurn(int turn)
+    {
+        Debug.Log("RPC_SendTurn() was called");
+        networkController.SetTurnNumber(turn);
+    }
+
+    [PunRPC]
+    void RPC_SendResources(string resources)
+    {
+        Debug.Log("RPC_SendResources() was called");
+        networkController.SetOpponentResources(resources);
     }
 
     [PunRPC]

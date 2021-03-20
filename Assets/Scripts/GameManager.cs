@@ -134,6 +134,10 @@ public class GameManager : MonoBehaviour
 
         if (GameInformation.gameType == 'N' && GameInformation.newNetworkMoveSet)
         {
+            // TODO: STRIP THE FOLLOWING INFO FROM OPPONENT
+            // WHO'S TURN IT IS WAS (HOST/CLIENT)
+            // THE TURN NUMBER IT WAS (NOT WHAT IT'S ABOUT TO BE)
+            // OPPONENT'S RESOURCES
             GameInformation.newNetworkMoveSet = false;
 
             if (GameInformation.openingSequence && GameInformation.playerIsHost && GameInformation.turnNumber == 2)
@@ -199,7 +203,7 @@ public class GameManager : MonoBehaviour
                     GameInformation.currentPlayer = "CLIENT";
                     ToogleTriggers();
                     networkController.EnableOpponentsTriggers();
-                    networkController.SendMove(gameController.getGameBoard().ToString());
+                    networkController.SendCurrentPlayerTurnInfo(gameController.getGameBoard().ToString(), GameInformation.turnNumber);
                 }
                 else if (GameInformation.turnNumber == 4)
                 {
@@ -209,7 +213,7 @@ public class GameManager : MonoBehaviour
                     GameInformation.currentPlayer = "CLIENT";
                     ToogleTriggers();
                     networkController.EnableOpponentsTriggers();
-                    networkController.SendMove(gameController.getGameBoard().ToString());
+                    networkController.SendCurrentPlayerTurnInfo(gameController.getGameBoard().ToString(), GameInformation.turnNumber);
 
                     // TODO: COLLECT CLIENT'S RESOURCES AND BEGIN ACTUAL GAME
                     gameController.CollectCurrentPlayerResources();
@@ -227,7 +231,7 @@ public class GameManager : MonoBehaviour
                 if (GameInformation.turnNumber == 2)
                 {
                     GameInformation.turnNumber++;
-                    networkController.SendMove(gameController.getGameBoard().ToString());
+                    networkController.SendCurrentPlayerTurnInfo(gameController.getGameBoard().ToString(), GameInformation.turnNumber);
                     GameInformation.openingMoveBranchSet = false;
                     GameInformation.openingMoveNodeSet = false;
 
@@ -238,7 +242,7 @@ public class GameManager : MonoBehaviour
                     GameInformation.currentPlayer = "HOST";
                     ToogleTriggers();
                     networkController.EnableOpponentsTriggers();
-                    networkController.SendMove(gameController.getGameBoard().ToString());
+                    networkController.SendCurrentPlayerTurnInfo(gameController.getGameBoard().ToString(), GameInformation.turnNumber);
                 }
             }
         }
@@ -258,14 +262,14 @@ public class GameManager : MonoBehaviour
                 GameInformation.currentPlayer = "CLIENT";
                 ToogleTriggers();
                 networkController.EnableOpponentsTriggers();
-                networkController.SendMove(gameController.getGameBoard().ToString());
+                networkController.SendCurrentPlayerTurnInfo(gameController.getGameBoard().ToString(), GameInformation.turnNumber);
             }
             else
             {
                 GameInformation.currentPlayer = "HOST";
                 ToogleTriggers();
                 networkController.EnableOpponentsTriggers();
-                networkController.SendMove(gameController.getGameBoard().ToString());
+                networkController.SendCurrentPlayerTurnInfo(gameController.getGameBoard().ToString(), GameInformation.turnNumber);
             }
 
             gameController.CollectCurrentPlayerResources();
@@ -544,5 +548,10 @@ public class GameManager : MonoBehaviour
             EndCurrentNetworkPlayersTurn();
         else
             EndCurrentAIPlayersTurn();
+    }
+
+    public string ToStringResources(int[] resources)
+    {
+        return ("R" + resources[0].ToString() + "B" + resources[1].ToString() + "Y" + resources[2].ToString() + "G" + resources[3].ToString());
     }
 }
