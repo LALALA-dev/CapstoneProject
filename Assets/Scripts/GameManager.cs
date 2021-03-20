@@ -139,6 +139,7 @@ public class GameManager : MonoBehaviour
             // TODO: STRIP THE FOLLOWING INFO FROM OPPONENT
             // WHO'S TURN IT IS WAS (HOST/CLIENT)
             // THE TURN NUMBER IT WAS (NOT WHAT IT'S ABOUT TO BE)
+            turnNumber = networkController.GetTurnNumber();
             // OPPONENT'S RESOURCES
             GameInformation.newNetworkMoveSet = false;
 
