@@ -59,10 +59,10 @@ public class NetworkUIController : MonoBehaviour
         }
     }
 
-    public void OtherPlayerDisconnected()
+    public static void OtherPlayerDisconnected()
     {
         SceneLoader.LoadNetworkLobbyScene();
-        errorMessage.text = "Other player left room";
+        //errorMessage.text = "Other player left room";
     }
 
     public void SetRoomName()
