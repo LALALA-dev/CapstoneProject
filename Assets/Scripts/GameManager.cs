@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
         if (GameInformation.playerIsHost && GameInformation.gameType == 'N')
         {
             networkController.SendOpeningBoardConfiguration(gameController.getGameBoard().ToString());
-            NetworkGame();
+            //NetworkGame();
         }
         else if(GameInformation.gameType == 'A')
         {
