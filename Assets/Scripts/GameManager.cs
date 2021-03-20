@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviour
 
     public Sprite[] avatars;
 
+    public int turnNumber = 1;
+
     #region Setup
     private void Awake()
     {
@@ -140,25 +142,25 @@ public class GameManager : MonoBehaviour
             // OPPONENT'S RESOURCES
             GameInformation.newNetworkMoveSet = false;
 
-            if (GameInformation.openingSequence && GameInformation.playerIsHost && GameInformation.turnNumber == 2)
+            if (GameInformation.openingSequence && GameInformation.playerIsHost && turnNumber == 2)
             {
                 GameInformation.currentPlayer = "HOST";
                 GameInformation.openingMoveNodeSet = false;
                 GameInformation.openingMoveBranchSet = false;
             }
-            else if (GameInformation.openingSequence && !GameInformation.playerIsHost && GameInformation.turnNumber == 1)
+            else if (GameInformation.openingSequence && !GameInformation.playerIsHost && turnNumber == 1)
             {
                 GameInformation.currentPlayer = "CLIENT";
             }
 
             string opponentBoard = networkController.GetMove();
-            GameInformation.turnNumber++;
+            turnNumber++;
             gameController.SetBoardConfiguration(opponentBoard);
             gameController.RefreshBlockedTiles();
             boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
             boardManager.RefreshForAIMoves();
 
-            if (GameInformation.openingSequence && !GameInformation.playerIsHost && GameInformation.turnNumber == 5)
+            if (GameInformation.openingSequence && !GameInformation.playerIsHost && turnNumber == 5)
             {
                 GameInformation.openingSequence = false;
                 GameInformation.currentPlayer = "CLIENT";
@@ -197,23 +199,23 @@ public class GameManager : MonoBehaviour
             boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
             if (GameInformation.playerIsHost)
             {
-                if (GameInformation.turnNumber == 1)
+                if (turnNumber == 1)
                 {
-                    GameInformation.turnNumber++;
+                    turnNumber++;
                     GameInformation.currentPlayer = "CLIENT";
                     ToogleTriggers();
                     networkController.EnableOpponentsTriggers();
-                    networkController.SendCurrentPlayerTurnInfo(gameController.getGameBoard().ToString(), GameInformation.turnNumber);
+                    networkController.SendCurrentPlayerTurnInfo(gameController.getGameBoard().ToString(), turnNumber);
                 }
-                else if (GameInformation.turnNumber == 4)
+                else if (turnNumber == 4)
                 {
                     GameInformation.openingSequence = false;
-                    GameInformation.turnNumber++;
+                    turnNumber++;
 
                     GameInformation.currentPlayer = "CLIENT";
                     ToogleTriggers();
                     networkController.EnableOpponentsTriggers();
-                    networkController.SendCurrentPlayerTurnInfo(gameController.getGameBoard().ToString(), GameInformation.turnNumber);
+                    networkController.SendCurrentPlayerTurnInfo(gameController.getGameBoard().ToString(), turnNumber);
 
                     // TODO: COLLECT CLIENT'S RESOURCES AND BEGIN ACTUAL GAME
                     gameController.CollectCurrentPlayerResources();
@@ -228,28 +230,28 @@ public class GameManager : MonoBehaviour
             boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
             if (!GameInformation.playerIsHost)
             {
-                if (GameInformation.turnNumber == 2)
+                if (turnNumber == 2)
                 {
-                    GameInformation.turnNumber++;
-                    networkController.SendCurrentPlayerTurnInfo(gameController.getGameBoard().ToString(), GameInformation.turnNumber);
+                    turnNumber++;
+                    networkController.SendCurrentPlayerTurnInfo(gameController.getGameBoard().ToString(), turnNumber);
                     GameInformation.openingMoveBranchSet = false;
                     GameInformation.openingMoveNodeSet = false;
 
                 }
-                else if (GameInformation.turnNumber == 3)
+                else if (turnNumber == 3)
                 {
-                    GameInformation.turnNumber++;
+                    turnNumber++;
                     GameInformation.currentPlayer = "HOST";
                     ToogleTriggers();
                     networkController.EnableOpponentsTriggers();
-                    networkController.SendCurrentPlayerTurnInfo(gameController.getGameBoard().ToString(), GameInformation.turnNumber);
+                    networkController.SendCurrentPlayerTurnInfo(gameController.getGameBoard().ToString(), turnNumber);
                 }
             }
         }
         else
         {
             // NORMAL GAMEPLAY
-            GameInformation.turnNumber++;
+            turnNumber++;
             gameController.UpdateGameBoard();
             boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
             boardManager.DetectNewBlockCaptures(gameController.getGameBoard().GetSquareStates());
@@ -262,14 +264,14 @@ public class GameManager : MonoBehaviour
                 GameInformation.currentPlayer = "CLIENT";
                 ToogleTriggers();
                 networkController.EnableOpponentsTriggers();
-                networkController.SendCurrentPlayerTurnInfo(gameController.getGameBoard().ToString(), GameInformation.turnNumber);
+                networkController.SendCurrentPlayerTurnInfo(gameController.getGameBoard().ToString(), turnNumber);
             }
             else
             {
                 GameInformation.currentPlayer = "HOST";
                 ToogleTriggers();
                 networkController.EnableOpponentsTriggers();
-                networkController.SendCurrentPlayerTurnInfo(gameController.getGameBoard().ToString(), GameInformation.turnNumber);
+                networkController.SendCurrentPlayerTurnInfo(gameController.getGameBoard().ToString(), turnNumber);
             }
 
             gameController.CollectCurrentPlayerResources();
@@ -333,20 +335,20 @@ public class GameManager : MonoBehaviour
             boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
             if(GameInformation.playerIsHost)
             {
-                if(GameInformation.turnNumber == 1)
+                if(turnNumber == 1)
                 {
                     currentPlayerMessage.text = "AI's Move";
-                    GameInformation.turnNumber++;
+                    turnNumber++;
                     RandomAIOpeningMove();
 
                     GameInformation.humanMoveFinished = false;
                     EndCurrentAIPlayersTurn();
                 }
-                else if(GameInformation.turnNumber == 4)
+                else if(turnNumber == 4)
                 {
                     currentPlayerMessage.text = "AI's Move";
                     GameInformation.openingSequence = false;
-                    GameInformation.turnNumber++;
+                    turnNumber++;
                     GameInformation.currentPlayer = "AI"; 
                     gameController.FlipColors();
 
@@ -367,17 +369,17 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                if(GameInformation.turnNumber == 2)
+                if(turnNumber == 2)
                 {
                     currentPlayerMessage.text = "Your Move";
-                    GameInformation.turnNumber++;
+                    turnNumber++;
                     gameController.FlipColors();
                     BeginHumanOpeningMove();
                 }
-                else if(GameInformation.turnNumber == 3)
+                else if(turnNumber == 3)
                 {
                     currentPlayerMessage.text = "AI's Move";
-                    GameInformation.turnNumber++;
+                    turnNumber++;
                     RandomAIOpeningMove();
                     EndCurrentAIPlayersTurn();
                 }
@@ -389,18 +391,18 @@ public class GameManager : MonoBehaviour
             boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
             if (!GameInformation.playerIsHost)
             {
-                if (GameInformation.turnNumber == 1)
+                if (turnNumber == 1)
                 {
                     boardManager.RefreshForAIMoves();
-                    GameInformation.turnNumber++;
+                    turnNumber++;
                     currentPlayerMessage.text = "Your Move";
                     BeginHumanOpeningMove();
                 }
-                else if (GameInformation.turnNumber == 4)
+                else if (turnNumber == 4)
                 {
                     currentPlayerMessage.text = "Your Move";
                     GameInformation.openingSequence = false;
-                    GameInformation.turnNumber++;
+                    turnNumber++;
                     GameInformation.currentPlayer = "HUMAN";
                     GameInformation.humanMoveFinished = false;
                     gameController.FlipColors();
@@ -411,18 +413,18 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                if (GameInformation.turnNumber == 2)
+                if (turnNumber == 2)
                 {
                     currentPlayerMessage.text = "AI's Move";
-                    GameInformation.turnNumber++;
+                    turnNumber++;
                     RandomAIOpeningMove();
                     GameInformation.humanMoveFinished = false;
                     EndCurrentAIPlayersTurn();
                 }
-                else if (GameInformation.turnNumber == 3)
+                else if (turnNumber == 3)
                 {
                     currentPlayerMessage.text = "Your Move";
-                    GameInformation.turnNumber++;
+                    turnNumber++;
                     GameInformation.currentPlayer = "HUMAN";
                     gameController.FlipColors();
 
@@ -433,7 +435,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            GameInformation.turnNumber++;
+            turnNumber++;
             gameController.UpdateGameBoard();
             boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
             boardManager.DetectNewBlockCaptures(gameController.getGameBoard().GetSquareStates());
