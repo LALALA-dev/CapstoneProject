@@ -9,6 +9,7 @@ public class NetworkUIController : MonoBehaviour
     public TMP_InputField privateRoomNameField;
     public TMP_InputField setNameField;
     public TextMeshProUGUI errorMessage;
+    public TextMeshProUGUI playerLeftMessage;
 
     void Start()
     {
@@ -61,7 +62,7 @@ public class NetworkUIController : MonoBehaviour
 
     public static void OtherPlayerDisconnected()
     {
-        SceneLoader.LoadNetworkLobbyScene();
+        //SceneLoader.LoadNetworkLobbyScene();
         //errorMessage.text = "Other player left room";
     }
 
