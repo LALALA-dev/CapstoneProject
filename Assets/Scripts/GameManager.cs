@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using static GameObjectProperties;
+using System;
 
 public class GameManager : MonoBehaviour
 {
@@ -134,11 +135,12 @@ public class GameManager : MonoBehaviour
 
             GameInformation.currentPlayer = networkController.GetCurrentPlayer();
             turnNumber = networkController.GetTurnNumber();
-            string incomingPlayersResources = networkController.GetOpponentResources();
 
             if(!IsTheCurrentPlayerYourself())
             {
                 // parse resource string and update local opponent's resources
+                string incomingPlayersResources = networkController.GetOpponentResources();
+                DeStringResources(incomingPlayersResources);
             }
             
             // Determine the new currentPlayer
@@ -191,6 +193,11 @@ public class GameManager : MonoBehaviour
                     GameInformation.currentPlayer = "CLIENT";
                 else
                     GameInformation.currentPlayer = "HOST";
+
+                if (!IsTheCurrentPlayerYourself())
+                    currentPlayerMessage.text = "Opponent's Move";
+                else
+                    currentPlayerMessage.text = "Your Move";
 
                 ToogleTriggers();
                 gameController.CollectCurrentPlayerResources();
@@ -251,7 +258,7 @@ public class GameManager : MonoBehaviour
             if (GameInformation.playerIsHost)
             {
                 networkController.SendMove(gameController.getGameBoard().ToString());
-                networkController.SyncPlayerVariables(turnNumber, GameInformation.currentPlayer);
+                networkController.SyncPlayerVariables(turnNumber, GameInformation.currentPlayer, "0 0 0 0");
             }
         }
         else if (IsCorrectClientOpeningMove())
@@ -262,7 +269,7 @@ public class GameManager : MonoBehaviour
             if (!GameInformation.playerIsHost)
             {
                 networkController.SendMove(gameController.getGameBoard().ToString());
-                networkController.SyncPlayerVariables(turnNumber, GameInformation.currentPlayer);
+                networkController.SyncPlayerVariables(turnNumber, GameInformation.currentPlayer, "0 0 0 0");
             }
         }
         else if(!GameInformation.openingSequence)
@@ -275,8 +282,18 @@ public class GameManager : MonoBehaviour
             GameInformation.currentRoundPlacedBranches.Clear();
             GameInformation.resourceTrade = false;
 
+            int[] resources = new int[4];
+            if (GameInformation.playerIsHost)
+            {
+                resources = GameInformation.playerOneResources;
+            }
+            else
+            {
+                resources = GameInformation.playerTwoResources;
+            }
+
             networkController.SendMove(gameController.getGameBoard().ToString());
-            networkController.SyncPlayerVariables(turnNumber, GameInformation.currentPlayer);
+            networkController.SyncPlayerVariables(turnNumber, GameInformation.currentPlayer, ToStringResources(resources));
         }
     }
 
@@ -573,6 +590,27 @@ public class GameManager : MonoBehaviour
 
     public string ToStringResources(int[] resources)
     {
-        return ("R" + resources[0].ToString() + "B" + resources[1].ToString() + "Y" + resources[2].ToString() + "G" + resources[3].ToString());
+        return (resources[0].ToString() + " " + resources[1].ToString() + " " + resources[2].ToString() + " " + resources[3].ToString());
+    }
+
+    public void DeStringResources(string resources)
+    {
+        string[] parsedResources = resources.Split(' ');
+
+        int[] opponentsResources = new int[4];
+
+        opponentsResources[0] = int.Parse(parsedResources[0]);
+        opponentsResources[1] = int.Parse(parsedResources[1]);
+        opponentsResources[2] = int.Parse(parsedResources[2]);
+        opponentsResources[3] = int.Parse(parsedResources[3]);
+
+        if(GameInformation.playerIsHost)
+        {
+            GameInformation.playerTwoResources = opponentsResources;
+        }
+        else
+        {
+            GameInformation.playerOneResources = opponentsResources;
+        }
     }
 }

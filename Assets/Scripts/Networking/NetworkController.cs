@@ -12,7 +12,7 @@ public class NetworkController : MonoBehaviourPunCallbacks
     public static string netPlayerName = "";
     public static string netOpponentsName = "";
     public static int turnNumber = 1;
-    public static string opponentResources = "R0B0Y0G0";
+    public static string opponentResources = "";
     public static string currentPlayer = "";
 
     #region Set Up
@@ -102,10 +102,11 @@ public class NetworkController : MonoBehaviourPunCallbacks
         NetworkPlayer.player.SendMove(gameBoard);
     }
 
-    public void SyncPlayerVariables(int turnNumber, string currentPlayer)
+    public void SyncPlayerVariables(int turnNumber, string currentPlayer, string resources)
     {
         NetworkPlayer.player.SendTurnNumber(turnNumber);
         NetworkPlayer.player.SendCurrentPlayer(currentPlayer);
+        NetworkPlayer.player.SendResources(resources);
     }
 
     public void SendOpeningBoardConfiguration(string openingBoardState)
