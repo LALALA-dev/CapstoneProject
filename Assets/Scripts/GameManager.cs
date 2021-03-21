@@ -151,21 +151,36 @@ public class GameManager : MonoBehaviour
                     case 1:
                         ToogleTriggers();
                         GameInformation.currentPlayer = "CLIENT";
+                        if(GameInformation.playerIsHost)
+                            currentPlayerMessage.text = "Opponent's Move";
+                        else
+                            currentPlayerMessage.text = "Your Move";
                         break;
                     case 2:
                         GameInformation.currentPlayer = "CLIENT";
+                        if (GameInformation.playerIsHost)
+                            currentPlayerMessage.text = "Opponent's Move";
+                        else
+                            currentPlayerMessage.text = "Your Move";
                         break;
                     case 3:
                         ToogleTriggers();
                         GameInformation.currentPlayer = "HOST";
+                        if (GameInformation.playerIsHost)
+                            currentPlayerMessage.text = "Your Move";
+                        else
+                            currentPlayerMessage.text = "Opponent's Move";
                         break;
                     case 4:
                         ToogleTriggers();
                         GameInformation.currentPlayer = "CLIENT";
+                        if (GameInformation.playerIsHost)
+                            currentPlayerMessage.text = "Opponent's Move";
+                        else
+                            currentPlayerMessage.text = "Your Move";
                         GameInformation.openingSequence = false;
                         gameController.CollectCurrentPlayerResources();
                         playerResourcesManager.UpdateBothPlayersResources();
-                        gameController.UpdateScores();
                         break;
                 }
             }
