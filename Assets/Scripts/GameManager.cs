@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour
         gameController.UpdateGameBoard();
         if (GameInformation.gameType == 'N' && PhotonNetwork.CurrentRoom.PlayerCount < 2)
         {
-            NetworkUIController.OtherPlayerDisconnected();
+            uiController.OtherPlayerDisconnected();
         }
     }
 

@@ -1,3 +1,5 @@
+using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -60,10 +62,20 @@ public class NetworkUIController : MonoBehaviour
         }
     }
 
-    public static void OtherPlayerDisconnected()
+    public void LeaveOnlineRoom()
+    {
+        if (PhotonNetwork.InRoom)
+        {
+            PhotonNetwork.LeaveRoom();
+            PhotonNetwork.Disconnect();
+        }
+    }
+
+    public void OtherPlayerDisconnected()
     {
         //SceneLoader.LoadNetworkLobbyScene();
         //errorMessage.text = "Other player left room";
+        playerLeftMessage.text = "Other player left room";
     }
 
     public void SetRoomName()
