@@ -128,47 +128,82 @@ public class GameManager : MonoBehaviour
             playerResourcesManager.UpdateBothPlayersResources();
         }
 
-        if(GameInformation.gameType == 'N' && GameInformation.enableTriggers)
+        if (NeedToSyncNetworkGameVariables())
         {
-            GameInformation.enableTriggers = false;
-            ToogleTriggers();
-        }
+            GameInformation.needToSyncGameVariables = false;
 
-        if (GameInformation.gameType == 'N' && GameInformation.newNetworkMoveSet)
-        {
-            // TODO: STRIP THE FOLLOWING INFO FROM OPPONENT
-            // WHO'S TURN IT IS WAS (HOST/CLIENT)
-            // THE TURN NUMBER IT WAS (NOT WHAT IT'S ABOUT TO BE)
+            GameInformation.currentPlayer = networkController.GetCurrentPlayer();
             turnNumber = networkController.GetTurnNumber();
-            // OPPONENT'S RESOURCES
-            GameInformation.newNetworkMoveSet = false;
+            string incomingPlayersResources = networkController.GetOpponentResources();
 
-            if (GameInformation.openingSequence && GameInformation.playerIsHost && turnNumber == 2)
+            if(!IsTheCurrentPlayerYourself())
             {
-                GameInformation.currentPlayer = "HOST";
+                // parse resource string and update local opponent's resources
+            }
+            
+            // Determine the new currentPlayer
+            if(GameInformation.openingSequence)
+            {
                 GameInformation.openingMoveNodeSet = false;
                 GameInformation.openingMoveBranchSet = false;
+                switch (turnNumber)
+                {
+                    case 1:
+                        ToogleTriggers();
+                        GameInformation.currentPlayer = "CLIENT";
+                        break;
+                    case 2:
+                        GameInformation.currentPlayer = "CLIENT";
+                        break;
+                    case 3:
+                        ToogleTriggers();
+                        GameInformation.currentPlayer = "HOST";
+                        break;
+                    case 4:
+                        ToogleTriggers();
+                        GameInformation.currentPlayer = "CLIENT";
+                        GameInformation.openingSequence = false;
+                        gameController.CollectCurrentPlayerResources();
+                        playerResourcesManager.UpdateBothPlayersResources();
+                        gameController.UpdateScores();
+                        break;
+                }
             }
-            else if (GameInformation.openingSequence && !GameInformation.playerIsHost && turnNumber == 1)
+            else
             {
-                GameInformation.currentPlayer = "CLIENT";
+                // Normal Gameplay
+                if (GameInformation.currentPlayer == "HOST")
+                    GameInformation.currentPlayer = "CLIENT";
+                else
+                    GameInformation.currentPlayer = "HOST";
+
+                ToogleTriggers();
+                gameController.CollectCurrentPlayerResources();
+                playerResourcesManager.UpdateBothPlayersResources();
+                gameController.UpdateScores();
             }
 
-            string opponentBoard = networkController.GetMove();
+            
+
+            if (GameInformation.playerOneScore >= 10 || GameInformation.playerTwoScore >= 10)
+            {
+                GameInformation.gameOver = true;
+                return;
+            }
+
+            // Increment the turnNumber and begin turn if your turn
             turnNumber++;
+        }
+
+        if (OpponentHasSentNewMoveToProcess())
+        {
+            GameInformation.newNetworkMoveSet = false;
+
+            string opponentBoard = networkController.GetMove();
             gameController.SetBoardConfiguration(opponentBoard);
             gameController.RefreshBlockedTiles();
             boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
-            boardManager.RefreshForAIMoves();
-
-            if (GameInformation.openingSequence && !GameInformation.playerIsHost && turnNumber == 5)
-            {
-                GameInformation.openingSequence = false;
-                GameInformation.currentPlayer = "CLIENT";
-
-                gameController.CollectCurrentPlayerResources();
-                playerResourcesManager.UpdateBothPlayersResources();
-            }
+            boardManager.RefreshBoardGUI();
         }
     }
 
@@ -193,97 +228,40 @@ public class GameManager : MonoBehaviour
 
     private void EndCurrentNetworkPlayersTurn()
     {
-        if (GameInformation.openingSequence && GameInformation.currentPlayer == "HOST" && OpeningMoveSatisfied())
+        if (IsCorrectHostOpeningMove())
         {
             gameController.UpdateGameBoard();
             gameController.RefreshBlockedTiles();
             boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
             if (GameInformation.playerIsHost)
             {
-                if (turnNumber == 1)
-                {
-                    turnNumber++;
-                    GameInformation.currentPlayer = "CLIENT";
-                    ToogleTriggers();
-                    networkController.EnableOpponentsTriggers();
-                    networkController.SendCurrentPlayerTurnInfo(gameController.getGameBoard().ToString(), turnNumber);
-                }
-                else if (turnNumber == 4)
-                {
-                    GameInformation.openingSequence = false;
-                    turnNumber++;
-
-                    GameInformation.currentPlayer = "CLIENT";
-                    ToogleTriggers();
-                    networkController.EnableOpponentsTriggers();
-                    networkController.SendCurrentPlayerTurnInfo(gameController.getGameBoard().ToString(), turnNumber);
-
-                    // TODO: COLLECT CLIENT'S RESOURCES AND BEGIN ACTUAL GAME
-                    gameController.CollectCurrentPlayerResources();
-                    gameController.UpdateScores();
-                }
+                networkController.SendMove(gameController.getGameBoard().ToString());
+                networkController.SyncPlayerVariables(turnNumber, GameInformation.currentPlayer);
             }
         }
-        else if (GameInformation.openingSequence && GameInformation.currentPlayer == "CLIENT" && OpeningMoveSatisfied())
+        else if (IsCorrectClientOpeningMove())
         {
             gameController.UpdateGameBoard();
             gameController.RefreshBlockedTiles();
             boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
             if (!GameInformation.playerIsHost)
             {
-                if (turnNumber == 2)
-                {
-                    turnNumber++;
-                    networkController.SendCurrentPlayerTurnInfo(gameController.getGameBoard().ToString(), turnNumber);
-                    GameInformation.openingMoveBranchSet = false;
-                    GameInformation.openingMoveNodeSet = false;
-
-                }
-                else if (turnNumber == 3)
-                {
-                    turnNumber++;
-                    GameInformation.currentPlayer = "HOST";
-                    ToogleTriggers();
-                    networkController.EnableOpponentsTriggers();
-                    networkController.SendCurrentPlayerTurnInfo(gameController.getGameBoard().ToString(), turnNumber);
-                }
+                networkController.SendMove(gameController.getGameBoard().ToString());
+                networkController.SyncPlayerVariables(turnNumber, GameInformation.currentPlayer);
             }
         }
-        else
+        else if(!GameInformation.openingSequence)
         {
             // NORMAL GAMEPLAY
-            turnNumber++;
             gameController.UpdateGameBoard();
             boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
             boardManager.DetectNewBlockCaptures(gameController.getGameBoard().GetSquareStates());
             GameInformation.currentRoundPlacedNodes.Clear();
             GameInformation.currentRoundPlacedBranches.Clear();
-
             GameInformation.resourceTrade = false;
-            if (GameInformation.currentPlayer == "HOST")
-            {
-                GameInformation.currentPlayer = "CLIENT";
-                ToogleTriggers();
-                networkController.EnableOpponentsTriggers();
-                networkController.SendCurrentPlayerTurnInfo(gameController.getGameBoard().ToString(), turnNumber);
-            }
-            else
-            {
-                GameInformation.currentPlayer = "HOST";
-                ToogleTriggers();
-                networkController.EnableOpponentsTriggers();
-                networkController.SendCurrentPlayerTurnInfo(gameController.getGameBoard().ToString(), turnNumber);
-            }
 
-            gameController.CollectCurrentPlayerResources();
-            playerResourcesManager.UpdateBothPlayersResources();
-            gameController.UpdateScores();
-
-            if (GameInformation.playerOneScore >= 10 || GameInformation.playerTwoScore >= 10)
-            {
-                GameInformation.gameOver = true;
-                return;
-            }
+            networkController.SendMove(gameController.getGameBoard().ToString());
+            networkController.SyncPlayerVariables(turnNumber, GameInformation.currentPlayer);
         }
     }
 
@@ -364,7 +342,7 @@ public class GameManager : MonoBehaviour
 
                     BoardState AIMove = beginnerAI.RandomMove(gameController.getGameBoard().getBoardState(), AIResources);
                     gameController.getGameBoard().setBoard(AIMove.squareStates, AIMove.nodeStates, AIMove.branchStates);
-                    boardManager.RefreshForAIMoves();
+                    boardManager.RefreshBoardGUI();
                     EndCurrentAIPlayersTurn();
                 }
             }
@@ -394,7 +372,7 @@ public class GameManager : MonoBehaviour
             {
                 if (turnNumber == 1)
                 {
-                    boardManager.RefreshForAIMoves();
+                    boardManager.RefreshBoardGUI();
                     turnNumber++;
                     currentPlayerMessage.text = "Your Move";
                     BeginHumanOpeningMove();
@@ -492,7 +470,7 @@ public class GameManager : MonoBehaviour
         gameController.FlipColors();
         BoardState AIMove = beginnerAI.MakeRandomOpeningMove(gameController.getGameBoard().getBoardState());
         gameController.getGameBoard().setBoard(AIMove.squareStates, AIMove.nodeStates, AIMove.branchStates);
-        boardManager.RefreshForAIMoves();
+        boardManager.RefreshBoardGUI();
     }
 
     public void RandomAIMove()
@@ -505,7 +483,7 @@ public class GameManager : MonoBehaviour
 
         BoardState AIMove = beginnerAI.RandomMove(gameController.getGameBoard().getBoardState(), AIResources);
         gameController.getGameBoard().setBoard(AIMove.squareStates, AIMove.nodeStates, AIMove.branchStates);
-        boardManager.RefreshForAIMoves();
+        boardManager.RefreshBoardGUI();
     }
 
     #endregion
@@ -529,6 +507,31 @@ public class GameManager : MonoBehaviour
     public bool OpeningMovePlacedConnectingBranch()
     {
         return GameInformation.openingMoveBranchSet;
+    }
+
+    public bool OpponentHasSentNewMoveToProcess()
+    {
+        return GameInformation.gameType == 'N' && GameInformation.newNetworkMoveSet;
+    }
+
+    public bool NeedToSyncNetworkGameVariables()
+    {
+        return GameInformation.gameType == 'N' && GameInformation.needToSyncGameVariables;
+    }
+
+    public bool IsTheCurrentPlayerYourself()
+    {
+        return (GameInformation.currentPlayer == "HOST" && GameInformation.playerIsHost) || (GameInformation.currentPlayer == "CLIENT" && !GameInformation.playerIsHost);
+    }
+
+    public bool IsCorrectHostOpeningMove()
+    {
+        return GameInformation.openingSequence && GameInformation.currentPlayer == "HOST" && OpeningMoveSatisfied();
+    }
+
+    public bool IsCorrectClientOpeningMove()
+    {
+        return GameInformation.openingSequence && GameInformation.currentPlayer == "CLIENT" && OpeningMoveSatisfied();
     }
     #endregion
 

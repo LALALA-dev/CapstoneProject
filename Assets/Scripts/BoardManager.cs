@@ -183,7 +183,7 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    public void RefreshForAIMoves()
+    public void RefreshBoardGUI()
     {
         if(GameInformation.playerIsHost)
             BroadcastMessage("UpdateAIGUI", PlayerColor.Purple);

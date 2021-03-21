@@ -42,25 +42,25 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
     public void SendTurnNumber(int turn)
     {
         if (pView.IsMine)
-            pView.RPC("RPC_SendMove", RpcTarget.Others, turn);
+            pView.RPC("RPC_SendTurn", RpcTarget.All, turn);
     }
 
     public void SendResources(string resouces)
     {
         if (pView.IsMine)
-            pView.RPC("RPC_SendResources", RpcTarget.Others, resouces);
+            pView.RPC("RPC_SendResources", RpcTarget.All, resouces);
+    }
+
+    public void SendCurrentPlayer(string player)
+    {
+        if (pView.IsMine)
+            pView.RPC("RPC_SendCurrentPlayer", RpcTarget.All, player);
     }
 
     public void InvokeHostConfiguration()
     {
         if (pView.IsMine)
             pView.RPC("RPC_InvokeHostBoardRender", RpcTarget.AllBuffered);
-    }
-
-    public void InvokeEnableTriggers()
-    {
-        if (pView.IsMine)
-            pView.RPC("RPC_InvokeOpponentTriggerToggle", RpcTarget.Others);
     }
 
     #region RPC Functions
@@ -102,18 +102,19 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
+    void RPC_SendCurrentPlayer(string player)
+    {
+        Debug.Log("RPC_SendCurrentPlayer() was called");
+        networkController.SetCurrentPlayer(player);
+    }
+
+    [PunRPC]
     void RPC_InvokeHostBoardRender()
     {
         Debug.Log("RPC_InvokeHostBoardRender() was called");
         networkController.InvokeRenderHost();
     }
 
-    [PunRPC]
-    void RPC_InvokeOpponentTriggerToggle()
-    {
-        Debug.Log("RPC_InvokeOpponentTriggerToggle() was called");
-        networkController.InvokeTriggerToggle();
-    }
     #endregion
 
 }

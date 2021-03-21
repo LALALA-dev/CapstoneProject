@@ -57,11 +57,11 @@ public class GameInformation
 
     public static bool renderClientBoard = false;
 
-    public static bool enableTriggers = false;
-
     public static bool newNetworkMoveSet = false;
 
     public static string playerAvatar = "CAR";
 
     public static string opponentAvatar = "WHEELBARREL";
+
+    public static bool needToSyncGameVariables = false;
 }
