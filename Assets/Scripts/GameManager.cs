@@ -14,9 +14,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] private NetworkUIController uiController;
     private GameController gameController;
     private BeginnerAI beginnerAI;
+    public TextMeshProUGUI playerLeftMessage;
 
 
     public GameObject RenderBtn;
+    public GameObject CompleteTrnBtn;
+    public GameObject TradeBtn;
 
     #region Setup
     private void Awake()
@@ -55,7 +58,9 @@ public class GameManager : MonoBehaviour
         gameController.UpdateGameBoard();
         if (GameInformation.gameType == 'N' && PhotonNetwork.CurrentRoom.PlayerCount < 2)
         {
-            uiController.OtherPlayerDisconnected();
+            playerLeftMessage.text = "Player left room: Please exit to main menu";
+            CompleteTrnBtn.SetActive(false);
+            TradeBtn.SetActive(false);
         }
     }
 
