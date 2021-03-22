@@ -8,6 +8,7 @@ using TMPro;
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
     public TextMeshProUGUI statusText;
+    public GameObject CancelButton;
 
     #region Set Up
     private void Awake()
@@ -19,6 +20,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         statusText.text = "Connecting to Room";
         Connect();
+        CancelButton.SetActive(false);
     }
     public void Connect()
     {
@@ -66,6 +68,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             roomOptions.MaxPlayers = 2;
             GameInformation.currentPlayer = "HOST";
             PhotonNetwork.CreateRoom(GameInformation.roomName.Trim(), roomOptions, TypedLobby.Default);
+            CancelButton.SetActive(false);
         }
         else
         {
@@ -103,7 +106,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public void LeaveRoom()
     {
-        PhotonNetwork.LeaveRoom();
+        if (PhotonNetwork.InRoom)
+            PhotonNetwork.LeaveRoom();
         PhotonNetwork.Disconnect();
     }
 
@@ -111,6 +115,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         statusText.text = "Waiting for opponent to join";
         Debug.Log("Waiting for opponent to join");
+        CancelButton.SetActive(true);
         GameInformation.currentPlayer = "HOST";
     }
 
@@ -171,6 +176,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         Debug.Log("Joined Room Failed");
         statusText.text = "Failed to join room, reason: " + message;
         Invoke("AutoNavigate", 3.0f);
+        CancelButton.SetActive(true);
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message)
@@ -178,6 +184,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         Debug.Log("Room Creation Failed");
         statusText.text = "Failed to create room, reason: " + message;
         Invoke("AutoNavigate", 3.0f);
+        CancelButton.SetActive(true);
     }
 
     public override void OnDisconnected(DisconnectCause cause)

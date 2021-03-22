@@ -1,3 +1,5 @@
+using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,9 +15,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PlayerResourcesManager playerResourcesManager;
     private GameController gameController;
     private BeginnerAI beginnerAI;
+    public TextMeshProUGUI playerLeftMessage;
 
     public TMP_InputField HNPInput;
 
+    public GameObject CompleteTurnBtn;
+    public GameObject TradeBtn;
     public Image playerOneAvatar;
     public Image playerTwoAvatar;
     public Text playerOneScore;
@@ -130,6 +135,13 @@ public class GameManager : MonoBehaviour
         {
             GameInformation.tradeHasBeenMade = false;
             playerResourcesManager.UpdateBothPlayersResources();
+        }
+
+        if (GameInformation.gameType == 'N' && PhotonNetwork.CurrentRoom.PlayerCount < 2)
+        {
+            playerLeftMessage.text = "Player left room: Please exit to main menu";
+            CompleteTurnBtn.SetActive(false);
+            TradeBtn.SetActive(false);
         }
 
         if (NeedToSyncNetworkGameVariables())

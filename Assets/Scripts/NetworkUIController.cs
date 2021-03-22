@@ -1,3 +1,5 @@
+using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -56,6 +58,15 @@ public class NetworkUIController : MonoBehaviour
         else
         {
             //SceneLoader.LoadNetworkScene();
+        }
+    }
+
+    public void LeaveOnlineRoom()
+    {
+        if (PhotonNetwork.InRoom)
+        {
+            PhotonNetwork.LeaveRoom();
+            PhotonNetwork.Disconnect();
         }
     }
 
