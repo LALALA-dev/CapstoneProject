@@ -205,7 +205,6 @@ public class GameManager : MonoBehaviour
                     currentPlayerMessage.text = "Your Move";
 
                 ToogleTriggers();
-                gameController.UpdateScores();
             }
 
             if (GameInformation.playerOneScore >= 10 || GameInformation.playerTwoScore >= 10)
@@ -236,6 +235,11 @@ public class GameManager : MonoBehaviour
                     networkController.SendCurrentPlayersResources(ToStringResources(GameInformation.playerOneResources));
                 else
                     networkController.SendCurrentPlayersResources(ToStringResources(GameInformation.playerTwoResources));
+
+                gameController.UpdateScores();
+
+                playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
+                playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
             }
         }
 
@@ -396,6 +400,8 @@ public class GameManager : MonoBehaviour
 
                     gameController.CollectCurrentPlayerResources();
                     gameController.UpdateScores();
+                    playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
+                    playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
 
                     int[] AIResources;
                     if (!GameInformation.playerIsHost)
