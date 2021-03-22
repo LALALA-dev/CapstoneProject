@@ -225,8 +225,9 @@ public class GameManager : MonoBehaviour
 
             string opponentBoard = networkController.GetMove();
             gameController.SetBoardConfiguration(opponentBoard);
-            gameController.RefreshBlockedTiles();
+            gameController.UpdateGameBoard();
             boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
+            boardManager.DetectNewBlockCaptures(gameController.getGameBoard().squares);
             boardManager.RefreshBoardGUI();
 
             if(!GameInformation.openingSequence)
@@ -314,7 +315,9 @@ public class GameManager : MonoBehaviour
                 // NORMAL GAMEPLAY
                 gameController.UpdateGameBoard();
                 boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
-                boardManager.DetectNewBlockCaptures(gameController.getGameBoard().GetSquareStates());
+                boardManager.DetectNewBlockCaptures(gameController.getGameBoard().squares);
+                // boardManager.RefreshBoardGUI();
+
                 GameInformation.currentRoundPlacedNodes.Clear();
                 GameInformation.currentRoundPlacedBranches.Clear();
                 GameInformation.resourceTrade = false;
@@ -485,7 +488,7 @@ public class GameManager : MonoBehaviour
             turnNumber++;
             gameController.UpdateGameBoard();
             boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
-            boardManager.DetectNewBlockCaptures(gameController.getGameBoard().GetSquareStates());
+            boardManager.DetectNewBlockCaptures(gameController.getGameBoard().squares);
             GameInformation.currentRoundPlacedNodes.Clear();
             GameInformation.currentRoundPlacedBranches.Clear();
 
@@ -520,7 +523,7 @@ public class GameManager : MonoBehaviour
                     
                 gameController.UpdateGameBoard();
                 boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
-                boardManager.DetectNewBlockCaptures(gameController.getGameBoard().GetSquareStates());
+                boardManager.DetectNewBlockCaptures(gameController.getGameBoard().squares);
                 if (GameInformation.playerOneScore >= 10 || GameInformation.playerTwoScore >= 10)
                 {
                     GameInformation.gameOver = true;
