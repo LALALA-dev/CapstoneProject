@@ -69,6 +69,12 @@ public class NetworkController : MonoBehaviourPunCallbacks
         opponentResources = resources;
     }
 
+    public void SetCurrentPlayersResources(string resources)
+    {
+        opponentResources = resources;
+        GameInformation.needToUpdateOpponentsResources = true;
+    }
+
     public string GetOpponentResources()
     {
         return opponentResources;
@@ -92,6 +98,7 @@ public class NetworkController : MonoBehaviourPunCallbacks
             GameInformation.renderClientBoard = true;
         }
     }
+
 
     #endregion
 
@@ -117,6 +124,11 @@ public class NetworkController : MonoBehaviourPunCallbacks
     public void InvokeClientsRenderHost()
     {
         NetworkPlayer.player.InvokeHostConfiguration();
+    }
+
+    public void SendCurrentPlayersResources(string resources)
+    {
+        NetworkPlayer.player.SendCurrentPlayersResources(resources);
     }
 
     #endregion

@@ -64,4 +64,6 @@ public class GameInformation
     public static string playerTwoAvatar = "WHEELBARREL";
 
     public static bool needToSyncGameVariables = false;
+
+    public static bool needToUpdateOpponentsResources = false;
 }

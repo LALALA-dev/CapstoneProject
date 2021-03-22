@@ -140,7 +140,13 @@ public class GameManager : MonoBehaviour
             {
                 // parse resource string and update local opponent's resources
                 string incomingPlayersResources = networkController.GetOpponentResources();
-                DeStringResources(incomingPlayersResources);
+                int[] playersResources = DeStringResources(incomingPlayersResources);
+
+                if (GameInformation.currentPlayer == "CLIENT")
+                    GameInformation.playerTwoResources = playersResources;
+                else
+                    GameInformation.playerOneResources = playersResources;
+
                 playerResourcesManager.UpdateBothPlayersResources();
             }
             
@@ -225,8 +231,29 @@ public class GameManager : MonoBehaviour
             {
                 gameController.CollectCurrentPlayerResources();
                 playerResourcesManager.UpdateBothPlayersResources();
+
+                if(GameInformation.playerIsHost)
+                    networkController.SendCurrentPlayersResources(ToStringResources(GameInformation.playerOneResources));
+                else
+                    networkController.SendCurrentPlayersResources(ToStringResources(GameInformation.playerTwoResources));
             }
-            
+        }
+
+        if(GameInformation.needToUpdateOpponentsResources)
+        {
+            GameInformation.needToUpdateOpponentsResources = false;
+            string resources = networkController.GetOpponentResources();
+            int[] parsedResources = DeStringResources(resources);
+
+            if (GameInformation.playerIsHost)
+            {
+                GameInformation.playerTwoResources = parsedResources;
+            }
+            else
+            {
+                GameInformation.playerOneResources = parsedResources;
+            }
+            playerResourcesManager.UpdateBothPlayersResources();
         }
     }
 
@@ -597,7 +624,7 @@ public class GameManager : MonoBehaviour
         return (resources[0].ToString() + " " + resources[1].ToString() + " " + resources[2].ToString() + " " + resources[3].ToString());
     }
 
-    public void DeStringResources(string resources)
+    public int[] DeStringResources(string resources)
     {
         string[] parsedResources = resources.Split(' ');
 
@@ -608,13 +635,6 @@ public class GameManager : MonoBehaviour
         opponentsResources[2] = int.Parse(parsedResources[2]);
         opponentsResources[3] = int.Parse(parsedResources[3]);
 
-        if(GameInformation.currentPlayer == "CLIENT")
-        {
-            GameInformation.playerTwoResources = opponentsResources;
-        }
-        else
-        {
-            GameInformation.playerOneResources = opponentsResources;
-        }
+        return opponentsResources;
     }
 }
