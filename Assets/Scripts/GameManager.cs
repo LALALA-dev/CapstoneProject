@@ -13,15 +13,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] private NetworkController networkController;
     [SerializeField] private BoardManager boardManager;
     [SerializeField] private PlayerResourcesManager playerResourcesManager;
-    [SerializeField] private NetworkUIController uiController;
     private GameController gameController;
     private BeginnerAI beginnerAI;
     public TextMeshProUGUI playerLeftMessage;
 
     public TMP_InputField HNPInput;
 
-    public GameObject RenderBtn;
-    public GameObject CompleteTrnBtn;
+    public GameObject CompleteTurnBtn;
     public GameObject TradeBtn;
     public Image playerOneAvatar;
     public Image playerTwoAvatar;
@@ -138,11 +136,11 @@ public class GameManager : MonoBehaviour
             GameInformation.tradeHasBeenMade = false;
             playerResourcesManager.UpdateBothPlayersResources();
         }
-        gameController.UpdateGameBoard();
+
         if (GameInformation.gameType == 'N' && PhotonNetwork.CurrentRoom.PlayerCount < 2)
         {
             playerLeftMessage.text = "Player left room: Please exit to main menu";
-            CompleteTrnBtn.SetActive(false);
+            CompleteTurnBtn.SetActive(false);
             TradeBtn.SetActive(false);
         }
 

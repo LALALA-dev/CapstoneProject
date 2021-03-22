@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,6 +19,11 @@ public class SceneLoader : MonoBehaviour
 
     public void LoadMenuScene()
     {
+        if(GameInformation.gameType == 'N')
+        {
+            PhotonNetwork.LeaveRoom();
+            PhotonNetwork.Disconnect();
+        }
         GameController.Destroy();
         GameInformation.gameOver = false;
         GameInformation.openingSequence = true;
