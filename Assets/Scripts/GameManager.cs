@@ -33,6 +33,9 @@ public class GameManager : MonoBehaviour
 
         if(!GameInformation.HumanNetworkProtocol)
             HNPInput.gameObject.SetActive(false);
+
+        if(!GameInformation.playerIsHost)
+            currentPlayerMessage.text = "Opponent's Move";
     }
 
     void Start()
@@ -223,7 +226,7 @@ public class GameManager : MonoBehaviour
             string opponentBoard = networkController.GetMove();
             gameController.SetBoardConfiguration(opponentBoard);
             gameController.RefreshBlockedTiles();
-            boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
+            // boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
             boardManager.RefreshBoardGUI();
 
             if(!GameInformation.openingSequence)
@@ -318,13 +321,9 @@ public class GameManager : MonoBehaviour
 
                 int[] resources = new int[4];
                 if (GameInformation.playerIsHost)
-                {
                     resources = GameInformation.playerOneResources;
-                }
                 else
-                {
                     resources = GameInformation.playerTwoResources;
-                }
 
                 networkController.SendMove(gameController.getGameBoard().ToString());
                 networkController.SyncPlayerVariables(turnNumber, GameInformation.currentPlayer, ToStringResources(resources));
