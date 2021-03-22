@@ -59,9 +59,9 @@ public class GameInformation
 
     public static bool newNetworkMoveSet = false;
 
-    public static string playerAvatar = "CAR";
+    public static string playerOneAvatar = "CAR";
 
-    public static string opponentAvatar = "WHEELBARREL";
+    public static string playerTwoAvatar = "WHEELBARREL";
 
     public static bool needToSyncGameVariables = false;
 }

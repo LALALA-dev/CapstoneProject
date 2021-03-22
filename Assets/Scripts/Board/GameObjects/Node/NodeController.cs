@@ -17,7 +17,7 @@ public class NodeController : MonoBehaviour
     {
         ClaimNode(blankSprite);
 
-        switch (GameInformation.playerAvatar)
+        switch (GameInformation.playerOneAvatar)
         {
             case "HAT":
                 playerOneSprite = playerAvatars[0];
@@ -39,7 +39,7 @@ public class NodeController : MonoBehaviour
                 break;
         }
 
-        switch (GameInformation.opponentAvatar)
+        switch (GameInformation.playerTwoAvatar)
         {
             case "HAT":
                 playerTwoSprite = playerAvatars[0];

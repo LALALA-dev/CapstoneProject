@@ -119,7 +119,11 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         GameObject player = PhotonNetwork.Instantiate("NetworkPlayer", new Vector3(0, 0, 0), Quaternion.identity, 0);
 
         if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
+        {
             GameInformation.playerIsHost = false;
+            GameInformation.playerOneAvatar = "CAR";
+            GameInformation.playerTwoAvatar = "WHEELBARREL";
+        }
         else
             GameInformation.playerIsHost = true;
 

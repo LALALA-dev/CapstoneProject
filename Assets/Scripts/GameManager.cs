@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour
             aiAvatar = playerOneAvatar;
         }
 
-        switch(GameInformation.playerAvatar)
+        switch(GameInformation.playerOneAvatar)
         {
             case "HAT":
                 humanAvatar.sprite = avatars[0];
@@ -90,7 +90,7 @@ public class GameManager : MonoBehaviour
                 break;
         }
 
-        switch (GameInformation.opponentAvatar)
+        switch (GameInformation.playerTwoAvatar)
         {
             case "HAT":
                 aiAvatar.sprite = avatars[0];
@@ -141,6 +141,7 @@ public class GameManager : MonoBehaviour
                 // parse resource string and update local opponent's resources
                 string incomingPlayersResources = networkController.GetOpponentResources();
                 DeStringResources(incomingPlayersResources);
+                playerResourcesManager.UpdateBothPlayersResources();
             }
             
             // Determine the new currentPlayer
@@ -181,8 +182,6 @@ public class GameManager : MonoBehaviour
                         else
                             currentPlayerMessage.text = "Your Move";
                         GameInformation.openingSequence = false;
-                        gameController.CollectCurrentPlayerResources();
-                        playerResourcesManager.UpdateBothPlayersResources();
                         break;
                 }
             }
@@ -200,12 +199,8 @@ public class GameManager : MonoBehaviour
                     currentPlayerMessage.text = "Your Move";
 
                 ToogleTriggers();
-                gameController.CollectCurrentPlayerResources();
-                playerResourcesManager.UpdateBothPlayersResources();
                 gameController.UpdateScores();
             }
-
-            
 
             if (GameInformation.playerOneScore >= 10 || GameInformation.playerTwoScore >= 10)
             {
@@ -213,7 +208,6 @@ public class GameManager : MonoBehaviour
                 return;
             }
 
-            // Increment the turnNumber and begin turn if your turn
             turnNumber++;
         }
 
@@ -226,6 +220,13 @@ public class GameManager : MonoBehaviour
             gameController.RefreshBlockedTiles();
             boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
             boardManager.RefreshBoardGUI();
+
+            if(!GameInformation.openingSequence)
+            {
+                gameController.CollectCurrentPlayerResources();
+                playerResourcesManager.UpdateBothPlayersResources();
+            }
+            
         }
     }
 
@@ -250,50 +251,53 @@ public class GameManager : MonoBehaviour
 
     private void EndCurrentNetworkPlayersTurn()
     {
-        if (IsCorrectHostOpeningMove())
+        if (IsTheCurrentPlayerYourself())
         {
-            gameController.UpdateGameBoard();
-            gameController.RefreshBlockedTiles();
-            boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
-            if (GameInformation.playerIsHost)
+            if (IsCorrectHostOpeningMove())
             {
-                networkController.SendMove(gameController.getGameBoard().ToString());
-                networkController.SyncPlayerVariables(turnNumber, GameInformation.currentPlayer, "0 0 0 0");
+                gameController.UpdateGameBoard();
+                gameController.RefreshBlockedTiles();
+                boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
+                if (GameInformation.playerIsHost)
+                {
+                    networkController.SendMove(gameController.getGameBoard().ToString());
+                    networkController.SyncPlayerVariables(turnNumber, GameInformation.currentPlayer, "0 0 0 0");
+                }
             }
-        }
-        else if (IsCorrectClientOpeningMove())
-        {
-            gameController.UpdateGameBoard();
-            gameController.RefreshBlockedTiles();
-            boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
-            if (!GameInformation.playerIsHost)
+            else if (IsCorrectClientOpeningMove())
             {
-                networkController.SendMove(gameController.getGameBoard().ToString());
-                networkController.SyncPlayerVariables(turnNumber, GameInformation.currentPlayer, "0 0 0 0");
+                gameController.UpdateGameBoard();
+                gameController.RefreshBlockedTiles();
+                boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
+                if (!GameInformation.playerIsHost)
+                {
+                    networkController.SendMove(gameController.getGameBoard().ToString());
+                    networkController.SyncPlayerVariables(turnNumber, GameInformation.currentPlayer, "0 0 0 0");
+                }
             }
-        }
-        else if(!GameInformation.openingSequence)
-        {
-            // NORMAL GAMEPLAY
-            gameController.UpdateGameBoard();
-            boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
-            boardManager.DetectNewBlockCaptures(gameController.getGameBoard().GetSquareStates());
-            GameInformation.currentRoundPlacedNodes.Clear();
-            GameInformation.currentRoundPlacedBranches.Clear();
-            GameInformation.resourceTrade = false;
+            else if (!GameInformation.openingSequence)
+            {
+                // NORMAL GAMEPLAY
+                gameController.UpdateGameBoard();
+                boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
+                boardManager.DetectNewBlockCaptures(gameController.getGameBoard().GetSquareStates());
+                GameInformation.currentRoundPlacedNodes.Clear();
+                GameInformation.currentRoundPlacedBranches.Clear();
+                GameInformation.resourceTrade = false;
 
-            int[] resources = new int[4];
-            if (GameInformation.playerIsHost)
-            {
-                resources = GameInformation.playerOneResources;
-            }
-            else
-            {
-                resources = GameInformation.playerTwoResources;
-            }
+                int[] resources = new int[4];
+                if (GameInformation.playerIsHost)
+                {
+                    resources = GameInformation.playerOneResources;
+                }
+                else
+                {
+                    resources = GameInformation.playerTwoResources;
+                }
 
-            networkController.SendMove(gameController.getGameBoard().ToString());
-            networkController.SyncPlayerVariables(turnNumber, GameInformation.currentPlayer, ToStringResources(resources));
+                networkController.SendMove(gameController.getGameBoard().ToString());
+                networkController.SyncPlayerVariables(turnNumber, GameInformation.currentPlayer, ToStringResources(resources));
+            }
         }
     }
 
@@ -604,7 +608,7 @@ public class GameManager : MonoBehaviour
         opponentsResources[2] = int.Parse(parsedResources[2]);
         opponentsResources[3] = int.Parse(parsedResources[3]);
 
-        if(GameInformation.playerIsHost)
+        if(GameInformation.currentPlayer == "CLIENT")
         {
             GameInformation.playerTwoResources = opponentsResources;
         }
