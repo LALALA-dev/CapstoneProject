@@ -66,6 +66,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             GameInformation.playerIsHost = true;
             RoomOptions roomOptions = new RoomOptions();
             roomOptions.MaxPlayers = 2;
+            GameInformation.currentPlayer = "HOST";
             PhotonNetwork.CreateRoom(GameInformation.roomName.Trim(), roomOptions, TypedLobby.Default);
             CancelButton.SetActive(false);
         }
@@ -82,6 +83,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
         RoomOptions roomOptions = new RoomOptions();
         roomOptions.MaxPlayers = 2;
+        GameInformation.currentPlayer = "HOST";
         PhotonNetwork.JoinOrCreateRoom("StandardRoom", roomOptions, TypedLobby.Default);
     }
 
@@ -93,6 +95,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         if (GameInformation.roomName.Trim() != "")
         {
             GameInformation.playerIsHost = false;
+            GameInformation.currentPlayer = "HOST";
             PhotonNetwork.JoinRoom(GameInformation.roomName.Trim());
         }
         else
@@ -113,7 +116,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         statusText.text = "Waiting for opponent to join";
         Debug.Log("Waiting for opponent to join");
         CancelButton.SetActive(true);
-
+        GameInformation.currentPlayer = "HOST";
     }
 
     public override void OnJoinedRoom()
@@ -121,7 +124,11 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         GameObject player = PhotonNetwork.Instantiate("NetworkPlayer", new Vector3(0, 0, 0), Quaternion.identity, 0);
 
         if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
+        {
             GameInformation.playerIsHost = false;
+            GameInformation.playerOneAvatar = "CAR";
+            GameInformation.playerTwoAvatar = "WHEELBARREL";
+        }
         else
             GameInformation.playerIsHost = true;
 
@@ -141,6 +148,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         {
             PhotonNetwork.CurrentRoom.IsOpen = false;
             PhotonNetwork.CurrentRoom.IsVisible = false;
+            GameInformation.currentPlayer = "HOST";
             if (PhotonNetwork.LocalPlayer.IsMasterClient)
             {
                 statusText.text = "Player joined, ready to Start Game...";

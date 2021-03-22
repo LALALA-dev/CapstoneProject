@@ -31,6 +31,7 @@ public class TradingPanelManager : MonoBehaviour
             tilesSelected[i].text = "0";
         }
 
+        SendMessageUpwards("ToogleTriggers");
         panel.SetActive(false);
     }
 
@@ -87,7 +88,8 @@ public class TradingPanelManager : MonoBehaviour
             createResourceBtn[i].gameObject.SetActive(false);
             tilesSelected[i].text = "0";
         }
-            
+        
+        SendMessageUpwards("ToogleTriggers");
         panel.SetActive(false);
         GameInformation.resourceTrade = true;
         GameInformation.tradeHasBeenMade = true;
@@ -95,7 +97,7 @@ public class TradingPanelManager : MonoBehaviour
 
     public void ApplyResourceChanges(int colorId)
     {
-        if(GameInformation.turnNumber % 2 == 0)
+        if(GameInformation.currentPlayer == "HOST" || (GameInformation.currentPlayer == "HUMAN" && GameInformation.playerIsHost) || (GameInformation.currentPlayer == "AI" && !GameInformation.playerIsHost))
         {
             GameInformation.playerOneResources[colorId]++;
             for (int i = 0; i < 4; i++)
@@ -113,11 +115,12 @@ public class TradingPanelManager : MonoBehaviour
     {
         if(!GameInformation.resourceTrade)
         {
-            if (GameInformation.turnNumber % 2 == 0)
+            if (GameInformation.currentPlayer == "HOST" || (GameInformation.currentPlayer == "HUMAN" && GameInformation.playerIsHost) || (GameInformation.currentPlayer == "AI" && !GameInformation.playerIsHost))
                 GameInformation.maxTradeResources = GameInformation.playerOneResources;
             else
                 GameInformation.maxTradeResources = GameInformation.playerTwoResources;
             panel.SetActive(true);
+            SendMessageUpwards("ToogleTriggers");
         }
     }
 }

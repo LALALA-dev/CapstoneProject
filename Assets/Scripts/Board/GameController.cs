@@ -95,7 +95,10 @@ public class GameController
 
     public void SetBoardConfiguration(string hostGameBoard)
     {
-        gameBoard.StringToConfiguration(hostGameBoard);
+        if (!GameInformation.HumanNetworkProtocol)
+            gameBoard.StringToConfiguration(hostGameBoard);
+        else
+            gameBoard.SetHNP(hostGameBoard);
         Debug.Log("BoardState: \n\t" + getCurrentSquareConfig() + "\n\t" + getCurrentNodeConfig() + "\n\t" + getCurrentBranchConfig());
     }
 
@@ -160,19 +163,39 @@ public class GameController
             }
         }
 
-        if ((GameInformation.playerIsHost && GameInformation.currentPlayer == "HUMAN") || (!GameInformation.playerIsHost && GameInformation.currentPlayer == "AI"))
+        if (GameInformation.gameType == 'N')
         {
-            GameInformation.playerOneResources[0] += resources[0];
-            GameInformation.playerOneResources[1] += resources[1];
-            GameInformation.playerOneResources[2] += resources[2];
-            GameInformation.playerOneResources[3] += resources[3];
+            if ((GameInformation.playerIsHost && GameInformation.currentPlayer == "HOST"))
+            {
+                GameInformation.playerOneResources[0] += resources[0];
+                GameInformation.playerOneResources[1] += resources[1];
+                GameInformation.playerOneResources[2] += resources[2];
+                GameInformation.playerOneResources[3] += resources[3];
+            }
+            else
+            {
+                GameInformation.playerTwoResources[0] += resources[0];
+                GameInformation.playerTwoResources[1] += resources[1];
+                GameInformation.playerTwoResources[2] += resources[2];
+                GameInformation.playerTwoResources[3] += resources[3];
+            }
         }
         else
         {
-            GameInformation.playerTwoResources[0] += resources[0];
-            GameInformation.playerTwoResources[1] += resources[1];
-            GameInformation.playerTwoResources[2] += resources[2];
-            GameInformation.playerTwoResources[3] += resources[3];
+            if ((GameInformation.playerIsHost && GameInformation.currentPlayer == "HUMAN") || (!GameInformation.playerIsHost && GameInformation.currentPlayer == "AI"))
+            {
+                GameInformation.playerOneResources[0] += resources[0];
+                GameInformation.playerOneResources[1] += resources[1];
+                GameInformation.playerOneResources[2] += resources[2];
+                GameInformation.playerOneResources[3] += resources[3];
+            }
+            else
+            {
+                GameInformation.playerTwoResources[0] += resources[0];
+                GameInformation.playerTwoResources[1] += resources[1];
+                GameInformation.playerTwoResources[2] += resources[2];
+                GameInformation.playerTwoResources[3] += resources[3];
+            }
         }
 
         
