@@ -210,12 +210,6 @@ public class GameManager : MonoBehaviour
                 ToogleTriggers();
             }
 
-            if (GameInformation.playerOneScore >= 10 || GameInformation.playerTwoScore >= 10)
-            {
-                GameInformation.gameOver = true;
-                return;
-            }
-
             turnNumber++;
         }
 
@@ -244,6 +238,12 @@ public class GameManager : MonoBehaviour
 
                 playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
                 playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
+
+                if (GameInformation.playerOneScore >= 10 || GameInformation.playerTwoScore >= 10)
+                {
+                    GameInformation.gameOver = true;
+                    return;
+                }
             }
         }
 
@@ -316,7 +316,6 @@ public class GameManager : MonoBehaviour
                 gameController.UpdateGameBoard();
                 boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
                 boardManager.DetectNewBlockCaptures(gameController.getGameBoard().squares);
-                // boardManager.RefreshBoardGUI();
 
                 GameInformation.currentRoundPlacedNodes.Clear();
                 GameInformation.currentRoundPlacedBranches.Clear();
@@ -327,6 +326,16 @@ public class GameManager : MonoBehaviour
                     resources = GameInformation.playerOneResources;
                 else
                     resources = GameInformation.playerTwoResources;
+
+                gameController.UpdateScores();
+
+                playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
+                playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
+
+                if (GameInformation.playerOneScore >= 10 || GameInformation.playerTwoScore >= 10)
+                {
+                    GameInformation.gameOver = true;
+                }
 
                 networkController.SendMove(gameController.getGameBoard().ToString());
                 networkController.SyncPlayerVariables(turnNumber, GameInformation.currentPlayer, ToStringResources(resources));
@@ -483,7 +492,7 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-        else
+        else if(!GameInformation.openingSequence)
         {
             turnNumber++;
             gameController.UpdateGameBoard();
