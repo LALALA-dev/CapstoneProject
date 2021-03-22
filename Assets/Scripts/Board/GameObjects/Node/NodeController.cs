@@ -9,11 +9,57 @@ public class NodeController : MonoBehaviour
     public Sprite playerTwoSprite;
     public Sprite blankSprite;
 
+    public Sprite[] playerAvatars;
+
     public Node nodeEntity;
 
     void Start()
     {
         ClaimNode(blankSprite);
+
+        switch (GameInformation.playerOneAvatar)
+        {
+            case "HAT":
+                playerOneSprite = playerAvatars[0];
+                break;
+            case "BATTLESHIP":
+                playerOneSprite = playerAvatars[1];
+                break;
+            case "CAR":
+                playerOneSprite = playerAvatars[2];
+                break;
+            case "THIMBLE":
+                playerOneSprite = playerAvatars[3];
+                break;
+            case "WHEELBARREL":
+                playerOneSprite = playerAvatars[4];
+                break;
+            default:
+                playerOneSprite = playerAvatars[2];
+                break;
+        }
+
+        switch (GameInformation.playerTwoAvatar)
+        {
+            case "HAT":
+                playerTwoSprite = playerAvatars[0];
+                break;
+            case "BATTLESHIP":
+                playerTwoSprite = playerAvatars[1];
+                break;
+            case "CAR":
+                playerTwoSprite = playerAvatars[2];
+                break;
+            case "THIMBLE":
+                playerTwoSprite = playerAvatars[3];
+                break;
+            case "WHEELBARREL":
+                playerTwoSprite = playerAvatars[4];
+                break;
+            default:
+                playerTwoSprite = playerAvatars[4];
+                break;
+        }
     }
 
     private void OnMouseDown()
@@ -32,6 +78,7 @@ public class NodeController : MonoBehaviour
                         ClaimNode(playerOneSprite);
                     else
                         ClaimNode(playerTwoSprite);
+
                 }
                 else if (isNodeColorOfCurrentPlayer() && GameInformation.openingMoveNodeSet && GameInformation.openingNodeId == nodeEntity.id)
                 {
@@ -91,10 +138,10 @@ public class NodeController : MonoBehaviour
         }
     }
 
-    private void ClaimNode(Sprite playerColor)
+    private void ClaimNode(Sprite playerAvatar)
     {
         SpriteRenderer sprite = GetComponent<SpriteRenderer>();
-        sprite.sprite = playerColor;
+        sprite.sprite = playerAvatar;
     }
 
     private bool isUndoAttemptOnNodePlaceThisRound()

@@ -21,7 +21,6 @@ public class SceneLoader : MonoBehaviour
         GameController.Destroy();
         GameInformation.gameOver = false;
         GameInformation.openingSequence = true;
-        GameInformation.turnNumber = 1;
         GameInformation.playerOneScore = 0;
         GameInformation.playerTwoScore = 0;
         GameInformation.playerOneResources = new int[4] { 0, 0, 0, 0 };

@@ -25,31 +25,31 @@ public class AISelectionManager : MonoBehaviour
 
     public void OnHatSelect()
     {
-        GameInformation.playerAvatar = "HAT";
+        GameInformation.playerOneAvatar = "HAT";
         selector.transform.position = new Vector3(avatars[0].transform.position.x, selector.transform.position.y);
     }
 
     public void OnShipSelect()
     {
-        GameInformation.playerAvatar = "BATTLESHIP";
+        GameInformation.playerOneAvatar = "BATTLESHIP";
         selector.transform.position = new Vector3(avatars[1].transform.position.x, selector.transform.position.y);
     }
 
     public void OnCarSelect()
     {
-        GameInformation.playerAvatar = "CAR";
+        GameInformation.playerOneAvatar = "CAR";
         selector.transform.position = new Vector3(avatars[2].transform.position.x, selector.transform.position.y);
     }
 
     public void OnThimbleSelect()
     {
-        GameInformation.playerAvatar = "THIMBLE";
+        GameInformation.playerOneAvatar = "THIMBLE";
         selector.transform.position = new Vector3(avatars[3].transform.position.x, selector.transform.position.y);
     }
 
     public void OnWheelBarrelSelect()
     {
-        GameInformation.playerAvatar = "WHEELBARREL";
+        GameInformation.playerOneAvatar = "WHEELBARREL";
         selector.transform.position = new Vector3(avatars[4].transform.position.x, selector.transform.position.y);
     }
 }
