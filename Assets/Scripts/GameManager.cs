@@ -226,7 +226,7 @@ public class GameManager : MonoBehaviour
             string opponentBoard = networkController.GetMove();
             gameController.SetBoardConfiguration(opponentBoard);
             gameController.RefreshBlockedTiles();
-            // boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
+            boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
             boardManager.RefreshBoardGUI();
 
             if(!GameInformation.openingSequence)
