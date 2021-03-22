@@ -166,16 +166,60 @@ public class BoardManager : MonoBehaviour
                 switch (square.squareState.resourceColor)
                 {
                     case SquareResourceColor.Red:
-                        spriteRenderers[square.squareState.location].sprite = resourceBlock[0];
+                        switch (square.squareState.resourceAmount)
+                        {
+                            case SquareResourceAmount.One:
+                                spriteRenderers[square.squareState.location].sprite = resourceBlock[0];
+                                break;
+                            case SquareResourceAmount.Two:
+                                spriteRenderers[square.squareState.location].sprite = resourceBlock[1];
+                                break;
+                            case SquareResourceAmount.Three:
+                                spriteRenderers[square.squareState.location].sprite = resourceBlock[2];
+                                break;
+                        }
                         break;
                     case SquareResourceColor.Blue:
-                        spriteRenderers[square.squareState.location].sprite = resourceBlock[1];
+                        switch (square.squareState.resourceAmount)
+                        {
+                            case SquareResourceAmount.One:
+                                spriteRenderers[square.squareState.location].sprite = resourceBlock[3];
+                                break;
+                            case SquareResourceAmount.Two:
+                                spriteRenderers[square.squareState.location].sprite = resourceBlock[4];
+                                break;
+                            case SquareResourceAmount.Three:
+                                spriteRenderers[square.squareState.location].sprite = resourceBlock[5];
+                                break;
+                        }
                         break;
                     case SquareResourceColor.Yellow:
-                        spriteRenderers[square.squareState.location].sprite = resourceBlock[2];
+                        switch (square.squareState.resourceAmount)
+                        {
+                            case SquareResourceAmount.One:
+                                spriteRenderers[square.squareState.location].sprite = resourceBlock[6];
+                                break;
+                            case SquareResourceAmount.Two:
+                                spriteRenderers[square.squareState.location].sprite = resourceBlock[7];
+                                break;
+                            case SquareResourceAmount.Three:
+                                spriteRenderers[square.squareState.location].sprite = resourceBlock[8];
+                                break;
+                        }
                         break;
                     case SquareResourceColor.Green:
-                        spriteRenderers[square.squareState.location].sprite = resourceBlock[3];
+                        switch (square.squareState.resourceAmount)
+                        {
+                            case SquareResourceAmount.One:
+                                spriteRenderers[square.squareState.location].sprite = resourceBlock[9];
+                                break;
+                            case SquareResourceAmount.Two:
+                                spriteRenderers[square.squareState.location].sprite = resourceBlock[10];
+                                break;
+                            case SquareResourceAmount.Three:
+                                spriteRenderers[square.squareState.location].sprite = resourceBlock[11];
+                                break;
+                        }
                         break;
 
                 }
