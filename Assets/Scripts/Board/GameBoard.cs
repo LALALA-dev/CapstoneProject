@@ -441,9 +441,9 @@ public class GameBoard
         int ownedTiles = 0;
         DetectMultiTileCaptures();
 
-        foreach (SquareState square in boardState.squareStates)
+        foreach (Square square in squares)
         {
-            if (square.resourceState == SquareStatus.Captured && square.ownerColor == playerColor)
+            if (square.squareState.resourceState == SquareStatus.Captured && square.squareState.ownerColor == playerColor)
             {
                 ownedTiles++;
             }
