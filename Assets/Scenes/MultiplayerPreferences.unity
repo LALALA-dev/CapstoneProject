@@ -206,8 +206,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: AISelectionManager, Assembly-CSharp
+      - m_Target: {fileID: 2059609669}
+        m_TargetAssemblyTypeName: NetworkUIController, Assembly-CSharp
         m_MethodName: OnHatSelect
         m_Mode: 1
         m_Arguments:
@@ -493,8 +493,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: AISelectionManager, Assembly-CSharp
+      - m_Target: {fileID: 2059609669}
+        m_TargetAssemblyTypeName: NetworkUIController, Assembly-CSharp
         m_MethodName: OnCarSelect
         m_Mode: 1
         m_Arguments:
@@ -1371,8 +1371,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: AISelectionManager, Assembly-CSharp
+      - m_Target: {fileID: 2059609669}
+        m_TargetAssemblyTypeName: NetworkUIController, Assembly-CSharp
         m_MethodName: OnThimbleSelect
         m_Mode: 1
         m_Arguments:
@@ -1682,7 +1682,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2059609669}
         m_TargetAssemblyTypeName: NetworkUIController, Assembly-CSharp
-        m_MethodName: EnableJoinPrivateGameInput
+        m_MethodName: OnPrivateSelect
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2023,7 +2023,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2059609669}
         m_TargetAssemblyTypeName: NetworkUIController, Assembly-CSharp
-        m_MethodName: EnableCreateHostGameInput
+        m_MethodName: OnHostSelect
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2334,8 +2334,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: AISelectionManager, Assembly-CSharp
+      - m_Target: {fileID: 2059609669}
+        m_TargetAssemblyTypeName: NetworkUIController, Assembly-CSharp
         m_MethodName: OnShipSelect
         m_Mode: 1
         m_Arguments:
@@ -2950,8 +2950,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: AISelectionManager, Assembly-CSharp
+      - m_Target: {fileID: 2059609669}
+        m_TargetAssemblyTypeName: NetworkUIController, Assembly-CSharp
         m_MethodName: OnWheelBarrelSelect
         m_Mode: 1
         m_Arguments:
@@ -3219,19 +3219,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2059609669}
         m_TargetAssemblyTypeName: NetworkUIController, Assembly-CSharp
-        m_MethodName: SetRoomName
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 962584153}
-        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
-        m_MethodName: LoadNetworkLobbyScene
+        m_MethodName: OnPublicSelect
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3375,10 +3363,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8a02aa64fd526644bcedceb81fabfd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hostCreateRoomNameField: {fileID: 0}
-  privateRoomNameField: {fileID: 0}
-  setNameField: {fileID: 0}
-  errorMessage: {fileID: 195792993}
+  avatarSelector: {fileID: 1287076966}
+  gameTypeSelector: {fileID: 331993888}
+  avatars:
+  - {fileID: 15906992}
+  - {fileID: 1444846727}
+  - {fileID: 188970295}
+  - {fileID: 843035876}
+  - {fileID: 1851171049}
+  gameTypes:
+  - {fileID: 1388497424}
+  - {fileID: 2003385273}
+  - {fileID: 1043215514}
 --- !u!1 &2094117742
 GameObject:
   m_ObjectHideFlags: 0
