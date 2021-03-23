@@ -70,7 +70,6 @@ public class GameManager : MonoBehaviour
             HNPInput.gameObject.SetActive(true);
         }
 
-        // figure out whos who
         if(GameInformation.playerIsHost)
             GameInformation.playerOneAvatar = GameInformation.ownAvatar;
         else

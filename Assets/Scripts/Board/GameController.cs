@@ -239,18 +239,12 @@ public class GameController
     public void UpdateScores()
     {
         GameInformation.playerOneScore = gameBoard.GetNumberOfPlayerNodes(PlayerColor.Silver);
-        Debug.Log("Player One Node Count: " + GameInformation.playerOneScore);
         GameInformation.playerTwoScore = gameBoard.GetNumberOfPlayerNodes(PlayerColor.Gold);
-        Debug.Log("Player Two Node Count: " + GameInformation.playerTwoScore);
         GameInformation.playerOneScore += gameBoard.GetNumberOfPlayerCapturedTiles(PlayerColor.Silver);
-        Debug.Log("Player One Captured Tile Count: " + gameBoard.GetNumberOfPlayerCapturedTiles(PlayerColor.Silver));
         GameInformation.playerTwoScore += gameBoard.GetNumberOfPlayerCapturedTiles(PlayerColor.Gold);
-        Debug.Log("Player Two Captured Tile Count: " + gameBoard.GetNumberOfPlayerCapturedTiles(PlayerColor.Gold));
 
         int playerOneNetwork = CalculatePlayerLongestNetwork(PlayerColor.Silver);
-        Debug.Log("Player One Network Length: " + CalculatePlayerLongestNetwork(PlayerColor.Silver));
         int playerTwoNetwork = CalculatePlayerLongestNetwork(PlayerColor.Gold);
-        Debug.Log("Player Two Network Length: " + CalculatePlayerLongestNetwork(PlayerColor.Gold));
 
         if (playerOneNetwork > playerTwoNetwork)
             GameInformation.playerOneScore += 2;
