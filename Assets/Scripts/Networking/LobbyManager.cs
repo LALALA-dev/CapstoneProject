@@ -17,6 +17,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public Image readyToBeginMessage;
 
     public GameObject gamePINInputBtn;
+    public GameObject startGameBtn;
+
+    public Text HostPIN;
 
     public TMP_InputField privateRoomNameField;
 
@@ -31,6 +34,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         readyToBeginMessage.gameObject.SetActive(false);
         gamePINInputBtn.SetActive(false);
         privateRoomNameField.gameObject.SetActive(false);
+        HostPIN.gameObject.SetActive(false);
+        startGameBtn.gameObject.SetActive(false);
     }
 
     private void Start()
@@ -59,7 +64,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
                 JoinPublicRoom();
                 break;
             case NetworkGameType.Private:
-                // JoinPrivateRoom();
+                EnableInput();
                 break;
             case NetworkGameType.Host:
                 CreateHostRoom();
@@ -70,7 +75,14 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         }
     }
 
-    // for client GO btn
+    public void EnableInput()
+    {
+        connectMessage.gameObject.SetActive(false);
+        enterPINMessage.gameObject.SetActive(true);
+        privateRoomNameField.gameObject.SetActive(true);
+        gamePINInputBtn.SetActive(true);
+    }
+
     public void SetRoomName()
     {
         if (privateRoomNameField.text.Trim() != "" && privateRoomNameField.text.Trim().Length == 4)
@@ -94,7 +106,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         RoomOptions roomOptions = new RoomOptions();
         roomOptions.MaxPlayers = 2;
         GameInformation.currentPlayer = "HOST";
-        Debug.Log(GameInformation.roomName);
         PhotonNetwork.CreateRoom(GameInformation.roomName, roomOptions, TypedLobby.Default);
         CancelButton.SetActive(false);
     }
@@ -128,14 +139,14 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             GameInformation.currentPlayer = "HOST";
             PhotonNetwork.JoinRoom(GameInformation.roomName.Trim());
 
-            pinMessage.gameObject.SetActive(false);
             enterPINMessage.gameObject.SetActive(false);
-            waitingForHostMessage.gameObject.SetActive(false);
+            privateRoomNameField.gameObject.SetActive(false);
+            gamePINInputBtn.SetActive(false);
             connectMessage.gameObject.SetActive(true);
         }
         else
         {
-            //statusText.text = "Invaild Room Name, navigating back...";
+            // TODO: Enable Error Panel
         }
     }
 
@@ -151,6 +162,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         connectMessage.gameObject.SetActive(false);
         pinMessage.gameObject.SetActive(true);
         waitingForClientMessage.gameObject.SetActive(true);
+        HostPIN.gameObject.SetActive(true);
+        HostPIN.text = GameInformation.roomName;
         CancelButton.SetActive(true);
         GameInformation.currentPlayer = "HOST";
     }
@@ -184,17 +197,15 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             GameInformation.currentPlayer = "HOST";
             if (PhotonNetwork.LocalPlayer.IsMasterClient)
             {
+                readyToBeginMessage.gameObject.SetActive(true);
                 pinMessage.gameObject.SetActive(false);
                 waitingForClientMessage.gameObject.SetActive(false);
-                enterPINMessage.gameObject.SetActive(false);
-                waitingForHostMessage.gameObject.SetActive(false);
-                readyToBeginMessage.gameObject.SetActive(true);
+                HostPIN.gameObject.SetActive(false);
+                startGameBtn.SetActive(true);
             }
             else
             {
-                pinMessage.gameObject.SetActive(false);
-                waitingForClientMessage.gameObject.SetActive(false);
-                enterPINMessage.gameObject.SetActive(false);
+                connectMessage.gameObject.SetActive(false);
                 waitingForHostMessage.gameObject.SetActive(true);
             }
         }
@@ -209,7 +220,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
         {
-           // statusText.text = "Player left, waiting for new player to join...";
+            // TODO: ENABLE PLAYER LEFT PANEL
             PhotonNetwork.CurrentRoom.IsOpen = true;
             PhotonNetwork.CurrentRoom.IsVisible = true;
         }
@@ -221,24 +232,21 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
-        Debug.Log("Joined Room Failed");
-        // statusText.text = "Failed to join room, reason: " + message;
+        // TODO: ENABLE ERROR PANEL
         Invoke("AutoNavigate", 3.0f);
         CancelButton.SetActive(true);
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
-        Debug.Log("Room Creation Failed");
-        // statusText.text = "Failed to create room, reason: " + message;
+        // TODO: ENABLE ERROR PANEL
         Invoke("AutoNavigate", 3.0f);
         CancelButton.SetActive(true);
     }
 
     public override void OnDisconnected(DisconnectCause cause)
     {
-        Debug.Log("Disconnected from server because: " + cause.ToString());
-        // statusText.text = "Disconnected from server, navigating back...";
+        // TODO: ENABLE ERROR PANEL
         Invoke("AutoNavigate", 3.0f);
     }
 
