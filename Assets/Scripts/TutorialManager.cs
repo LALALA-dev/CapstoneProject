@@ -10,7 +10,6 @@ using System;
 
 public class TutorialManager : MonoBehaviour
 {
-    [SerializeField] private NetworkController networkController;
     [SerializeField] private BoardManager boardManager;
     [SerializeField] private PlayerResourcesManager playerResourcesManager;
     private GameController gameController;
