@@ -19,9 +19,14 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public GameObject gamePINInputBtn;
     public GameObject startGameBtn;
 
+    public GameObject generalError;
+    public GameObject playerLeftError;
+
     public Text HostPIN;
 
     public TMP_InputField privateRoomNameField;
+
+    private bool roomReady = false;
 
     #region Set Up
     private void Awake()
@@ -36,6 +41,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         privateRoomNameField.gameObject.SetActive(false);
         HostPIN.gameObject.SetActive(false);
         startGameBtn.gameObject.SetActive(false);
+        playerLeftError.SetActive(false);
+        generalError.SetActive(false);
     }
 
     private void Start()
@@ -95,6 +102,16 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     #endregion
 
+    private void Update()
+    {
+        if(PhotonNetwork.IsConnected && roomReady && PhotonNetwork.CurrentRoom.PlayerCount < 2)
+        {
+            roomReady = false;
+            playerLeftError.SetActive(true);
+            readyToBeginMessage.gameObject.SetActive(false);
+        }
+    }
+
     #region Join Matches
     public void CreateHostRoom()
     {
@@ -146,7 +163,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         }
         else
         {
-            // TODO: Enable Error Panel
+            generalError.SetActive(true);
         }
     }
 
@@ -180,6 +197,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
             connectMessage.gameObject.SetActive(false);
             waitingForHostMessage.gameObject.SetActive(true);
+            CancelButton.SetActive(true);
         }
         else
             GameInformation.playerIsHost = true;
@@ -217,9 +235,20 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
         {
-            // TODO: ENABLE PLAYER LEFT PANEL
+            playerLeftError.SetActive(true);
             PhotonNetwork.CurrentRoom.IsOpen = true;
             PhotonNetwork.CurrentRoom.IsVisible = true;
+
+            pinMessage.gameObject.SetActive(false);
+            waitingForClientMessage.gameObject.SetActive(false);
+            enterPINMessage.gameObject.SetActive(false);
+            waitingForHostMessage.gameObject.SetActive(false);
+            readyToBeginMessage.gameObject.SetActive(false);
+            gamePINInputBtn.SetActive(false);
+            privateRoomNameField.gameObject.SetActive(false);
+            HostPIN.gameObject.SetActive(false);
+            startGameBtn.gameObject.SetActive(false);
+            generalError.SetActive(false);
         }
     }
 
@@ -229,7 +258,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
-        // TODO: ENABLE ERROR PANEL
+        generalError.SetActive(true);
+        connectMessage.gameObject.SetActive(false);
         Debug.Log("Joined Room Failed: " + message);
         Invoke("AutoNavigate", 3.0f);
         CancelButton.SetActive(true);
@@ -237,14 +267,17 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
-        // TODO: ENABLE ERROR PANEL
+        generalError.SetActive(true);
+        connectMessage.gameObject.SetActive(false);
         Invoke("AutoNavigate", 3.0f);
         CancelButton.SetActive(true);
     }
 
     public override void OnDisconnected(DisconnectCause cause)
     {
-        // TODO: ENABLE ERROR PANEL
+        generalError.SetActive(true);
+        connectMessage.gameObject.SetActive(false);
+        CancelButton.SetActive(true);
         Invoke("AutoNavigate", 3.0f);
     }
 
