@@ -37,6 +37,7 @@ public class TutorialManager : MonoBehaviour
 
     void Start()
     {
+        ToogleTriggers();
         BeginBeginnerAIGame();
     }
     #endregion
