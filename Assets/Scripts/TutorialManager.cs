@@ -61,6 +61,8 @@ public class TutorialManager : MonoBehaviour
         else
             aiColor = PlayerColor.Silver;
 
+        GameInformation.HumanNetworkProtocol = true;
+        gameController.SetBoardConfiguration("1B3Y1R2B2R1G1Y3R3G0L2G2Y3B");
         boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
         beginnerAI = new BeginnerAI(aiColor, gameController.getGameBoard().getBoardState());
 
