@@ -15,8 +15,6 @@ public class TutorialManager : MonoBehaviour
     private GameController gameController;
     private BeginnerAI beginnerAI;
 
-    public TMP_InputField HNPInput;
-
     public GameObject CompleteTurnBtn;
     public GameObject TradeBtn;
     public Image playerOneAvatar;
@@ -33,9 +31,6 @@ public class TutorialManager : MonoBehaviour
     private void Awake()
     {
         gameController = GameController.getInstance();
-
-        if (!GameInformation.HumanNetworkProtocol)
-            HNPInput.gameObject.SetActive(false);
 
         if (!GameInformation.playerIsHost)
             currentPlayerMessage.text = "Opponent's Move";
@@ -323,13 +318,6 @@ public class TutorialManager : MonoBehaviour
     }
     #endregion
 
-    public void SetUpHNPGame()
-    {
-        gameController.SetBoardConfiguration(HNPInput.text.Trim());
-        boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
-        HNPInput.gameObject.SetActive(false);
-        BeginBeginnerAIGame();
-    }
 
     public void ToogleTriggers()
     {
