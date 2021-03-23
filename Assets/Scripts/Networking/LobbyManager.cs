@@ -178,6 +178,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             GameInformation.playerOneAvatar = "CAR";
             GameInformation.playerTwoAvatar = "WHEELBARREL";
 
+            connectMessage.gameObject.SetActive(false);
+            waitingForHostMessage.gameObject.SetActive(true);
         }
         else
             GameInformation.playerIsHost = true;
@@ -202,11 +204,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
                 waitingForClientMessage.gameObject.SetActive(false);
                 HostPIN.gameObject.SetActive(false);
                 startGameBtn.SetActive(true);
-            }
-            else
-            {
-                connectMessage.gameObject.SetActive(false);
-                waitingForHostMessage.gameObject.SetActive(true);
             }
         }
     }
@@ -233,6 +230,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
         // TODO: ENABLE ERROR PANEL
+        Debug.Log("Joined Room Failed: " + message);
         Invoke("AutoNavigate", 3.0f);
         CancelButton.SetActive(true);
     }
