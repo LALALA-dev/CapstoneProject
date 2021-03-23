@@ -21,6 +21,8 @@ public class GameManager : MonoBehaviour
 
     public GameObject CompleteTurnBtn;
     public GameObject TradeBtn;
+    public GameObject playerLeftErrorMessage;
+    public GameObject generalErrorMessage;
     public Image playerOneAvatar;
     public Image playerTwoAvatar;
     public Text playerOneScore;
@@ -35,6 +37,9 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         gameController = GameController.getInstance();
+
+        generalErrorMessage.SetActive(false);
+        playerLeftErrorMessage.SetActive(false);
 
         if(!GameInformation.HumanNetworkProtocol)
             HNPInput.gameObject.SetActive(false);
@@ -139,7 +144,7 @@ public class GameManager : MonoBehaviour
 
         if (GameInformation.gameType == 'N' && PhotonNetwork.CurrentRoom.PlayerCount < 2)
         {
-            playerLeftMessage.text = "Player left room: Please exit to main menu";
+            playerLeftErrorMessage.SetActive(true);
             CompleteTurnBtn.SetActive(false);
             TradeBtn.SetActive(false);
         }
