@@ -71,9 +71,11 @@ public class LobbyManager : MonoBehaviourPunCallbacks
                 JoinPublicRoom();
                 break;
             case NetworkGameType.Private:
+                GameInformation.playerTwoAvatar = GameInformation.ownAvatar;
                 EnableInput();
                 break;
             case NetworkGameType.Host:
+                GameInformation.playerOneAvatar = GameInformation.ownAvatar;
                 CreateHostRoom();
                 break;
             default:

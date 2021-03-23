@@ -21,10 +21,10 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
         DontDestroyOnLoad(this.gameObject);
     }
 
-    public void SendInfo(string name)
+    public void SendInfo(string avatar)
     {
         if (pView.IsMine)
-            pView.RPC("RPC_SendInfo", RpcTarget.All, name);
+            pView.RPC("RPC_SendInfo", RpcTarget.OthersBuffered, avatar);
     }
 
     public void SendOpeningBoardConfiguration(string openingBoard)
@@ -71,12 +71,10 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
 
     #region RPC Functions
     [PunRPC]
-    void RPC_SendInfo(string playerName)
+    void RPC_SendInfo(string avatar)
     {
-        Debug.Log("RPC_SendInfo() was called with playName = " + playerName);
-        if (!photonView.IsMine)
-            return;
-        networkController.GetOpponentInfo(playerName);
+        Debug.Log("RPC_SendInfo() was called with avatar = " + avatar);
+        networkController.SetInfo(avatar);
     }
 
     [PunRPC]

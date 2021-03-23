@@ -11,8 +11,7 @@ public class NetworkController : MonoBehaviourPunCallbacks
     public GameObject errorMessage;
 
     public static string boardState;
-    public static string netPlayerName = "";
-    public static string netOpponentsName = "";
+    public static string opponentAvatar = "";
     public static int turnNumber = 1;
     public static string opponentResources = "";
     public static string currentPlayer = "";
@@ -51,14 +50,15 @@ public class NetworkController : MonoBehaviourPunCallbacks
         return boardState;
     }
 
-    public void GetOpponentInfo(string name)
+    public string GetOpponentInfo()
     {
-        netOpponentsName = name;
+        return opponentAvatar;
     }
 
-    public void SetInfo(string name)
+    public void SetInfo(string avatar)
     {
-        netPlayerName = name;
+        opponentAvatar = avatar;
+        GameInformation.needToSyncAvatars = true;
     }
 
     public void SetTurnNumber(int turn)
@@ -114,6 +114,11 @@ public class NetworkController : MonoBehaviourPunCallbacks
     public void SendMove(string gameBoard)
     {
         NetworkPlayer.player.SendMove(gameBoard);
+    }
+
+    public void SendAvatar(string avatar)
+    {
+        NetworkPlayer.player.SendInfo(avatar);
     }
 
     public void SyncPlayerVariables(int turnNumber, string currentPlayer, string resources)

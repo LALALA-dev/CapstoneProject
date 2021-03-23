@@ -59,6 +59,8 @@ public class GameInformation
 
     public static bool newNetworkMoveSet = false;
 
+    public static string ownAvatar = "CAR";
+
     public static string playerOneAvatar = "CAR";
 
     public static string playerTwoAvatar = "WHEELBARREL";
@@ -66,4 +68,6 @@ public class GameInformation
     public static bool needToSyncGameVariables = false;
 
     public static bool needToUpdateOpponentsResources = false;
+
+    public static bool needToSyncAvatars = false;
 }
