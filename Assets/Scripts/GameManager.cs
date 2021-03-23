@@ -72,18 +72,12 @@ public class GameManager : MonoBehaviour
 
         // figure out whos who
         if(GameInformation.playerIsHost)
-        {
             GameInformation.playerOneAvatar = GameInformation.ownAvatar;
-        }
         else
-        {
             GameInformation.playerTwoAvatar = GameInformation.ownAvatar;
-        }
 
         if(GameInformation.gameType != 'N')
-        {
             SetAvatars();
-        }
 
     }
     #endregion
@@ -93,7 +87,6 @@ public class GameManager : MonoBehaviour
         if(GameInformation.renderClientBoard && GameInformation.gameType == 'N' && !GameInformation.playerIsHost)
         {
             RenderHostBoard();
-            networkController.SendAvatar(GameInformation.playerTwoAvatar);
             GameInformation.renderClientBoard = false;
         }
 
@@ -269,6 +262,7 @@ public class GameManager : MonoBehaviour
             boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
             gameController.FlipColors();
             ToogleTriggers();
+            networkController.SendAvatar(GameInformation.playerTwoAvatar);
         }
     }
 

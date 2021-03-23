@@ -13,53 +13,58 @@ public class NodeController : MonoBehaviour
 
     public Node nodeEntity;
 
+    public bool avatarsSet = false;
+
     void Start()
     {
         ClaimNode(blankSprite);
+    }
 
-        switch (GameInformation.playerOneAvatar)
-        {
-            case "HAT":
-                playerOneSprite = playerAvatars[0];
-                break;
-            case "BATTLESHIP":
-                playerOneSprite = playerAvatars[1];
-                break;
-            case "CAR":
-                playerOneSprite = playerAvatars[2];
-                break;
-            case "THIMBLE":
-                playerOneSprite = playerAvatars[3];
-                break;
-            case "WHEELBARREL":
-                playerOneSprite = playerAvatars[4];
-                break;
-            default:
-                playerOneSprite = playerAvatars[2];
-                break;
-        }
+    private void Update()
+    {
+            switch (GameInformation.playerOneAvatar)
+            {
+                case "HAT":
+                    playerOneSprite = playerAvatars[0];
+                    break;
+                case "BATTLESHIP":
+                    playerOneSprite = playerAvatars[1];
+                    break;
+                case "CAR":
+                    playerOneSprite = playerAvatars[2];
+                    break;
+                case "THIMBLE":
+                    playerOneSprite = playerAvatars[3];
+                    break;
+                case "WHEELBARREL":
+                    playerOneSprite = playerAvatars[4];
+                    break;
+                default:
+                    playerOneSprite = playerAvatars[2];
+                    break;
+            }
 
-        switch (GameInformation.playerTwoAvatar)
-        {
-            case "HAT":
-                playerTwoSprite = playerAvatars[0];
-                break;
-            case "BATTLESHIP":
-                playerTwoSprite = playerAvatars[1];
-                break;
-            case "CAR":
-                playerTwoSprite = playerAvatars[2];
-                break;
-            case "THIMBLE":
-                playerTwoSprite = playerAvatars[3];
-                break;
-            case "WHEELBARREL":
-                playerTwoSprite = playerAvatars[4];
-                break;
-            default:
-                playerTwoSprite = playerAvatars[4];
-                break;
-        }
+            switch (GameInformation.playerTwoAvatar)
+            {
+                case "HAT":
+                    playerTwoSprite = playerAvatars[0];
+                    break;
+                case "BATTLESHIP":
+                    playerTwoSprite = playerAvatars[1];
+                    break;
+                case "CAR":
+                    playerTwoSprite = playerAvatars[2];
+                    break;
+                case "THIMBLE":
+                    playerTwoSprite = playerAvatars[3];
+                    break;
+                case "WHEELBARREL":
+                    playerTwoSprite = playerAvatars[4];
+                    break;
+                default:
+                    playerTwoSprite = playerAvatars[4];
+                    break;
+            }
     }
 
     private void OnMouseDown()
