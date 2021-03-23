@@ -2,23 +2,40 @@ using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
-    public TextMeshProUGUI statusText;
     public GameObject CancelButton;
+    public Image connectMessage;
+    public Image pinMessage;
+    public Image waitingForClientMessage;
+    public Image enterPINMessage;
+    public Image waitingForHostMessage;
+    public Image readyToBeginMessage;
+
+    public GameObject gamePINInputBtn;
+
+    public TMP_InputField privateRoomNameField;
 
     #region Set Up
     private void Awake()
     {
         PhotonNetwork.AutomaticallySyncScene = true;
+        pinMessage.gameObject.SetActive(false);
+        waitingForClientMessage.gameObject.SetActive(false);
+        enterPINMessage.gameObject.SetActive(false);
+        waitingForHostMessage.gameObject.SetActive(false);
+        readyToBeginMessage.gameObject.SetActive(false);
+        gamePINInputBtn.SetActive(false);
+        privateRoomNameField.gameObject.SetActive(false);
     }
 
     private void Start()
     {
-        statusText.text = "Connecting to Room";
+        connectMessage.gameObject.SetActive(true);
         Connect();
         CancelButton.SetActive(false);
     }
@@ -35,7 +52,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public override void OnConnectedToMaster()
     {
-        Debug.Log("Successfully Connected to Server");
 
         switch (GameInformation.networkGameType)
         {
@@ -43,7 +59,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
                 JoinPublicRoom();
                 break;
             case NetworkGameType.Private:
-                JoinPrivateRoom();
+                // JoinPrivateRoom();
                 break;
             case NetworkGameType.Host:
                 CreateHostRoom();
@@ -53,6 +69,18 @@ public class LobbyManager : MonoBehaviourPunCallbacks
                 break;
         }
     }
+
+    // for client GO btn
+    public void SetRoomName()
+    {
+        if (privateRoomNameField.text.Trim() != "" && privateRoomNameField.text.Trim().Length == 4)
+        {
+            GameInformation.roomName = privateRoomNameField.text.Trim();
+            CancelButton.SetActive(false);
+        }
+        JoinPrivateRoom();
+    }
+
     #endregion
 
     #region Join Matches
@@ -61,19 +89,22 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         if (!PhotonNetwork.IsConnected)
             return;
 
-        if (GameInformation.roomName.Trim() != "")
-        {
-            GameInformation.playerIsHost = true;
-            RoomOptions roomOptions = new RoomOptions();
-            roomOptions.MaxPlayers = 2;
-            GameInformation.currentPlayer = "HOST";
-            PhotonNetwork.CreateRoom(GameInformation.roomName.Trim(), roomOptions, TypedLobby.Default);
-            CancelButton.SetActive(false);
-        }
-        else
-        {
-            statusText.text = "Invalid Room Room, navigating back...";
-        }
+        GameInformation.roomName = GenerateRandomGamePIN();
+        GameInformation.playerIsHost = true;
+        RoomOptions roomOptions = new RoomOptions();
+        roomOptions.MaxPlayers = 2;
+        GameInformation.currentPlayer = "HOST";
+        Debug.Log(GameInformation.roomName);
+        PhotonNetwork.CreateRoom(GameInformation.roomName, roomOptions, TypedLobby.Default);
+        CancelButton.SetActive(false);
+    }
+
+    public string GenerateRandomGamePIN()
+    {
+        int min = 1000;
+        int max = 9999;
+        var rdm = new System.Random();
+        return rdm.Next(min, max).ToString();
     }
 
     public void JoinPublicRoom()
@@ -83,7 +114,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
         RoomOptions roomOptions = new RoomOptions();
         roomOptions.MaxPlayers = 2;
-        GameInformation.currentPlayer = "HOST";
         PhotonNetwork.JoinOrCreateRoom("StandardRoom", roomOptions, TypedLobby.Default);
     }
 
@@ -97,10 +127,15 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             GameInformation.playerIsHost = false;
             GameInformation.currentPlayer = "HOST";
             PhotonNetwork.JoinRoom(GameInformation.roomName.Trim());
+
+            pinMessage.gameObject.SetActive(false);
+            enterPINMessage.gameObject.SetActive(false);
+            waitingForHostMessage.gameObject.SetActive(false);
+            connectMessage.gameObject.SetActive(true);
         }
         else
         {
-            statusText.text = "Invaild Room Name, navigating back...";
+            //statusText.text = "Invaild Room Name, navigating back...";
         }
     }
 
@@ -113,8 +148,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public override void OnCreatedRoom()
     {
-        statusText.text = "Waiting for opponent to join";
-        Debug.Log("Waiting for opponent to join");
+        connectMessage.gameObject.SetActive(false);
+        pinMessage.gameObject.SetActive(true);
+        waitingForClientMessage.gameObject.SetActive(true);
         CancelButton.SetActive(true);
         GameInformation.currentPlayer = "HOST";
     }
@@ -128,13 +164,10 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             GameInformation.playerIsHost = false;
             GameInformation.playerOneAvatar = "CAR";
             GameInformation.playerTwoAvatar = "WHEELBARREL";
+
         }
         else
             GameInformation.playerIsHost = true;
-
-        Debug.Log("Player is Host = " + GameInformation.playerIsHost);
-
-        Debug.Log("Successfully Joined Room");
     }
 
     public override void OnLeftRoom()
@@ -151,17 +184,32 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             GameInformation.currentPlayer = "HOST";
             if (PhotonNetwork.LocalPlayer.IsMasterClient)
             {
-                statusText.text = "Player joined, ready to Start Game...";
-                PhotonNetwork.LoadLevel("GameScene");
+                pinMessage.gameObject.SetActive(false);
+                waitingForClientMessage.gameObject.SetActive(false);
+                enterPINMessage.gameObject.SetActive(false);
+                waitingForHostMessage.gameObject.SetActive(false);
+                readyToBeginMessage.gameObject.SetActive(true);
+            }
+            else
+            {
+                pinMessage.gameObject.SetActive(false);
+                waitingForClientMessage.gameObject.SetActive(false);
+                enterPINMessage.gameObject.SetActive(false);
+                waitingForHostMessage.gameObject.SetActive(true);
             }
         }
+    }
+
+    public void OnHostStartGameClick()
+    {
+        PhotonNetwork.LoadLevel("GameScene");
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
         {
-            statusText.text = "Player left, waiting for new player to join...";
+           // statusText.text = "Player left, waiting for new player to join...";
             PhotonNetwork.CurrentRoom.IsOpen = true;
             PhotonNetwork.CurrentRoom.IsVisible = true;
         }
@@ -174,7 +222,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
         Debug.Log("Joined Room Failed");
-        statusText.text = "Failed to join room, reason: " + message;
+        // statusText.text = "Failed to join room, reason: " + message;
         Invoke("AutoNavigate", 3.0f);
         CancelButton.SetActive(true);
     }
@@ -182,7 +230,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
         Debug.Log("Room Creation Failed");
-        statusText.text = "Failed to create room, reason: " + message;
+        // statusText.text = "Failed to create room, reason: " + message;
         Invoke("AutoNavigate", 3.0f);
         CancelButton.SetActive(true);
     }
@@ -190,7 +238,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public override void OnDisconnected(DisconnectCause cause)
     {
         Debug.Log("Disconnected from server because: " + cause.ToString());
-        statusText.text = "Disconnected from server, navigating back...";
+        // statusText.text = "Disconnected from server, navigating back...";
         Invoke("AutoNavigate", 3.0f);
     }
 
