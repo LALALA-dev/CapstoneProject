@@ -104,7 +104,7 @@ public class BoardManager : MonoBehaviour
 
         foreach(Square square in squares)
         {
-            if(square.squareState.resourceState == SquareStatus.Captured && square.squareState.ownerColor != PlayerColor.Purple)
+            if(square.squareState.resourceState == SquareStatus.Captured && square.squareState.ownerColor != PlayerColor.Gold)
             {
                 switch (square.squareState.resourceColor)
                 {
@@ -132,7 +132,7 @@ public class BoardManager : MonoBehaviour
 
         foreach (Square square in squares)
         {
-            if (square.squareState.resourceState == SquareStatus.Captured && square.squareState.ownerColor != PlayerColor.Orange)
+            if (square.squareState.resourceState == SquareStatus.Captured && square.squareState.ownerColor != PlayerColor.Silver)
             {
                 switch (square.squareState.resourceColor)
                 {
@@ -230,9 +230,9 @@ public class BoardManager : MonoBehaviour
     public void RefreshBoardGUI()
     {
         if(GameInformation.playerIsHost)
-            BroadcastMessage("UpdateAIGUI", PlayerColor.Purple);
+            BroadcastMessage("UpdateAIGUI", PlayerColor.Gold);
         else
-            BroadcastMessage("UpdateAIGUI", PlayerColor.Orange);
+            BroadcastMessage("UpdateAIGUI", PlayerColor.Silver);
     }
 
     public void ToggleNodeBranchTriggers()

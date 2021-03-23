@@ -8,6 +8,8 @@ public class NetworkController : MonoBehaviourPunCallbacks
     public static NetworkController networkController;
     public GameController gameController;
 
+    public GameObject errorMessage;
+
     public static string boardState;
     public static string netPlayerName = "";
     public static string netOpponentsName = "";
@@ -24,6 +26,11 @@ public class NetworkController : MonoBehaviourPunCallbacks
     }
 
     #endregion
+
+    public override void OnDisconnected(DisconnectCause cause)
+    {
+        errorMessage.SetActive(true);
+    }
 
     #region Class Member Manipulation Functions
     public void SetMove(string move)

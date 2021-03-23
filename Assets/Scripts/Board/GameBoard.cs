@@ -113,10 +113,10 @@ public class GameBoard
                 case PlayerColor.Blank:
                     gameBoardString += "B";
                     break;
-                case PlayerColor.Orange:
+                case PlayerColor.Silver:
                     gameBoardString += "O";
                     break;
-                case PlayerColor.Purple:
+                case PlayerColor.Gold:
                     gameBoardString += "P";
                     break;
             }
@@ -175,10 +175,10 @@ public class GameBoard
         {
             switch (node.nodeState.nodeColor)
             {
-                case PlayerColor.Orange:
+                case PlayerColor.Silver:
                     gameBoardString += "O";
                     break;
-                case PlayerColor.Purple:
+                case PlayerColor.Gold:
                     gameBoardString += "P";
                     break;
                 case PlayerColor.Blank:
@@ -191,10 +191,10 @@ public class GameBoard
         {
             switch (branch.branchState.branchColor)
             {
-                case PlayerColor.Orange:
+                case PlayerColor.Silver:
                     gameBoardString += "O";
                     break;
-                case PlayerColor.Purple:
+                case PlayerColor.Gold:
                     gameBoardString += "P";
                     break;
                 case PlayerColor.Blank:
@@ -204,10 +204,10 @@ public class GameBoard
 
             switch (branch.branchState.ownerColor)
             {
-                case PlayerColor.Orange:
+                case PlayerColor.Silver:
                     gameBoardString += "O";
                     break;
-                case PlayerColor.Purple:
+                case PlayerColor.Gold:
                     gameBoardString += "P";
                     break;
                 case PlayerColor.Blank:
@@ -282,10 +282,10 @@ public class GameBoard
                     squares[i].squareState.ownerColor = PlayerColor.Blank;
                     break;
                 case 'O':
-                    squares[i].squareState.ownerColor = PlayerColor.Orange;
+                    squares[i].squareState.ownerColor = PlayerColor.Silver;
                     break;
                 case 'P':
-                    squares[i].squareState.ownerColor = PlayerColor.Purple;
+                    squares[i].squareState.ownerColor = PlayerColor.Gold;
                     break;
             }
             stringIndex++;
@@ -351,10 +351,10 @@ public class GameBoard
                     nodes[i].nodeState.nodeColor = PlayerColor.Blank;
                     break;
                 case 'O':
-                    nodes[i].nodeState.nodeColor = PlayerColor.Orange;
+                    nodes[i].nodeState.nodeColor = PlayerColor.Silver;
                     break;
                 case 'P':
-                    nodes[i].nodeState.nodeColor = PlayerColor.Purple;
+                    nodes[i].nodeState.nodeColor = PlayerColor.Gold;
                     break;
             }
             stringIndex++;
@@ -368,10 +368,10 @@ public class GameBoard
                     branches[i].branchState.branchColor = PlayerColor.Blank;
                     break;
                 case 'O':
-                    branches[i].branchState.branchColor = PlayerColor.Orange;
+                    branches[i].branchState.branchColor = PlayerColor.Silver;
                     break;
                 case 'P':
-                    branches[i].branchState.branchColor = PlayerColor.Purple;
+                    branches[i].branchState.branchColor = PlayerColor.Gold;
                     break;
             }
             stringIndex++;
@@ -382,10 +382,10 @@ public class GameBoard
                     branches[i].branchState.ownerColor = PlayerColor.Blank;
                     break;
                 case 'O':
-                    branches[i].branchState.ownerColor = PlayerColor.Orange;
+                    branches[i].branchState.ownerColor = PlayerColor.Silver;
                     break;
                 case 'P':
-                    branches[i].branchState.ownerColor = PlayerColor.Purple;
+                    branches[i].branchState.ownerColor = PlayerColor.Gold;
                     break;
             }
             stringIndex++;
@@ -655,13 +655,13 @@ public class GameBoard
             return PlayerColor.Blank;
         }
 
-        if (currentPlayer == PlayerColor.Orange)
+        if (currentPlayer == PlayerColor.Silver)
         {
-            return PlayerColor.Purple;
+            return PlayerColor.Gold;
         }
         else
         {
-            return PlayerColor.Orange;
+            return PlayerColor.Silver;
         }
     }
 

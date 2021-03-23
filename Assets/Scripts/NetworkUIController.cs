@@ -7,58 +7,18 @@ using UnityEngine;
 
 public class NetworkUIController : MonoBehaviour
 {
-    public TMP_InputField hostCreateRoomNameField;
-    public TMP_InputField privateRoomNameField;
-    public TMP_InputField setNameField;
-    public TextMeshProUGUI errorMessage;
+    // public TMP_InputField privateRoomNameField;
+    // public TextMeshProUGUI errorMessage;
+
+    public GameObject avatarSelector;
+    public GameObject gameTypeSelector;
+
+    public GameObject[] avatars;
+    public GameObject[] gameTypes;
 
     void Start()
     {
-        if(PlayerPrefs.HasKey("NetworkName"))
-        {
-            setNameField.text = PlayerPrefs.GetString("NetworkName");
-        }
-        hostCreateRoomNameField.gameObject.SetActive(false);
-        privateRoomNameField.gameObject.SetActive(false);
         GameInformation.gameType = 'N';
-    }
-
-    public void SetName()
-    {
-        if (setNameField.text.Trim() != "")
-        {
-            PlayerPrefs.SetString("NetworkName", setNameField.text.Trim());
-        }
-        else
-        {
-        }
-    }
-
-    public void EnableCreateHostGameInput()
-    {
-        hostCreateRoomNameField.gameObject.SetActive(true);
-        privateRoomNameField.gameObject.SetActive(false);
-    }
-
-    public void EnableJoinPrivateGameInput()
-    {
-        hostCreateRoomNameField.gameObject.SetActive(false);
-        privateRoomNameField.gameObject.SetActive(true);
-    }
-
-    public void DisableInputs()
-    {
-        SetRoomName();
-        if (hostCreateRoomNameField.text.Trim() != "")
-        {
-            hostCreateRoomNameField.gameObject.SetActive(false);
-            privateRoomNameField.gameObject.SetActive(false);
-            SceneLoader.LoadNetworkLobbyScene();
-        }
-        else
-        {
-            //SceneLoader.LoadNetworkScene();
-        }
     }
 
     public void LeaveOnlineRoom()
@@ -70,37 +30,85 @@ public class NetworkUIController : MonoBehaviour
         }
     }
 
-    public void SetRoomName()
+    //public void SetRoomName()
+    //{
+    //    if (hostCreateRoomNameField.IsActive())
+    //    {
+    //        if(hostCreateRoomNameField.text.Trim() != "")
+    //        {
+    //            GameInformation.roomName = hostCreateRoomNameField.text.Trim();
+    //            GameInformation.networkGameType = NetworkGameType.Host;
+    //            SceneLoader.LoadNetworkLobbyScene();
+    //        }
+    //        else
+    //        {
+    //            errorMessage.text = "Please Enter a Room Name";
+    //        }
+    //    }
+    //    else if(privateRoomNameField.IsActive())
+    //    {
+    //        if (privateRoomNameField.text.Trim() != "")
+    //        {
+    //            GameInformation.roomName = privateRoomNameField.text.Trim();
+    //            GameInformation.networkGameType = NetworkGameType.Private;
+    //            SceneLoader.LoadNetworkLobbyScene();
+    //        }
+    //        else
+    //        {
+    //            errorMessage.text = "Please Enter a Room Name";
+    //        }
+    //    }
+    //    else
+    //    {
+    //        GameInformation.networkGameType = NetworkGameType.Public;
+    //    }
+    //}
+
+    public void OnHatSelect()
     {
-        if (hostCreateRoomNameField.IsActive())
-        {
-            if(hostCreateRoomNameField.text.Trim() != "")
-            {
-                GameInformation.roomName = hostCreateRoomNameField.text.Trim();
-                GameInformation.networkGameType = NetworkGameType.Host;
-                SceneLoader.LoadNetworkLobbyScene();
-            }
-            else
-            {
-                errorMessage.text = "Please Enter a Room Name";
-            }
-        }
-        else if(privateRoomNameField.IsActive())
-        {
-            if (privateRoomNameField.text.Trim() != "")
-            {
-                GameInformation.roomName = privateRoomNameField.text.Trim();
-                GameInformation.networkGameType = NetworkGameType.Private;
-                SceneLoader.LoadNetworkLobbyScene();
-            }
-            else
-            {
-                errorMessage.text = "Please Enter a Room Name";
-            }
-        }
-        else
-        {
-            GameInformation.networkGameType = NetworkGameType.Public;
-        }
+        GameInformation.playerOneAvatar = "HAT";
+        avatarSelector.transform.position = new Vector3(avatars[0].transform.position.x, avatarSelector.transform.position.y);
+    }
+
+    public void OnShipSelect()
+    {
+        GameInformation.playerOneAvatar = "BATTLESHIP";
+        avatarSelector.transform.position = new Vector3(avatars[1].transform.position.x, avatarSelector.transform.position.y);
+    }
+
+    public void OnCarSelect()
+    {
+        GameInformation.playerOneAvatar = "CAR";
+        avatarSelector.transform.position = new Vector3(avatars[2].transform.position.x, avatarSelector.transform.position.y);
+    }
+
+    public void OnThimbleSelect()
+    {
+        GameInformation.playerOneAvatar = "THIMBLE";
+        avatarSelector.transform.position = new Vector3(avatars[3].transform.position.x, avatarSelector.transform.position.y);
+    }
+
+    public void OnWheelBarrelSelect()
+    {
+        GameInformation.playerOneAvatar = "WHEELBARREL";
+        avatarSelector.transform.position = new Vector3(avatars[4].transform.position.x, avatarSelector.transform.position.y);
+    }
+
+    public void OnHostSelect()
+    {
+        GameInformation.networkGameType = NetworkGameType.Host;
+        gameTypeSelector.transform.position = new Vector3(gameTypeSelector.transform.position.x, gameTypes[0].transform.position.y);
+    }
+
+    public void OnPublicSelect()
+    {
+        GameInformation.networkGameType = NetworkGameType.Public;
+        gameTypeSelector.transform.position = new Vector3(gameTypeSelector.transform.position.x, gameTypes[1].transform.position.y);
+    }
+
+    public void OnPrivateSelect()
+    {
+        GameInformation.networkGameType = NetworkGameType.Private;
+        gameTypeSelector.transform.position = new Vector3(gameTypeSelector.transform.position.x, gameTypes[2].transform.position.y);
     }
 }

@@ -21,8 +21,11 @@ public class SceneLoader : MonoBehaviour
     {
         if(GameInformation.gameType == 'N')
         {
-            PhotonNetwork.LeaveRoom();
-            PhotonNetwork.Disconnect();
+            if(PhotonNetwork.IsConnected)
+            {
+                PhotonNetwork.LeaveRoom();
+                PhotonNetwork.Disconnect();
+            }
         }
         GameController.Destroy();
         GameInformation.gameOver = false;
