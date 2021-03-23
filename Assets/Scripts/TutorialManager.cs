@@ -15,10 +15,9 @@ public class TutorialManager : MonoBehaviour
     private GameController gameController;
     private BeginnerAI beginnerAI;
 
-    public GameObject CompleteTurnBtn;
-    public GameObject TradeBtn;
-    public Image playerOneAvatar;
-    public Image playerTwoAvatar;
+    [SerializeField] private Image playerOneAvatar;
+    [SerializeField] private Image playerTwoAvatar;
+
     public Text playerOneScore;
     public Text playerTwoScore;
     public Text currentPlayerMessage;
@@ -34,6 +33,9 @@ public class TutorialManager : MonoBehaviour
 
         if (!GameInformation.playerIsHost)
             currentPlayerMessage.text = "Opponent's Move";
+
+        playerOneAvatar.sprite = avatars[0];
+        playerTwoAvatar.sprite = avatars[1];
     }
 
     void Start()

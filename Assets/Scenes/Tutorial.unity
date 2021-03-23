@@ -12556,8 +12556,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 271170086}
     - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
+      propertyPath: playerOneAvatar
+      value: 
+      objectReference: {fileID: 2073829902}
+    - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
+      propertyPath: playerTwoAvatar
+      value: 
+      objectReference: {fileID: 299862315}
+    - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
       propertyPath: avatars.Array.size
-      value: 5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
       propertyPath: currentPlayerMessage
@@ -12566,11 +12574,11 @@ PrefabInstance:
     - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
       propertyPath: avatars.Array.data[0]
       value: 
-      objectReference: {fileID: 21300000, guid: de289806cdc201a4486a504a687c8a4c, type: 3}
+      objectReference: {fileID: 21300000, guid: 0ea3bd479625ca146a00b6fdec362266, type: 3}
     - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
       propertyPath: avatars.Array.data[1]
       value: 
-      objectReference: {fileID: 21300000, guid: 48d7843b7ce62e143915b19cba08a0d8, type: 3}
+      objectReference: {fileID: 21300000, guid: de289806cdc201a4486a504a687c8a4c, type: 3}
     - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
       propertyPath: avatars.Array.data[2]
       value: 
