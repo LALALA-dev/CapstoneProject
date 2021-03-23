@@ -15,7 +15,6 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private PlayerResourcesManager playerResourcesManager;
     private GameController gameController;
     private BeginnerAI beginnerAI;
-    public TextMeshProUGUI playerLeftMessage;
 
     public TMP_InputField HNPInput;
 
@@ -45,91 +44,12 @@ public class TutorialManager : MonoBehaviour
 
     void Start()
     {
-        if (GameInformation.playerIsHost && GameInformation.gameType == 'N')
-        {
-            GameInformation.currentPlayer = "HOST";
-            networkController.SendOpeningBoardConfiguration(gameController.getGameBoard().ToString());
-            BeginNetworkGame();
-        }
-        else if (GameInformation.gameType == 'A')
-        {
-            BeginBeginnerAIGame();
-        }
-        else if (GameInformation.gameType == 'E')
-        {
-            ExpertAIGame();
-        }
-        else if (GameInformation.HumanNetworkProtocol)
-        {
-            HNPInput.gameObject.SetActive(true);
-        }
-
-        Image humanAvatar, aiAvatar;
-        if (GameInformation.playerIsHost)
-        {
-            humanAvatar = playerOneAvatar;
-            aiAvatar = playerTwoAvatar;
-        }
-        else
-        {
-            humanAvatar = playerTwoAvatar;
-            aiAvatar = playerOneAvatar;
-        }
-
-        switch (GameInformation.playerOneAvatar)
-        {
-            case "HAT":
-                humanAvatar.sprite = avatars[0];
-                break;
-            case "BATTLESHIP":
-                humanAvatar.sprite = avatars[1];
-                break;
-            case "CAR":
-                humanAvatar.sprite = avatars[2];
-                break;
-            case "THIMBLE":
-                humanAvatar.sprite = avatars[3];
-                break;
-            case "WHEELBARREL":
-                humanAvatar.sprite = avatars[4];
-                break;
-            default:
-                humanAvatar.sprite = avatars[2];
-                break;
-        }
-
-        switch (GameInformation.playerTwoAvatar)
-        {
-            case "HAT":
-                aiAvatar.sprite = avatars[0];
-                break;
-            case "BATTLESHIP":
-                aiAvatar.sprite = avatars[1];
-                break;
-            case "CAR":
-                aiAvatar.sprite = avatars[2];
-                break;
-            case "THIMBLE":
-                aiAvatar.sprite = avatars[3];
-                break;
-            case "WHEELBARREL":
-                aiAvatar.sprite = avatars[4];
-                break;
-            default:
-                aiAvatar.sprite = avatars[2];
-                break;
-        }
-
+        BeginBeginnerAIGame();
     }
     #endregion
 
     private void Update()
     {
-        if (GameInformation.renderClientBoard && GameInformation.gameType == 'N' && !GameInformation.playerIsHost)
-        {
-            RenderHostBoard();
-            GameInformation.renderClientBoard = false;
-        }
 
         if (GameInformation.tradeHasBeenMade)
         {
@@ -137,144 +57,6 @@ public class TutorialManager : MonoBehaviour
             playerResourcesManager.UpdateBothPlayersResources();
         }
 
-        if (GameInformation.gameType == 'N' && PhotonNetwork.CurrentRoom.PlayerCount < 2)
-        {
-            playerLeftMessage.text = "Player left room: Please exit to main menu";
-            CompleteTurnBtn.SetActive(false);
-            TradeBtn.SetActive(false);
-        }
-
-        if (NeedToSyncNetworkGameVariables())
-        {
-            GameInformation.needToSyncGameVariables = false;
-
-            GameInformation.currentPlayer = networkController.GetCurrentPlayer();
-            turnNumber = networkController.GetTurnNumber();
-
-            if (!IsTheCurrentPlayerYourself())
-            {
-                // parse resource string and update local opponent's resources
-                string incomingPlayersResources = networkController.GetOpponentResources();
-                int[] playersResources = DeStringResources(incomingPlayersResources);
-
-                if (GameInformation.currentPlayer == "CLIENT")
-                    GameInformation.playerTwoResources = playersResources;
-                else
-                    GameInformation.playerOneResources = playersResources;
-
-                playerResourcesManager.UpdateBothPlayersResources();
-            }
-
-            // Determine the new currentPlayer
-            if (GameInformation.openingSequence)
-            {
-                GameInformation.openingMoveNodeSet = false;
-                GameInformation.openingMoveBranchSet = false;
-                switch (turnNumber)
-                {
-                    case 1:
-                        ToogleTriggers();
-                        GameInformation.currentPlayer = "CLIENT";
-                        if (GameInformation.playerIsHost)
-                            currentPlayerMessage.text = "Opponent's Move";
-                        else
-                            currentPlayerMessage.text = "Your Move";
-                        break;
-                    case 2:
-                        GameInformation.currentPlayer = "CLIENT";
-                        if (GameInformation.playerIsHost)
-                            currentPlayerMessage.text = "Opponent's Move";
-                        else
-                            currentPlayerMessage.text = "Your Move";
-                        break;
-                    case 3:
-                        ToogleTriggers();
-                        GameInformation.currentPlayer = "HOST";
-                        if (GameInformation.playerIsHost)
-                            currentPlayerMessage.text = "Your Move";
-                        else
-                            currentPlayerMessage.text = "Opponent's Move";
-                        break;
-                    case 4:
-                        ToogleTriggers();
-                        GameInformation.currentPlayer = "CLIENT";
-                        if (GameInformation.playerIsHost)
-                            currentPlayerMessage.text = "Opponent's Move";
-                        else
-                            currentPlayerMessage.text = "Your Move";
-                        GameInformation.openingSequence = false;
-                        break;
-                }
-            }
-            else
-            {
-                // Normal Gameplay
-                if (GameInformation.currentPlayer == "HOST")
-                    GameInformation.currentPlayer = "CLIENT";
-                else
-                    GameInformation.currentPlayer = "HOST";
-
-                if (!IsTheCurrentPlayerYourself())
-                    currentPlayerMessage.text = "Opponent's Move";
-                else
-                    currentPlayerMessage.text = "Your Move";
-
-                ToogleTriggers();
-            }
-
-            turnNumber++;
-        }
-
-        if (OpponentHasSentNewMoveToProcess())
-        {
-            GameInformation.newNetworkMoveSet = false;
-
-            string opponentBoard = networkController.GetMove();
-            gameController.SetBoardConfiguration(opponentBoard);
-            gameController.UpdateGameBoard();
-            boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
-            boardManager.DetectNewBlockCaptures(gameController.getGameBoard().squares);
-            boardManager.RefreshBoardGUI();
-
-            if (!GameInformation.openingSequence)
-            {
-                gameController.CollectCurrentPlayerResources();
-                playerResourcesManager.UpdateBothPlayersResources();
-
-                if (GameInformation.playerIsHost)
-                    networkController.SendCurrentPlayersResources(ToStringResources(GameInformation.playerOneResources));
-                else
-                    networkController.SendCurrentPlayersResources(ToStringResources(GameInformation.playerTwoResources));
-
-                gameController.UpdateScores();
-
-                playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
-                playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
-
-                if (GameInformation.playerOneScore >= 10 || GameInformation.playerTwoScore >= 10)
-                {
-                    GameInformation.gameOver = true;
-                    return;
-                }
-            }
-        }
-
-        if (GameInformation.needToUpdateOpponentsResources)
-        {
-            GameInformation.needToUpdateOpponentsResources = false;
-            string resources = networkController.GetOpponentResources();
-            int[] parsedResources = DeStringResources(resources);
-
-            if (GameInformation.playerIsHost)
-            {
-                GameInformation.playerTwoResources = parsedResources;
-            }
-            else
-            {
-                GameInformation.playerOneResources = parsedResources;
-            }
-            playerResourcesManager.UpdateBothPlayersResources();
-        }
     }
 
     #region AI Game
@@ -300,11 +82,6 @@ public class TutorialManager : MonoBehaviour
         {
             currentPlayerMessage.text = "Your Move";
         }
-    }
-
-    public void ExpertAIGame()
-    {
-
     }
 
     public void BeginHumanOpeningMove()
@@ -562,28 +339,6 @@ public class TutorialManager : MonoBehaviour
 
     public void EndTurnButtonClick()
     {
-        if (GameInformation.gameType == 'N')
-            EndCurrentNetworkPlayersTurn();
-        else
-            EndCurrentAIPlayersTurn();
-    }
-
-    public string ToStringResources(int[] resources)
-    {
-        return (resources[0].ToString() + " " + resources[1].ToString() + " " + resources[2].ToString() + " " + resources[3].ToString());
-    }
-
-    public int[] DeStringResources(string resources)
-    {
-        string[] parsedResources = resources.Split(' ');
-
-        int[] opponentsResources = new int[4];
-
-        opponentsResources[0] = int.Parse(parsedResources[0]);
-        opponentsResources[1] = int.Parse(parsedResources[1]);
-        opponentsResources[2] = int.Parse(parsedResources[2]);
-        opponentsResources[3] = int.Parse(parsedResources[3]);
-
-        return opponentsResources;
+        EndCurrentAIPlayersTurn();
     }
 }
