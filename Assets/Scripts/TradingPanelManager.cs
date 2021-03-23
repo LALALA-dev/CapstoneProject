@@ -64,7 +64,15 @@ public class TradingPanelManager : MonoBehaviour
             for(int i = 0; i < 4; i++)
                 createResourceBtn[i].gameObject.SetActive(false);
         }
-            
+        // If the player clicked on a resource that they already had at its max, reset its count to zero.
+        else if (numSelected == GameInformation.maxTradeResources[colorId])
+        {
+            numberOfTilesSelected -= numSelected;
+            tilesSelected[colorId].text = "0";
+            resources[colorId] = 0;
+            for (int i = 0; i < 4; i++)
+                createResourceBtn[i].gameObject.SetActive(false);
+        }
 
         RenderCreateBtnChoices();
     }
