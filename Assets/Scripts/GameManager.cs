@@ -362,9 +362,9 @@ public class GameManager : MonoBehaviour
     {
         PlayerColor aiColor;
         if (GameInformation.playerIsHost)
-            aiColor = PlayerColor.Purple;
+            aiColor = PlayerColor.Gold;
         else
-            aiColor = PlayerColor.Orange;
+            aiColor = PlayerColor.Silver;
 
         boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
         beginnerAI = new BeginnerAI(aiColor, gameController.getGameBoard().getBoardState());

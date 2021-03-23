@@ -74,7 +74,7 @@ public class NodeController : MonoBehaviour
                     GameInformation.openingMoveNodeSet = true;
                     GameInformation.openingNodeId = nodeEntity.id;
 
-                    if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
+                    if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Silver)
                         ClaimNode(playerOneSprite);
                     else
                         ClaimNode(playerTwoSprite);
@@ -99,7 +99,7 @@ public class NodeController : MonoBehaviour
                 nodeEntity.nodeState.nodeColor = nodeEntity.gameController.getCurrentPlayerColor();
 
                 // Change color
-                if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
+                if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Silver)
                 {
                     ClaimNode(playerOneSprite);
                     GameInformation.playerOneResources[2] -= 2;
@@ -120,7 +120,7 @@ public class NodeController : MonoBehaviour
             {
                 nodeEntity.nodeState.nodeColor = PlayerColor.Blank;
                 nodeEntity.gameController.getGameBoard().getBoardState().nodeStates[nodeEntity.id].nodeColor = PlayerColor.Blank;
-                if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
+                if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Silver)
                 {
                     GameInformation.playerOneResources[2] += 2;
                     GameInformation.playerOneResources[3] += 2;
@@ -167,7 +167,7 @@ public class NodeController : MonoBehaviour
     public bool hasEnoughResources()
     {
         int[] resources = new int[4];
-        if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
+        if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Silver)
         {
             resources = GameInformation.playerOneResources;
         }
@@ -200,7 +200,7 @@ public class NodeController : MonoBehaviour
         {
             nodeEntity.nodeState.nodeColor = color;
 
-            if (color == PlayerColor.Orange)
+            if (color == PlayerColor.Silver)
                 ClaimNode(playerOneSprite);
             else
                 ClaimNode(playerTwoSprite);

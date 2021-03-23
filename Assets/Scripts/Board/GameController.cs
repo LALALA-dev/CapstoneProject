@@ -8,7 +8,7 @@ public class GameController
     private static GameController gameController;
     private GameBoard gameBoard;
 
-    private PlayerColor currentPlayerColor = PlayerColor.Orange;
+    private PlayerColor currentPlayerColor = PlayerColor.Silver;
 
     private GameController()
     {
@@ -21,7 +21,7 @@ public class GameController
         if (gameController == null)
         {
             gameController = new GameController();
-            gameController.currentPlayerColor = PlayerColor.Orange;
+            gameController.currentPlayerColor = PlayerColor.Silver;
         }
         return gameController;
     }
@@ -47,10 +47,10 @@ public class GameController
 
     public void FlipColors()
     {
-        if (currentPlayerColor == PlayerColor.Orange)
-            currentPlayerColor = PlayerColor.Purple;
+        if (currentPlayerColor == PlayerColor.Silver)
+            currentPlayerColor = PlayerColor.Gold;
         else
-            currentPlayerColor = PlayerColor.Orange;
+            currentPlayerColor = PlayerColor.Silver;
     }
 
     private string getCurrentSquareConfig()
@@ -238,13 +238,13 @@ public class GameController
 
     public void UpdateScores()
     {
-        GameInformation.playerOneScore = gameBoard.GetNumberOfPlayerNodes(PlayerColor.Orange);
-        GameInformation.playerTwoScore = gameBoard.GetNumberOfPlayerNodes(PlayerColor.Purple);
-        GameInformation.playerOneScore += gameBoard.GetNumberOfPlayerCapturedTiles(PlayerColor.Orange);
-        GameInformation.playerTwoScore += gameBoard.GetNumberOfPlayerCapturedTiles(PlayerColor.Purple);
+        GameInformation.playerOneScore = gameBoard.GetNumberOfPlayerNodes(PlayerColor.Silver);
+        GameInformation.playerTwoScore = gameBoard.GetNumberOfPlayerNodes(PlayerColor.Gold);
+        GameInformation.playerOneScore += gameBoard.GetNumberOfPlayerCapturedTiles(PlayerColor.Silver);
+        GameInformation.playerTwoScore += gameBoard.GetNumberOfPlayerCapturedTiles(PlayerColor.Gold);
 
-        int playerOneNetwork = CalculatePlayerLongestNetwork(PlayerColor.Orange);
-        int playerTwoNetwork = CalculatePlayerLongestNetwork(PlayerColor.Purple);
+        int playerOneNetwork = CalculatePlayerLongestNetwork(PlayerColor.Silver);
+        int playerTwoNetwork = CalculatePlayerLongestNetwork(PlayerColor.Gold);
 
         if (playerOneNetwork > playerTwoNetwork)
             GameInformation.playerOneScore += 2;

@@ -31,9 +31,6 @@ public class TutorialManager : MonoBehaviour
     {
         gameController = GameController.getInstance();
 
-        if (!GameInformation.playerIsHost)
-            currentPlayerMessage.text = "Opponent's Move";
-
         playerOneAvatar.sprite = avatars[0];
         playerTwoAvatar.sprite = avatars[1];
     }
@@ -60,9 +57,9 @@ public class TutorialManager : MonoBehaviour
     {
         PlayerColor aiColor;
         if (GameInformation.playerIsHost)
-            aiColor = PlayerColor.Purple;
+            aiColor = PlayerColor.Gold;
         else
-            aiColor = PlayerColor.Orange;
+            aiColor = PlayerColor.Silver;
 
         boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
         beginnerAI = new BeginnerAI(aiColor, gameController.getGameBoard().getBoardState());
