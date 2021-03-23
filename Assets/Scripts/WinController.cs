@@ -40,6 +40,7 @@ public class WinController : MonoBehaviour
 
     public void OnCancelClick()
     {
+        GameInformation.gameOver = false;
         panel.gameObject.SetActive(false);
     }
 }

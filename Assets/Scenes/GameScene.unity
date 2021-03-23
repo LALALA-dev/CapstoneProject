@@ -11629,9 +11629,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1666238578}
-        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
-        m_MethodName: LoadMenuScene
+      - m_Target: {fileID: 2768048415303665367}
+        m_TargetAssemblyTypeName: WinController, Assembly-CSharp
+        m_MethodName: OnCancelClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -13234,6 +13234,17 @@ PrefabInstance:
       objectReference: {fileID: 304970665}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 81f7ecb7e37051e42ad7e375b7eb2671, type: 3}
+--- !u!114 &2768048415303665367 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8746113932800106364, guid: 81f7ecb7e37051e42ad7e375b7eb2671, type: 3}
+  m_PrefabInstance: {fileID: 2768048415303665366}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a454ac40bd930846aabe0a74419ce44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5456678409887937905
 PrefabInstance:
   m_ObjectHideFlags: 0
