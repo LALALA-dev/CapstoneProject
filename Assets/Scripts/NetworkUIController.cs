@@ -29,9 +29,6 @@ public class NetworkUIController : MonoBehaviour
         {
             PlayerPrefs.SetString("NetworkName", setNameField.text.Trim());
         }
-        else
-        {
-        }
     }
 
     public void EnableCreateHostGameInput()
