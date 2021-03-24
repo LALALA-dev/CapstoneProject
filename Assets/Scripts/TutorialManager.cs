@@ -100,6 +100,8 @@ public class TutorialManager : MonoBehaviour
 
     public int messageNumber = 0;
 
+    public GameObject tutorialPanel;
+
     #region Setup
     private void Awake()
     {
@@ -415,6 +417,9 @@ public class TutorialManager : MonoBehaviour
         {
             infoOne.text = infoOneMessages[messageNumber];
             infoTwo.text = infoTwoMessages[messageNumber];
+
+            if (messageNumber > 0)
+                tutorialPanel.SetActive(false);
         }
         else
         {
@@ -429,6 +434,9 @@ public class TutorialManager : MonoBehaviour
         {
             infoOne.text = infoOneMessages[messageNumber];
             infoTwo.text = infoTwoMessages[messageNumber];
+
+            if (messageNumber == 0)
+                tutorialPanel.SetActive(true);
         }
         else
         {

@@ -8509,14 +8509,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.7264151, g: 0.70357186, b: 0.70357186, a: 0.7411765}
+  m_Color: {r: 0.46226418, g: 0.4608105, b: 0.4608105, a: 0.7411765}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 05da663da73e314479d6abfa837e63a6, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -13254,6 +13254,10 @@ PrefabInstance:
       propertyPath: boardManager
       value: 
       objectReference: {fileID: 1764314738}
+    - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
+      propertyPath: tutorialPanel
+      value: 
+      objectReference: {fileID: 1462571895}
     - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
       propertyPath: playerOneScore
       value: 
