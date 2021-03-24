@@ -274,6 +274,15 @@ public class GameManager : MonoBehaviour
                 gameController.UpdateGameBoard();
                 gameController.RefreshBlockedTiles();
                 boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
+
+                if (turnNumber == 4)
+                {
+                    gameController.UpdateScores();
+
+                    playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
+                    playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
+                }
+
                 if (GameInformation.playerIsHost)
                 {
                     networkController.SendMove(gameController.getGameBoard().ToString());
