@@ -18,13 +18,87 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private Image playerOneAvatar;
     [SerializeField] private Image playerTwoAvatar;
 
+    public SceneLoader sl;
+
+    private string[] infoOneMessages = new string[]
+    {
+        "Nodopoly is a 2 player strategy game, pinning players against one another for real-estate dominance of their city",
+        "The cityscape is randomly generate at the start of each game",
+        "Each player gets 2 of their avatar game pieces, nodes, and 2 houses at the start of the game",
+        "Game pieces can be placed on the corners of the streets throughout city",
+        "Houses go on the streets themselves, building your real-estate network",
+        "For the first two rounds for each player, the game piece-house combo can go anywhere in the city...",
+        "Every piece collects a rent from all non-foreclosed properties it touches, this is done at the start of every turn",
+        "This game piece collects rent from 1 green, 1 red, and 1 yellow property",
+        "And this game piece collects rent from 1 green, 1 yellow, and 1 blue property",
+        "",
+        "Players use collected rent to build additional game pieces and houses",
+        "Tap the street corner of the property to place a new game piece",
+        "Now it's the gold player's turn, they recieve their rent from their properties",
+        "Houses are legally connected even if they oass through an opponent's game piece",
+        "The gold player now submits their move...",
+        "The silver player gets rent from all their placed game pieces",
+        "The stars on a property represent the max amount of game pieces that can be touching it",
+        "This property supports 1 game piece",
+        "Foreclosed properties get marked with the foreclosed stamp only after a player submits a move",
+        "Surrounding a property with houses of the same player will monopolize the property for that player",
+        "Like foreclosed properties, monopolized properties are marked after a player submits a move",
+        "You can even monopolize multiple squares at once if no opponent game pieces or houses inside the attempted area",
+        "Once monopolized, opponents cannot build houses through that area",
+        "If you don't have the right mix of rent, you can trade for it",
+        "Once per turn, you may trade any 3 types of rent for one of another color",
+        "Now Gold has the rent required to build another house",
+        "The goal of Nodopoly is to be the first to 10 points",
+        "1 point is rewared for each game piece placed and monopolized property. 2 points are rewared for having the longest chain of houses",
+        "All 7 of the Silver player's houses are connected... While the Gold player has 9 houses placed, but not all connected",
+    };
+
+    private string[] infoTwoMessages = new string[]
+    {
+        "Click the green arrow to proceed, click the red arrow to go back",
+        "",
+        "",
+        "Place the game piece on the street corner",
+        "Place the house on the street to connect to your game piece",
+        "...but the opening two moves, all game pieces and houses must connect to your already established network via houses",
+        "The color of rent matches the color of the property where it came from",
+        " ",
+        " ",
+        "Meaning that you've collected rent in the form of 2 green, 2 yellow, 1 blue, and 1 red for this turn",
+        "A house costs 1 red and 1 blue, while a game piece costs 2 yellow, and 2 green",
+        " ",
+        " ",
+        "And you may build additional houses without any game pieces on them",
+        "...and any unused rent are saved for future rounds",
+        "Including from the new game piece they placed last turn",
+        "If more game pieces are on property than it's star amount, it forecloses and stops paying rent out to either player",
+        "But the silver player is about to place a 2nd game piece on it, which will foreclose it",
+        "Remember, game pieces from both players count towards the total limit!",
+        "Monopolizing a property builds a hotel on that property and stop paying rent to the opposing player",
+        " ",
+        " ",
+        "Gold cannot build through the Silver perimeter now that these properties are monopolized",
+        "Click here to open the trade menu",
+        " ",
+        " ",
+        "Go to the info screen to see a score rules",
+        " ",
+        "This makes the Gold player's longest network 5; and therefore, Silver has the longest house network because 7 > 5",
+    };
+
+
     public Text playerOneScore;
     public Text playerTwoScore;
     public Text currentPlayerMessage;
 
+    public Text infoOne;
+    public Text infoTwo;
+
     public Sprite[] avatars;
 
     public int turnNumber = 1;
+
+    public int messageNumber = 0;
 
     #region Setup
     private void Awake()
@@ -33,6 +107,9 @@ public class TutorialManager : MonoBehaviour
 
         playerOneAvatar.sprite = avatars[0];
         playerTwoAvatar.sprite = avatars[1];
+
+        infoOne.text = infoOneMessages[messageNumber];
+        infoTwo.text = infoTwoMessages[messageNumber];
     }
 
     void Start()
@@ -329,5 +406,33 @@ public class TutorialManager : MonoBehaviour
     public void EndTurnButtonClick()
     {
         EndCurrentAIPlayersTurn();
+    }
+
+    public void OnForwardClick()
+    {
+        messageNumber++;
+        if (messageNumber <= 28)
+        {
+            infoOne.text = infoOneMessages[messageNumber];
+            infoTwo.text = infoTwoMessages[messageNumber];
+        }
+        else
+        {
+            sl.LoadMenuScene();
+        }
+    }
+
+    public void OnBackwardClick()
+    {
+        messageNumber--;
+        if(messageNumber >= 0)
+        {
+            infoOne.text = infoOneMessages[messageNumber];
+            infoTwo.text = infoTwoMessages[messageNumber];
+        }
+        else
+        {
+            sl.LoadMenuScene();
+        }
     }
 }
