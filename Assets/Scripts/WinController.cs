@@ -11,15 +11,20 @@ public class WinController : MonoBehaviour
     public TMP_Text playerTwoScore;
     public GameObject panel;
 
+    private bool gameInReview;
+
     void Start()
     {
         panel.gameObject.SetActive(false);
+        gameInReview = false;
     }
 
     private void Update()
     {
-        if (GameInformation.gameOver)
+        if (GameInformation.gameOver && !gameInReview) {
+            gameInReview = true;
             EnableWinPanel();
+        }
     }
 
     public void EnableWinPanel()
@@ -40,7 +45,6 @@ public class WinController : MonoBehaviour
 
     public void OnCancelClick()
     {
-        GameInformation.gameOver = false;
         panel.gameObject.SetActive(false);
     }
 }
