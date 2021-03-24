@@ -13221,6 +13221,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 746498519}
     - target: {fileID: 8746113932800106364, guid: 81f7ecb7e37051e42ad7e375b7eb2671, type: 3}
+      propertyPath: tradeBtn
+      value: 
+      objectReference: {fileID: 1260590531}
+    - target: {fileID: 8746113932800106364, guid: 81f7ecb7e37051e42ad7e375b7eb2671, type: 3}
       propertyPath: winnerText
       value: 
       objectReference: {fileID: 256028505}
@@ -13232,6 +13236,10 @@ PrefabInstance:
       propertyPath: playerTwoScore
       value: 
       objectReference: {fileID: 304970665}
+    - target: {fileID: 8746113932800106364, guid: 81f7ecb7e37051e42ad7e375b7eb2671, type: 3}
+      propertyPath: completeTurnBtn
+      value: 
+      objectReference: {fileID: 333054263}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 81f7ecb7e37051e42ad7e375b7eb2671, type: 3}
 --- !u!114 &2768048415303665367 stripped

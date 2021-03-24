@@ -10,6 +10,8 @@ public class WinController : MonoBehaviour
     public TMP_Text playerOneScore;
     public TMP_Text playerTwoScore;
     public GameObject panel;
+    public GameObject completeTurnBtn;
+    public GameObject tradeBtn;
 
     void Start()
     {
@@ -42,5 +44,7 @@ public class WinController : MonoBehaviour
     {
         GameInformation.gameOver = false;
         panel.gameObject.SetActive(false);
+        completeTurnBtn.gameObject.SetActive(false);
+        tradeBtn.gameObject.SetActive(false);
     }
 }
