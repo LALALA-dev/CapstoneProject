@@ -70,7 +70,6 @@ public class GameManager : MonoBehaviour
             HNPInput.gameObject.SetActive(true);
         }
 
-        // figure out whos who
         if(GameInformation.playerIsHost)
             GameInformation.playerOneAvatar = GameInformation.ownAvatar;
         else
@@ -275,6 +274,15 @@ public class GameManager : MonoBehaviour
                 gameController.UpdateGameBoard();
                 gameController.RefreshBlockedTiles();
                 boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
+
+                if (turnNumber == 4)
+                {
+                    gameController.UpdateScores();
+
+                    playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
+                    playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
+                }
+
                 if (GameInformation.playerIsHost)
                 {
                     networkController.SendMove(gameController.getGameBoard().ToString());

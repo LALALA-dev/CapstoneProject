@@ -412,11 +412,11 @@ public class GameBoard
     {
         List<int> ownedBranches = new List<int>();
 
-        foreach(BranchState branch in boardState.branchStates)
+        foreach(Branch branch in branches)
         {
-            if(branch.branchColor == playerColor)
+            if(branch.branchState.branchColor == playerColor)
             {
-                ownedBranches.Add(branch.location);
+                ownedBranches.Add(branch.branchState.location);
             }
         }
         return ownedBranches;
@@ -531,8 +531,16 @@ public class GameBoard
         {
             PlayerColor captureColor = getCapturedSquareOwner(squareId);
 
+            // Capture the square.
             squares[squareId].squareState.ownerColor = captureColor;
             squares[squareId].squareState.resourceState = SquareStatus.Captured;
+
+            // All the connecting branches should be owned by the capturing player.
+            for (int i = 0; i < 4; ++i)
+            {
+                int branchId = Reference.branchesOnSquareConnections[squareId, i];
+                branches[branchId].branchState.ownerColor = captureColor;
+            }
         }
     }
 
