@@ -22,9 +22,9 @@ public class TutorialManager : MonoBehaviour
 
     private string[] infoOneMessages = new string[]
     {
-        "Nodopoly is a 2 player strategy game, pinning players against one another for real-estate dominance of their city",
-        "The cityscape is randomly generate at the start of each game",
-        "Each player gets 2 of their avatar game pieces, nodes, and 2 houses at the start of the game",
+        "Nodopoly is a 2 player strategy game, pitting players against one another for real-estate dominance of their city",
+        "The cityscape is randomly generated at the start of each game",
+        "Each player gets 2 of their avatar game pieces, and 2 houses at the start of the game",
         "Game pieces can be placed on the corners of the streets throughout city",
         "Houses go on the streets themselves, building your real-estate network",
         "For the first two rounds for each player, the game piece-house combo can go anywhere in the city...",
@@ -102,10 +102,11 @@ public class TutorialManager : MonoBehaviour
 
     public GameObject tutorialPanel;
 
-    public NodeController openingNode;
-    public BranchController openingBranch;
+    public NodeController[] tutorialNodes;
+    public BranchController[] tutorialBranches;
 
     public Sprite tutorialSprite;
+    public Sprite tutorialBranchSprite;
 
     #region Setup
     private void Awake()
@@ -122,7 +123,7 @@ public class TutorialManager : MonoBehaviour
     void Start()
     {
         ToogleTriggers();
-        BeginBeginnerAIGame();
+        BeginTutorial();
     }
     #endregion
 
@@ -137,225 +138,15 @@ public class TutorialManager : MonoBehaviour
 
     }
 
-    #region AI Game
-    public void BeginBeginnerAIGame()
+
+    public void BeginTutorial()
     {
-        PlayerColor aiColor;
-        if (GameInformation.playerIsHost)
-            aiColor = PlayerColor.Gold;
-        else
-            aiColor = PlayerColor.Silver;
 
         GameInformation.HumanNetworkProtocol = true;
         gameController.SetBoardConfiguration("1R1G3R2B2G3Y0L3G1Y3B2R2Y1B");
         boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
-        beginnerAI = new BeginnerAI(aiColor, gameController.getGameBoard().getBoardState());
-
-        if (!GameInformation.playerIsHost)
-        {
-            currentPlayerMessage.text = "AI's Move";
-            BoardState AIMove = beginnerAI.MakeRandomOpeningMove(gameController.getGameBoard().getBoardState());
-            gameController.getGameBoard().setBoard(AIMove.squareStates, AIMove.nodeStates, AIMove.branchStates);
-            EndCurrentAIPlayersTurn();
-        }
-        else
-        {
-            currentPlayerMessage.text = "Your Move";
-        }
+        currentPlayerMessage.text = "Your Move";
     }
-
-    public void BeginHumanOpeningMove()
-    {
-        GameInformation.openingMoveBranchSet = false;
-        GameInformation.openingMoveNodeSet = false;
-        GameInformation.currentPlayer = "HUMAN";
-        gameController.FlipColors();
-        GameInformation.humanMoveFinished = false;
-    }
-
-    private void EndCurrentAIPlayersTurn()
-    {
-        if (GameInformation.openingSequence && GameInformation.currentPlayer == "HUMAN" && OpeningMoveSatisfied())
-        {
-            gameController.RefreshBlockedTiles();
-            boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
-            if (GameInformation.playerIsHost)
-            {
-                if (turnNumber == 1)
-                {
-                    currentPlayerMessage.text = "AI's Move";
-                    turnNumber++;
-                    RandomAIOpeningMove();
-
-                    GameInformation.humanMoveFinished = false;
-                    EndCurrentAIPlayersTurn();
-                }
-                else if (turnNumber == 4)
-                {
-                    currentPlayerMessage.text = "AI's Move";
-                    GameInformation.openingSequence = false;
-                    turnNumber++;
-                    GameInformation.currentPlayer = "AI";
-                    gameController.FlipColors();
-
-                    gameController.CollectCurrentPlayerResources();
-                    gameController.UpdateScores();
-                    playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
-                    playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
-
-                    int[] AIResources;
-                    if (!GameInformation.playerIsHost)
-                        AIResources = GameInformation.playerOneResources;
-                    else
-                        AIResources = GameInformation.playerTwoResources;
-
-                    BoardState AIMove = beginnerAI.RandomMove(gameController.getGameBoard().getBoardState(), AIResources);
-                    gameController.getGameBoard().setBoard(AIMove.squareStates, AIMove.nodeStates, AIMove.branchStates);
-                    boardManager.RefreshBoardGUI();
-                    EndCurrentAIPlayersTurn();
-                }
-            }
-            else
-            {
-                if (turnNumber == 2)
-                {
-                    currentPlayerMessage.text = "Your Move";
-                    turnNumber++;
-                    gameController.FlipColors();
-                    BeginHumanOpeningMove();
-                }
-                else if (turnNumber == 3)
-                {
-                    currentPlayerMessage.text = "AI's Move";
-                    turnNumber++;
-                    RandomAIOpeningMove();
-                    EndCurrentAIPlayersTurn();
-                }
-            }
-        }
-        else if (GameInformation.openingSequence && GameInformation.currentPlayer == "AI")
-        {
-            gameController.RefreshBlockedTiles();
-            boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
-            if (!GameInformation.playerIsHost)
-            {
-                if (turnNumber == 1)
-                {
-                    boardManager.RefreshBoardGUI();
-                    turnNumber++;
-                    currentPlayerMessage.text = "Your Move";
-                    BeginHumanOpeningMove();
-                }
-                else if (turnNumber == 4)
-                {
-                    currentPlayerMessage.text = "Your Move";
-                    GameInformation.openingSequence = false;
-                    turnNumber++;
-                    GameInformation.currentPlayer = "HUMAN";
-                    GameInformation.humanMoveFinished = false;
-                    gameController.FlipColors();
-                    gameController.CollectCurrentPlayerResources();
-                    gameController.UpdateScores();
-                    playerResourcesManager.UpdateBothPlayersResources();
-                }
-            }
-            else
-            {
-                if (turnNumber == 2)
-                {
-                    currentPlayerMessage.text = "AI's Move";
-                    turnNumber++;
-                    RandomAIOpeningMove();
-                    GameInformation.humanMoveFinished = false;
-                    EndCurrentAIPlayersTurn();
-                }
-                else if (turnNumber == 3)
-                {
-                    currentPlayerMessage.text = "Your Move";
-                    turnNumber++;
-                    GameInformation.currentPlayer = "HUMAN";
-                    gameController.FlipColors();
-
-                    GameInformation.humanMoveFinished = false;
-                    BeginHumanOpeningMove();
-                }
-            }
-        }
-        else if (!GameInformation.openingSequence)
-        {
-            turnNumber++;
-            gameController.UpdateGameBoard();
-            boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
-            boardManager.DetectNewBlockCaptures(gameController.getGameBoard().squares);
-            GameInformation.currentRoundPlacedNodes.Clear();
-            GameInformation.currentRoundPlacedBranches.Clear();
-
-            GameInformation.resourceTrade = false;
-            if (GameInformation.currentPlayer == "HUMAN")
-            {
-                GameInformation.currentPlayer = "AI";
-                currentPlayerMessage.text = "AI's Move";
-            }
-            else
-            {
-                GameInformation.currentPlayer = "HUMAN";
-                currentPlayerMessage.text = "Your Move";
-            }
-            gameController.FlipColors();
-            gameController.CollectCurrentPlayerResources();
-            playerResourcesManager.UpdateBothPlayersResources();
-            gameController.UpdateScores();
-
-            playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
-            playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
-
-            if (GameInformation.playerOneScore >= 10 || GameInformation.playerTwoScore >= 10)
-            {
-                GameInformation.gameOver = true;
-                return;
-            }
-
-            if (GameInformation.currentPlayer == "AI")
-            {
-                RandomAIMove();
-
-                gameController.UpdateGameBoard();
-                boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
-                boardManager.DetectNewBlockCaptures(gameController.getGameBoard().squares);
-                if (GameInformation.playerOneScore >= 10 || GameInformation.playerTwoScore >= 10)
-                {
-                    GameInformation.gameOver = true;
-                    return;
-                }
-
-                EndCurrentAIPlayersTurn();
-            }
-        }
-    }
-
-    public void RandomAIOpeningMove()
-    {
-        GameInformation.currentPlayer = "AI";
-        gameController.FlipColors();
-        BoardState AIMove = beginnerAI.MakeRandomOpeningMove(gameController.getGameBoard().getBoardState());
-        gameController.getGameBoard().setBoard(AIMove.squareStates, AIMove.nodeStates, AIMove.branchStates);
-        boardManager.RefreshBoardGUI();
-    }
-
-    public void RandomAIMove()
-    {
-        int[] AIResources;
-        if (!GameInformation.playerIsHost)
-            AIResources = GameInformation.playerOneResources;
-        else
-            AIResources = GameInformation.playerTwoResources;
-
-        BoardState AIMove = beginnerAI.RandomMove(gameController.getGameBoard().getBoardState(), AIResources);
-        gameController.getGameBoard().setBoard(AIMove.squareStates, AIMove.nodeStates, AIMove.branchStates);
-        boardManager.RefreshBoardGUI();
-    }
-
-    #endregion
 
     public void UpdateResourcesUI()
     {
@@ -410,11 +201,6 @@ public class TutorialManager : MonoBehaviour
         BroadcastMessage("ToggleNodeBranchTriggers");
     }
 
-    public void EndTurnButtonClick()
-    {
-        EndCurrentAIPlayersTurn();
-    }
-
     public void OnForwardClick()
     {
         messageNumber++;
@@ -423,12 +209,67 @@ public class TutorialManager : MonoBehaviour
             infoOne.text = infoOneMessages[messageNumber];
             infoTwo.text = infoTwoMessages[messageNumber];
 
-            if (messageNumber == 1)
+            if (messageNumber == 3)
             {
                 tutorialPanel.SetActive(false);
-                SpriteRenderer sprite = openingNode.GetComponent<SpriteRenderer>();
+                SpriteRenderer sprite = tutorialNodes[0].GetComponent<SpriteRenderer>();
                 sprite.sprite = tutorialSprite;
-                openingNode.ToggleTrigger();
+                tutorialNodes[0].ToggleTrigger();
+            }
+            else if(messageNumber == 4)
+            {
+                SpriteRenderer sprite = tutorialNodes[0].GetComponent<SpriteRenderer>();
+                sprite.sprite = avatars[0];
+                tutorialNodes[0].nodeEntity.nodeState.nodeColor = PlayerColor.Silver;
+
+                sprite = tutorialBranches[0].GetComponent<SpriteRenderer>();
+                sprite.sprite = tutorialBranchSprite;
+
+                tutorialNodes[0].ToggleTrigger();
+                tutorialBranches[0].ToggleTrigger();
+            }
+            else if(messageNumber == 5)
+            {
+                SpriteRenderer sprite = tutorialBranches[0].GetComponent<SpriteRenderer>();
+                sprite.sprite = tutorialBranches[0].playerOneSprite;
+                tutorialBranches[0].branchEntity.branchState.branchColor = PlayerColor.Silver;
+                tutorialBranches[0].branchEntity.branchState.ownerColor = PlayerColor.Silver;
+
+                sprite = tutorialNodes[1].GetComponent<SpriteRenderer>();
+                sprite.sprite = avatars[1];
+                tutorialNodes[1].nodeEntity.nodeState.nodeColor = PlayerColor.Gold;
+
+                sprite = tutorialBranches[1].GetComponent<SpriteRenderer>();
+                sprite.sprite = tutorialBranches[1].playerTwoSprite;
+                tutorialBranches[1].branchEntity.branchState.branchColor = PlayerColor.Gold;
+                tutorialBranches[1].branchEntity.branchState.ownerColor = PlayerColor.Gold;
+
+                sprite = tutorialNodes[2].GetComponent<SpriteRenderer>();
+                sprite.sprite = avatars[1];
+                tutorialNodes[2].nodeEntity.nodeState.nodeColor = PlayerColor.Gold;
+
+                sprite = tutorialBranches[2].GetComponent<SpriteRenderer>();
+                sprite.sprite = tutorialBranches[2].playerTwoSprite;
+                tutorialBranches[2].branchEntity.branchState.branchColor = PlayerColor.Gold;
+                tutorialBranches[2].branchEntity.branchState.ownerColor = PlayerColor.Gold;
+            }
+            else if(messageNumber == 6)
+            {
+                GameInformation.openingMoveNodeSet = false;
+                GameInformation.openingMoveBranchSet = false;
+
+                SpriteRenderer sprite = tutorialNodes[3].GetComponent<SpriteRenderer>();
+                sprite.sprite = tutorialSprite;
+
+                sprite = tutorialBranches[3].GetComponent<SpriteRenderer>();
+                sprite.sprite = tutorialBranchSprite;
+
+                tutorialNodes[3].ToggleTrigger();
+                tutorialBranches[3].ToggleTrigger();
+            }
+            else if (messageNumber == 7)
+            {
+
             }
         }
         else
@@ -445,8 +286,13 @@ public class TutorialManager : MonoBehaviour
             infoOne.text = infoOneMessages[messageNumber];
             infoTwo.text = infoTwoMessages[messageNumber];
 
-            if (messageNumber == 0)
+            if (messageNumber == 2)
+            {
                 tutorialPanel.SetActive(true);
+                SpriteRenderer sprite = tutorialNodes[0].GetComponent<SpriteRenderer>();
+                sprite.sprite = tutorialNodes[0].blankSprite;
+                tutorialNodes[0].ToggleTrigger();
+            }
         }
         else
         {
