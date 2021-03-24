@@ -102,6 +102,11 @@ public class TutorialManager : MonoBehaviour
 
     public GameObject tutorialPanel;
 
+    public NodeController openingNode;
+    public BranchController openingBranch;
+
+    public Sprite tutorialSprite;
+
     #region Setup
     private void Awake()
     {
@@ -142,7 +147,7 @@ public class TutorialManager : MonoBehaviour
             aiColor = PlayerColor.Silver;
 
         GameInformation.HumanNetworkProtocol = true;
-        gameController.SetBoardConfiguration("1B3Y1R2B2R1G1Y3R3G0L2G2Y3B");
+        gameController.SetBoardConfiguration("1R1G3R2B2G3Y0L3G1Y3B2R2Y1B");
         boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
         beginnerAI = new BeginnerAI(aiColor, gameController.getGameBoard().getBoardState());
 
@@ -418,8 +423,13 @@ public class TutorialManager : MonoBehaviour
             infoOne.text = infoOneMessages[messageNumber];
             infoTwo.text = infoTwoMessages[messageNumber];
 
-            if (messageNumber > 0)
+            if (messageNumber == 1)
+            {
                 tutorialPanel.SetActive(false);
+                SpriteRenderer sprite = openingNode.GetComponent<SpriteRenderer>();
+                sprite.sprite = tutorialSprite;
+                openingNode.ToggleTrigger();
+            }
         }
         else
         {

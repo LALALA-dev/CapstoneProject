@@ -143,7 +143,7 @@ public class NodeController : MonoBehaviour
         }
     }
 
-    private void ClaimNode(Sprite playerAvatar)
+    public void ClaimNode(Sprite playerAvatar)
     {
         SpriteRenderer sprite = GetComponent<SpriteRenderer>();
         sprite.sprite = playerAvatar;
