@@ -204,34 +204,63 @@ public class GameController
     public int CalculatePlayerLongestNetwork(PlayerColor playerColor)
     {
         int longestNetwork = 0;
-        int currentNetwork = 0;
-        List<int> runningNetworkBranches = new List<int>();
 
         List<int> playerBranches = gameBoard.GetPlayersBranches(playerColor);
+        List<int> checkedBranches = new List<int>();
+        Stack<int> branchesToCheck = new Stack<int>();
 
-        runningNetworkBranches.Add(playerBranches[0]);
-        currentNetwork++;
-        foreach(int ownedBranch in playerBranches)
+        branchesToCheck.Push(playerBranches[0]);
+
+        while(branchesToCheck.Count > 0)
         {
-            if(!runningNetworkBranches.Contains(ownedBranch))
-            {
-                longestNetwork = currentNetwork;
-                currentNetwork = 0;
-                runningNetworkBranches.Clear();
-            }
+            int currentBranch = branchesToCheck.Pop();
+            int[] touchingBranches = ReferenceScript.branchConnectsToTheseBranches[currentBranch];
 
-            int[] touchingBranches = ReferenceScript.branchConnectsToTheseBranches[ownedBranch];
-            foreach(int touchedBranch in touchingBranches)
+            foreach (int touchedBranch in touchingBranches)
             {
-                if(!runningNetworkBranches.Contains(touchedBranch) && playerBranches.Contains(touchedBranch))
+                if (playerBranches.Contains(touchedBranch) && !checkedBranches.Contains(touchedBranch) && !branchesToCheck.Contains(touchedBranch))
                 {
-                    runningNetworkBranches.Add(touchedBranch);
-                    currentNetwork++;
+                    branchesToCheck.Push(touchedBranch);
                 }
             }
+
+            checkedBranches.Add(currentBranch);
         }
-        if(currentNetwork > longestNetwork)
-            longestNetwork = currentNetwork;
+
+        longestNetwork = checkedBranches.Count;
+
+        if(checkedBranches.Count != playerBranches.Count)
+        {
+            longestNetwork = checkedBranches.Count;
+
+            foreach(int branch in checkedBranches)
+            {
+                playerBranches.Remove(branch);
+            }
+
+            checkedBranches.Clear();
+
+            branchesToCheck.Push(playerBranches[0]);
+
+            while (branchesToCheck.Count > 0)
+            {
+                int currentBranch = branchesToCheck.Pop();
+                int[] touchingBranches = ReferenceScript.branchConnectsToTheseBranches[currentBranch];
+
+                foreach (int touchedBranch in touchingBranches)
+                {
+                    if (playerBranches.Contains(touchedBranch) && !checkedBranches.Contains(touchedBranch) && !branchesToCheck.Contains(touchedBranch))
+                    {
+                        branchesToCheck.Push(touchedBranch);
+                    }
+                }
+
+                checkedBranches.Add(currentBranch);
+            }
+
+            if (checkedBranches.Count > longestNetwork)
+                return checkedBranches.Count;
+        }
 
         return longestNetwork;
     }
