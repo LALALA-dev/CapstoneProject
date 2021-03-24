@@ -615,7 +615,21 @@ public class GameManager : MonoBehaviour
 
     public void ToogleTriggers()
     {
+        FlipTradeAndCompleteTurnActive();
         BroadcastMessage("ToggleNodeBranchTriggers");
+    }
+
+    public void FlipTradeAndCompleteTurnActive()
+    {
+        if (TradeBtn.GetComponent<Button>().interactable)
+            TradeBtn.GetComponent<Button>().interactable = false;
+        else
+            TradeBtn.GetComponent<Button>().interactable = true;
+        
+        if (CompleteTurnBtn.GetComponent<Button>().interactable)
+            CompleteTurnBtn.GetComponent<Button>().interactable = false;
+        else
+            CompleteTurnBtn.GetComponent<Button>().interactable = true;
     }
 
     public void EndTurnButtonClick()
