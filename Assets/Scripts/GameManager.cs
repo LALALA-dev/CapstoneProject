@@ -95,7 +95,7 @@ public class GameManager : MonoBehaviour
             playerResourcesManager.UpdateBothPlayersResources();
         }
 
-        if (GameInformation.gameType == 'N' && PhotonNetwork.CurrentRoom.PlayerCount < 2)
+        if (GameInformation.gameType == 'N' && PhotonNetwork.CurrentRoom.PlayerCount < 2 && !GameInformation.gameOver)
         {
             playerLeftErrorMessage.SetActive(true);
             CompleteTurnBtn.SetActive(false);
