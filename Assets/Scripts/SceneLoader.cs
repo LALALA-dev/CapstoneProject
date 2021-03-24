@@ -30,6 +30,8 @@ public class SceneLoader : MonoBehaviour
         GameController.Destroy();
         GameInformation.gameOver = false;
         GameInformation.openingSequence = true;
+        GameInformation.currentPlayer = "HUMAN";
+        GameInformation.playerIsHost = true;
         GameInformation.playerOneScore = 0;
         GameInformation.playerTwoScore = 0;
         GameInformation.playerOneResources = new int[4] { 0, 0, 0, 0 };
