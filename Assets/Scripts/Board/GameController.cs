@@ -203,7 +203,7 @@ public class GameController
 
     public int CalculatePlayerLongestNetwork(PlayerColor playerColor)
     {
-        int longestNetwork = 0;
+        int firstNetwork, secondNetwork;
 
         List<int> playerBranches = gameBoard.GetPlayersBranches(playerColor);
         List<int> checkedBranches = new List<int>();
@@ -227,42 +227,10 @@ public class GameController
             checkedBranches.Add(currentBranch);
         }
 
-        longestNetwork = checkedBranches.Count;
+        firstNetwork = checkedBranches.Count;
+        secondNetwork = playerBranches.Count - firstNetwork;
 
-        if(checkedBranches.Count != playerBranches.Count)
-        {
-            longestNetwork = checkedBranches.Count;
-
-            foreach(int branch in checkedBranches)
-            {
-                playerBranches.Remove(branch);
-            }
-
-            checkedBranches.Clear();
-
-            branchesToCheck.Push(playerBranches[0]);
-
-            while (branchesToCheck.Count > 0)
-            {
-                int currentBranch = branchesToCheck.Pop();
-                int[] touchingBranches = ReferenceScript.branchConnectsToTheseBranches[currentBranch];
-
-                foreach (int touchedBranch in touchingBranches)
-                {
-                    if (playerBranches.Contains(touchedBranch) && !checkedBranches.Contains(touchedBranch) && !branchesToCheck.Contains(touchedBranch))
-                    {
-                        branchesToCheck.Push(touchedBranch);
-                    }
-                }
-
-                checkedBranches.Add(currentBranch);
-            }
-
-            if (checkedBranches.Count > longestNetwork)
-                return checkedBranches.Count;
-        }
-
-        return longestNetwork;
+        return firstNetwork >= secondNetwork ? firstNetwork : secondNetwork;
     }
 
     public void UpdateScores()
