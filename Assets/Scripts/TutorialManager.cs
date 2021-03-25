@@ -27,7 +27,9 @@ public class TutorialManager : MonoBehaviour
         "Each player gets 2 of their avatar game pieces, and 2 houses at the start of the game",
         "Game pieces can be placed on the corners of the streets throughout city",
         "Houses go on the streets themselves, building your real-estate network",
+        "Now it's player 2's turn, they get to place two in a round",
         "For the first two rounds for each player, the game piece-house combo can go anywhere in the city...",
+        "It's now player 2's turn",
         "Every piece collects a rent from all non-foreclosed properties it touches, this is done at the start of every turn",
         "This game piece collects rent from 1 green, 1 red, and 1 yellow property",
         "And this game piece collects rent from 1 green, 1 yellow, and 1 blue property",
@@ -35,7 +37,7 @@ public class TutorialManager : MonoBehaviour
         "Players use collected rent to build additional game pieces and houses",
         "Tap the street corner of the property to place a new game piece",
         "Now it's the gold player's turn, they recieve their rent from their properties",
-        "Houses are legally connected even if they oass through an opponent's game piece",
+        "Houses are legally connected even if they pass through an opponent's game piece",
         "The gold player now submits their move...",
         "The silver player gets rent from all their placed game pieces",
         "The stars on a property represent the max amount of game pieces that can be touching it",
@@ -57,10 +59,12 @@ public class TutorialManager : MonoBehaviour
     {
         "Click the green arrow to proceed, click the red arrow to go back",
         "",
-        "",
+        "The first two rounds goes player 1 then player 2 twice, and then player 1 and it alternates",
         "Place the game piece on the street corner",
         "Place the house on the street to connect to your game piece",
-        "...but the opening two moves, all game pieces and houses must connect to your already established network via houses",
+        "",
+        "...but after the first two moves, all game pieces and houses must connect to your already established network",
+        "They collect their rent and make their move, they complete the turn to pass it back to you",
         "The color of rent matches the color of the property where it came from",
         " ",
         " ",
@@ -204,7 +208,7 @@ public class TutorialManager : MonoBehaviour
     public void OnForwardClick()
     {
         messageNumber++;
-        if (messageNumber <= 28)
+        if (messageNumber <= 29)
         {
             infoOne.text = infoOneMessages[messageNumber];
             infoTwo.text = infoTwoMessages[messageNumber];
@@ -235,6 +239,7 @@ public class TutorialManager : MonoBehaviour
                 tutorialBranches[0].branchEntity.branchState.branchColor = PlayerColor.Silver;
                 tutorialBranches[0].branchEntity.branchState.ownerColor = PlayerColor.Silver;
 
+                
                 sprite = tutorialNodes[1].GetComponent<SpriteRenderer>();
                 sprite.sprite = avatars[1];
                 tutorialNodes[1].nodeEntity.nodeState.nodeColor = PlayerColor.Gold;
@@ -269,7 +274,76 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 7)
             {
+                GameInformation.openingSequence = false;
+                GameInformation.currentPlayer = "AI";
+                gameController.FlipColors();
+                gameController.CollectCurrentPlayerResources();
+                GameInformation.playerTwoResources[0]--;
+                GameInformation.playerTwoResources[1]--;
 
+                SpriteRenderer sprite = tutorialBranches[4].GetComponent<SpriteRenderer>();
+                sprite.sprite = tutorialBranches[4].playerTwoSprite;
+                tutorialBranches[4].branchEntity.branchState.branchColor = PlayerColor.Gold;
+                tutorialBranches[4].branchEntity.branchState.ownerColor = PlayerColor.Gold;
+
+                playerResourcesManager.UpdateBothPlayersResources();
+            }
+            else if (messageNumber == 8)
+            {
+                GameInformation.currentPlayer = "HUMAN";
+                gameController.FlipColors();
+                gameController.CollectCurrentPlayerResources();
+                playerResourcesManager.UpdateBothPlayersResources();
+            }
+            else if (messageNumber == 13)
+            {
+                SpriteRenderer sprite = tutorialNodes[4].GetComponent<SpriteRenderer>();
+                sprite.sprite = tutorialSprite;
+                tutorialNodes[4].ToggleTrigger();
+            }
+            else if (messageNumber == 15)
+            {
+                GameInformation.currentPlayer = "AI";
+                gameController.FlipColors();
+                gameController.CollectCurrentPlayerResources();
+                GameInformation.playerTwoResources[0]--;
+                GameInformation.playerTwoResources[1]--;
+
+                SpriteRenderer sprite = tutorialBranches[5].GetComponent<SpriteRenderer>();
+                sprite.sprite = tutorialBranches[4].playerTwoSprite;
+                tutorialBranches[5].branchEntity.branchState.branchColor = PlayerColor.Gold;
+                tutorialBranches[5].branchEntity.branchState.ownerColor = PlayerColor.Gold;
+                GameInformation.playerTwoResources[0]--;
+                GameInformation.playerTwoResources[1]--;
+
+                sprite = tutorialBranches[6].GetComponent<SpriteRenderer>();
+                sprite.sprite = tutorialBranches[4].playerTwoSprite;
+                tutorialBranches[6].branchEntity.branchState.branchColor = PlayerColor.Gold;
+                tutorialBranches[6].branchEntity.branchState.ownerColor = PlayerColor.Gold;
+                GameInformation.playerTwoResources[0]--;
+                GameInformation.playerTwoResources[1]--;
+
+                playerResourcesManager.UpdateBothPlayersResources();
+            }
+            else if(messageNumber == 17)
+            {
+                GameInformation.currentPlayer = "HUMAN";
+                gameController.FlipColors();
+                gameController.CollectCurrentPlayerResources();
+                playerResourcesManager.UpdateBothPlayersResources();
+            }
+            else if (messageNumber == 18)
+            {
+                SpriteRenderer sprite = tutorialNodes[5].GetComponent<SpriteRenderer>();
+                sprite.sprite = tutorialSprite;
+                tutorialNodes[5].ToggleTrigger();
+
+                sprite = tutorialBranches[7].GetComponent<SpriteRenderer>();
+                sprite.sprite = tutorialBranchSprite;
+                tutorialBranches[7].ToggleTrigger();
+                sprite = tutorialBranches[8].GetComponent<SpriteRenderer>();
+                sprite.sprite = tutorialBranchSprite;
+                tutorialBranches[8].ToggleTrigger();
             }
         }
         else
