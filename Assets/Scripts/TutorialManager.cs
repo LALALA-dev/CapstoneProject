@@ -217,6 +217,11 @@ public class TutorialManager : MonoBehaviour
                 currentPlayerMessage.text = "Opponent's Move";
                 gameController.FlipColors();
                 gameController.CollectCurrentPlayerResources();
+                gameController.UpdateScores();
+
+                playerOneScore.text = "Score: 2";
+                playerTwoScore.text = "Score: 2";
+
                 GameInformation.playerTwoResources[0]--;
                 GameInformation.playerTwoResources[1]--;
                 ClaimBranch(4, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
@@ -230,6 +235,11 @@ public class TutorialManager : MonoBehaviour
                 gameController.FlipColors();
                 gameController.CollectCurrentPlayerResources();
                 playerResourcesManager.UpdateBothPlayersResources();
+
+                gameController.UpdateScores();
+
+                playerOneScore.text = "Score: 2";
+                playerTwoScore.text = "Score: 2";
             }
             else if (messageNumber == 13)
             {
@@ -245,6 +255,12 @@ public class TutorialManager : MonoBehaviour
                 currentPlayerMessage.text = "Opponent's Move";
                 gameController.FlipColors();
                 gameController.CollectCurrentPlayerResources();
+
+                gameController.UpdateScores();
+
+                playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
+                playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
+
                 GameInformation.playerTwoResources[0]--;
                 GameInformation.playerTwoResources[1]--;
 
@@ -265,6 +281,11 @@ public class TutorialManager : MonoBehaviour
                 gameController.FlipColors();
                 gameController.CollectCurrentPlayerResources();
                 playerResourcesManager.UpdateBothPlayersResources();
+
+                gameController.UpdateScores();
+
+                playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
+                playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
             }
             else if (messageNumber == 18)
             {
@@ -298,6 +319,11 @@ public class TutorialManager : MonoBehaviour
                 gameController.FlipColors();
                 gameController.CollectCurrentPlayerResources();
                 playerResourcesManager.UpdateBothPlayersResources();
+
+                gameController.UpdateScores();
+
+                playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
+                playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
             }
             else if (messageNumber == 24)
             {
@@ -320,6 +346,12 @@ public class TutorialManager : MonoBehaviour
                 gameController.FlipColors();
                 gameController.CollectCurrentPlayerResources();
                 playerResourcesManager.UpdateBothPlayersResources();
+
+                gameController.UpdateScores();
+
+                playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
+                playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
+
                 HighlightBranch(12);
             }
             else if (messageNumber == 26)
