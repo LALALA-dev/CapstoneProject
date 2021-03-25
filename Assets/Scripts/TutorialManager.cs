@@ -218,61 +218,29 @@ public class TutorialManager : MonoBehaviour
             if (messageNumber == 3)
             {
                 tutorialPanel.SetActive(false);
-                SpriteRenderer sprite = tutorialNodes[0].GetComponent<SpriteRenderer>();
-                sprite.sprite = tutorialSprite;
-                tutorialNodes[0].ToggleTrigger();
+                HighlightNode(0);
             }
             else if(messageNumber == 4)
             {
-                SpriteRenderer sprite = tutorialNodes[0].GetComponent<SpriteRenderer>();
-                sprite.sprite = avatars[0];
-                tutorialNodes[0].nodeEntity.nodeState.nodeColor = PlayerColor.Silver;
-
-                sprite = tutorialBranches[0].GetComponent<SpriteRenderer>();
-                sprite.sprite = tutorialBranchSprite;
-
-                tutorialNodes[0].ToggleTrigger();
-                tutorialBranches[0].ToggleTrigger();
+                ClaimNode(0, PlayerColor.Silver, avatars[0]);
+                HighlightBranch(0);
             }
             else if(messageNumber == 5)
             {
-                SpriteRenderer sprite = tutorialBranches[0].GetComponent<SpriteRenderer>();
-                sprite.sprite = tutorialBranches[0].playerOneSprite;
-                tutorialBranches[0].branchEntity.branchState.branchColor = PlayerColor.Silver;
-                tutorialBranches[0].branchEntity.branchState.ownerColor = PlayerColor.Silver;
+                ClaimBranch(0, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
 
-                
-                sprite = tutorialNodes[1].GetComponent<SpriteRenderer>();
-                sprite.sprite = avatars[1];
-                tutorialNodes[1].nodeEntity.nodeState.nodeColor = PlayerColor.Gold;
-
-                sprite = tutorialBranches[1].GetComponent<SpriteRenderer>();
-                sprite.sprite = tutorialBranches[1].playerTwoSprite;
-                tutorialBranches[1].branchEntity.branchState.branchColor = PlayerColor.Gold;
-                tutorialBranches[1].branchEntity.branchState.ownerColor = PlayerColor.Gold;
-
-                sprite = tutorialNodes[2].GetComponent<SpriteRenderer>();
-                sprite.sprite = avatars[1];
-                tutorialNodes[2].nodeEntity.nodeState.nodeColor = PlayerColor.Gold;
-
-                sprite = tutorialBranches[2].GetComponent<SpriteRenderer>();
-                sprite.sprite = tutorialBranches[2].playerTwoSprite;
-                tutorialBranches[2].branchEntity.branchState.branchColor = PlayerColor.Gold;
-                tutorialBranches[2].branchEntity.branchState.ownerColor = PlayerColor.Gold;
+                ClaimNode(1, PlayerColor.Gold, avatars[1]);
+                ClaimNode(2, PlayerColor.Gold, avatars[1]);
+                ClaimBranch(1, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
+                ClaimBranch(2, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
             }
             else if(messageNumber == 6)
             {
                 GameInformation.openingMoveNodeSet = false;
                 GameInformation.openingMoveBranchSet = false;
 
-                SpriteRenderer sprite = tutorialNodes[3].GetComponent<SpriteRenderer>();
-                sprite.sprite = tutorialSprite;
-
-                sprite = tutorialBranches[3].GetComponent<SpriteRenderer>();
-                sprite.sprite = tutorialBranchSprite;
-
-                tutorialNodes[3].ToggleTrigger();
-                tutorialBranches[3].ToggleTrigger();
+                HighlightNode(3);
+                HighlightBranch(3);
             }
             else if (messageNumber == 7)
             {
@@ -283,10 +251,7 @@ public class TutorialManager : MonoBehaviour
                 GameInformation.playerTwoResources[0]--;
                 GameInformation.playerTwoResources[1]--;
 
-                SpriteRenderer sprite = tutorialBranches[4].GetComponent<SpriteRenderer>();
-                sprite.sprite = tutorialBranches[4].playerTwoSprite;
-                tutorialBranches[4].branchEntity.branchState.branchColor = PlayerColor.Gold;
-                tutorialBranches[4].branchEntity.branchState.ownerColor = PlayerColor.Gold;
+                ClaimBranch(4, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
 
                 playerResourcesManager.UpdateBothPlayersResources();
             }
@@ -299,9 +264,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 13)
             {
-                SpriteRenderer sprite = tutorialNodes[4].GetComponent<SpriteRenderer>();
-                sprite.sprite = tutorialSprite;
-                tutorialNodes[4].ToggleTrigger();
+                HighlightNode(4);
             }
             else if (messageNumber == 15)
             {
@@ -311,17 +274,11 @@ public class TutorialManager : MonoBehaviour
                 GameInformation.playerTwoResources[0]--;
                 GameInformation.playerTwoResources[1]--;
 
-                SpriteRenderer sprite = tutorialBranches[5].GetComponent<SpriteRenderer>();
-                sprite.sprite = tutorialBranches[4].playerTwoSprite;
-                tutorialBranches[5].branchEntity.branchState.branchColor = PlayerColor.Gold;
-                tutorialBranches[5].branchEntity.branchState.ownerColor = PlayerColor.Gold;
+                ClaimBranch(5, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
                 GameInformation.playerTwoResources[0]--;
                 GameInformation.playerTwoResources[1]--;
 
-                sprite = tutorialBranches[6].GetComponent<SpriteRenderer>();
-                sprite.sprite = tutorialBranches[4].playerTwoSprite;
-                tutorialBranches[6].branchEntity.branchState.branchColor = PlayerColor.Gold;
-                tutorialBranches[6].branchEntity.branchState.ownerColor = PlayerColor.Gold;
+                ClaimBranch(6, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
                 GameInformation.playerTwoResources[0]--;
                 GameInformation.playerTwoResources[1]--;
 
@@ -336,19 +293,16 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 18)
             {
-                SpriteRenderer sprite = tutorialNodes[5].GetComponent<SpriteRenderer>();
-                sprite.sprite = tutorialSprite;
-                tutorialNodes[5].ToggleTrigger();
+                HighlightNode(5);
 
-                sprite = tutorialBranches[7].GetComponent<SpriteRenderer>();
-                sprite.sprite = tutorialBranchSprite;
-                tutorialBranches[7].ToggleTrigger();
-                sprite = tutorialBranches[8].GetComponent<SpriteRenderer>();
-                sprite.sprite = tutorialBranchSprite;
-                tutorialBranches[8].ToggleTrigger();
-                sprite = tutorialBranches[9].GetComponent<SpriteRenderer>();
-                sprite.sprite = tutorialBranchSprite;
-                tutorialBranches[9].ToggleTrigger();
+                HighlightBranch(7);
+                HighlightBranch(8);
+                HighlightBranch(9);
+            }
+            else if(messageNumber == 19)
+            {
+                GameInformation.currentRoundPlacedBranches.Clear();
+                GameInformation.currentRoundPlacedNodes.Clear();
             }
             else if(messageNumber == 23)
             {
@@ -382,10 +336,59 @@ public class TutorialManager : MonoBehaviour
                 sprite.sprite = tutorialNodes[0].blankSprite;
                 tutorialNodes[0].ToggleTrigger();
             }
+            else if (messageNumber == 3)
+            {
+                SpriteRenderer sprite = tutorialNodes[0].GetComponent<SpriteRenderer>();
+                sprite.sprite = tutorialNodes[0].blankSprite;
+
+                sprite = tutorialBranches[0].GetComponent<SpriteRenderer>();
+                sprite.sprite = tutorialBranches[0].blankSprite;
+            }
         }
         else
         {
             sl.LoadMenuScene();
         }
+    }
+
+    public void HighlightBranch(int branchIndex)
+    {
+        SpriteRenderer sprite = tutorialBranches[branchIndex].GetComponent<SpriteRenderer>();
+        sprite.sprite = tutorialBranchSprite;
+        tutorialBranches[branchIndex].ToggleTrigger();
+    }
+
+    public void HighlightNode(int nodeIndex)
+    {
+        SpriteRenderer sprite = tutorialNodes[nodeIndex].GetComponent<SpriteRenderer>();
+        sprite.sprite = tutorialSprite;
+        tutorialNodes[nodeIndex].ToggleTrigger();
+    }
+
+    public void ClaimBranch(int branchIndex, PlayerColor playerColor, Sprite playerImage)
+    {
+        SpriteRenderer sprite = tutorialBranches[branchIndex].GetComponent<SpriteRenderer>();
+        sprite.sprite = playerImage;
+        tutorialBranches[branchIndex].branchEntity.branchState.branchColor = playerColor;
+        tutorialBranches[branchIndex].branchEntity.branchState.ownerColor = playerColor;
+        tutorialBranches[branchIndex].ToggleTrigger();
+    }
+
+    public void ClaimNode(int nodeIndex, PlayerColor playerColor, Sprite playerAvatar)
+    {
+        SpriteRenderer sprite = tutorialNodes[nodeIndex].GetComponent<SpriteRenderer>();
+        sprite.sprite = playerAvatar;
+        tutorialNodes[nodeIndex].nodeEntity.nodeState.nodeColor = playerColor;
+        tutorialNodes[nodeIndex].ToggleTrigger();
+    }
+
+    public void UnClaimNode(int nodeIndex)
+    {
+        
+    }
+
+    public void UnClaimBranch(int branchIndex)
+    {
+
     }
 }
