@@ -12,8 +12,8 @@ public class ArrowController : MonoBehaviour
     private float RotationY = 0.0f;
     private float RotationZ = 0.0f;
 
-    public float speedX = .01f;
-    public float speedY = .01f;
+    public float speedX = .001f;
+    public float speedY = .001f;
 
     void Start()
     {
@@ -32,7 +32,7 @@ public class ArrowController : MonoBehaviour
         for (float ft = 1f; ft >= 0; ft -= 0.1f)
         {
             gameObject.transform.position = new Vector3(gameObject.transform.position.x + speedX, gameObject.transform.position.y + speedY);
-            yield return new WaitForSeconds(.5f);
+            yield return new WaitForSeconds(.25f);
         }
     }
 }

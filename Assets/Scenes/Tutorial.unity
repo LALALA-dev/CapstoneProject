@@ -13575,7 +13575,7 @@ PrefabInstance:
     - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
       propertyPath: avatars.Array.data[1]
       value: 
-      objectReference: {fileID: 21300000, guid: de289806cdc201a4486a504a687c8a4c, type: 3}
+      objectReference: {fileID: 21300000, guid: 483a1146973d4044b9ba77d9b352776b, type: 3}
     - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
       propertyPath: avatars.Array.data[2]
       value: 
