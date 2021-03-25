@@ -108,6 +108,9 @@ public class TutorialManager : MonoBehaviour
     public Button goBtn;
     public Button tradeBtn;
     public Button infoBtn;
+    public Button forwardBtn;
+    public GameObject arrowOne;
+    public GameObject arrowTwo;
 
     public NodeController[] tutorialNodes;
     public BranchController[] tutorialBranches;
@@ -368,6 +371,11 @@ public class TutorialManager : MonoBehaviour
             else if (messageNumber == 27)
             {
                 tradeBtn.interactable = true;
+                forwardBtn.interactable = false;
+            }
+            else if (messageNumber == 28)
+            {
+                
             }
         }
         else
