@@ -24,37 +24,37 @@ public class TutorialManager : MonoBehaviour
     {
         "Nodopoly is a 2 player strategy game, pitting players against one another for real-estate dominance of their city",
         "The cityscape is randomly generated at the start of each game",
-        "Each player gets 2 of their avatar game pieces, and 2 houses at the start of the game",
+        "Each player gets 2 of their avatar game pieces, and 2 roads at the start of the game",
         "Game pieces can be placed on the corners of the streets throughout city",
         "Houses go on the streets themselves, building your real-estate network",
         "Now it's player 2's turn, they get to place two in a round",
-        "For the first two rounds for each player, the game piece-house combo can go anywhere in the city...",
+        "For the first two rounds for each player, the game piece-road combo can go anywhere in the city...",
         "It's now player 2's turn",
         "Every piece collects a rent from all non-foreclosed properties it touches, this is done at the start of every turn",
         "This game piece collects rent from 1 green, 1 red, and 1 yellow property",
         "And this game piece collects rent from 1 green, 1 yellow, and 1 blue property",
         "",
-        "Players use collected rent to build additional game pieces and houses",
+        "Players use collected rent to build additional game pieces and roads",
         "Tap the street corner of the property to place a new game piece",
         "Now it's the gold player's turn, they recieve their rent from their properties",
         "Houses are legally connected even if they pass through an opponent's game piece",
         "The gold player now submits their move...",
         "The silver player gets rent from all their placed game pieces",
-        "Build the highlighted houses and game pieces",
+        "Build the highlighted roads and game pieces",
         "The stars on a property represent the max amount of game pieces that can be touching it",
         "This property supports 1 game piece",
         "Foreclosed properties get marked with the foreclosed stamp only after a player submits a move",
         "Select GO to end your turn",
-        "Surrounding a property with houses of the same player will monopolize the property for that player",
+        "Surrounding a property with roads of the same player will monopolize the property for that player",
         "Like foreclosed properties, monopolized properties are marked after a player submits a move",
-        "You can even monopolize multiple squares at once if no opponent game pieces or houses inside the attempted area",
-        "Once monopolized, opponents cannot build houses through that area",
+        "You can even monopolize multiple squares at once if no opponent game pieces or roads inside the attempted area",
+        "Once monopolized, opponents cannot build roads through that area",
         "If you don't have the right mix of rent, you can trade for it",
         "Once per turn, you may trade any 3 types of rent for one of another color",
-        "Now Gold has the rent required to build another house",
+        "Now Gold has the rent required to build another road",
         "The goal of Nodopoly is to be the first to 10 points",
-        "1 point is rewared for each game piece placed and monopolized property. 2 points are rewared for having the longest chain of houses",
-        "All 7 of the Silver player's houses are connected... While the Gold player has 9 houses placed, but not all connected",
+        "1 point is rewared for each game piece placed and monopolized property. 2 points are rewared for having the longest chain of roads",
+        "All 7 of the Silver player's roads are connected... While the Gold player has 9 roads placed, but not all connected",
     };
 
     private string[] infoTwoMessages = new string[]
@@ -63,18 +63,18 @@ public class TutorialManager : MonoBehaviour
         "",
         "The first two rounds goes player 1 then player 2 twice, and then player 1 and it alternates",
         "Place the game piece on the street corner",
-        "Place the house on the street to connect to your game piece",
+        "Place the road on the street to connect to your game piece",
         "",
-        "...but after the first two moves, all game pieces and houses must connect to your already established network",
+        "...but after the first two moves, all game pieces and roads must connect to your already established network",
         "They collect their rent and make their move, they complete the turn to pass it back to you",
         "The color of rent matches the color of the property where it came from",
         " ",
         " ",
         "Meaning that you've collected rent in the form of 2 green, 2 yellow, 1 blue, and 1 red for this turn",
-        "A house costs 1 red and 1 blue, while a game piece costs 2 yellow, and 2 green",
+        "A road costs 1 red and 1 blue, while a game piece costs 2 yellow, and 2 green",
         " ",
         " ",
-        "And you may build additional houses without any game pieces on them",
+        "And you may build additional roads without any game pieces on them",
         "...and any unused rent are saved for future rounds",
         "Including from the new game piece they placed last turn",
         "",
@@ -91,7 +91,7 @@ public class TutorialManager : MonoBehaviour
         " ",
         "Go to the info screen to see a score rules",
         " ",
-        "This makes the Gold player's longest network 5; and therefore, Silver has the longest house network because 7 > 5",
+        "This makes the Gold player's longest network 5; and therefore, Silver has the longest road network because 7 > 5",
     };
 
 
@@ -113,6 +113,10 @@ public class TutorialManager : MonoBehaviour
 
     public Sprite tutorialSprite;
     public Sprite tutorialBranchSprite;
+
+    private bool goButtonActive = false;
+    private bool tradeButtonActive = false;
+    private bool infoButtonActive = false;
 
     #region Setup
     private void Awake()
