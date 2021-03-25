@@ -13,7 +13,6 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private BoardManager boardManager;
     [SerializeField] private PlayerResourcesManager playerResourcesManager;
     private GameController gameController;
-    private BeginnerAI beginnerAI;
 
     [SerializeField] private Image playerOneAvatar;
     [SerializeField] private Image playerTwoAvatar;
@@ -62,7 +61,7 @@ public class TutorialManager : MonoBehaviour
         "",
         "The first two rounds goes player 1 then player 2 twice, and then player 1 and it alternates",
         "Place the game piece on the street corner",
-        "Place the road on the street to connect to your game piece",
+        "Place the road on the street to connect to your game piece, press GO to submit your move",
         "",
         "...but after the first two moves, all game pieces and roads must connect to your already established network",
         "They collect their rent and make their move, they complete the turn to pass it back to you",
@@ -101,7 +100,6 @@ public class TutorialManager : MonoBehaviour
     public Text infoTwo;
 
     public Sprite[] avatars;
-    private int turnNumber = 1;
     private int messageNumber = 0;
 
     public GameObject tutorialPanel;
@@ -150,6 +148,11 @@ public class TutorialManager : MonoBehaviour
 
     }
 
+    public void UpdateResourcesUI()
+    {
+        playerResourcesManager.UpdateBothPlayersResources();
+    }
+
 
     public void BeginTutorial()
     {
@@ -159,54 +162,6 @@ public class TutorialManager : MonoBehaviour
         boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
         currentPlayerMessage.text = "Your Move";
     }
-
-    public void UpdateResourcesUI()
-    {
-        playerResourcesManager.UpdateBothPlayersResources();
-    }
-
-    #region Logic Checks
-    public bool OpeningMoveSatisfied()
-    {
-        return OpeningMovePlacedNode() && OpeningMovePlacedConnectingBranch();
-    }
-
-    public bool OpeningMovePlacedNode()
-    {
-        return GameInformation.openingMoveNodeSet;
-    }
-
-    public bool OpeningMovePlacedConnectingBranch()
-    {
-        return GameInformation.openingMoveBranchSet;
-    }
-
-    public bool OpponentHasSentNewMoveToProcess()
-    {
-        return GameInformation.gameType == 'N' && GameInformation.newNetworkMoveSet;
-    }
-
-    public bool NeedToSyncNetworkGameVariables()
-    {
-        return GameInformation.gameType == 'N' && GameInformation.needToSyncGameVariables;
-    }
-
-    public bool IsTheCurrentPlayerYourself()
-    {
-        return (GameInformation.currentPlayer == "HOST" && GameInformation.playerIsHost) || (GameInformation.currentPlayer == "CLIENT" && !GameInformation.playerIsHost);
-    }
-
-    public bool IsCorrectHostOpeningMove()
-    {
-        return GameInformation.openingSequence && GameInformation.currentPlayer == "HOST" && OpeningMoveSatisfied();
-    }
-
-    public bool IsCorrectClientOpeningMove()
-    {
-        return GameInformation.openingSequence && GameInformation.currentPlayer == "CLIENT" && OpeningMoveSatisfied();
-    }
-    #endregion
-
 
     public void ToogleTriggers()
     {
@@ -230,9 +185,12 @@ public class TutorialManager : MonoBehaviour
             {
                 ClaimNode(0, PlayerColor.Silver, avatars[0]);
                 HighlightBranch(0);
+                goBtn.interactable = true;
             }
             else if(messageNumber == 5)
             {
+                currentPlayerMessage.text = "Opponent's Move";
+                goBtn.interactable = false;
                 ClaimBranch(0, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
 
                 ClaimNode(1, PlayerColor.Gold, avatars[1]);
@@ -242,6 +200,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if(messageNumber == 6)
             {
+                currentPlayerMessage.text = "Your Move";
                 GameInformation.openingMoveNodeSet = false;
                 GameInformation.openingMoveBranchSet = false;
 
@@ -255,6 +214,7 @@ public class TutorialManager : MonoBehaviour
 
                 GameInformation.openingSequence = false;
                 GameInformation.currentPlayer = "AI";
+                currentPlayerMessage.text = "Opponent's Move";
                 gameController.FlipColors();
                 gameController.CollectCurrentPlayerResources();
                 GameInformation.playerTwoResources[0]--;
@@ -266,6 +226,7 @@ public class TutorialManager : MonoBehaviour
             else if (messageNumber == 8)
             {
                 GameInformation.currentPlayer = "HUMAN";
+                currentPlayerMessage.text = "Your Move";
                 gameController.FlipColors();
                 gameController.CollectCurrentPlayerResources();
                 playerResourcesManager.UpdateBothPlayersResources();
@@ -281,6 +242,7 @@ public class TutorialManager : MonoBehaviour
             else if (messageNumber == 15)
             {
                 GameInformation.currentPlayer = "AI";
+                currentPlayerMessage.text = "Opponent's Move";
                 gameController.FlipColors();
                 gameController.CollectCurrentPlayerResources();
                 GameInformation.playerTwoResources[0]--;
@@ -299,6 +261,7 @@ public class TutorialManager : MonoBehaviour
             else if(messageNumber == 17)
             {
                 GameInformation.currentPlayer = "HUMAN";
+                currentPlayerMessage.text = "Your Move";
                 gameController.FlipColors();
                 gameController.CollectCurrentPlayerResources();
                 playerResourcesManager.UpdateBothPlayersResources();
@@ -331,6 +294,7 @@ public class TutorialManager : MonoBehaviour
                 gameController.UpdateGameBoard();
                 boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
                 GameInformation.currentPlayer = "AI";
+                currentPlayerMessage.text = "Opponent's Move";
                 gameController.FlipColors();
                 gameController.CollectCurrentPlayerResources();
                 playerResourcesManager.UpdateBothPlayersResources();
@@ -352,6 +316,7 @@ public class TutorialManager : MonoBehaviour
                 gameController.UpdateGameBoard();
                 boardManager.DetectNewBlockCaptures(gameController.getGameBoard().squares);
                 GameInformation.currentPlayer = "HUMAN";
+                currentPlayerMessage.text = "Your Move";
                 gameController.FlipColors();
                 gameController.CollectCurrentPlayerResources();
                 playerResourcesManager.UpdateBothPlayersResources();
