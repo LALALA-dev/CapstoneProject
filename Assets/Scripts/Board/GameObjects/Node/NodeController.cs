@@ -47,19 +47,19 @@ public class NodeController : MonoBehaviour
             switch (GameInformation.playerTwoAvatar)
             {
                 case "HAT":
-                    playerTwoSprite = playerAvatars[0];
+                    playerTwoSprite = playerAvatars[5];
                     break;
                 case "BATTLESHIP":
-                    playerTwoSprite = playerAvatars[1];
+                    playerTwoSprite = playerAvatars[6];
                     break;
                 case "CAR":
-                    playerTwoSprite = playerAvatars[2];
+                    playerTwoSprite = playerAvatars[7];
                     break;
                 case "THIMBLE":
-                    playerTwoSprite = playerAvatars[3];
+                    playerTwoSprite = playerAvatars[8];
                     break;
                 case "WHEELBARREL":
-                    playerTwoSprite = playerAvatars[4];
+                    playerTwoSprite = playerAvatars[9];
                     break;
                 default:
                     playerTwoSprite = playerAvatars[4];

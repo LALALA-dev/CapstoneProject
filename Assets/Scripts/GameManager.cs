@@ -686,22 +686,22 @@ public class GameManager : MonoBehaviour
         switch (GameInformation.playerTwoAvatar)
         {
             case "HAT":
-                playerTwoAvatar.sprite = avatars[0];
+                playerTwoAvatar.sprite = avatars[5];
                 break;
             case "BATTLESHIP":
-                playerTwoAvatar.sprite = avatars[1];
+                playerTwoAvatar.sprite = avatars[6];
                 break;
             case "CAR":
-                playerTwoAvatar.sprite = avatars[2];
+                playerTwoAvatar.sprite = avatars[7];
                 break;
             case "THIMBLE":
-                playerTwoAvatar.sprite = avatars[3];
+                playerTwoAvatar.sprite = avatars[8];
                 break;
             case "WHEELBARREL":
-                playerTwoAvatar.sprite = avatars[4];
+                playerTwoAvatar.sprite = avatars[9];
                 break;
             default:
-                playerTwoAvatar.sprite = avatars[2];
+                playerTwoAvatar.sprite = avatars[9];
                 break;
         }
     }

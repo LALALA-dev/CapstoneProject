@@ -4946,7 +4946,7 @@ PrefabInstance:
     - target: {fileID: 8509858555601679724, guid: e55a20909337c38468549bc1e47e2caa, type: 3}
       propertyPath: avatars.Array.data[5]
       value: 
-      objectReference: {fileID: 21300000, guid: d4bec1cc85fed1a42ae9a7bdc99ba844, type: 3}
+      objectReference: {fileID: 21300000, guid: 483a1146973d4044b9ba77d9b352776b, type: 3}
     - target: {fileID: 8509858555601679724, guid: e55a20909337c38468549bc1e47e2caa, type: 3}
       propertyPath: avatars.Array.data[6]
       value: 
@@ -4962,7 +4962,7 @@ PrefabInstance:
     - target: {fileID: 8509858555601679724, guid: e55a20909337c38468549bc1e47e2caa, type: 3}
       propertyPath: avatars.Array.data[9]
       value: 
-      objectReference: {fileID: 21300000, guid: 483a1146973d4044b9ba77d9b352776b, type: 3}
+      objectReference: {fileID: 21300000, guid: d4bec1cc85fed1a42ae9a7bdc99ba844, type: 3}
     - target: {fileID: 8509858555601679724, guid: e55a20909337c38468549bc1e47e2caa, type: 3}
       propertyPath: playerLeftErrorMessage
       value: 
