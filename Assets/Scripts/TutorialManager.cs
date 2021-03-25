@@ -210,7 +210,7 @@ public class TutorialManager : MonoBehaviour
     public void OnForwardClick()
     {
         messageNumber++;
-        if (messageNumber <= 29)
+        if (messageNumber < infoOneMessages.Length)
         {
             infoOne.text = infoOneMessages[messageNumber];
             infoTwo.text = infoTwoMessages[messageNumber];
@@ -244,13 +244,15 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 7)
             {
+                ClaimNode(3, PlayerColor.Silver, tutorialNodes[0].playerOneSprite);
+                ClaimBranch(3, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
+
                 GameInformation.openingSequence = false;
                 GameInformation.currentPlayer = "AI";
                 gameController.FlipColors();
                 gameController.CollectCurrentPlayerResources();
                 GameInformation.playerTwoResources[0]--;
                 GameInformation.playerTwoResources[1]--;
-
                 ClaimBranch(4, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
 
                 playerResourcesManager.UpdateBothPlayersResources();
@@ -265,6 +267,10 @@ public class TutorialManager : MonoBehaviour
             else if (messageNumber == 13)
             {
                 HighlightNode(4);
+            }
+            else if (messageNumber == 14)
+            {
+                ClaimNode(4, PlayerColor.Silver, tutorialNodes[0].playerOneSprite);
             }
             else if (messageNumber == 15)
             {
@@ -301,6 +307,10 @@ public class TutorialManager : MonoBehaviour
             }
             else if(messageNumber == 19)
             {
+                ClaimNode(5, PlayerColor.Silver, tutorialNodes[0].playerOneSprite);
+                ClaimBranch(7, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
+                ClaimBranch(8, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
+                ClaimBranch(9, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
                 GameInformation.currentRoundPlacedBranches.Clear();
                 GameInformation.currentRoundPlacedNodes.Clear();
             }
@@ -332,17 +342,60 @@ public class TutorialManager : MonoBehaviour
             if (messageNumber == 2)
             {
                 tutorialPanel.SetActive(true);
-                SpriteRenderer sprite = tutorialNodes[0].GetComponent<SpriteRenderer>();
-                sprite.sprite = tutorialNodes[0].blankSprite;
-                tutorialNodes[0].ToggleTrigger();
+                UndoNode(0, PlayerColor.Blank, tutorialNodes[0].blankSprite);
             }
             else if (messageNumber == 3)
             {
-                SpriteRenderer sprite = tutorialNodes[0].GetComponent<SpriteRenderer>();
-                sprite.sprite = tutorialNodes[0].blankSprite;
+                UndoNode(0, PlayerColor.Blank, tutorialSprite);
+                UndoBranch(0, PlayerColor.Blank, tutorialBranches[0].blankSprite);
+            }
+            else if(messageNumber == 4)
+            {
 
-                sprite = tutorialBranches[0].GetComponent<SpriteRenderer>();
-                sprite.sprite = tutorialBranches[0].blankSprite;
+            }
+            else if (messageNumber == 5)
+            {
+
+            }
+            else if (messageNumber == 6)
+            {
+
+            }
+            else if (messageNumber == 7)
+            {
+
+            }
+            else if (messageNumber == 8)
+            {
+
+            }
+            else if (messageNumber == 12)
+            {
+
+            }
+            else if (messageNumber == 13)
+            {
+
+            }
+            else if (messageNumber == 14)
+            {
+
+            }
+            else if (messageNumber == 16)
+            {
+
+            }
+            else if (messageNumber == 17)
+            {
+
+            }
+            else if (messageNumber == 18)
+            {
+
+            }
+            else if (messageNumber == 22)
+            {
+                
             }
         }
         else
@@ -382,13 +435,20 @@ public class TutorialManager : MonoBehaviour
         tutorialNodes[nodeIndex].ToggleTrigger();
     }
 
-    public void UnClaimNode(int nodeIndex)
+    public void UndoNode(int nodeIndex, PlayerColor color, Sprite Sprite)
     {
-        
+        SpriteRenderer sprite = tutorialNodes[nodeIndex].GetComponent<SpriteRenderer>();
+        sprite.sprite = Sprite;
+        tutorialNodes[nodeIndex].nodeEntity.nodeState.nodeColor = color;
+        tutorialNodes[nodeIndex].ToggleTrigger();
     }
 
-    public void UnClaimBranch(int branchIndex)
+    public void UndoBranch(int branchIndex, PlayerColor color, Sprite Sprite)
     {
-
+        SpriteRenderer sprite = tutorialBranches[branchIndex].GetComponent<SpriteRenderer>();
+        sprite.sprite = Sprite;
+        tutorialBranches[branchIndex].branchEntity.branchState.branchColor = color;
+        tutorialBranches[branchIndex].branchEntity.branchState.ownerColor = color;
+         tutorialBranches[branchIndex].ToggleTrigger();
     }
 }
