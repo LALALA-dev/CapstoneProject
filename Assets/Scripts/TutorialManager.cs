@@ -50,7 +50,8 @@ public class TutorialManager : MonoBehaviour
         "Once monopolized, opponents cannot build roads through that area",
         "If you don't have the right mix of rent, you can trade for it",
         "Once per turn, you may trade any 3 types of rent for one of another color",
-        "Now Gold has the rent required to build another road",
+        "Now you have the rent required to build 2 more game pieces",
+        "Place game pieces on the highlighted street corners",
         "The goal of Nodopoly is to be the first to 10 points",
         "1 point is rewared for each game piece placed and monopolized property. 2 points are rewared for having the longest chain of roads",
         "All 7 of the Silver player's roads are connected... While the Gold player has 9 roads placed, but not all connected",
@@ -87,6 +88,7 @@ public class TutorialManager : MonoBehaviour
         "Click here to open the trade menu",
         " ",
         " ",
+        "",
         "Go to the info screen to see a score rules",
         " ",
         "This makes the Gold player's longest network 5; and therefore, Silver has the longest road network because 7 > 5",
@@ -362,6 +364,10 @@ public class TutorialManager : MonoBehaviour
                 tutorialTiles[2].squareState.ownerColor = PlayerColor.Silver;
                 gameController.UpdateGameBoard();
                 boardManager.DetectNewBlockCaptures(gameController.getGameBoard().squares);
+            }
+            else if (messageNumber == 27)
+            {
+                tradeBtn.interactable = true;
             }
         }
         else
