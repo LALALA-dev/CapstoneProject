@@ -2365,9 +2365,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: EndTurnButtonClick
+      - m_Target: {fileID: 977834541}
+        m_TargetAssemblyTypeName: TutorialManager, Assembly-CSharp
+        m_MethodName: OnForwardClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -13485,6 +13485,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1878205298}
     - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
+      propertyPath: goBtn
+      value: 
+      objectReference: {fileID: 333054265}
+    - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
+      propertyPath: infoBtn
+      value: 
+      objectReference: {fileID: 1271316940}
+    - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
       propertyPath: infoOne
       value: 
       objectReference: {fileID: 338235721}
@@ -13492,6 +13500,10 @@ PrefabInstance:
       propertyPath: infoTwo
       value: 
       objectReference: {fileID: 1182859651}
+    - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
+      propertyPath: tradeBtn
+      value: 
+      objectReference: {fileID: 1260590533}
     - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
       propertyPath: openingNode
       value: 

@@ -56,7 +56,6 @@ public class TutorialManager : MonoBehaviour
         "1 point is rewared for each game piece placed and monopolized property. 2 points are rewared for having the longest chain of roads",
         "All 7 of the Silver player's roads are connected... While the Gold player has 9 roads placed, but not all connected",
     };
-
     private string[] infoTwoMessages = new string[]
     {
         "Click the green arrow to proceed, click the red arrow to go back",
@@ -98,14 +97,17 @@ public class TutorialManager : MonoBehaviour
     public Text playerOneScore;
     public Text playerTwoScore;
     public Text currentPlayerMessage;
-
     public Text infoOne;
     public Text infoTwo;
 
     public Sprite[] avatars;
-    public int turnNumber = 1;
-    public int messageNumber = 0;
+    private int turnNumber = 1;
+    private int messageNumber = 0;
+
     public GameObject tutorialPanel;
+    public Button goBtn;
+    public Button tradeBtn;
+    public Button infoBtn;
 
     public NodeController[] tutorialNodes;
     public BranchController[] tutorialBranches;
@@ -113,10 +115,6 @@ public class TutorialManager : MonoBehaviour
 
     public Sprite tutorialSprite;
     public Sprite tutorialBranchSprite;
-
-    private bool goButtonActive = false;
-    private bool tradeButtonActive = false;
-    private bool infoButtonActive = false;
 
     #region Setup
     private void Awake()
@@ -128,6 +126,10 @@ public class TutorialManager : MonoBehaviour
 
         infoOne.text = infoOneMessages[messageNumber];
         infoTwo.text = infoTwoMessages[messageNumber];
+
+        goBtn.interactable = false;
+        tradeBtn.interactable = false;
+        infoBtn.interactable = false;
     }
 
     void Start()
@@ -318,8 +320,13 @@ public class TutorialManager : MonoBehaviour
                 GameInformation.currentRoundPlacedBranches.Clear();
                 GameInformation.currentRoundPlacedNodes.Clear();
             }
+            else if(messageNumber == 22)
+            {
+                goBtn.interactable = true;
+            }
             else if(messageNumber == 23)
             {
+                goBtn.interactable = false;
                 tutorialTiles[0].squareState.resourceState = SquareStatus.Blocked;
                 gameController.UpdateGameBoard();
                 boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
