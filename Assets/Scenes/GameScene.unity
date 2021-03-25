@@ -4913,7 +4913,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8509858555601679724, guid: e55a20909337c38468549bc1e47e2caa, type: 3}
       propertyPath: avatars.Array.size
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8509858555601679724, guid: e55a20909337c38468549bc1e47e2caa, type: 3}
       propertyPath: generalErrorMessage
@@ -4943,6 +4943,26 @@ PrefabInstance:
       propertyPath: avatars.Array.data[4]
       value: 
       objectReference: {fileID: 21300000, guid: 328a859e552ed93498a00dc00d60f2b1, type: 3}
+    - target: {fileID: 8509858555601679724, guid: e55a20909337c38468549bc1e47e2caa, type: 3}
+      propertyPath: avatars.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: d4bec1cc85fed1a42ae9a7bdc99ba844, type: 3}
+    - target: {fileID: 8509858555601679724, guid: e55a20909337c38468549bc1e47e2caa, type: 3}
+      propertyPath: avatars.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: 52aead6fbd2eb1a48bbdc59e5e62d17e, type: 3}
+    - target: {fileID: 8509858555601679724, guid: e55a20909337c38468549bc1e47e2caa, type: 3}
+      propertyPath: avatars.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: f2e15ae92db42d94c9e998c790ede1ed, type: 3}
+    - target: {fileID: 8509858555601679724, guid: e55a20909337c38468549bc1e47e2caa, type: 3}
+      propertyPath: avatars.Array.data[8]
+      value: 
+      objectReference: {fileID: 21300000, guid: 7941eed6a4b6cc64ab08630ef0a04b18, type: 3}
+    - target: {fileID: 8509858555601679724, guid: e55a20909337c38468549bc1e47e2caa, type: 3}
+      propertyPath: avatars.Array.data[9]
+      value: 
+      objectReference: {fileID: 21300000, guid: 483a1146973d4044b9ba77d9b352776b, type: 3}
     - target: {fileID: 8509858555601679724, guid: e55a20909337c38468549bc1e47e2caa, type: 3}
       propertyPath: playerLeftErrorMessage
       value: 
