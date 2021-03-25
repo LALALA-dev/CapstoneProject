@@ -27,12 +27,18 @@ public class ArrowController : MonoBehaviour
         StartCoroutine(Move());
     }
 
+    public void DisableArrow()
+    {
+        gameObject.SetActive(false);
+        StopCoroutine(Move());
+    }
+
     IEnumerator Move()
     {
         for (float ft = 1f; ft >= 0; ft -= 0.1f)
         {
             gameObject.transform.position = new Vector3(gameObject.transform.position.x + speedX, gameObject.transform.position.y + speedY);
-            yield return new WaitForSeconds(.25f);
+            yield return new WaitForSeconds(.15f);
         }
     }
 }
