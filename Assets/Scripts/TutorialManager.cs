@@ -40,9 +40,11 @@ public class TutorialManager : MonoBehaviour
         "Houses are legally connected even if they pass through an opponent's game piece",
         "The gold player now submits their move...",
         "The silver player gets rent from all their placed game pieces",
+        "Build the highlighted houses and game pieces",
         "The stars on a property represent the max amount of game pieces that can be touching it",
         "This property supports 1 game piece",
         "Foreclosed properties get marked with the foreclosed stamp only after a player submits a move",
+        "Select GO to end your turn",
         "Surrounding a property with houses of the same player will monopolize the property for that player",
         "Like foreclosed properties, monopolized properties are marked after a player submits a move",
         "You can even monopolize multiple squares at once if no opponent game pieces or houses inside the attempted area",
@@ -75,9 +77,11 @@ public class TutorialManager : MonoBehaviour
         "And you may build additional houses without any game pieces on them",
         "...and any unused rent are saved for future rounds",
         "Including from the new game piece they placed last turn",
+        "",
         "If more game pieces are on property than it's star amount, it forecloses and stops paying rent out to either player",
         "But the silver player is about to place a 2nd game piece on it, which will foreclose it",
         "Remember, game pieces from both players count towards the total limit!",
+        "",
         "Monopolizing a property builds a hotel on that property and stop paying rent to the opposing player",
         " ",
         " ",
@@ -99,15 +103,13 @@ public class TutorialManager : MonoBehaviour
     public Text infoTwo;
 
     public Sprite[] avatars;
-
     public int turnNumber = 1;
-
     public int messageNumber = 0;
-
     public GameObject tutorialPanel;
 
     public NodeController[] tutorialNodes;
     public BranchController[] tutorialBranches;
+    public Square[] tutorialTiles;
 
     public Sprite tutorialSprite;
     public Sprite tutorialBranchSprite;
@@ -344,6 +346,19 @@ public class TutorialManager : MonoBehaviour
                 sprite = tutorialBranches[8].GetComponent<SpriteRenderer>();
                 sprite.sprite = tutorialBranchSprite;
                 tutorialBranches[8].ToggleTrigger();
+                sprite = tutorialBranches[9].GetComponent<SpriteRenderer>();
+                sprite.sprite = tutorialBranchSprite;
+                tutorialBranches[9].ToggleTrigger();
+            }
+            else if(messageNumber == 23)
+            {
+                tutorialTiles[0].squareState.resourceState = SquareStatus.Blocked;
+                gameController.UpdateGameBoard();
+                boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
+                GameInformation.currentPlayer = "AI";
+                gameController.FlipColors();
+                gameController.CollectCurrentPlayerResources();
+                playerResourcesManager.UpdateBothPlayersResources();
             }
         }
         else
