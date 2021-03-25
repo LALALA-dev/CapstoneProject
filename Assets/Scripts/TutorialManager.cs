@@ -324,6 +324,37 @@ public class TutorialManager : MonoBehaviour
                 gameController.CollectCurrentPlayerResources();
                 playerResourcesManager.UpdateBothPlayersResources();
             }
+            else if (messageNumber == 24)
+            {
+                ClaimBranch(10, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
+                ClaimBranch(11, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
+                GameInformation.playerTwoResources[0]--;
+                GameInformation.playerTwoResources[0]--;
+                GameInformation.playerTwoResources[1]--;
+                GameInformation.playerTwoResources[1]--;
+                playerResourcesManager.UpdateBothPlayersResources();
+            }
+            else if (messageNumber == 25)
+            {
+                tutorialTiles[1].squareState.resourceState = SquareStatus.Captured;
+                tutorialTiles[1].squareState.ownerColor = PlayerColor.Gold;
+                gameController.UpdateGameBoard();
+                boardManager.DetectNewBlockCaptures(gameController.getGameBoard().squares);
+                GameInformation.currentPlayer = "HUMAN";
+                gameController.FlipColors();
+                gameController.CollectCurrentPlayerResources();
+                playerResourcesManager.UpdateBothPlayersResources();
+                HighlightBranch(12);
+            }
+            else if (messageNumber == 26)
+            {
+                tutorialTiles[0].squareState.resourceState = SquareStatus.Captured;
+                tutorialTiles[0].squareState.ownerColor = PlayerColor.Silver;
+                tutorialTiles[2].squareState.resourceState = SquareStatus.Captured;
+                tutorialTiles[2].squareState.ownerColor = PlayerColor.Silver;
+                gameController.UpdateGameBoard();
+                boardManager.DetectNewBlockCaptures(gameController.getGameBoard().squares);
+            }
         }
         else
         {
