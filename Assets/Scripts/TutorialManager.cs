@@ -53,8 +53,10 @@ public class TutorialManager : MonoBehaviour
         "Now you have the rent required to build 2 more game pieces",
         "Place game piece on the highlighted street corner",
         "The goal of Nodopoly is to be the first to 10 points",
-        "1 point is rewared for each game piece placed and monopolized property. 2 points are rewared for having the longest chain of roads",
-        "All 7 of the Silver player's roads are connected... While the Gold player has 9 roads placed, but not all connected",
+        "1 point is rewared for each game piece placed and monopolized property. 2 points are rewarded for having the longest chain of roads",
+        "All 6 of the Silver player's roads are connected... While the Gold player has 8 roads placed, but not all connected",
+        "Place a game on the highlighted corner",
+        ""
     };
     private string[] infoTwoMessages = new string[]
     {
@@ -89,9 +91,11 @@ public class TutorialManager : MonoBehaviour
         " ",
         " ",
         "",
-        "Go to the info screen to see a score rules",
+        "",
         " ",
-        "This makes the Gold player's longest network 5; and therefore, Silver has the longest road network because 7 > 5",
+        "This makes the Gold player's longest network 5; and therefore, Silver has the longest road network because 6 > 5",
+        "Finishing this turn will get you a score a 10",
+        ""
     };
 
 
@@ -329,7 +333,7 @@ public class TutorialManager : MonoBehaviour
             {
                 arrowOne.EnableArrow(-3.4f, 2.66f, 2.7f, -4.35f, 0, 0, -25.5f, .001f);
             }
-            else if(messageNumber == 21)
+            else if(messageNumber == 22)
             {
                 arrowOne.DisableArrow();
                 goBtn.interactable = true;
@@ -432,6 +436,37 @@ public class TutorialManager : MonoBehaviour
             {
                 arrowOne.DisableArrow();
                 arrowTwo.DisableArrow();
+                GameInformation.currentPlayer = "AI";
+                currentPlayerMessage.text = "Opponent's Move";
+                gameController.FlipColors();
+                gameController.CollectCurrentPlayerResources();
+                playerResourcesManager.UpdateBothPlayersResources();
+                gameController.UpdateScores();
+                playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
+                playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
+            }
+            else if (messageNumber == 34)
+            {
+                HighlightNode(7);
+                GameInformation.currentPlayer = "HUMAN";
+                currentPlayerMessage.text = "Your Move";
+                gameController.FlipColors();
+                gameController.CollectCurrentPlayerResources();
+                playerResourcesManager.UpdateBothPlayersResources();
+
+                gameController.UpdateScores();
+
+                playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
+                playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
+            }
+            else if(messageNumber == 35)
+            {
+                gameController.UpdateScores();
+
+                playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
+                playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
+
+                GameInformation.gameOver = true;
             }
         }
         else

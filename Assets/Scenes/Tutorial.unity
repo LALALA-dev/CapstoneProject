@@ -13413,6 +13413,10 @@ PrefabInstance:
       propertyPath: playerTwoScore
       value: 
       objectReference: {fileID: 304970665}
+    - target: {fileID: 8746113932800106364, guid: 81f7ecb7e37051e42ad7e375b7eb2671, type: 3}
+      propertyPath: currentPlayerMessage
+      value: 
+      objectReference: {fileID: 1175857107}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 81f7ecb7e37051e42ad7e375b7eb2671, type: 3}
 --- !u!1001 &5456678409887937905
@@ -13805,6 +13809,10 @@ PrefabInstance:
       propertyPath: tutorialNodes.Array.data[7]
       value: 
       objectReference: {fileID: 1221021224}
+    - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
+      propertyPath: tutorialNodes.Array.data[8]
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
       propertyPath: tutorialTiles.Array.data[0]
       value: 
