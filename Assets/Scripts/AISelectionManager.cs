@@ -4,10 +4,16 @@ using UnityEngine;
 
 public class AISelectionManager : MonoBehaviour
 {
-
     public GameObject selector;
 
     public GameObject[] avatars;
+
+    private void Start()
+    {
+        GameInformation.ownAvatar = "CAR";
+        GameInformation.playerOneAvatar = "CAR";
+        GameInformation.playerTwoAvatar = "WHEELBARREL";
+    }
 
     public void OnGoSelect()
     {

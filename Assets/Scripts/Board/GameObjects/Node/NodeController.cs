@@ -62,7 +62,7 @@ public class NodeController : MonoBehaviour
                     playerTwoSprite = playerAvatars[9];
                     break;
                 default:
-                    playerTwoSprite = playerAvatars[4];
+                    playerTwoSprite = playerAvatars[9];
                     break;
             }
     }
