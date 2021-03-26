@@ -14,14 +14,23 @@ public class ArrowController : MonoBehaviour
 
     public float Speed = 5f;
 
+    private bool northBound = false;
     void Start()
     {
         gameObject.SetActive(false);
     }
 
-    private void Update()
+    // Update is called once per frame
+    void Update()
     {
-        // gameObject.transform.position = new Vector3(gameObject.transform.position.x + Speed, gameObject.transform.position.y + Speed);
+        //if ((transform.position.x <= 10))
+        //{
+        //    transform.position = new Vector3(transform.position.x - 1f, transform.position.y);
+        //}
+        //else if (transform.position.x >= 0)
+        //{
+        //    transform.position = new Vector3(transform.position.x + 1f, transform.position.y);
+        //}
     }
 
     public void EnableArrow(float sX, float sY, float mY, float mX, float rX, float rY, float rZ, float speed)
