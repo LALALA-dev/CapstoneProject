@@ -119,8 +119,7 @@ public class TutorialManager : MonoBehaviour
     public BranchController[] tutorialBranches;
     public Square[] tutorialTiles;
 
-    public ArrowController arrowOne;
-    public ArrowController arrowTwo;
+    public ArrowController[] arrows;
 
     public Sprite tutorialSprite;
     public Sprite tutorialBranchSprite;
@@ -260,16 +259,16 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 9)
             {
-                arrowOne.EnableArrow(-3.0f, 2.0f, 2.7f, -4.35f, 0, 0, -25.5f, .001f);
+                arrows[0].gameObject.SetActive(true);
             }
             else if(messageNumber == 10)
             {
-                arrowOne.DisableArrow();
-                arrowTwo.EnableArrow(-4.44f, -2.46f, 2.7f, -4.35f, 0, 0, 42.779f, .001f);
+                arrows[0].gameObject.SetActive(false);
+                arrows[1].gameObject.SetActive(true);
             }
             else if (messageNumber == 11)
             {
-                arrowTwo.DisableArrow();
+                arrows[1].gameObject.SetActive(false);
             }
             else if (messageNumber == 13)
             {
@@ -336,11 +335,11 @@ public class TutorialManager : MonoBehaviour
             }
             else if(messageNumber == 20)
             {
-                arrowOne.EnableArrow(-3.4f, 2.66f, 2.7f, -4.35f, 0, 0, -25.5f, .001f);
+                //arrows[0]
             }
             else if(messageNumber == 22)
             {
-                arrowOne.DisableArrow();
+                //arrowOne.DisableArrow();
                 goBtn.interactable = true;
             }
             else if(messageNumber == 23)
@@ -427,8 +426,8 @@ public class TutorialManager : MonoBehaviour
                 ClaimNode(6, PlayerColor.Silver, tutorialNodes[0].playerOneSprite);
                 forwardBtn.interactable = true;
                 goBtn.interactable = false;
-                arrowOne.EnableArrow(-5.5f, -3.75f, 2.7f, -4.35f, 0, 0, 200f, .001f);
-                arrowTwo.EnableArrow(5.5f, -3.75f, 2.7f, -4.35f, 0, 0, -20f, .001f);
+                //arrowOne.EnableArrow(-5.5f, -3.75f, 2.7f, -4.35f, 0, 0, 200f, .001f);
+                //arrowTwo.EnableArrow(5.5f, -3.75f, 2.7f, -4.35f, 0, 0, -20f, .001f);
 
                 gameController.UpdateScores();
 
@@ -437,13 +436,13 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 32)
             {
-                arrowOne.DisableArrow();
-                arrowTwo.DisableArrow();
+                //arrowOne.DisableArrow();
+                //arrowTwo.DisableArrow();
             }
             else if (messageNumber == 33)
             {
-                arrowOne.DisableArrow();
-                arrowTwo.DisableArrow();
+                //arrowOne.DisableArrow();
+                //arrowTwo.DisableArrow();
                 GameInformation.currentPlayer = "AI";
                 currentPlayerMessage.text = "Opponent's Move";
                 gameController.FlipColors();

@@ -14,16 +14,6 @@ public class ArrowController : MonoBehaviour
 
     public float Speed = 5f;
 
-    public void EnableArrow(float sX, float sY, float mY, float mX, float rX, float rY, float rZ, float speed)
-    {
-        gameObject.SetActive(true);
-        // MaxPostitionX = mX;
-        // MaxPostitionY = mY;
-        // transform.position = new Vector3(sX, sY);
-        // transform.eulerAngles = new Vector3(0, 0, rZ);
-        // Speed = speed;
-    }
-
     public void DisableArrow()
     {
         gameObject.SetActive(false);
