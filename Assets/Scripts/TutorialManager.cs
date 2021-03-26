@@ -196,11 +196,16 @@ public class TutorialManager : MonoBehaviour
             else if(messageNumber == 4)
             {
                 ClaimNode(0, PlayerColor.Silver, avatars[0]);
+                GameInformation.openingMoveNodeSet = true;
                 HighlightBranch(0);
                 goBtn.interactable = true;
+                forwardBtn.interactable = false;
             }
             else if(messageNumber == 5)
             {
+                goBtn.interactable = false;
+                forwardBtn.interactable = true;
+
                 currentPlayerMessage.text = "Opponent's Move";
                 goBtn.interactable = false;
                 ClaimBranch(0, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
@@ -371,14 +376,14 @@ public class TutorialManager : MonoBehaviour
                 tutorialTiles[1].squareState.ownerColor = PlayerColor.Gold;
                 gameController.UpdateGameBoard();
                 boardManager.DetectNewBlockCaptures(gameController.getGameBoard().squares);
+                goBtn.interactable = true;
+                forwardBtn.interactable = false;
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
                 gameController.FlipColors();
                 gameController.CollectCurrentPlayerResources();
                 playerResourcesManager.UpdateBothPlayersResources();
-
                 gameController.UpdateScores();
-
                 playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
                 playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
 
@@ -386,6 +391,8 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 26)
             {
+                goBtn.interactable = false;
+                forwardBtn.interactable = true;
                 ClaimBranch(12, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
                 tutorialTiles[0].squareState.resourceState = SquareStatus.Captured;
                 tutorialTiles[0].squareState.ownerColor = PlayerColor.Silver;
