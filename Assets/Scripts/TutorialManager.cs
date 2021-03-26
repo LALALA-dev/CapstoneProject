@@ -51,10 +51,12 @@ public class TutorialManager : MonoBehaviour
         "If you don't have the right mix of rent, you can trade for it",
         "Once per turn, you may trade any 3 types of rent for one of another color",
         "Now you have the rent required to build 2 more game pieces",
-        "Place game pieces on the highlighted street corners",
+        "Place game piece on the highlighted street corner",
         "The goal of Nodopoly is to be the first to 10 points",
-        "1 point is rewared for each game piece placed and monopolized property. 2 points are rewared for having the longest chain of roads",
-        "All 7 of the Silver player's roads are connected... While the Gold player has 9 roads placed, but not all connected",
+        "1 point is rewared for each game piece placed and monopolized property. 2 points are rewarded for having the longest chain of roads",
+        "All 6 of the Silver player's roads are connected... While the Gold player has 8 roads placed, but not all connected",
+        "Place a game on the highlighted corner",
+        ""
     };
     private string[] infoTwoMessages = new string[]
     {
@@ -89,9 +91,11 @@ public class TutorialManager : MonoBehaviour
         " ",
         " ",
         "",
-        "Go to the info screen to see a score rules",
+        "",
         " ",
-        "This makes the Gold player's longest network 5; and therefore, Silver has the longest road network because 7 > 5",
+        "This makes the Gold player's longest network 5; and therefore, Silver has the longest road network because 6 > 5",
+        "Finishing this turn will get you a score a 10",
+        ""
     };
 
 
@@ -109,6 +113,7 @@ public class TutorialManager : MonoBehaviour
     public Button tradeBtn;
     public Button infoBtn;
     public Button forwardBtn;
+    public Button[] tradingButtons;
 
     public NodeController[] tutorialNodes;
     public BranchController[] tutorialBranches;
@@ -177,6 +182,7 @@ public class TutorialManager : MonoBehaviour
     public void OnForwardClick()
     {
         messageNumber++;
+        Debug.Log(messageNumber);
         if (messageNumber < infoOneMessages.Length)
         {
             infoOne.text = infoOneMessages[messageNumber];
@@ -190,11 +196,16 @@ public class TutorialManager : MonoBehaviour
             else if(messageNumber == 4)
             {
                 ClaimNode(0, PlayerColor.Silver, avatars[0]);
+                GameInformation.openingMoveNodeSet = true;
                 HighlightBranch(0);
                 goBtn.interactable = true;
+                forwardBtn.interactable = false;
             }
             else if(messageNumber == 5)
             {
+                goBtn.interactable = false;
+                forwardBtn.interactable = true;
+
                 currentPlayerMessage.text = "Opponent's Move";
                 goBtn.interactable = false;
                 ClaimBranch(0, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
@@ -249,11 +260,16 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 9)
             {
-                arrowOne.EnableArrow(3.0f, 2.0f, 2.7f, -4.35f, 0, 0, -25.5f, .001f);
+                arrowOne.EnableArrow(-3.0f, 2.0f, 2.7f, -4.35f, 0, 0, -25.5f, .001f);
             }
             else if(messageNumber == 10)
             {
                 arrowOne.DisableArrow();
+                arrowTwo.EnableArrow(-4.44f, -2.46f, 2.7f, -4.35f, 0, 0, 42.779f, .001f);
+            }
+            else if (messageNumber == 11)
+            {
+                arrowTwo.DisableArrow();
             }
             else if (messageNumber == 13)
             {
@@ -318,8 +334,13 @@ public class TutorialManager : MonoBehaviour
                 GameInformation.currentRoundPlacedBranches.Clear();
                 GameInformation.currentRoundPlacedNodes.Clear();
             }
+            else if(messageNumber == 20)
+            {
+                arrowOne.EnableArrow(-3.4f, 2.66f, 2.7f, -4.35f, 0, 0, -25.5f, .001f);
+            }
             else if(messageNumber == 22)
             {
+                arrowOne.DisableArrow();
                 goBtn.interactable = true;
             }
             else if(messageNumber == 23)
@@ -355,14 +376,14 @@ public class TutorialManager : MonoBehaviour
                 tutorialTiles[1].squareState.ownerColor = PlayerColor.Gold;
                 gameController.UpdateGameBoard();
                 boardManager.DetectNewBlockCaptures(gameController.getGameBoard().squares);
+                goBtn.interactable = true;
+                forwardBtn.interactable = false;
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
                 gameController.FlipColors();
                 gameController.CollectCurrentPlayerResources();
                 playerResourcesManager.UpdateBothPlayersResources();
-
                 gameController.UpdateScores();
-
                 playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
                 playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
 
@@ -370,6 +391,9 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 26)
             {
+                goBtn.interactable = false;
+                forwardBtn.interactable = true;
+                ClaimBranch(12, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
                 tutorialTiles[0].squareState.resourceState = SquareStatus.Captured;
                 tutorialTiles[0].squareState.ownerColor = PlayerColor.Silver;
                 tutorialTiles[2].squareState.resourceState = SquareStatus.Captured;
@@ -384,7 +408,73 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 28)
             {
-                
+                for (int i = 0; i < tradingButtons.Length; i++)
+                    tradingButtons[i].interactable = false;
+            }
+            else if(messageNumber == 29)
+            {
+                tradeBtn.interactable = false;
+                forwardBtn.interactable = true;
+            }
+            else if (messageNumber == 30)
+            {
+                HighlightNode(6);
+                forwardBtn.interactable = false;
+                goBtn.interactable = true;
+            }
+            else if (messageNumber == 31)
+            {
+                ClaimNode(6, PlayerColor.Silver, tutorialNodes[0].playerOneSprite);
+                forwardBtn.interactable = true;
+                goBtn.interactable = false;
+                arrowOne.EnableArrow(-5.5f, -3.75f, 2.7f, -4.35f, 0, 0, 200f, .001f);
+                arrowTwo.EnableArrow(5.5f, -3.75f, 2.7f, -4.35f, 0, 0, -20f, .001f);
+
+                gameController.UpdateScores();
+
+                playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
+                playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
+            }
+            else if (messageNumber == 32)
+            {
+                arrowOne.DisableArrow();
+                arrowTwo.DisableArrow();
+            }
+            else if (messageNumber == 33)
+            {
+                arrowOne.DisableArrow();
+                arrowTwo.DisableArrow();
+                GameInformation.currentPlayer = "AI";
+                currentPlayerMessage.text = "Opponent's Move";
+                gameController.FlipColors();
+                gameController.CollectCurrentPlayerResources();
+                playerResourcesManager.UpdateBothPlayersResources();
+                gameController.UpdateScores();
+                playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
+                playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
+            }
+            else if (messageNumber == 34)
+            {
+                HighlightNode(7);
+                GameInformation.currentPlayer = "HUMAN";
+                currentPlayerMessage.text = "Your Move";
+                gameController.FlipColors();
+                gameController.CollectCurrentPlayerResources();
+                playerResourcesManager.UpdateBothPlayersResources();
+
+                gameController.UpdateScores();
+
+                playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
+                playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
+            }
+            else if(messageNumber == 35)
+            {
+                ClaimNode(7, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
+                gameController.UpdateScores();
+                playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
+                playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
+
+                GameInformation.gameOver = true;
             }
         }
         else
