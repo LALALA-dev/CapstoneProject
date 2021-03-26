@@ -462,8 +462,8 @@ public class TutorialManager : MonoBehaviour
             }
             else if(messageNumber == 35)
             {
+                ClaimNode(7, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
                 gameController.UpdateScores();
-
                 playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
                 playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
 
