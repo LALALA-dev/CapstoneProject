@@ -70,4 +70,6 @@ public class GameInformation
     public static bool needToUpdateOpponentsResources = false;
 
     public static bool needToSyncAvatars = false;
+
+    public static bool firstPlayComplete = false;
 }

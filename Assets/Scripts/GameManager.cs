@@ -457,6 +457,8 @@ public class GameManager : MonoBehaviour
                     gameController.FlipColors();
                     gameController.CollectCurrentPlayerResources();
                     gameController.UpdateScores();
+                    playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
+                    playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
                     playerResourcesManager.UpdateBothPlayersResources();
                 }
             }

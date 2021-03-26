@@ -28,18 +28,37 @@ public class SceneLoader : MonoBehaviour
             }
         }
         GameController.Destroy();
-        GameInformation.gameOver = false;
-        GameInformation.openingSequence = true;
-        GameInformation.currentPlayer = "HUMAN";
+        GameInformation.roomName = "StandardRoom";
+        GameInformation.networkGameType = NetworkGameType.Public;
         GameInformation.playerIsHost = true;
-        GameInformation.playerOneScore = 0;
-        GameInformation.playerTwoScore = 0;
+        GameInformation.gameType = 'A';
+        GameInformation.openingSequence = true;
+        GameInformation.openingMoveNodeSet = false;
+        GameInformation.openingMoveBranchSet = false;
+        GameInformation.openingNodeId = 0;
+        GameInformation.openingBranchId = 0;
         GameInformation.playerOneResources = new int[4] { 0, 0, 0, 0 };
         GameInformation.playerTwoResources = new int[4] { 0, 0, 0, 0 };
-        GameInformation.openingMoveBranchSet = false;
-        GameInformation.openingMoveNodeSet = false;
-        GameInformation.gameType = 'A';
+        GameInformation.maxTradeResources = new int[4] { 0, 0, 0, 0 };
+        GameInformation.resourceTrade = false;
+        GameInformation.playerOneScore = 0;
+        GameInformation.playerTwoScore = 0;
+        GameInformation.gameOver = false;
+        GameInformation.currentPlayer = "HUMAN";
+        GameInformation.humanMoveFinished = false;
+        GameInformation.tradeHasBeenMade = false;
         GameInformation.HumanNetworkProtocol = false;
+        GameInformation.currentRoundPlacedNodes = new List<int>();
+        GameInformation.currentRoundPlacedBranches = new List<int>();
+        GameInformation.renderClientBoard = false;
+        GameInformation.newNetworkMoveSet = false;
+        GameInformation.ownAvatar = "CAR";
+        GameInformation.playerOneAvatar = "CAR";
+        GameInformation.playerTwoAvatar = "WHEELBARREL";
+        GameInformation.needToSyncGameVariables = false;
+        GameInformation.needToUpdateOpponentsResources = false;
+        GameInformation.needToSyncAvatars = false;
+
         SceneManager.LoadScene("MainMenu");
     }
 
