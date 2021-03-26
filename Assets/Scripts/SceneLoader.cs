@@ -34,6 +34,8 @@ public class SceneLoader : MonoBehaviour
         GameInformation.playerIsHost = true;
         GameInformation.playerOneScore = 0;
         GameInformation.playerTwoScore = 0;
+        GameInformation.playerOneNetwork = 0;
+        GameInformation.playerTwoNetwork = 0;
         GameInformation.playerOneResources = new int[4] { 0, 0, 0, 0 };
         GameInformation.playerTwoResources = new int[4] { 0, 0, 0, 0 };
         GameInformation.openingMoveBranchSet = false;

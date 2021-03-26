@@ -41,6 +41,10 @@ public class GameInformation
 
     public static int playerTwoScore = 0;
 
+    public static int playerOneNetwork = 0;
+
+    public static int playerTwoNetwork = 0;
+
     public static bool gameOver = false;
 
     public static string currentPlayer = "HUMAN";
