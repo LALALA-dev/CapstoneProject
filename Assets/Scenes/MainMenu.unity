@@ -1129,8 +1129,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db9150a4d19c2fe439c64f95ec3e1685, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  suggestionArrow: {fileID: 1618755094}
   tutorialPrompt: {fileID: 813473764}
+  suggestionArrow: {fileID: 1618755098}
 --- !u!1 &1560152808
 GameObject:
   m_ObjectHideFlags: 0
