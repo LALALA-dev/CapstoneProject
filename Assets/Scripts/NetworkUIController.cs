@@ -13,9 +13,13 @@ public class NetworkUIController : MonoBehaviour
     public GameObject[] avatars;
     public GameObject[] gameTypes;
 
+    public GameObject helpPanel;
+
     void Start()
     {
         GameInformation.gameType = 'N';
+
+        helpPanel.SetActive(false);
     }
 
     public void LeaveOnlineRoom()
@@ -73,5 +77,15 @@ public class NetworkUIController : MonoBehaviour
     {
         GameInformation.networkGameType = NetworkGameType.Private;
         gameTypeSelector.transform.position = new Vector3(gameTypeSelector.transform.position.x, gameTypes[2].transform.position.y);
+    }
+
+    public void OnHelpClick()
+    {
+        helpPanel.SetActive(true);  
+    }
+
+    public void OnHelpExitClick()
+    {
+        helpPanel.SetActive(false);
     }
 }

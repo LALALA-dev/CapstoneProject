@@ -96,8 +96,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         if (privateRoomNameField.text.Trim() != "" && privateRoomNameField.text.Trim().Length == 4)
         {
-            GameInformation.roomName = privateRoomNameField.text.Trim();
-            CancelButton.SetActive(false);
+            GameInformation.roomName = privateRoomNameField.text.Trim().Substring(0,4);
+            CancelButton.SetActive(true);
         }
         JoinPrivateRoom();
     }
@@ -179,10 +179,15 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public override void OnCreatedRoom()
     {
         connectMessage.gameObject.SetActive(false);
-        pinMessage.gameObject.SetActive(true);
         waitingForClientMessage.gameObject.SetActive(true);
-        HostPIN.gameObject.SetActive(true);
-        HostPIN.text = GameInformation.roomName;
+
+        if(GameInformation.networkGameType == NetworkGameType.Host)
+        {
+            pinMessage.gameObject.SetActive(true);
+            HostPIN.gameObject.SetActive(true);
+            HostPIN.text = GameInformation.roomName;
+        }
+            
         CancelButton.SetActive(true);
         GameInformation.currentPlayer = "HOST";
     }
