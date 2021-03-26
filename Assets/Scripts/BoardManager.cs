@@ -96,6 +96,7 @@ public class BoardManager : MonoBehaviour
     {
         SendMessageUpwards(message);
     }
+
     public void DetectNewBlockCaptures(Square[] squares)
     {
         Sprite[] captureImages;
@@ -109,19 +110,63 @@ public class BoardManager : MonoBehaviour
                 switch (square.squareState.resourceColor)
                 {
                     case SquareResourceColor.Red:
-                        spriteRenderers[square.squareState.location].sprite = captureImages[0];
+                        switch (square.squareState.resourceAmount)
+                        {
+                            case SquareResourceAmount.One:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[0];
+                                break;
+                            case SquareResourceAmount.Two:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[1];
+                                break;
+                            case SquareResourceAmount.Three:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[2];
+                                break;
+                        }
                         break;
                     case SquareResourceColor.Blue:
-                        spriteRenderers[square.squareState.location].sprite = captureImages[1];
+                        switch (square.squareState.resourceAmount)
+                        {
+                            case SquareResourceAmount.One:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[3];
+                                break;
+                            case SquareResourceAmount.Two:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[4];
+                                break;
+                            case SquareResourceAmount.Three:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[5];
+                                break;
+                        }
                         break;
                     case SquareResourceColor.Yellow:
-                        spriteRenderers[square.squareState.location].sprite = captureImages[2];
+                        switch (square.squareState.resourceAmount)
+                        {
+                            case SquareResourceAmount.One:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[6];
+                                break;
+                            case SquareResourceAmount.Two:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[7];
+                                break;
+                            case SquareResourceAmount.Three:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[8];
+                                break;
+                        }
                         break;
                     case SquareResourceColor.Green:
-                        spriteRenderers[square.squareState.location].sprite = captureImages[3];
+                        switch (square.squareState.resourceAmount)
+                        {
+                            case SquareResourceAmount.One:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[9];
+                                break;
+                            case SquareResourceAmount.Two:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[10];
+                                break;
+                            case SquareResourceAmount.Three:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[11];
+                                break;
+                        }
                         break;
                     default:
-                        spriteRenderers[square.squareState.location].sprite = captureImages[4];
+                        spriteRenderers[square.squareState.location].sprite = captureImages[12];
                         break;
 
                 }
@@ -137,19 +182,63 @@ public class BoardManager : MonoBehaviour
                 switch (square.squareState.resourceColor)
                 {
                     case SquareResourceColor.Red:
-                        spriteRenderers[square.squareState.location].sprite = captureImages[0];
+                        switch (square.squareState.resourceAmount)
+                        {
+                            case SquareResourceAmount.One:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[0];
+                                break;
+                            case SquareResourceAmount.Two:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[1];
+                                break;
+                            case SquareResourceAmount.Three:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[2];
+                                break;
+                        }
                         break;
                     case SquareResourceColor.Blue:
-                        spriteRenderers[square.squareState.location].sprite = captureImages[1];
+                        switch (square.squareState.resourceAmount)
+                        {
+                            case SquareResourceAmount.One:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[3];
+                                break;
+                            case SquareResourceAmount.Two:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[4];
+                                break;
+                            case SquareResourceAmount.Three:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[5];
+                                break;
+                        }
                         break;
                     case SquareResourceColor.Yellow:
-                        spriteRenderers[square.squareState.location].sprite = captureImages[2];
+                        switch (square.squareState.resourceAmount)
+                        {
+                            case SquareResourceAmount.One:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[6];
+                                break;
+                            case SquareResourceAmount.Two:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[7];
+                                break;
+                            case SquareResourceAmount.Three:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[8];
+                                break;
+                        }
                         break;
                     case SquareResourceColor.Green:
-                        spriteRenderers[square.squareState.location].sprite = captureImages[3];
+                        switch (square.squareState.resourceAmount)
+                        {
+                            case SquareResourceAmount.One:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[9];
+                                break;
+                            case SquareResourceAmount.Two:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[10];
+                                break;
+                            case SquareResourceAmount.Three:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[11];
+                                break;
+                        }
                         break;
                     default:
-                        spriteRenderers[square.squareState.location].sprite = captureImages[4];
+                        spriteRenderers[square.squareState.location].sprite = captureImages[12];
                         break;
 
                 }
