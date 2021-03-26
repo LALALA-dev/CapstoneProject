@@ -51,7 +51,7 @@ public class TutorialManager : MonoBehaviour
         "If you don't have the right mix of rent, you can trade for it",
         "Once per turn, you may trade any 3 types of rent for one of another color",
         "Now you have the rent required to build 2 more game pieces",
-        "Place game pieces on the highlighted street corners",
+        "Place game piece on the highlighted street corner",
         "The goal of Nodopoly is to be the first to 10 points",
         "1 point is rewared for each game piece placed and monopolized property. 2 points are rewared for having the longest chain of roads",
         "All 7 of the Silver player's roads are connected... While the Gold player has 9 roads placed, but not all connected",
@@ -109,6 +109,7 @@ public class TutorialManager : MonoBehaviour
     public Button tradeBtn;
     public Button infoBtn;
     public Button forwardBtn;
+    public Button[] tradingButtons;
 
     public NodeController[] tutorialNodes;
     public BranchController[] tutorialBranches;
@@ -177,6 +178,7 @@ public class TutorialManager : MonoBehaviour
     public void OnForwardClick()
     {
         messageNumber++;
+        Debug.Log(messageNumber);
         if (messageNumber < infoOneMessages.Length)
         {
             infoOne.text = infoOneMessages[messageNumber];
@@ -249,11 +251,16 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 9)
             {
-                arrowOne.EnableArrow(3.0f, 2.0f, 2.7f, -4.35f, 0, 0, -25.5f, .001f);
+                arrowOne.EnableArrow(-3.0f, 2.0f, 2.7f, -4.35f, 0, 0, -25.5f, .001f);
             }
             else if(messageNumber == 10)
             {
                 arrowOne.DisableArrow();
+                arrowTwo.EnableArrow(-4.44f, -2.46f, 2.7f, -4.35f, 0, 0, 42.779f, .001f);
+            }
+            else if (messageNumber == 11)
+            {
+                arrowTwo.DisableArrow();
             }
             else if (messageNumber == 13)
             {
@@ -318,8 +325,13 @@ public class TutorialManager : MonoBehaviour
                 GameInformation.currentRoundPlacedBranches.Clear();
                 GameInformation.currentRoundPlacedNodes.Clear();
             }
-            else if(messageNumber == 22)
+            else if(messageNumber == 20)
             {
+                arrowOne.EnableArrow(-3.4f, 2.66f, 2.7f, -4.35f, 0, 0, -25.5f, .001f);
+            }
+            else if(messageNumber == 21)
+            {
+                arrowOne.DisableArrow();
                 goBtn.interactable = true;
             }
             else if(messageNumber == 23)
@@ -384,7 +396,42 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 28)
             {
-                
+                for (int i = 0; i < tradingButtons.Length; i++)
+                    tradingButtons[i].interactable = false;
+            }
+            else if(messageNumber == 29)
+            {
+                tradeBtn.interactable = false;
+                forwardBtn.interactable = true;
+            }
+            else if (messageNumber == 30)
+            {
+                HighlightNode(6);
+                forwardBtn.interactable = false;
+                goBtn.interactable = true;
+            }
+            else if (messageNumber == 31)
+            {
+                ClaimNode(6, PlayerColor.Silver, tutorialNodes[0].playerOneSprite);
+                forwardBtn.interactable = true;
+                goBtn.interactable = false;
+                arrowOne.EnableArrow(-5.5f, -3.75f, 2.7f, -4.35f, 0, 0, 200f, .001f);
+                arrowTwo.EnableArrow(5.5f, -3.75f, 2.7f, -4.35f, 0, 0, -20f, .001f);
+
+                gameController.UpdateScores();
+
+                playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
+                playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
+            }
+            else if (messageNumber == 32)
+            {
+                arrowOne.DisableArrow();
+                arrowTwo.DisableArrow();
+            }
+            else if (messageNumber == 33)
+            {
+                arrowOne.DisableArrow();
+                arrowTwo.DisableArrow();
             }
         }
         else
