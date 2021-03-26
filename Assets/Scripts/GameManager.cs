@@ -215,6 +215,13 @@ public class GameManager : MonoBehaviour
                     return;
                 }
             }
+            else if(GameInformation.playerIsHost && turnNumber == 5)
+            {
+                gameController.UpdateScores();
+
+                playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
+                playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
+            }
         }
 
         if(GameInformation.needToUpdateOpponentsResources)
