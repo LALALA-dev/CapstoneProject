@@ -7,23 +7,26 @@ public class ArrowController : MonoBehaviour
     private float StartingCoordinateX = 0.0f;
     private float StartingCoordinareY = 0.0f;
     private float MaxPostitionY = 0.0f;
-    private float MaxPostitionZ = 0.0f;
+    private float MaxPostitionX = 0.0f;
     private float RotationX = 0.0f;
     private float RotationY = 0.0f;
     private float RotationZ = 0.0f;
 
-    public float speedX = .001f;
-    public float speedY = .001f;
+    public float Speed = .001f;
 
     void Start()
     {
-        gameObject.SetActive(true);
-        EnableArrow();
+        gameObject.SetActive(false);
     }
 
-    public void EnableArrow()
+    public void EnableArrow(float sX, float sY, float mY, float mX, float rX, float rY, float rZ, float speed)
     {
         gameObject.SetActive(true);
+        MaxPostitionX = mX;
+        MaxPostitionY = mY;
+        gameObject.transform.position = new Vector3(sX, sY);
+        gameObject.transform.rotation = new Quaternion(rX, rY, rZ, 0);
+        Speed = speed;
         StartCoroutine(Move());
     }
 
@@ -35,9 +38,9 @@ public class ArrowController : MonoBehaviour
 
     IEnumerator Move()
     {
-        for (float ft = 1f; ft >= 0; ft -= 0.1f)
+        while(true)
         {
-            gameObject.transform.position = new Vector3(gameObject.transform.position.x + speedX, gameObject.transform.position.y + speedY);
+            gameObject.transform.position = new Vector3(gameObject.transform.position.x + Speed, gameObject.transform.position.y + Speed);
             yield return new WaitForSeconds(.15f);
         }
     }

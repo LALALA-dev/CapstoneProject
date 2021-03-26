@@ -109,12 +109,13 @@ public class TutorialManager : MonoBehaviour
     public Button tradeBtn;
     public Button infoBtn;
     public Button forwardBtn;
-    public GameObject arrowOne;
-    public GameObject arrowTwo;
 
     public NodeController[] tutorialNodes;
     public BranchController[] tutorialBranches;
     public Square[] tutorialTiles;
+
+    public ArrowController arrowOne;
+    public ArrowController arrowTwo;
 
     public Sprite tutorialSprite;
     public Sprite tutorialBranchSprite;
@@ -245,6 +246,14 @@ public class TutorialManager : MonoBehaviour
 
                 playerOneScore.text = "Score: 2";
                 playerTwoScore.text = "Score: 2";
+            }
+            else if (messageNumber == 9)
+            {
+                arrowOne.EnableArrow(3.0f, 2.0f, 2.7f, -4.35f, 0, 0, -25.5f, .001f);
+            }
+            else if(messageNumber == 10)
+            {
+                arrowOne.DisableArrow();
             }
             else if (messageNumber == 13)
             {
