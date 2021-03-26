@@ -386,6 +386,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 26)
             {
+                ClaimNode(12, PlayerColor.Gold, tutorialNodes[0].playerOneSprite);
                 tutorialTiles[0].squareState.resourceState = SquareStatus.Captured;
                 tutorialTiles[0].squareState.ownerColor = PlayerColor.Silver;
                 tutorialTiles[2].squareState.resourceState = SquareStatus.Captured;
