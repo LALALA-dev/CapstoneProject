@@ -138,6 +138,11 @@ public class TutorialManager : MonoBehaviour
         goBtn.interactable = false;
         tradeBtn.interactable = false;
         infoBtn.interactable = false;
+
+        for(int i = 0; i < arrows.Length; i++)
+        {
+            arrows[i].gameObject.SetActive(false);
+        }
     }
 
     void Start()
@@ -191,9 +196,16 @@ public class TutorialManager : MonoBehaviour
             {
                 tutorialPanel.SetActive(false);
                 HighlightNode(0);
+                arrows[0].gameObject.SetActive(true);
+                StartCoroutine(MoveForward(arrows[0]));
             }
             else if(messageNumber == 4)
             {
+                arrows[0].gameObject.SetActive(false);
+                arrows[2].gameObject.SetActive(true);
+                arrows[3].gameObject.SetActive(true);
+                StartCoroutine(MoveForward(arrows[2]));
+                StartCoroutine(MoveForward(arrows[3]));
                 ClaimNode(0, PlayerColor.Silver, avatars[0]);
                 GameInformation.openingMoveNodeSet = true;
                 HighlightBranch(0);
@@ -202,6 +214,8 @@ public class TutorialManager : MonoBehaviour
             }
             else if(messageNumber == 5)
             {
+                arrows[3].gameObject.SetActive(false);
+                arrows[2].gameObject.SetActive(false);
                 goBtn.interactable = false;
                 forwardBtn.interactable = true;
 
@@ -260,14 +274,18 @@ public class TutorialManager : MonoBehaviour
             else if (messageNumber == 9)
             {
                 arrows[0].gameObject.SetActive(true);
+                StartCoroutine(MoveForward(arrows[0]));
             }
             else if(messageNumber == 10)
             {
+                StopAllCoroutines();
                 arrows[0].gameObject.SetActive(false);
                 arrows[1].gameObject.SetActive(true);
+                StartCoroutine(MoveForward(arrows[1]));
             }
             else if (messageNumber == 11)
             {
+                StopAllCoroutines();
                 arrows[1].gameObject.SetActive(false);
             }
             else if (messageNumber == 13)
@@ -601,5 +619,27 @@ public class TutorialManager : MonoBehaviour
         tutorialBranches[branchIndex].branchEntity.branchState.branchColor = color;
         tutorialBranches[branchIndex].branchEntity.branchState.ownerColor = color;
          tutorialBranches[branchIndex].ToggleTrigger();
+    }
+
+    IEnumerator MoveForward(ArrowController arrow)
+    {
+        for (float ft = 1f; ft >= 0; ft -= 0.1f)
+        {
+            arrow.gameObject.transform.position = new Vector3(arrow.gameObject.transform.position.x + .1f, arrow.gameObject.transform.position.y);
+            yield return new WaitForSeconds(.1f);
+        }
+
+        StartCoroutine(MoveBackward(arrow));
+    }
+
+    IEnumerator MoveBackward(ArrowController arrow)
+    {
+        for (float ft = 1f; ft >= 0; ft -= 0.1f)
+        {
+            arrow.gameObject.transform.position = new Vector3(arrow.gameObject.transform.position.x - .1f, arrow.gameObject.transform.position.y);
+            yield return new WaitForSeconds(.1f);
+        }
+
+        StartCoroutine(MoveForward(arrow));
     }
 }
