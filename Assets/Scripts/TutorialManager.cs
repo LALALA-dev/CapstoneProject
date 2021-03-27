@@ -121,6 +121,9 @@ public class TutorialManager : MonoBehaviour
 
     public ArrowController[] arrows;
 
+    public GameObject topBG;
+    public GameObject bottomBG;
+
     public Sprite tutorialSprite;
     public Sprite tutorialBranchSprite;
 
@@ -201,6 +204,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if(messageNumber == 4)
             {
+                StopAllCoroutines();
                 arrows[0].gameObject.SetActive(false);
                 arrows[2].gameObject.SetActive(true);
                 arrows[3].gameObject.SetActive(true);
@@ -214,6 +218,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if(messageNumber == 5)
             {
+                StopAllCoroutines();
                 arrows[3].gameObject.SetActive(false);
                 arrows[2].gameObject.SetActive(false);
                 goBtn.interactable = false;
@@ -353,15 +358,22 @@ public class TutorialManager : MonoBehaviour
             }
             else if(messageNumber == 20)
             {
-                //arrows[0]
+                arrows[4].gameObject.SetActive(true);
+                StartCoroutine(MoveForward(arrows[4]));
+            }
+            else if(messageNumber == 21)
+            {
+                StopAllCoroutines();
+                arrows[4].gameObject.SetActive(false);
             }
             else if(messageNumber == 22)
             {
-                //arrowOne.DisableArrow();
                 goBtn.interactable = true;
+                forwardBtn.interactable = false;
             }
             else if(messageNumber == 23)
             {
+                forwardBtn.interactable = true;
                 goBtn.interactable = false;
                 tutorialTiles[0].squareState.resourceState = SquareStatus.Blocked;
                 gameController.UpdateGameBoard();
@@ -379,6 +391,8 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 24)
             {
+                arrows[5].gameObject.SetActive(true);
+                StartCoroutine(MoveForward(arrows[5]));
                 ClaimBranch(10, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
                 ClaimBranch(11, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
                 GameInformation.playerTwoResources[0]--;
@@ -389,6 +403,10 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 25)
             {
+                StopAllCoroutines();
+                arrows[5].gameObject.SetActive(false);
+                arrows[6].gameObject.SetActive(true);
+                StartCoroutine(MoveUp(arrows[6]));
                 tutorialTiles[1].squareState.resourceState = SquareStatus.Captured;
                 tutorialTiles[1].squareState.ownerColor = PlayerColor.Gold;
                 gameController.UpdateGameBoard();
@@ -408,6 +426,8 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 26)
             {
+                StopAllCoroutines();
+                arrows[6].gameObject.SetActive(false);
                 goBtn.interactable = false;
                 forwardBtn.interactable = true;
                 ClaimBranch(12, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
@@ -422,9 +442,13 @@ public class TutorialManager : MonoBehaviour
             {
                 tradeBtn.interactable = true;
                 forwardBtn.interactable = false;
+                arrows[7].gameObject.SetActive(true);
+                StartCoroutine(MoveDown(arrows[7]));
             }
             else if (messageNumber == 28)
             {
+                StopAllCoroutines();
+                arrows[7].gameObject.SetActive(false);
                 for (int i = 0; i < tradingButtons.Length; i++)
                     tradingButtons[i].interactable = false;
             }
@@ -444,8 +468,8 @@ public class TutorialManager : MonoBehaviour
                 ClaimNode(6, PlayerColor.Silver, tutorialNodes[0].playerOneSprite);
                 forwardBtn.interactable = true;
                 goBtn.interactable = false;
-                //arrowOne.EnableArrow(-5.5f, -3.75f, 2.7f, -4.35f, 0, 0, 200f, .001f);
-                //arrowTwo.EnableArrow(5.5f, -3.75f, 2.7f, -4.35f, 0, 0, -20f, .001f);
+                arrows[8].gameObject.SetActive(true);
+                arrows[9].gameObject.SetActive(true);
 
                 gameController.UpdateScores();
 
@@ -454,13 +478,11 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 32)
             {
-                //arrowOne.DisableArrow();
-                //arrowTwo.DisableArrow();
+                arrows[8].gameObject.SetActive(false);
+                arrows[9].gameObject.SetActive(false);
             }
             else if (messageNumber == 33)
             {
-                //arrowOne.DisableArrow();
-                //arrowTwo.DisableArrow();
                 GameInformation.currentPlayer = "AI";
                 currentPlayerMessage.text = "Opponent's Move";
                 gameController.FlipColors();
@@ -472,6 +494,8 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 34)
             {
+                forwardBtn.interactable = false;
+                goBtn.interactable = true;
                 HighlightNode(7);
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
@@ -486,6 +510,11 @@ public class TutorialManager : MonoBehaviour
             }
             else if(messageNumber == 35)
             {
+                forwardBtn.interactable = true;
+                goBtn.interactable = false;
+                topBG.SetActive(false);
+                bottomBG.SetActive(false);
+
                 ClaimNode(7, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
                 gameController.UpdateScores();
                 playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
@@ -641,5 +670,27 @@ public class TutorialManager : MonoBehaviour
         }
 
         StartCoroutine(MoveForward(arrow));
+    }
+
+    IEnumerator MoveUp(ArrowController arrow)
+    {
+        for (float ft = 1f; ft >= 0; ft -= 0.1f)
+        {
+            arrow.gameObject.transform.position = new Vector3(arrow.gameObject.transform.position.x, arrow.gameObject.transform.position.y + .1f);
+            yield return new WaitForSeconds(.1f);
+        }
+
+        StartCoroutine(MoveDown(arrow));
+    }
+
+    IEnumerator MoveDown(ArrowController arrow)
+    {
+        for (float ft = 1f; ft >= 0; ft -= 0.1f)
+        {
+            arrow.gameObject.transform.position = new Vector3(arrow.gameObject.transform.position.x, arrow.gameObject.transform.position.y- .1f);
+            yield return new WaitForSeconds(.1f);
+        }
+
+        StartCoroutine(MoveUp(arrow));
     }
 }
