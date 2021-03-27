@@ -95,7 +95,7 @@ public class GameManager : MonoBehaviour
             playerResourcesManager.UpdateBothPlayersResources();
         }
 
-        if (GameInformation.gameType == 'N' && PhotonNetwork.CurrentRoom.PlayerCount < 2)
+        if (GameInformation.gameType == 'N' && PhotonNetwork.CurrentRoom.PlayerCount < 2 && !GameInformation.gameOver)
         {
             playerLeftErrorMessage.SetActive(true);
             CompleteTurnBtn.SetActive(false);
@@ -615,7 +615,21 @@ public class GameManager : MonoBehaviour
 
     public void ToogleTriggers()
     {
+        FlipTradeAndCompleteTurnActive();
         BroadcastMessage("ToggleNodeBranchTriggers");
+    }
+
+    public void FlipTradeAndCompleteTurnActive()
+    {
+        if (TradeBtn.GetComponent<Button>().interactable)
+            TradeBtn.GetComponent<Button>().interactable = false;
+        else
+            TradeBtn.GetComponent<Button>().interactable = true;
+        
+        if (CompleteTurnBtn.GetComponent<Button>().interactable)
+            CompleteTurnBtn.GetComponent<Button>().interactable = false;
+        else
+            CompleteTurnBtn.GetComponent<Button>().interactable = true;
     }
 
     public void EndTurnButtonClick()
@@ -672,22 +686,22 @@ public class GameManager : MonoBehaviour
         switch (GameInformation.playerTwoAvatar)
         {
             case "HAT":
-                playerTwoAvatar.sprite = avatars[0];
+                playerTwoAvatar.sprite = avatars[5];
                 break;
             case "BATTLESHIP":
-                playerTwoAvatar.sprite = avatars[1];
+                playerTwoAvatar.sprite = avatars[6];
                 break;
             case "CAR":
-                playerTwoAvatar.sprite = avatars[2];
+                playerTwoAvatar.sprite = avatars[7];
                 break;
             case "THIMBLE":
-                playerTwoAvatar.sprite = avatars[3];
+                playerTwoAvatar.sprite = avatars[8];
                 break;
             case "WHEELBARREL":
-                playerTwoAvatar.sprite = avatars[4];
+                playerTwoAvatar.sprite = avatars[9];
                 break;
             default:
-                playerTwoAvatar.sprite = avatars[2];
+                playerTwoAvatar.sprite = avatars[9];
                 break;
         }
     }
