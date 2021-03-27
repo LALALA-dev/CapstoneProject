@@ -32,7 +32,7 @@ public class TutorialManager : MonoBehaviour
         "Every piece collects a rent from all non-foreclosed properties it touches, this is done at the start of every turn",
         "This game piece collects rent from 1 green, 1 red, and 1 yellow property",
         "And this game piece collects rent from 1 green, 1 yellow, and 1 blue property", // 10
-        "",
+        "Meaning that you've collected rent in the form of 2 green, 2 yellow, 1 blue, and 1 red for this turn",
         "Players use collected rent to build additional game pieces and roads",
         "Tap the street corner of the property to place a new game piece",
         "Now it's the gold player's turn, they recieve their rent from their properties",
@@ -51,30 +51,30 @@ public class TutorialManager : MonoBehaviour
         "If you don't have the right mix of rent, you can trade for it",
         "Once per turn, you may trade any 3 types of rent for one of another color",
         "Now you have the rent required to build 1 more game piece",
-        "Place game piece on the highlighted street corner", // 30
+        "Tap the highlighted street corner to build a game piece", // 30
         "The goal of Nodopoly is to be the first to 10 points",
         "1 point is rewarded for each game piece placed and monopolized property. 2 points are rewarded for having the longest chain of roads",
         "While the gold player has 7 roads placed, but not all connected. This means the silver player has the longest network because 6 > 5",
-        "Place a game on the highlighted corner",
+        "Tap the highlighted corner to build a game piece",
         "", // 35
-        "Click the Police Man to quit any game"
+        "Click the Police Man to quit any game, click the Question for in-game rule summary and score breakdown"
     };
     private string[] infoTwoMessages = new string[]
     {
         "Click the green arrow to proceed, click the red arrow to go back",
         "",
         "The first two rounds goes player 1 then player 2 twice, and then player 1 and it alternates",
-        "Place the game piece on the street corner",
-        "Place the road on the street to connect to your game piece, press GO to submit your move",
+        "Tap the highlighted street corner to build a game piece",
+        "Tap the highlighted street to build a road to connect to your game piece. Press GO to submit your move",
         "", // 5
         "...but after the first two moves, new placements must connect to an already established network",
         "They collect their rent and make their move, they complete the turn to pass it back to you",
         "The color of rent matches the color of the property where it came from",
         " ",
         " ", // 10
-        "Meaning that you've collected rent in the form of 2 green, 2 yellow, 1 blue, and 1 red for this turn",
+        "",
         "A road costs 1 red and 1 blue, while a game piece costs 2 yellow, and 2 green",
-        " ",
+        "Press Go to submit your move",
         " ",
         "And you may build additional roads without any game pieces on them", // 15
         "...and any unused rent are saved for future rounds",
@@ -97,7 +97,7 @@ public class TutorialManager : MonoBehaviour
         "The player with the longest road network will recieve this card",
         "Finishing this turn will get you a score a 10",
         "", // 35
-        "Click the Question for in-game rule summary and score breakdown"
+        "Click the green arrow to exit"
     };
 
 
@@ -129,6 +129,8 @@ public class TutorialManager : MonoBehaviour
 
     public Sprite tutorialSprite;
     public Sprite tutorialBranchSprite;
+    public Sprite highlightSilver;
+    public Sprite highlightGold;
 
     #region Setup
     private void Awake()
@@ -301,10 +303,14 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 13)
             {
+                forwardBtn.interactable = false;
+                goBtn.interactable = true;
                 HighlightNode(4);
             }
             else if (messageNumber == 14)
             {
+                forwardBtn.interactable = true;
+                goBtn.interactable = false;
                 ClaimNode(4, PlayerColor.Silver, tutorialNodes[0].playerOneSprite);
             }
             else if (messageNumber == 15)
@@ -498,9 +504,28 @@ public class TutorialManager : MonoBehaviour
             {
                 arrows[8].gameObject.SetActive(false);
                 arrows[9].gameObject.SetActive(false);
+                ClaimBranch(0, PlayerColor.Silver, highlightSilver);
+                ClaimBranch(3, PlayerColor.Silver, highlightSilver);
+                ClaimBranch(7, PlayerColor.Silver, highlightSilver);
+                ClaimBranch(8, PlayerColor.Silver, highlightSilver);
+                ClaimBranch(9, PlayerColor.Silver, highlightSilver);
+                ClaimBranch(12, PlayerColor.Silver, highlightSilver);
             }
             else if (messageNumber == 33)
             {
+                ClaimBranch(0, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
+                ClaimBranch(3, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
+                ClaimBranch(7, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
+                ClaimBranch(8, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
+                ClaimBranch(9, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
+                ClaimBranch(12, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
+                ClaimBranch(1, PlayerColor.Gold, highlightGold);
+                ClaimBranch(2, PlayerColor.Gold, highlightGold);
+                ClaimBranch(4, PlayerColor.Gold, highlightGold);
+                ClaimBranch(5, PlayerColor.Gold, highlightGold);
+                ClaimBranch(6, PlayerColor.Gold, highlightGold);
+                ClaimBranch(10, PlayerColor.Gold, highlightGold);
+                ClaimBranch(11, PlayerColor.Gold, highlightGold);
                 GameInformation.currentPlayer = "AI";
                 currentPlayerMessage.text = "Opponent's Move";
                 gameController.FlipColors();
@@ -512,6 +537,13 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 34)
             {
+                ClaimBranch(1, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
+                ClaimBranch(2, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
+                ClaimBranch(4, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
+                ClaimBranch(5, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
+                ClaimBranch(6, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
+                ClaimBranch(10, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
+                ClaimBranch(11, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
                 forwardBtn.interactable = false;
                 goBtn.interactable = true;
                 HighlightNode(7);
