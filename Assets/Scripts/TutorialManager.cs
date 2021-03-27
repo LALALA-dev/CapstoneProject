@@ -50,11 +50,11 @@ public class TutorialManager : MonoBehaviour
         "Once monopolized, opponents cannot build roads through that area",
         "If you don't have the right mix of rent, you can trade for it",
         "Once per turn, you may trade any 3 types of rent for one of another color",
-        "Now you have the rent required to build 2 more game pieces",
+        "Now you have the rent required to build 1 more game piece",
         "Place game piece on the highlighted street corner",
         "The goal of Nodopoly is to be the first to 10 points",
-        "1 point is rewared for each game piece placed and monopolized property. 2 points are rewarded for having the longest chain of roads",
-        "All 6 of the Silver player's roads are connected... While the Gold player has 8 roads placed, but not all connected",
+        "1 point is rewarded for each game piece placed and monopolized property. 2 points are rewarded for having the longest chain of roads",
+        "All 6 of the Silver player's roads are connected... While the Gold player has 7 roads placed, but not all connected",
         "Place a game on the highlighted corner",
         ""
     };
@@ -238,7 +238,8 @@ public class TutorialManager : MonoBehaviour
                 currentPlayerMessage.text = "Your Move";
                 GameInformation.openingMoveNodeSet = false;
                 GameInformation.openingMoveBranchSet = false;
-
+                forwardBtn.interactable = false;
+                goBtn.interactable = true;
                 HighlightNode(3);
                 HighlightBranch(3);
             }
@@ -246,7 +247,8 @@ public class TutorialManager : MonoBehaviour
             {
                 ClaimNode(3, PlayerColor.Silver, tutorialNodes[0].playerOneSprite);
                 ClaimBranch(3, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
-
+                forwardBtn.interactable = true;
+                goBtn.interactable = false;
                 GameInformation.openingSequence = false;
                 GameInformation.currentPlayer = "AI";
                 currentPlayerMessage.text = "Opponent's Move";
@@ -265,6 +267,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 8)
             {
+                GameInformation.playerOneResources = new int[]{ 1, 1, 2, 2};
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
                 gameController.FlipColors();
@@ -539,25 +542,31 @@ public class TutorialManager : MonoBehaviour
 
             if (messageNumber == 2)
             {
+                StopAllCoroutines();
                 tutorialPanel.SetActive(true);
                 UndoNode(0, PlayerColor.Blank, tutorialNodes[0].blankSprite);
             }
             else if (messageNumber == 3)
             {
+                StopAllCoroutines();
                 UndoNode(0, PlayerColor.Blank, tutorialSprite);
                 UndoBranch(0, PlayerColor.Blank, tutorialBranches[0].blankSprite);
+                tutorialPanel.SetActive(false);
+                HighlightNode(0);
+                arrows[0].gameObject.SetActive(true);
+                StartCoroutine(MoveForward(arrows[0]));
             }
             else if(messageNumber == 4)
             {
-
+                StopAllCoroutines();
             }
             else if (messageNumber == 5)
             {
-
+                StopAllCoroutines();
             }
             else if (messageNumber == 6)
             {
-
+                StopAllCoroutines();
             }
             else if (messageNumber == 7)
             {
