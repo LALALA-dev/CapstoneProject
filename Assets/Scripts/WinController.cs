@@ -26,6 +26,7 @@ public class WinController : MonoBehaviour
     {
         if (GameInformation.gameOver && !gameInReview) {
             gameInReview = true;
+            GameInformation.firstPlayComplete = true;
             EnableWinPanel();
         }
     }
