@@ -14581,6 +14581,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 333054265}
     - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
+      propertyPath: topBG
+      value: 
+      objectReference: {fileID: 26369836}
+    - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
       propertyPath: infoBtn
       value: 
       objectReference: {fileID: 1271316940}
@@ -14600,6 +14604,10 @@ PrefabInstance:
       propertyPath: arrowTwo
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
+      propertyPath: bottomBG
+      value: 
+      objectReference: {fileID: 1665429907}
     - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
       propertyPath: tradeBtn
       value: 
