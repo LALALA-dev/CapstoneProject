@@ -71,5 +71,5 @@ public class GameInformation
 
     public static bool needToSyncAvatars = false;
 
-    public static bool firstPlayComplete = false;
+    public static bool tutorialNeeded = false;
 }

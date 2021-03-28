@@ -589,6 +589,7 @@ public class TutorialManager : MonoBehaviour
         }
         else
         {
+            GameInformation.tutorialNeeded = true;
             sl.LoadMenuScene();
         }
     }
@@ -596,7 +597,8 @@ public class TutorialManager : MonoBehaviour
     public void OnBackwardClick()
     {
         messageNumber--;
-        if(messageNumber >= 0)
+        Debug.Log(messageNumber);
+        if (messageNumber >= 0)
         {
             infoOne.text = infoOneMessages[messageNumber];
             infoTwo.text = infoTwoMessages[messageNumber];
@@ -605,21 +607,50 @@ public class TutorialManager : MonoBehaviour
             {
                 StopAllCoroutines();
                 tutorialPanel.SetActive(true);
+                arrows[0].gameObject.SetActive(false);
                 UndoNode(0, PlayerColor.Blank, tutorialNodes[0].blankSprite);
             }
             else if (messageNumber == 3)
             {
                 StopAllCoroutines();
-                UndoNode(0, PlayerColor.Blank, tutorialSprite);
+                arrows[0].gameObject.SetActive(true);
+                arrows[2].gameObject.SetActive(false);
+                arrows[3].gameObject.SetActive(false);
+                UndoNode(0, PlayerColor.Blank, tutorialNodes[0].blankSprite);
+                GameInformation.openingMoveNodeSet = false;
                 UndoBranch(0, PlayerColor.Blank, tutorialBranches[0].blankSprite);
+                goBtn.interactable = false;
+                forwardBtn.interactable = true;
                 tutorialPanel.SetActive(false);
                 HighlightNode(0);
+                tutorialNodes[0].ToggleTrigger();
                 arrows[0].gameObject.SetActive(true);
                 StartCoroutine(MoveForward(arrows[0]));
             }
             else if(messageNumber == 4)
             {
                 StopAllCoroutines();
+                arrows[3].gameObject.SetActive(true);
+                arrows[2].gameObject.SetActive(true);
+                currentPlayerMessage.text = "Your Move";
+                UndoBranch(0, PlayerColor.Blank, tutorialBranches[0].blankSprite);
+                GameInformation.openingMoveNodeSet = true;
+                UndoNode(1, PlayerColor.Blank, tutorialNodes[0].blankSprite);
+                UndoNode(2, PlayerColor.Blank, tutorialNodes[0].blankSprite);
+                UndoBranch(1, PlayerColor.Blank, tutorialBranches[0].blankSprite);
+                UndoBranch(2, PlayerColor.Blank, tutorialBranches[0].blankSprite);
+
+                arrows[0].gameObject.SetActive(false);
+                arrows[2].gameObject.SetActive(true);
+                arrows[3].gameObject.SetActive(true);
+                StartCoroutine(MoveForward(arrows[2]));
+                StartCoroutine(MoveForward(arrows[3]));
+                ClaimNode(0, PlayerColor.Silver, avatars[0]);
+                GameInformation.openingMoveNodeSet = true;
+                HighlightBranch(0);
+                tutorialBranches[0].ToggleTrigger();
+                goBtn.interactable = true;
+                forwardBtn.interactable = false;
             }
             else if (messageNumber == 5)
             {
