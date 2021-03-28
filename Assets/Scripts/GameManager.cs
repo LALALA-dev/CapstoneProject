@@ -18,9 +18,11 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI playerLeftMessage;
 
     public TMP_InputField HNPInput;
-
+    public TMP_Text longestNetworkPlayerText;
+    public TMP_Text longestNetworkLengthText;
     public GameObject CompleteTurnBtn;
     public GameObject TradeBtn;
+    public GameObject longestNetworkMessage;
     public GameObject playerLeftErrorMessage;
     public GameObject generalErrorMessage;
     public Image playerOneAvatar;
@@ -38,6 +40,7 @@ public class GameManager : MonoBehaviour
     {
         gameController = GameController.getInstance();
 
+        longestNetworkMessage.SetActive(false);
         generalErrorMessage.SetActive(false);
         playerLeftErrorMessage.SetActive(false);
 
@@ -205,9 +208,7 @@ public class GameManager : MonoBehaviour
                     networkController.SendCurrentPlayersResources(ToStringResources(GameInformation.playerTwoResources));
 
                 gameController.UpdateScores();
-
-                playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
-                playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
+                UpdateScoresUI();
 
                 if (GameInformation.playerOneScore >= 10 || GameInformation.playerTwoScore >= 10)
                 {
@@ -285,9 +286,7 @@ public class GameManager : MonoBehaviour
                 if (turnNumber == 4)
                 {
                     gameController.UpdateScores();
-
-                    playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
-                    playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
+                    UpdateScoresUI();
                 }
 
                 if (GameInformation.playerIsHost)
@@ -325,9 +324,7 @@ public class GameManager : MonoBehaviour
                     resources = GameInformation.playerTwoResources;
 
                 gameController.UpdateScores();
-
-                playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
-                playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
+                UpdateScoresUI();
 
                 if (GameInformation.playerOneScore >= 10 || GameInformation.playerTwoScore >= 10)
                 {
@@ -408,8 +405,7 @@ public class GameManager : MonoBehaviour
 
                     gameController.CollectCurrentPlayerResources();
                     gameController.UpdateScores();
-                    playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
-                    playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
+                    UpdateScoresUI();
 
                     int[] AIResources;
                     if (!GameInformation.playerIsHost)
@@ -515,9 +511,7 @@ public class GameManager : MonoBehaviour
             gameController.CollectCurrentPlayerResources();
             playerResourcesManager.UpdateBothPlayersResources();
             gameController.UpdateScores();
-
-            playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
-            playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
+            UpdateScoresUI();
 
             if (GameInformation.playerOneScore >= 10 || GameInformation.playerTwoScore >= 10)
             {
@@ -570,6 +564,31 @@ public class GameManager : MonoBehaviour
     public void UpdateResourcesUI()
     {
         playerResourcesManager.UpdateBothPlayersResources();
+    }
+
+    public void UpdateScoresUI()
+    {
+        playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
+        playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
+
+        if (GameInformation.playerOneNetwork > GameInformation.playerTwoNetwork)
+        {
+            longestNetworkPlayerText.text = "Player One";
+            longestNetworkLengthText.text = GameInformation.playerOneNetwork.ToString() + " Roads";
+            longestNetworkMessage.SetActive(true);
+            longestNetworkMessage.transform.position = new Vector3(545f, 860f, 0f);
+        }
+        else if (GameInformation.playerTwoNetwork > GameInformation.playerOneNetwork)
+        {
+            longestNetworkPlayerText.text = "Player Two";
+            longestNetworkLengthText.text = GameInformation.playerTwoNetwork.ToString() + " Roads";
+            longestNetworkMessage.SetActive(true);
+            longestNetworkMessage.transform.position = new Vector3(1360f, 860f, 0f);
+        }
+        else
+        {
+            longestNetworkMessage.SetActive(false);
+        }
     }
 
     #region Logic Checks
