@@ -240,12 +240,12 @@ public class GameController
         GameInformation.playerOneScore += gameBoard.GetNumberOfPlayerCapturedTiles(PlayerColor.Silver);
         GameInformation.playerTwoScore += gameBoard.GetNumberOfPlayerCapturedTiles(PlayerColor.Gold);
 
-        int playerOneNetwork = CalculatePlayerLongestNetwork(PlayerColor.Silver);
-        int playerTwoNetwork = CalculatePlayerLongestNetwork(PlayerColor.Gold);
+        GameInformation.playerOneNetwork = CalculatePlayerLongestNetwork(PlayerColor.Silver);
+        GameInformation.playerTwoNetwork = CalculatePlayerLongestNetwork(PlayerColor.Gold);
 
-        if (playerOneNetwork > playerTwoNetwork)
+        if (GameInformation.playerOneNetwork > GameInformation.playerTwoNetwork)
             GameInformation.playerOneScore += 2;
-        else if (playerOneNetwork < playerTwoNetwork)
+        else if (GameInformation.playerOneNetwork < GameInformation.playerTwoNetwork)
             GameInformation.playerTwoScore += 2;
     }
 
