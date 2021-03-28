@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour
     public Text currentPlayerMessage;
 
     public Sprite[] avatars;
+    public GameObject waitingAnimation;
 
     public int turnNumber = 1;
 
@@ -46,6 +47,9 @@ public class GameManager : MonoBehaviour
 
         if(!GameInformation.playerIsHost)
             currentPlayerMessage.text = "Opponent's Move";
+
+        if (GameInformation.playerIsHost)
+            waitingAnimation.SetActive(false);
     }
 
     void Start()
