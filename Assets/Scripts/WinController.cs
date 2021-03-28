@@ -11,6 +11,8 @@ public class WinController : MonoBehaviour
     public TMP_Text playerTwoScore;
     public Text currentPlayerMessage;
     public GameObject panel;
+    public Button completeTurnBtn;
+    public Button tradeBtn;
 
     private bool gameInReview;
 
@@ -48,5 +50,7 @@ public class WinController : MonoBehaviour
     public void OnCancelClick()
     {
         panel.gameObject.SetActive(false);
+        completeTurnBtn.interactable = false;
+        tradeBtn.interactable = false;
     }
 }
