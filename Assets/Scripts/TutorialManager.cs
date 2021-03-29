@@ -672,6 +672,8 @@ public class TutorialManager : MonoBehaviour
                 currentPlayerMessage.text = "Your Move";
                 UndoBranch(0, PlayerColor.Blank, tutorialBranches[0].blankSprite);
                 GameInformation.openingMoveNodeSet = true;
+                GameInformation.openingMoveBranchSet = false;
+                GameInformation.openingNodeId = 8;
                 UndoNode(1, PlayerColor.Blank, tutorialNodes[0].blankSprite);
                 UndoNode(2, PlayerColor.Blank, tutorialNodes[0].blankSprite);
                 UndoBranch(1, PlayerColor.Blank, tutorialBranches[0].blankSprite);
