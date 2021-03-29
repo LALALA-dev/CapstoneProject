@@ -521,6 +521,11 @@ public class TutorialManager : MonoBehaviour
                 arrows[8].gameObject.SetActive(true);
                 arrows[9].gameObject.SetActive(true);
 
+                int[] one = new int[] { 1, 2, 0, 0 };
+                int[] two = new int[] { 2, 2, 4, 4 };
+                SetResources(one, two);
+                playerResourcesManager.UpdateBothPlayersResources();
+
                 gameController.UpdateScores();
 
                 playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
@@ -576,11 +581,13 @@ public class TutorialManager : MonoBehaviour
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
                 gameController.FlipColors();
-                gameController.CollectCurrentPlayerResources();
+
+                int[] one = new int[] { 4, 4, 3, 4 };
+                int[] two = new int[] { 2, 2, 4, 4 };
+                SetResources(one, two);
                 playerResourcesManager.UpdateBothPlayersResources();
 
                 gameController.UpdateScores();
-
                 playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
                 playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
             }
@@ -592,10 +599,14 @@ public class TutorialManager : MonoBehaviour
                 bottomBG.SetActive(false);
 
                 ClaimNode(7, PlayerColor.Silver, tutorialNodes[0].playerOneSprite);
+                int[] one = new int[] { 4, 4, 1, 2 };
+                int[] two = new int[] { 2, 2, 4, 4 };
+                SetResources(one, two);
+                playerResourcesManager.UpdateBothPlayersResources();
+
                 gameController.UpdateScores();
                 playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
                 playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
-
                 GameInformation.gameOver = true;
             }
             else if (messageNumber == 36)
