@@ -126,6 +126,7 @@ public class TutorialManager : MonoBehaviour
     public GameObject topBG;
     public GameObject bottomBG;
     public GameObject winPanel;
+    public GameObject tradePanel;
 
     public Sprite tutorialSprite;
     public Sprite tutorialBranchSprite;
@@ -1080,6 +1081,31 @@ public class TutorialManager : MonoBehaviour
                 tutorialTiles[2].squareState.ownerColor = PlayerColor.Silver;
                 gameController.UpdateGameBoard();
                 boardManager.DetectNewBlockCaptures(gameController.getGameBoard().squares);
+            }
+            else if (messageNumber == 27)
+            {
+                StopAllCoroutines();
+                tradePanel.SetActive(false);
+                arrows[11].gameObject.SetActive(false);
+                tradeBtn.interactable = true;
+                forwardBtn.interactable = false;
+                arrows[7].gameObject.SetActive(true);
+                StartCoroutine(MoveDown(arrows[7]));
+            }
+            else if (messageNumber == 28)
+            {
+                int[] one = new int[] { 3, 2, 3, 1 };
+                int[] two = new int[] { 0, 0, 3, 3 };
+                SetResources(one, two);
+                playerResourcesManager.UpdateBothPlayersResources();
+                tradeBtn.interactable = false;
+                forwardBtn.interactable = false;
+                GameInformation.resourceTrade = false;
+                tradePanel.SetActive(true);
+                StopAllCoroutines();
+                arrows[7].gameObject.SetActive(false);
+                for (int i = 0; i < tradingButtons.Length; i++)
+                    tradingButtons[i].interactable = false;
             }
         }
         else
