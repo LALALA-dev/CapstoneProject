@@ -10440,7 +10440,7 @@ GameObject:
   - component: {fileID: 1554539999}
   - component: {fileID: 1554539998}
   m_Layer: 0
-  m_Name: player_5
+  m_Name: waiting-animation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
