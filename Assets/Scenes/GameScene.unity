@@ -13993,7 +13993,7 @@ PrefabInstance:
     - target: {fileID: 8746113932800106364, guid: 81f7ecb7e37051e42ad7e375b7eb2671, type: 3}
       propertyPath: tradeBtn
       value: 
-      objectReference: {fileID: 1260590531}
+      objectReference: {fileID: 1260590533}
     - target: {fileID: 8746113932800106364, guid: 81f7ecb7e37051e42ad7e375b7eb2671, type: 3}
       propertyPath: winnerText
       value: 
@@ -14011,15 +14011,13 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 304970665}
     - target: {fileID: 8746113932800106364, guid: 81f7ecb7e37051e42ad7e375b7eb2671, type: 3}
-<<<<<<< HEAD
+      propertyPath: completeTurnBtn
+      value: 
+      objectReference: {fileID: 333054265}
+    - target: {fileID: 8746113932800106364, guid: 81f7ecb7e37051e42ad7e375b7eb2671, type: 3}
       propertyPath: winnerScoreText
       value: 
       objectReference: {fileID: 304970665}
-=======
-      propertyPath: completeTurnBtn
-      value: 
-      objectReference: {fileID: 333054263}
->>>>>>> Development
     - target: {fileID: 8746113932800106364, guid: 81f7ecb7e37051e42ad7e375b7eb2671, type: 3}
       propertyPath: currentPlayerMessage
       value: 
