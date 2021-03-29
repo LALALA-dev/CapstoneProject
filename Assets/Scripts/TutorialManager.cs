@@ -132,6 +132,9 @@ public class TutorialManager : MonoBehaviour
     public Sprite highlightSilver;
     public Sprite highlightGold;
 
+    public SpriteRenderer[] blockSquares;
+    public Sprite[] undoBlockSprites;
+
     #region Setup
     private void Awake()
     {
@@ -664,7 +667,7 @@ public class TutorialManager : MonoBehaviour
                 arrows[0].gameObject.SetActive(true);
                 StartCoroutine(MoveForward(arrows[0]));
             }
-            else if(messageNumber == 4)
+            else if (messageNumber == 4)
             {
                 StopAllCoroutines();
                 arrows[3].gameObject.SetActive(true);
@@ -783,7 +786,7 @@ public class TutorialManager : MonoBehaviour
                 playerOneScore.text = "Score: 2";
                 playerTwoScore.text = "Score: 2";
             }
-            else if(messageNumber == 9)
+            else if (messageNumber == 9)
             {
                 // undo 10
                 StopAllCoroutines();
@@ -924,9 +927,105 @@ public class TutorialManager : MonoBehaviour
                 HighlightBranch(8);
                 HighlightBranch(9);
             }
+            else if (messageNumber == 19)
+            {
+                StopAllCoroutines();
+                arrows[4].gameObject.SetActive(false);
+
+                int[] one = new int[] { 0, 0, 1, 0 };
+                int[] two = new int[] { 0, 0, 2, 2 };
+                SetResources(one, two);
+                playerResourcesManager.UpdateBothPlayersResources();
+                ClaimNode(5, PlayerColor.Silver, tutorialNodes[0].playerOneSprite);
+                ClaimBranch(7, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
+                ClaimBranch(8, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
+                ClaimBranch(9, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
+                GameInformation.currentRoundPlacedBranches.Clear();
+                GameInformation.currentRoundPlacedNodes.Clear();
+            }
+            else if (messageNumber == 20)
+            {
+                StopAllCoroutines();
+                arrows[4].gameObject.SetActive(true);
+                StartCoroutine(MoveForward(arrows[4]));
+            }
+            else if (messageNumber == 21)
+            {
+                StopAllCoroutines();
+                goBtn.interactable = false;
+                forwardBtn.interactable = true;
+                arrows[4].gameObject.SetActive(false);
+            }
             else if (messageNumber == 22)
             {
-                
+                tutorialTiles[0].squareState.resourceState = SquareStatus.Open;
+                blockSquares[0].sprite = undoBlockSprites[0];
+                GameInformation.currentPlayer = "HUMAN";
+                currentPlayerMessage.text = "Your Move";
+                gameController.FlipColors();
+                int[] one = new int[] { 1, 1, 0, 0 };
+                int[] two = new int[] { 0, 0, 2, 2 };
+                SetResources(one, two);
+                playerResourcesManager.UpdateBothPlayersResources();
+                gameController.UpdateScores();
+                playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
+                playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
+                goBtn.interactable = true;
+                forwardBtn.interactable = false;
+            }
+            else if (messageNumber == 23)
+            {
+                StopAllCoroutines();
+                arrows[5].gameObject.SetActive(false);
+                UndoBranch(10, PlayerColor.Blank, tutorialBranches[0].blankSprite);
+                UndoBranch(11, PlayerColor.Blank, tutorialBranches[0].blankSprite);
+
+                forwardBtn.interactable = true;
+                goBtn.interactable = false;
+                tutorialTiles[0].squareState.resourceState = SquareStatus.Blocked;
+                gameController.UpdateGameBoard();
+                boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
+                GameInformation.currentPlayer = "AI";
+                currentPlayerMessage.text = "Opponent's Move";
+                gameController.FlipColors();
+                int[] one = new int[] { 1, 1, 0, 0 };
+                int[] two = new int[] { 2, 2, 3, 3 };
+                SetResources(one, two);
+                playerResourcesManager.UpdateBothPlayersResources();
+                gameController.UpdateScores();
+                playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
+                playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
+            }
+            else if (messageNumber == 24)
+            {
+                StopAllCoroutines();
+                UndoBranch(12, PlayerColor.Blank, tutorialBranches[0].blankSprite);
+                arrows[6].gameObject.SetActive(false);
+                tutorialTiles[1].squareState.resourceState = SquareStatus.Open;
+                tutorialTiles[1].squareState.ownerColor = PlayerColor.Blank;
+                blockSquares[1].sprite = undoBlockSprites[1];
+                goBtn.interactable = false;
+                forwardBtn.interactable = true;
+                GameInformation.currentPlayer = "AI";
+                currentPlayerMessage.text = "Opponent's Move";
+                gameController.FlipColors();
+                int[] one = new int[] { 1, 1, 0, 0 };
+                int[] two = new int[] { 2, 2, 3, 3 };
+                SetResources(one, two);
+                playerResourcesManager.UpdateBothPlayersResources();
+                gameController.UpdateScores();
+                playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
+                playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
+
+                arrows[5].gameObject.SetActive(true);
+                StartCoroutine(MoveForward(arrows[5]));
+                ClaimBranch(10, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
+                ClaimBranch(11, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
+                GameInformation.playerTwoResources[0]--;
+                GameInformation.playerTwoResources[0]--;
+                GameInformation.playerTwoResources[1]--;
+                GameInformation.playerTwoResources[1]--;
+                playerResourcesManager.UpdateBothPlayersResources();
             }
         }
         else
