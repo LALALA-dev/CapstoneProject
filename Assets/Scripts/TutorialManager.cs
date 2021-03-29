@@ -876,4 +876,5 @@ public class TutorialManager : MonoBehaviour
         GameInformation.playerTwoResources[2] = two[2];
         GameInformation.playerTwoResources[3] = two[3];
     }
+
 }
