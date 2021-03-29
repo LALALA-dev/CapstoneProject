@@ -1027,6 +1027,60 @@ public class TutorialManager : MonoBehaviour
                 GameInformation.playerTwoResources[1]--;
                 playerResourcesManager.UpdateBothPlayersResources();
             }
+            else if(messageNumber == 25)
+            {
+                StopAllCoroutines();
+                arrows[11].gameObject.SetActive(false);
+                UndoBranch(12, PlayerColor.Blank, tutorialBranches[0].blankSprite);
+                tutorialTiles[0].squareState.resourceState = SquareStatus.Open;
+                tutorialTiles[0].squareState.ownerColor = PlayerColor.Blank;
+                tutorialTiles[2].squareState.resourceState = SquareStatus.Open;
+                tutorialTiles[2].squareState.ownerColor = PlayerColor.Blank;
+                blockSquares[0].sprite = undoBlockSprites[3];
+                blockSquares[2].sprite = undoBlockSprites[2];
+
+                arrows[5].gameObject.SetActive(false);
+                arrows[6].gameObject.SetActive(true);
+                StartCoroutine(MoveUp(arrows[6]));
+                tutorialTiles[1].squareState.resourceState = SquareStatus.Captured;
+                tutorialTiles[1].squareState.ownerColor = PlayerColor.Gold;
+                gameController.UpdateGameBoard();
+                boardManager.DetectNewBlockCaptures(gameController.getGameBoard().squares);
+                goBtn.interactable = true;
+                forwardBtn.interactable = false;
+                GameInformation.currentPlayer = "HUMAN";
+                currentPlayerMessage.text = "Your Move";
+                gameController.FlipColors();
+                int[] one = new int[] { 4, 3, 3, 1 };
+                int[] two = new int[] { 0, 0, 3, 3 };
+                SetResources(one, two);
+                playerResourcesManager.UpdateBothPlayersResources();
+                gameController.UpdateScores();
+                playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
+                playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
+                HighlightBranch(12);
+            }
+            else if (messageNumber == 26)
+            {
+                StopAllCoroutines();
+                arrows[7].gameObject.SetActive(false);
+                int[] one = new int[] { 3, 2, 3, 1 };
+                int[] two = new int[] { 0, 0, 3, 3 };
+                SetResources(one, two);
+                playerResourcesManager.UpdateBothPlayersResources();
+                arrows[6].gameObject.SetActive(false);
+                arrows[11].gameObject.SetActive(true);
+                StartCoroutine(MoveNorthEast(arrows[11]));
+                goBtn.interactable = false;
+                forwardBtn.interactable = true;
+                ClaimBranch(12, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
+                tutorialTiles[0].squareState.resourceState = SquareStatus.Captured;
+                tutorialTiles[0].squareState.ownerColor = PlayerColor.Silver;
+                tutorialTiles[2].squareState.resourceState = SquareStatus.Captured;
+                tutorialTiles[2].squareState.ownerColor = PlayerColor.Silver;
+                gameController.UpdateGameBoard();
+                boardManager.DetectNewBlockCaptures(gameController.getGameBoard().squares);
+            }
         }
         else
         {
