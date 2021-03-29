@@ -14,7 +14,7 @@ public class MainMenuController : MonoBehaviour
         suggestionArrow.DisableArrow();
         tutorialPrompt.SetActive(false);
 
-        if (!GameInformation.firstPlayComplete)
+        if (!GameInformation.tutorialNeeded)
         {
             suggestionArrow.gameObject.SetActive(true);
             tutorialPrompt.SetActive(true);

@@ -7,8 +7,8 @@ using UnityEngine.UI;
 public class WinController : MonoBehaviour
 {
     public TMP_Text winnerText;
-    public TMP_Text playerOneScore;
-    public TMP_Text playerTwoScore;
+    public TMP_Text winnerScoreText;
+    public TMP_Text loserScoreText;
     public Text currentPlayerMessage;
     public GameObject panel;
     public Button completeTurnBtn;
@@ -26,7 +26,7 @@ public class WinController : MonoBehaviour
     {
         if (GameInformation.gameOver && !gameInReview) {
             gameInReview = true;
-            GameInformation.firstPlayComplete = true;
+            GameInformation.tutorialNeeded = true;
             EnableWinPanel();
         }
     }
@@ -36,14 +36,15 @@ public class WinController : MonoBehaviour
         if (GameInformation.playerOneScore > GameInformation.playerTwoScore && GameInformation.playerOneScore >= 10)
         {
             currentPlayerMessage.text = winnerText.text = "Player One Wins!";
+            winnerScoreText.text = "Player One: " + GameInformation.playerOneScore.ToString();
+            loserScoreText.text = "Player Two: " + GameInformation.playerTwoScore.ToString();
         }
         else if (GameInformation.playerTwoScore > GameInformation.playerOneScore && GameInformation.playerTwoScore >= 10)
         {
             currentPlayerMessage.text = winnerText.text = "Player Two Wins!";
+            winnerScoreText.text = "Player Two: " + GameInformation.playerTwoScore.ToString();
+            loserScoreText.text = "Player One: " + GameInformation.playerOneScore.ToString();
         }
-
-        playerOneScore.text = GameInformation.playerOneScore.ToString();
-        playerTwoScore.text = GameInformation.playerTwoScore.ToString();
         panel.gameObject.SetActive(true);
     }
 
