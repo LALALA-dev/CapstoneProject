@@ -694,6 +694,27 @@ public class TutorialManager : MonoBehaviour
             else if (messageNumber == 5)
             {
                 StopAllCoroutines();
+
+                // undo 6
+                GameInformation.openingMoveNodeSet = false;
+                GameInformation.openingMoveBranchSet = false;
+                forwardBtn.interactable = true;
+                goBtn.interactable = false;
+                UndoNode(3, PlayerColor.Blank, tutorialNodes[0].blankSprite);
+                UndoBranch(3, PlayerColor.Blank, tutorialBranches[0].blankSprite);
+
+                // redo 5
+                arrows[3].gameObject.SetActive(false);
+                arrows[2].gameObject.SetActive(false);
+                goBtn.interactable = false;
+                forwardBtn.interactable = true;
+                currentPlayerMessage.text = "Opponent's Move";
+                goBtn.interactable = false;
+                ClaimBranch(0, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
+                ClaimNode(1, PlayerColor.Gold, avatars[1]);
+                ClaimNode(2, PlayerColor.Gold, avatars[1]);
+                ClaimBranch(1, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
+                ClaimBranch(2, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
             }
             else if (messageNumber == 6)
             {
