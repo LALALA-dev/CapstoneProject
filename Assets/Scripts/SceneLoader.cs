@@ -43,6 +43,8 @@ public class SceneLoader : MonoBehaviour
         GameInformation.resourceTrade = false;
         GameInformation.playerOneScore = 0;
         GameInformation.playerTwoScore = 0;
+        GameInformation.playerOneNetwork = 0;
+        GameInformation.playerTwoNetwork = 0;
         GameInformation.gameOver = false;
         GameInformation.currentPlayer = "HUMAN";
         GameInformation.humanMoveFinished = false;
