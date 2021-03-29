@@ -825,19 +825,104 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 14)
             {
+                // undo 15
+                StopAllCoroutines();
+                GameInformation.currentPlayer = "HUMAN";
+                currentPlayerMessage.text = "Your Move";
+                UndoBranch(5, PlayerColor.Blank, tutorialBranches[0].blankSprite);
+                UndoBranch(6, PlayerColor.Blank, tutorialBranches[0].blankSprite);
+                gameController.FlipColors();
+                gameController.UpdateScores();
+                playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
+                playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
+                arrows[10].gameObject.SetActive(false);
 
+                // redo 14
+                forwardBtn.interactable = true;
+                goBtn.interactable = false;
+                ClaimNode(4, PlayerColor.Silver, tutorialNodes[0].playerOneSprite);
+                int[] one = new int[] { 1, 1, 0, 0 };
+                int[] two = new int[] { 1, 1, 1, 1 };
+                SetResources(one, two);
+                playerResourcesManager.UpdateBothPlayersResources();
+            }
+            else if (messageNumber == 15)
+            {
+                GameInformation.currentPlayer = "AI";
+                currentPlayerMessage.text = "Opponent's Move";
+                gameController.FlipColors();
+                int[] one = new int[] { 1, 1, 0, 0 };
+                int[] two = new int[] { 3, 3, 2, 2 };
+                SetResources(one, two);
+                playerResourcesManager.UpdateBothPlayersResources();
+                gameController.UpdateScores();
+
+                playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
+                playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
+
+                GameInformation.playerTwoResources[0]--;
+                GameInformation.playerTwoResources[1]--;
+
+                ClaimBranch(5, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
+                GameInformation.playerTwoResources[0]--;
+                GameInformation.playerTwoResources[1]--;
+
+                ClaimBranch(6, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
+                GameInformation.playerTwoResources[0]--;
+                GameInformation.playerTwoResources[1]--;
+
+                playerResourcesManager.UpdateBothPlayersResources();
+
+                arrows[10].gameObject.SetActive(true);
+                StartCoroutine(MoveNorthWest(arrows[10]));
             }
             else if (messageNumber == 16)
             {
-
+                // undo 17
+                GameInformation.currentPlayer = "AI";
+                currentPlayerMessage.text = "Opponent's Move";
+                gameController.FlipColors();
+                int[] one = new int[] { 3, 3, 3, 2 };
+                int[] two = new int[] { 0, 0, 2, 2 };
+                SetResources(one, two);
+                playerResourcesManager.UpdateBothPlayersResources();
+                gameController.UpdateScores();
             }
             else if (messageNumber == 17)
             {
+                UndoNode(5, PlayerColor.Blank, tutorialNodes[0].blankSprite);
+                UndoBranch(7, PlayerColor.Blank, tutorialBranches[0].blankSprite);
+                UndoBranch(8, PlayerColor.Blank, tutorialBranches[0].blankSprite);
+                UndoBranch(9, PlayerColor.Blank, tutorialBranches[0].blankSprite);
 
+                GameInformation.currentPlayer = "HUMAN";
+                currentPlayerMessage.text = "Your Move";
+                gameController.FlipColors();
+                int[] one = new int[] { 3, 3, 3, 2 };
+                int[] two = new int[] { 0, 0, 2, 2 };
+                SetResources(one, two);
+                playerResourcesManager.UpdateBothPlayersResources();
+                gameController.UpdateScores();
+                playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
+                playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
             }
             else if (messageNumber == 18)
             {
+                int[] one = new int[] { 3, 3, 3, 2 };
+                int[] two = new int[] { 0, 0, 2, 2 };
+                SetResources(one, two);
+                playerResourcesManager.UpdateBothPlayersResources();
+                UndoNode(5, PlayerColor.Silver, tutorialNodes[0].playerOneSprite);
+                UndoBranch(7, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
+                UndoBranch(8, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
+                UndoBranch(9, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
+                GameInformation.currentRoundPlacedBranches.Clear();
+                GameInformation.currentRoundPlacedNodes.Clear();
 
+                HighlightNode(5);
+                HighlightBranch(7);
+                HighlightBranch(8);
+                HighlightBranch(9);
             }
             else if (messageNumber == 22)
             {

@@ -193,7 +193,6 @@ public class GameManager : MonoBehaviour
         if (OpponentHasSentNewMoveToProcess())
         {
             GameInformation.newNetworkMoveSet = false;
-
             string opponentBoard = networkController.GetMove();
             gameController.SetBoardConfiguration(opponentBoard);
             gameController.UpdateGameBoard();
