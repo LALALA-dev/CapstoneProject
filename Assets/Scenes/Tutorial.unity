@@ -14699,6 +14699,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1764314738}
     - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
+      propertyPath: highlightGold
+      value: 
+      objectReference: {fileID: 21300000, guid: ff297145538f7084f9cdc9ce2588c9aa, type: 3}
+    - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
       propertyPath: messageNumber
       value: 0
       objectReference: {fileID: 0}
@@ -14722,6 +14726,10 @@ PrefabInstance:
       propertyPath: tutorialSprite
       value: 
       objectReference: {fileID: 21300000, guid: a87bd4fb72097e349b68efe1e6ad2bc8, type: 3}
+    - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
+      propertyPath: highlightSilver
+      value: 
+      objectReference: {fileID: 21300000, guid: 297a4e0431ea6324d9f793a111b0f2cb, type: 3}
     - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
       propertyPath: playerOneAvatar
       value: 

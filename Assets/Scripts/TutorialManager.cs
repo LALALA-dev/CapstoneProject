@@ -207,7 +207,7 @@ public class TutorialManager : MonoBehaviour
                 arrows[0].gameObject.SetActive(true);
                 StartCoroutine(MoveForward(arrows[0]));
             }
-            else if(messageNumber == 4)
+            else if (messageNumber == 4)
             {
                 StopAllCoroutines();
                 arrows[0].gameObject.SetActive(false);
@@ -221,7 +221,7 @@ public class TutorialManager : MonoBehaviour
                 goBtn.interactable = true;
                 forwardBtn.interactable = false;
             }
-            else if(messageNumber == 5)
+            else if (messageNumber == 5)
             {
                 StopAllCoroutines();
                 arrows[3].gameObject.SetActive(false);
@@ -238,7 +238,7 @@ public class TutorialManager : MonoBehaviour
                 ClaimBranch(1, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
                 ClaimBranch(2, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
             }
-            else if(messageNumber == 6)
+            else if (messageNumber == 6)
             {
                 currentPlayerMessage.text = "Your Move";
                 GameInformation.openingMoveNodeSet = false;
@@ -258,7 +258,9 @@ public class TutorialManager : MonoBehaviour
                 GameInformation.currentPlayer = "AI";
                 currentPlayerMessage.text = "Opponent's Move";
                 gameController.FlipColors();
-                gameController.CollectCurrentPlayerResources();
+                int[] one = new int[] { 0, 0, 0, 0 };
+                int[] two = new int[] { 2, 2, 1, 1 };
+                SetResources(one, two);
                 gameController.UpdateScores();
 
                 playerOneScore.text = "Score: 2";
@@ -272,11 +274,12 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 8)
             {
-                GameInformation.playerOneResources = new int[]{ 1, 1, 2, 2};
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
                 gameController.FlipColors();
-                gameController.CollectCurrentPlayerResources();
+                int[] one = new int[] { 1, 1, 2, 2 };
+                int[] two = new int[] { 1, 1, 1, 1 };
+                SetResources(one, two);
                 playerResourcesManager.UpdateBothPlayersResources();
 
                 gameController.UpdateScores();
@@ -312,14 +315,20 @@ public class TutorialManager : MonoBehaviour
                 forwardBtn.interactable = true;
                 goBtn.interactable = false;
                 ClaimNode(4, PlayerColor.Silver, tutorialNodes[0].playerOneSprite);
+                int[] one = new int[] { 1, 1, 0, 0 };
+                int[] two = new int[] { 1, 1, 1, 1 };
+                SetResources(one, two);
+                playerResourcesManager.UpdateBothPlayersResources();
             }
             else if (messageNumber == 15)
             {
                 GameInformation.currentPlayer = "AI";
                 currentPlayerMessage.text = "Opponent's Move";
-                gameController.FlipColors();
-                gameController.CollectCurrentPlayerResources();
-
+                gameController.FlipColors(); 
+                int[] one = new int[] { 1, 1, 0, 0 };
+                int[] two = new int[] { 3, 3, 2, 2 };
+                SetResources(one, two);
+                playerResourcesManager.UpdateBothPlayersResources();
                 gameController.UpdateScores();
 
                 playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
@@ -351,7 +360,9 @@ public class TutorialManager : MonoBehaviour
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
                 gameController.FlipColors();
-                gameController.CollectCurrentPlayerResources();
+                int[] one = new int[] { 3, 3, 3, 2 };
+                int[] two = new int[] { 0, 0, 2, 2 };
+                SetResources(one, two);
                 playerResourcesManager.UpdateBothPlayersResources();
 
                 gameController.UpdateScores();
@@ -369,6 +380,10 @@ public class TutorialManager : MonoBehaviour
             }
             else if(messageNumber == 19)
             {
+                int[] one = new int[] { 0, 0, 1, 0 };
+                int[] two = new int[] { 0, 0, 2, 2 };
+                SetResources(one, two);
+                playerResourcesManager.UpdateBothPlayersResources();
                 ClaimNode(5, PlayerColor.Silver, tutorialNodes[0].playerOneSprite);
                 ClaimBranch(7, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
                 ClaimBranch(8, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
@@ -400,8 +415,10 @@ public class TutorialManager : MonoBehaviour
                 boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
                 GameInformation.currentPlayer = "AI";
                 currentPlayerMessage.text = "Opponent's Move";
-                gameController.FlipColors();
-                gameController.CollectCurrentPlayerResources();
+                gameController.FlipColors(); 
+                int[] one = new int[] { 1, 1, 0, 0 };
+                int[] two = new int[] { 2, 2, 3, 3 };
+                SetResources(one, two);
                 playerResourcesManager.UpdateBothPlayersResources();
 
                 gameController.UpdateScores();
@@ -436,7 +453,9 @@ public class TutorialManager : MonoBehaviour
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
                 gameController.FlipColors();
-                gameController.CollectCurrentPlayerResources();
+                int[] one = new int[] { 4, 3, 3, 1 };
+                int[] two = new int[] { 0, 0, 3, 3 };
+                SetResources(one, two);
                 playerResourcesManager.UpdateBothPlayersResources();
                 gameController.UpdateScores();
                 playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
@@ -446,6 +465,10 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 26)
             {
+                int[] one = new int[] { 3, 2, 3, 1 };
+                int[] two = new int[] { 0, 0, 3, 3 };
+                SetResources(one, two);
+                playerResourcesManager.UpdateBothPlayersResources();
                 StopAllCoroutines();
                 arrows[6].gameObject.SetActive(false);
                 arrows[11].gameObject.SetActive(true);
@@ -478,6 +501,9 @@ public class TutorialManager : MonoBehaviour
             }
             else if(messageNumber == 29)
             {
+                int[] one = new int[] { 1, 2, 2, 2 };
+                int[] two = new int[] { 0, 0, 3, 3 };
+                SetResources(one, two);
                 tradeBtn.interactable = false;
                 forwardBtn.interactable = true;
             }
@@ -837,5 +863,17 @@ public class TutorialManager : MonoBehaviour
         }
 
         StartCoroutine(MoveNorthEast(arrow));
+    }
+
+    public void SetResources(int[] one, int[] two)
+    {
+        GameInformation.playerOneResources[0] = one[0];
+        GameInformation.playerOneResources[1] = one[1];
+        GameInformation.playerOneResources[2] = one[2];
+        GameInformation.playerOneResources[3] = one[3];
+        GameInformation.playerTwoResources[0] = two[0];
+        GameInformation.playerTwoResources[1] = two[1];
+        GameInformation.playerTwoResources[2] = two[2];
+        GameInformation.playerTwoResources[3] = two[3];
     }
 }
