@@ -779,11 +779,26 @@ public class TutorialManager : MonoBehaviour
                 int[] two = new int[] { 1, 1, 1, 1 };
                 SetResources(one, two);
                 playerResourcesManager.UpdateBothPlayersResources();
-
                 gameController.UpdateScores();
-
                 playerOneScore.text = "Score: 2";
                 playerTwoScore.text = "Score: 2";
+            }
+            else if(messageNumber == 9)
+            {
+                // undo 10
+                StopAllCoroutines();
+                arrows[1].gameObject.SetActive(false);
+
+                // redo 9
+                arrows[0].gameObject.SetActive(true);
+                StartCoroutine(MoveForward(arrows[0]));
+            }
+            else if (messageNumber == 10)
+            {
+                StopAllCoroutines();
+                arrows[0].gameObject.SetActive(false);
+                arrows[1].gameObject.SetActive(true);
+                StartCoroutine(MoveForward(arrows[1]));
             }
             else if (messageNumber == 12)
             {
