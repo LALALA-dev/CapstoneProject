@@ -767,7 +767,23 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 8)
             {
+                // undo 9
+                StopAllCoroutines();
+                arrows[0].gameObject.SetActive(false);
 
+                // redo 8
+                GameInformation.currentPlayer = "HUMAN";
+                currentPlayerMessage.text = "Your Move";
+                gameController.FlipColors();
+                int[] one = new int[] { 1, 1, 2, 2 };
+                int[] two = new int[] { 1, 1, 1, 1 };
+                SetResources(one, two);
+                playerResourcesManager.UpdateBothPlayersResources();
+
+                gameController.UpdateScores();
+
+                playerOneScore.text = "Score: 2";
+                playerTwoScore.text = "Score: 2";
             }
             else if (messageNumber == 12)
             {
