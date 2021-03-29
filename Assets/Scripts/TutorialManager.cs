@@ -800,13 +800,28 @@ public class TutorialManager : MonoBehaviour
                 arrows[1].gameObject.SetActive(true);
                 StartCoroutine(MoveForward(arrows[1]));
             }
+            else if (messageNumber == 11)
+            {
+                StopAllCoroutines();
+                arrows[1].gameObject.SetActive(false);
+            }
             else if (messageNumber == 12)
             {
-
+                forwardBtn.interactable = true;
+                goBtn.interactable = false;
+                UndoNode(4, PlayerColor.Blank, tutorialNodes[0].blankSprite);
             }
             else if (messageNumber == 13)
             {
+                UndoNode(4, PlayerColor.Blank, tutorialSprite);
+                int[] one = new int[] { 1, 1, 2, 2 };
+                int[] two = new int[] { 1, 1, 1, 1 };
+                SetResources(one, two);
+                playerResourcesManager.UpdateBothPlayersResources();
 
+                forwardBtn.interactable = false;
+                goBtn.interactable = true;
+                HighlightNode(4);
             }
             else if (messageNumber == 14)
             {
