@@ -515,11 +515,13 @@ public class GameManager : MonoBehaviour
             {
                 GameInformation.currentPlayer = "AI";
                 currentPlayerMessage.text = "AI's Move";
+                waitingAnimation.SetActive(true);
             }
             else
             {
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
+                waitingAnimation.SetActive(false);
             }
             gameController.FlipColors();
             gameController.CollectCurrentPlayerResources();
