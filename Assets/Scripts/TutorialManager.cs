@@ -745,7 +745,25 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 7)
             {
-
+                // Redo 7
+                ClaimNode(3, PlayerColor.Silver, tutorialNodes[0].playerOneSprite);
+                ClaimBranch(3, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
+                forwardBtn.interactable = true;
+                goBtn.interactable = false;
+                GameInformation.openingSequence = false;
+                GameInformation.currentPlayer = "AI";
+                currentPlayerMessage.text = "Opponent's Move";
+                gameController.FlipColors();
+                int[] one = new int[] { 0, 0, 0, 0 };
+                int[] two = new int[] { 2, 2, 1, 1 };
+                SetResources(one, two);
+                gameController.UpdateScores();
+                playerOneScore.text = "Score: 2";
+                playerTwoScore.text = "Score: 2";
+                GameInformation.playerTwoResources[0]--;
+                GameInformation.playerTwoResources[1]--;
+                ClaimBranch(4, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
+                playerResourcesManager.UpdateBothPlayersResources();
             }
             else if (messageNumber == 8)
             {
