@@ -719,6 +719,29 @@ public class TutorialManager : MonoBehaviour
             else if (messageNumber == 6)
             {
                 StopAllCoroutines();
+                // undo 7
+                UndoNode(3, PlayerColor.Blank, tutorialNodes[0].blankSprite);
+                UndoBranch(3, PlayerColor.Blank, tutorialBranches[0].blankSprite);
+                GameInformation.openingSequence = true;
+                gameController.FlipColors();
+                int[] one = new int[] { 0, 0, 0, 0 };
+                int[] two = new int[] { 0, 0, 0, 0 };
+                SetResources(one, two);
+                playerOneScore.text = "Score: 0";
+                playerTwoScore.text = "Score: 0";
+                UndoBranch(4, PlayerColor.Blank, tutorialBranches[0].blankSprite);
+                playerResourcesManager.UpdateBothPlayersResources();
+
+                // redo 6
+                currentPlayerMessage.text = "Your Move";
+                GameInformation.openingMoveNodeSet = false;
+                GameInformation.openingMoveBranchSet = false;
+                forwardBtn.interactable = false;
+                goBtn.interactable = true;
+                tutorialBranches[3].ToggleTrigger();
+                tutorialNodes[3].ToggleTrigger();
+                HighlightNode(3);
+                HighlightBranch(3);
             }
             else if (messageNumber == 7)
             {
