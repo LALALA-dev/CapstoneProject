@@ -518,7 +518,7 @@ public class BeginnerAI
 
     public BoardState RandomMove(BoardState currentBoard, int[] aiResources) 
     {
-        Thread.Sleep(2000);
+        // Thread.Sleep(2000);
         int[] initialResources = CollectCurrentPlayerResources(currentBoard, AIcolor);
         int flag = 0;
         currentBoard = subRandomMove(currentBoard, aiResources, ref flag);
