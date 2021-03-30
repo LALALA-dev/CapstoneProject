@@ -464,13 +464,13 @@ public class ExpertAI
             return PlayerColor.Blank;
         }
 
-        if (currentPlayer == PlayerColor.Orange)
+        if (currentPlayer == PlayerColor.Silver)
         {
-            return PlayerColor.Purple;
+            return PlayerColor.Gold;
         }
         else
         {
-            return PlayerColor.Orange;
+            return PlayerColor.Silver;
         }
     }
 
@@ -592,13 +592,13 @@ public class ExpertAI
 
     static PlayerColor isEnd(BoardState currentBoard)
     {
-        int playerOneScore = GetNumberOfPlayerNodes(currentBoard, PlayerColor.Orange);
-        int playerTwoScore = GetNumberOfPlayerNodes(currentBoard, PlayerColor.Purple);
-        playerOneScore += GetNumberOfPlayerCapturedTiles(currentBoard, PlayerColor.Orange);
-        playerTwoScore += GetNumberOfPlayerCapturedTiles(currentBoard, PlayerColor.Purple);
+        int playerOneScore = GetNumberOfPlayerNodes(currentBoard, PlayerColor.Silver);
+        int playerTwoScore = GetNumberOfPlayerNodes(currentBoard, PlayerColor.Gold);
+        playerOneScore += GetNumberOfPlayerCapturedTiles(currentBoard, PlayerColor.Silver);
+        playerTwoScore += GetNumberOfPlayerCapturedTiles(currentBoard, PlayerColor.Gold);
 
-        int playerOneNetwork = CalculatePlayerLongestNetwork(currentBoard, PlayerColor.Orange);
-        int playerTwoNetwork = CalculatePlayerLongestNetwork(currentBoard, PlayerColor.Purple);
+        int playerOneNetwork = CalculatePlayerLongestNetwork(currentBoard, PlayerColor.Silver);
+        int playerTwoNetwork = CalculatePlayerLongestNetwork(currentBoard, PlayerColor.Gold);
 
         if (playerOneNetwork > playerTwoNetwork)
         {
@@ -611,11 +611,11 @@ public class ExpertAI
 
         if (playerOneScore >= 10)
         {
-            return PlayerColor.Orange;
+            return PlayerColor.Silver;
         }
         else if (playerTwoScore >= 10)
         {
-            return PlayerColor.Purple;
+            return PlayerColor.Gold;
         }
         else
         {
@@ -663,13 +663,13 @@ public class ExpertAI
             {
                 currentPlayer = AIcolor;
             }
-            else if (AIcolor == PlayerColor.Orange)
+            else if (AIcolor == PlayerColor.Silver)
             {
-                currentPlayer = PlayerColor.Purple;
+                currentPlayer = PlayerColor.Gold;
             }
             else
             {
-                currentPlayer = PlayerColor.Orange;
+                currentPlayer = PlayerColor.Silver;
             }
             return currentPlayer;
         }
@@ -929,13 +929,13 @@ public class ExpertAI
             int trad = 0;
             int flag_moreMoves = 0;
             PlayerColor currentPlayer;
-            if (getcurrentPlayerColor(node) == PlayerColor.Orange)
+            if (getcurrentPlayerColor(node) == PlayerColor.Silver)
             {
-                currentPlayer = PlayerColor.Purple;
+                currentPlayer = PlayerColor.Gold;
             }
             else
             {
-                currentPlayer = PlayerColor.Orange;
+                currentPlayer = PlayerColor.Silver;
             }
             List<MyBoard> temp = GetPossibleMoves(node.localBoard, currentPlayer, ref trad, ref flag_moreMoves);
             foreach(MyBoard i in temp)
@@ -966,13 +966,13 @@ public class ExpertAI
             while ( winner == PlayerColor.Blank)
             {
                 
-                if (playerCol == PlayerColor.Orange)
+                if (playerCol == PlayerColor.Silver)
                 {
-                    playerCol = PlayerColor.Purple;
+                    playerCol = PlayerColor.Gold;
                 }
                 else
                 {
-                    playerCol = PlayerColor.Orange;
+                    playerCol = PlayerColor.Silver;
                 }
 
                 if(AIcolor == playerCol)
