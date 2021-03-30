@@ -96,32 +96,77 @@ public class BoardManager : MonoBehaviour
     {
         SendMessageUpwards(message);
     }
-    public void DetectNewBlockCaptures(SquareState[] squares)
+
+    public void DetectNewBlockCaptures(Square[] squares)
     {
         Sprite[] captureImages;
 
        captureImages = playerOneCapture;
 
-        foreach(SquareState square in squares)
+        foreach(Square square in squares)
         {
-            if(square.resourceState == SquareStatus.Captured && square.ownerColor != PlayerColor.Purple)
+            if(square.squareState.resourceState == SquareStatus.Captured && square.squareState.ownerColor != PlayerColor.Gold)
             {
-                switch (square.resourceColor)
+                switch (square.squareState.resourceColor)
                 {
                     case SquareResourceColor.Red:
-                        spriteRenderers[square.location].sprite = captureImages[0];
+                        switch (square.squareState.resourceAmount)
+                        {
+                            case SquareResourceAmount.One:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[0];
+                                break;
+                            case SquareResourceAmount.Two:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[1];
+                                break;
+                            case SquareResourceAmount.Three:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[2];
+                                break;
+                        }
                         break;
                     case SquareResourceColor.Blue:
-                        spriteRenderers[square.location].sprite = captureImages[1];
+                        switch (square.squareState.resourceAmount)
+                        {
+                            case SquareResourceAmount.One:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[3];
+                                break;
+                            case SquareResourceAmount.Two:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[4];
+                                break;
+                            case SquareResourceAmount.Three:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[5];
+                                break;
+                        }
                         break;
                     case SquareResourceColor.Yellow:
-                        spriteRenderers[square.location].sprite = captureImages[2];
+                        switch (square.squareState.resourceAmount)
+                        {
+                            case SquareResourceAmount.One:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[6];
+                                break;
+                            case SquareResourceAmount.Two:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[7];
+                                break;
+                            case SquareResourceAmount.Three:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[8];
+                                break;
+                        }
                         break;
                     case SquareResourceColor.Green:
-                        spriteRenderers[square.location].sprite = captureImages[3];
+                        switch (square.squareState.resourceAmount)
+                        {
+                            case SquareResourceAmount.One:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[9];
+                                break;
+                            case SquareResourceAmount.Two:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[10];
+                                break;
+                            case SquareResourceAmount.Three:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[11];
+                                break;
+                        }
                         break;
                     default:
-                        spriteRenderers[square.location].sprite = captureImages[4];
+                        spriteRenderers[square.squareState.location].sprite = captureImages[12];
                         break;
 
                 }
@@ -130,26 +175,70 @@ public class BoardManager : MonoBehaviour
 
         captureImages = playerTwoCapture;
 
-        foreach (SquareState square in squares)
+        foreach (Square square in squares)
         {
-            if (square.resourceState == SquareStatus.Captured && square.ownerColor != PlayerColor.Orange)
+            if (square.squareState.resourceState == SquareStatus.Captured && square.squareState.ownerColor != PlayerColor.Silver)
             {
-                switch (square.resourceColor)
+                switch (square.squareState.resourceColor)
                 {
                     case SquareResourceColor.Red:
-                        spriteRenderers[square.location].sprite = captureImages[0];
+                        switch (square.squareState.resourceAmount)
+                        {
+                            case SquareResourceAmount.One:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[0];
+                                break;
+                            case SquareResourceAmount.Two:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[1];
+                                break;
+                            case SquareResourceAmount.Three:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[2];
+                                break;
+                        }
                         break;
                     case SquareResourceColor.Blue:
-                        spriteRenderers[square.location].sprite = captureImages[1];
+                        switch (square.squareState.resourceAmount)
+                        {
+                            case SquareResourceAmount.One:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[3];
+                                break;
+                            case SquareResourceAmount.Two:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[4];
+                                break;
+                            case SquareResourceAmount.Three:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[5];
+                                break;
+                        }
                         break;
                     case SquareResourceColor.Yellow:
-                        spriteRenderers[square.location].sprite = captureImages[2];
+                        switch (square.squareState.resourceAmount)
+                        {
+                            case SquareResourceAmount.One:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[6];
+                                break;
+                            case SquareResourceAmount.Two:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[7];
+                                break;
+                            case SquareResourceAmount.Three:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[8];
+                                break;
+                        }
                         break;
                     case SquareResourceColor.Green:
-                        spriteRenderers[square.location].sprite = captureImages[3];
+                        switch (square.squareState.resourceAmount)
+                        {
+                            case SquareResourceAmount.One:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[9];
+                                break;
+                            case SquareResourceAmount.Two:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[10];
+                                break;
+                            case SquareResourceAmount.Three:
+                                spriteRenderers[square.squareState.location].sprite = captureImages[11];
+                                break;
+                        }
                         break;
                     default:
-                        spriteRenderers[square.location].sprite = captureImages[4];
+                        spriteRenderers[square.squareState.location].sprite = captureImages[12];
                         break;
 
                 }
@@ -166,16 +255,60 @@ public class BoardManager : MonoBehaviour
                 switch (square.squareState.resourceColor)
                 {
                     case SquareResourceColor.Red:
-                        spriteRenderers[square.squareState.location].sprite = resourceBlock[0];
+                        switch (square.squareState.resourceAmount)
+                        {
+                            case SquareResourceAmount.One:
+                                spriteRenderers[square.squareState.location].sprite = resourceBlock[0];
+                                break;
+                            case SquareResourceAmount.Two:
+                                spriteRenderers[square.squareState.location].sprite = resourceBlock[1];
+                                break;
+                            case SquareResourceAmount.Three:
+                                spriteRenderers[square.squareState.location].sprite = resourceBlock[2];
+                                break;
+                        }
                         break;
                     case SquareResourceColor.Blue:
-                        spriteRenderers[square.squareState.location].sprite = resourceBlock[1];
+                        switch (square.squareState.resourceAmount)
+                        {
+                            case SquareResourceAmount.One:
+                                spriteRenderers[square.squareState.location].sprite = resourceBlock[3];
+                                break;
+                            case SquareResourceAmount.Two:
+                                spriteRenderers[square.squareState.location].sprite = resourceBlock[4];
+                                break;
+                            case SquareResourceAmount.Three:
+                                spriteRenderers[square.squareState.location].sprite = resourceBlock[5];
+                                break;
+                        }
                         break;
                     case SquareResourceColor.Yellow:
-                        spriteRenderers[square.squareState.location].sprite = resourceBlock[2];
+                        switch (square.squareState.resourceAmount)
+                        {
+                            case SquareResourceAmount.One:
+                                spriteRenderers[square.squareState.location].sprite = resourceBlock[6];
+                                break;
+                            case SquareResourceAmount.Two:
+                                spriteRenderers[square.squareState.location].sprite = resourceBlock[7];
+                                break;
+                            case SquareResourceAmount.Three:
+                                spriteRenderers[square.squareState.location].sprite = resourceBlock[8];
+                                break;
+                        }
                         break;
                     case SquareResourceColor.Green:
-                        spriteRenderers[square.squareState.location].sprite = resourceBlock[3];
+                        switch (square.squareState.resourceAmount)
+                        {
+                            case SquareResourceAmount.One:
+                                spriteRenderers[square.squareState.location].sprite = resourceBlock[9];
+                                break;
+                            case SquareResourceAmount.Two:
+                                spriteRenderers[square.squareState.location].sprite = resourceBlock[10];
+                                break;
+                            case SquareResourceAmount.Three:
+                                spriteRenderers[square.squareState.location].sprite = resourceBlock[11];
+                                break;
+                        }
                         break;
 
                 }
@@ -183,17 +316,17 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    public void RefreshForAIMoves()
+    public void RefreshBoardGUI()
     {
         if(GameInformation.playerIsHost)
-            BroadcastMessage("UpdateAIGUI", PlayerColor.Purple);
+            BroadcastMessage("UpdateAIGUI", PlayerColor.Gold);
         else
-            BroadcastMessage("UpdateAIGUI", PlayerColor.Orange);
+            BroadcastMessage("UpdateAIGUI", PlayerColor.Silver);
     }
 
-    public void UpdateGameBoardUI()
+    public void ToggleNodeBranchTriggers()
     {
-
+        BroadcastMessage("ToggleTrigger");
     }
 
 }
