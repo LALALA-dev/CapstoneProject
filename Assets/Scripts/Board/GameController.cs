@@ -8,7 +8,7 @@ public class GameController
     private static GameController gameController;
     private GameBoard gameBoard;
 
-    private PlayerColor currentPlayerColor = PlayerColor.Silver;
+    private PlayerColor currentPlayerColor = PlayerColor.Orange;
 
     private GameController()
     {
@@ -21,7 +21,7 @@ public class GameController
         if (gameController == null)
         {
             gameController = new GameController();
-            gameController.currentPlayerColor = PlayerColor.Silver;
+            gameController.currentPlayerColor = PlayerColor.Orange;
         }
         return gameController;
     }
@@ -47,10 +47,10 @@ public class GameController
 
     public void FlipColors()
     {
-        if (currentPlayerColor == PlayerColor.Silver)
-            currentPlayerColor = PlayerColor.Gold;
+        if (currentPlayerColor == PlayerColor.Orange)
+            currentPlayerColor = PlayerColor.Purple;
         else
-            currentPlayerColor = PlayerColor.Silver;
+            currentPlayerColor = PlayerColor.Orange;
     }
 
     private string getCurrentSquareConfig()
@@ -163,39 +163,19 @@ public class GameController
             }
         }
 
-        if (GameInformation.gameType == 'N')
+        if ((GameInformation.playerIsHost && GameInformation.currentPlayer == "HUMAN") || (!GameInformation.playerIsHost && GameInformation.currentPlayer == "AI"))
         {
-            if ((GameInformation.playerIsHost && GameInformation.currentPlayer == "HOST"))
-            {
-                GameInformation.playerOneResources[0] += resources[0];
-                GameInformation.playerOneResources[1] += resources[1];
-                GameInformation.playerOneResources[2] += resources[2];
-                GameInformation.playerOneResources[3] += resources[3];
-            }
-            else
-            {
-                GameInformation.playerTwoResources[0] += resources[0];
-                GameInformation.playerTwoResources[1] += resources[1];
-                GameInformation.playerTwoResources[2] += resources[2];
-                GameInformation.playerTwoResources[3] += resources[3];
-            }
+            GameInformation.playerOneResources[0] += resources[0];
+            GameInformation.playerOneResources[1] += resources[1];
+            GameInformation.playerOneResources[2] += resources[2];
+            GameInformation.playerOneResources[3] += resources[3];
         }
         else
         {
-            if ((GameInformation.playerIsHost && GameInformation.currentPlayer == "HUMAN") || (!GameInformation.playerIsHost && GameInformation.currentPlayer == "AI"))
-            {
-                GameInformation.playerOneResources[0] += resources[0];
-                GameInformation.playerOneResources[1] += resources[1];
-                GameInformation.playerOneResources[2] += resources[2];
-                GameInformation.playerOneResources[3] += resources[3];
-            }
-            else
-            {
-                GameInformation.playerTwoResources[0] += resources[0];
-                GameInformation.playerTwoResources[1] += resources[1];
-                GameInformation.playerTwoResources[2] += resources[2];
-                GameInformation.playerTwoResources[3] += resources[3];
-            }
+            GameInformation.playerTwoResources[0] += resources[0];
+            GameInformation.playerTwoResources[1] += resources[1];
+            GameInformation.playerTwoResources[2] += resources[2];
+            GameInformation.playerTwoResources[3] += resources[3];
         }
 
         
@@ -203,49 +183,52 @@ public class GameController
 
     public int CalculatePlayerLongestNetwork(PlayerColor playerColor)
     {
-        int firstNetwork, secondNetwork;
+        int longestNetwork = 0;
+        int currentNetwork = 0;
+        List<int> runningNetworkBranches = new List<int>();
 
         List<int> playerBranches = gameBoard.GetPlayersBranches(playerColor);
-        List<int> checkedBranches = new List<int>();
-        Stack<int> branchesToCheck = new Stack<int>();
 
-        branchesToCheck.Push(playerBranches[0]);
-
-        while(branchesToCheck.Count > 0)
+        runningNetworkBranches.Add(playerBranches[0]);
+        currentNetwork++;
+        foreach(int ownedBranch in playerBranches)
         {
-            int currentBranch = branchesToCheck.Pop();
-            int[] touchingBranches = ReferenceScript.branchConnectsToTheseBranches[currentBranch];
-
-            foreach (int touchedBranch in touchingBranches)
+            if(!runningNetworkBranches.Contains(ownedBranch))
             {
-                if (playerBranches.Contains(touchedBranch) && !checkedBranches.Contains(touchedBranch) && !branchesToCheck.Contains(touchedBranch))
-                {
-                    branchesToCheck.Push(touchedBranch);
-                }
+                longestNetwork = currentNetwork;
+                currentNetwork = 0;
+                runningNetworkBranches.Clear();
             }
 
-            checkedBranches.Add(currentBranch);
+            int[] touchingBranches = ReferenceScript.branchConnectsToTheseBranches[ownedBranch];
+            foreach(int touchedBranch in touchingBranches)
+            {
+                if(!runningNetworkBranches.Contains(touchedBranch) && playerBranches.Contains(touchedBranch))
+                {
+                    runningNetworkBranches.Add(touchedBranch);
+                    currentNetwork++;
+                }
+            }
         }
+        if(currentNetwork > longestNetwork)
+            longestNetwork = currentNetwork;
 
-        firstNetwork = checkedBranches.Count;
-        secondNetwork = playerBranches.Count - firstNetwork;
-
-        return firstNetwork >= secondNetwork ? firstNetwork : secondNetwork;
+        return longestNetwork;
     }
 
     public void UpdateScores()
     {
-        GameInformation.playerOneScore = gameBoard.GetNumberOfPlayerNodes(PlayerColor.Silver);
-        GameInformation.playerTwoScore = gameBoard.GetNumberOfPlayerNodes(PlayerColor.Gold);
-        GameInformation.playerOneScore += gameBoard.GetNumberOfPlayerCapturedTiles(PlayerColor.Silver);
-        GameInformation.playerTwoScore += gameBoard.GetNumberOfPlayerCapturedTiles(PlayerColor.Gold);
+        GameInformation.playerOneScore = gameBoard.GetNumberOfPlayerNodes(PlayerColor.Orange);
+        GameInformation.playerTwoScore = gameBoard.GetNumberOfPlayerNodes(PlayerColor.Purple);
+        GameInformation.playerOneScore += gameBoard.GetNumberOfPlayerCapturedTiles(PlayerColor.Orange);
+        GameInformation.playerTwoScore += gameBoard.GetNumberOfPlayerCapturedTiles(PlayerColor.Purple);
 
-        GameInformation.playerOneNetwork = CalculatePlayerLongestNetwork(PlayerColor.Silver);
-        GameInformation.playerTwoNetwork = CalculatePlayerLongestNetwork(PlayerColor.Gold);
+        int playerOneNetwork = CalculatePlayerLongestNetwork(PlayerColor.Orange);
+        int playerTwoNetwork = CalculatePlayerLongestNetwork(PlayerColor.Purple);
 
-        if (GameInformation.playerOneNetwork > GameInformation.playerTwoNetwork)
+        if (playerOneNetwork > playerTwoNetwork)
             GameInformation.playerOneScore += 2;
-        else if (GameInformation.playerOneNetwork < GameInformation.playerTwoNetwork)
+        else if (playerOneNetwork < playerTwoNetwork)
             GameInformation.playerTwoScore += 2;
     }
 

@@ -31,7 +31,6 @@ public class TradingPanelManager : MonoBehaviour
             tilesSelected[i].text = "0";
         }
 
-        SendMessageUpwards("ToogleTriggers");
         panel.SetActive(false);
     }
 
@@ -64,15 +63,7 @@ public class TradingPanelManager : MonoBehaviour
             for(int i = 0; i < 4; i++)
                 createResourceBtn[i].gameObject.SetActive(false);
         }
-        // If the player clicked on a resource that they already had at its max, reset its count to zero.
-        else if (numSelected == GameInformation.maxTradeResources[colorId])
-        {
-            numberOfTilesSelected -= numSelected;
-            tilesSelected[colorId].text = "0";
-            resources[colorId] = 0;
-            for (int i = 0; i < 4; i++)
-                createResourceBtn[i].gameObject.SetActive(false);
-        }
+            
 
         RenderCreateBtnChoices();
     }
@@ -96,8 +87,7 @@ public class TradingPanelManager : MonoBehaviour
             createResourceBtn[i].gameObject.SetActive(false);
             tilesSelected[i].text = "0";
         }
-        
-        SendMessageUpwards("ToogleTriggers");
+            
         panel.SetActive(false);
         GameInformation.resourceTrade = true;
         GameInformation.tradeHasBeenMade = true;
@@ -105,7 +95,7 @@ public class TradingPanelManager : MonoBehaviour
 
     public void ApplyResourceChanges(int colorId)
     {
-        if(GameInformation.currentPlayer == "HOST" || (GameInformation.currentPlayer == "HUMAN" && GameInformation.playerIsHost) || (GameInformation.currentPlayer == "AI" && !GameInformation.playerIsHost))
+        if(GameInformation.turnNumber % 2 == 0)
         {
             GameInformation.playerOneResources[colorId]++;
             for (int i = 0; i < 4; i++)
@@ -123,12 +113,11 @@ public class TradingPanelManager : MonoBehaviour
     {
         if(!GameInformation.resourceTrade)
         {
-            if (GameInformation.currentPlayer == "HOST" || (GameInformation.currentPlayer == "HUMAN" && GameInformation.playerIsHost) || (GameInformation.currentPlayer == "AI" && !GameInformation.playerIsHost))
+            if (GameInformation.turnNumber % 2 == 0)
                 GameInformation.maxTradeResources = GameInformation.playerOneResources;
             else
                 GameInformation.maxTradeResources = GameInformation.playerTwoResources;
             panel.SetActive(true);
-            SendMessageUpwards("ToogleTriggers");
         }
     }
 }

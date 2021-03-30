@@ -31,7 +31,7 @@ public class BranchController : MonoBehaviour
                         branchEntity.branchState.ownerColor = branchEntity.gameController.getCurrentPlayerColor();
                         branchEntity.branchState.branchColor = branchEntity.gameController.getCurrentPlayerColor();
 
-                        if (branchEntity.gameController.getCurrentPlayerColor() == PlayerColor.Silver)
+                        if (branchEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
                             ClaimBranch(playerOneSprite);
                         else
                             ClaimBranch(playerTwoSprite);
@@ -51,7 +51,7 @@ public class BranchController : MonoBehaviour
                 branchEntity.branchState.ownerColor = branchEntity.gameController.getCurrentPlayerColor();
                 branchEntity.branchState.branchColor = branchEntity.gameController.getCurrentPlayerColor();
                 // Change color
-                if (branchEntity.gameController.getCurrentPlayerColor() == PlayerColor.Silver)
+                if (branchEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
                 {
                     ClaimBranch(playerOneSprite);
                     GameInformation.playerOneResources[0]--;
@@ -72,7 +72,7 @@ public class BranchController : MonoBehaviour
                 branchEntity.branchState.ownerColor = PlayerColor.Blank;
                 branchEntity.branchState.branchColor = PlayerColor.Blank;
 
-                if (branchEntity.gameController.getCurrentPlayerColor() == PlayerColor.Silver)
+                if (branchEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
                 {
                     GameInformation.playerOneResources[0]++;
                     GameInformation.playerOneResources[1]++;
@@ -149,7 +149,7 @@ public class BranchController : MonoBehaviour
             branchEntity.branchState.ownerColor = color;
             branchEntity.branchState.branchColor = color;
 
-            if (color == PlayerColor.Silver)
+            if (color == PlayerColor.Orange)
                 ClaimBranch(playerOneSprite);
             else
                 ClaimBranch(playerTwoSprite);
@@ -159,7 +159,7 @@ public class BranchController : MonoBehaviour
     public bool hasEnoughResources()
     {
         int[] resources = new int[4];
-        if(branchEntity.gameController.getCurrentPlayerColor() == PlayerColor.Silver)
+        if(branchEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
         {
             resources = GameInformation.playerOneResources;
         }
@@ -184,19 +184,5 @@ public class BranchController : MonoBehaviour
         }
 
         return false;
-    }
-
-    public void ToggleTrigger()
-    {
-
-        BoxCollider2D boxCollider = gameObject.GetComponent<BoxCollider2D>();
-        if (boxCollider.enabled)
-        {
-            boxCollider.enabled = false;
-        }
-        else
-        {
-            boxCollider.enabled = true;
-        }
     }
 }

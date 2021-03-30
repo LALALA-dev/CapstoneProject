@@ -11,7 +11,7 @@ public class PlayerResourcesManager : MonoBehaviour
 
     public void UpdateResourcesUI(PlayerColor playerColor)
     {
-        if (playerColor == PlayerColor.Silver)
+        if (playerColor == PlayerColor.Orange)
             UpdatePlayerResources(playerOneResources, GameInformation.playerOneResources);
         else
             UpdatePlayerResources(playerTwoResources, GameInformation.playerTwoResources);
@@ -27,7 +27,7 @@ public class PlayerResourcesManager : MonoBehaviour
 
     public void UpdateBothPlayersResources()
     {
-        UpdateResourcesUI(PlayerColor.Silver);
-        UpdateResourcesUI(PlayerColor.Gold);
+        UpdateResourcesUI(PlayerColor.Orange);
+        UpdateResourcesUI(PlayerColor.Purple);
     }
 }

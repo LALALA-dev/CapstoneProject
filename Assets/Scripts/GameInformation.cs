@@ -11,15 +11,19 @@ public enum NetworkGameType
 
 public class GameInformation
 {
+    public static string username;
+
     public static string roomName = "StandardRoom";
 
-    public static NetworkGameType networkGameType = NetworkGameType.Host;
+    public static NetworkGameType networkGameType = NetworkGameType.Public;
 
     public static bool playerIsHost = true;
 
     public static char gameType = 'A';
 
     public static bool openingSequence = true;
+
+    public static int turnNumber = 1;
 
     public static bool openingMoveNodeSet = false;
 
@@ -41,10 +45,6 @@ public class GameInformation
 
     public static int playerTwoScore = 0;
 
-    public static int playerOneNetwork = 0;
-
-    public static int playerTwoNetwork = 0;
-
     public static bool gameOver = false;
 
     public static string currentPlayer = "HUMAN";
@@ -58,22 +58,4 @@ public class GameInformation
     public static List<int> currentRoundPlacedNodes = new List<int>();
 
     public static List<int> currentRoundPlacedBranches = new List<int>();
-
-    public static bool renderClientBoard = false;
-
-    public static bool newNetworkMoveSet = false;
-
-    public static string ownAvatar = "CAR";
-
-    public static string playerOneAvatar = "CAR";
-
-    public static string playerTwoAvatar = "WHEELBARREL";
-
-    public static bool needToSyncGameVariables = false;
-
-    public static bool needToUpdateOpponentsResources = false;
-
-    public static bool needToSyncAvatars = false;
-
-    public static bool tutorialNeeded = false;
 }

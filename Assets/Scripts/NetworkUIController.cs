@@ -1,5 +1,3 @@
-using Photon.Pun;
-using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -7,85 +5,80 @@ using UnityEngine;
 
 public class NetworkUIController : MonoBehaviour
 {
-    public GameObject avatarSelector;
-    public GameObject gameTypeSelector;
-
-    public GameObject[] avatars;
-    public GameObject[] gameTypes;
-
-    public GameObject helpPanel;
+    public TMP_InputField hostCreateRoomNameField;
+    public TMP_InputField privateRoomNameField;
+    public TMP_InputField setNameField;
 
     void Start()
     {
+        if(PlayerPrefs.HasKey("NetworkName"))
+        {
+            setNameField.text = PlayerPrefs.GetString("NetworkName");
+        }
+        hostCreateRoomNameField.gameObject.SetActive(false);
+        privateRoomNameField.gameObject.SetActive(false);
         GameInformation.gameType = 'N';
-
-        helpPanel.SetActive(false);
     }
 
-    public void LeaveOnlineRoom()
+    public void SetName()
     {
-        if (PhotonNetwork.InRoom)
+        if (setNameField.text.Trim() != "")
         {
-            PhotonNetwork.LeaveRoom();
-            PhotonNetwork.Disconnect();
+            PlayerPrefs.SetString("NetworkName", setNameField.text.Trim());
+        }
+        else
+        {
         }
     }
 
-    public void OnHatSelect()
+    public void EnableCreateHostGameInput()
     {
-        GameInformation.ownAvatar = "HAT";
-        avatarSelector.transform.position = new Vector3(avatars[0].transform.position.x, avatarSelector.transform.position.y);
+        hostCreateRoomNameField.gameObject.SetActive(true);
+        privateRoomNameField.gameObject.SetActive(false);
     }
 
-    public void OnShipSelect()
+    public void EnableJoinPrivateGameInput()
     {
-        GameInformation.ownAvatar = "BATTLESHIP";
-        avatarSelector.transform.position = new Vector3(avatars[1].transform.position.x, avatarSelector.transform.position.y);
+        hostCreateRoomNameField.gameObject.SetActive(false);
+        privateRoomNameField.gameObject.SetActive(true);
     }
 
-    public void OnCarSelect()
+    public void DisableInputs()
     {
-        GameInformation.ownAvatar = "CAR";
-        avatarSelector.transform.position = new Vector3(avatars[2].transform.position.x, avatarSelector.transform.position.y);
+        SetRoomName();
+        hostCreateRoomNameField.gameObject.SetActive(false);
+        privateRoomNameField.gameObject.SetActive(false);
     }
 
-    public void OnThimbleSelect()
+    public void SetRoomName()
     {
-        GameInformation.ownAvatar = "THIMBLE";
-        avatarSelector.transform.position = new Vector3(avatars[3].transform.position.x, avatarSelector.transform.position.y);
-    }
-
-    public void OnWheelBarrelSelect()
-    {
-        GameInformation.ownAvatar = "WHEELBARREL";
-        avatarSelector.transform.position = new Vector3(avatars[4].transform.position.x, avatarSelector.transform.position.y);
-    }
-
-    public void OnHostSelect()
-    {
-        GameInformation.networkGameType = NetworkGameType.Host;
-        gameTypeSelector.transform.position = new Vector3(gameTypeSelector.transform.position.x, gameTypes[0].transform.position.y);
-    }
-
-    public void OnPublicSelect()
-    {
-        GameInformation.networkGameType = NetworkGameType.Public;
-        gameTypeSelector.transform.position = new Vector3(gameTypeSelector.transform.position.x, gameTypes[1].transform.position.y);
-    }
-
-    public void OnPrivateSelect()
-    {
-        GameInformation.networkGameType = NetworkGameType.Private;
-        gameTypeSelector.transform.position = new Vector3(gameTypeSelector.transform.position.x, gameTypes[2].transform.position.y);
-    }
-
-    public void OnHelpClick()
-    {
-        helpPanel.SetActive(true);  
-    }
-
-    public void OnHelpExitClick()
-    {
-        helpPanel.SetActive(false);
+        if (hostCreateRoomNameField.IsActive())
+        {
+            if(hostCreateRoomNameField.text.Trim() != "")
+            {
+                GameInformation.roomName = hostCreateRoomNameField.text.Trim();
+                GameInformation.networkGameType = NetworkGameType.Host;
+            }
+            else
+            {
+                // TODO: ERROR MESSAGE
+            }
+        }
+        else if(privateRoomNameField.IsActive())
+        {
+            if (privateRoomNameField.text.Trim() != "")
+            {
+                GameInformation.roomName = privateRoomNameField.text.Trim();
+                GameInformation.networkGameType = NetworkGameType.Private;
+            }
+            else
+            {
+                // TODO: ERROR MESSAGE
+            }
+        }
+        else
+        {
+            GameInformation.networkGameType = NetworkGameType.Public;
+        }
     }
 }
