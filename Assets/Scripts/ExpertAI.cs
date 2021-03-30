@@ -641,6 +641,7 @@ public class ExpertAI
         return newBoard;
     }
 
+    //after instantiate this class, call findNextMove with time limit(5 for exopert AI) 
     public class AI
     {
         private int t; //total number of simulations
