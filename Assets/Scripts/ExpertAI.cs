@@ -464,13 +464,13 @@ public class ExpertAI
             return PlayerColor.Blank;
         }
 
-        if (currentPlayer == PlayerColor.Silver)
+        if (currentPlayer == PlayerColor.Orange)
         {
-            return PlayerColor.Gold;
+            return PlayerColor.Purple;
         }
         else
         {
-            return PlayerColor.Silver;
+            return PlayerColor.Orange;
         }
     }
 
@@ -592,13 +592,13 @@ public class ExpertAI
 
     static PlayerColor isEnd(BoardState currentBoard)
     {
-        int playerOneScore = GetNumberOfPlayerNodes(currentBoard, PlayerColor.Silver);
-        int playerTwoScore = GetNumberOfPlayerNodes(currentBoard, PlayerColor.Gold);
-        playerOneScore += GetNumberOfPlayerCapturedTiles(currentBoard, PlayerColor.Silver);
-        playerTwoScore += GetNumberOfPlayerCapturedTiles(currentBoard, PlayerColor.Gold);
+        int playerOneScore = GetNumberOfPlayerNodes(currentBoard, PlayerColor.Orange);
+        int playerTwoScore = GetNumberOfPlayerNodes(currentBoard, PlayerColor.Purple);
+        playerOneScore += GetNumberOfPlayerCapturedTiles(currentBoard, PlayerColor.Orange);
+        playerTwoScore += GetNumberOfPlayerCapturedTiles(currentBoard, PlayerColor.Purple);
 
-        int playerOneNetwork = CalculatePlayerLongestNetwork(currentBoard, PlayerColor.Silver);
-        int playerTwoNetwork = CalculatePlayerLongestNetwork(currentBoard, PlayerColor.Gold);
+        int playerOneNetwork = CalculatePlayerLongestNetwork(currentBoard, PlayerColor.Orange);
+        int playerTwoNetwork = CalculatePlayerLongestNetwork(currentBoard, PlayerColor.Purple);
 
         if (playerOneNetwork > playerTwoNetwork)
         {
@@ -611,11 +611,11 @@ public class ExpertAI
 
         if (playerOneScore >= 10)
         {
-            return PlayerColor.Silver;
+            return PlayerColor.Orange;
         }
         else if (playerTwoScore >= 10)
         {
-            return PlayerColor.Gold;
+            return PlayerColor.Purple;
         }
         else
         {
@@ -663,13 +663,13 @@ public class ExpertAI
             {
                 currentPlayer = AIcolor;
             }
-            else if (AIcolor == PlayerColor.Silver)
+            else if (AIcolor == PlayerColor.Orange)
             {
-                currentPlayer = PlayerColor.Gold;
+                currentPlayer = PlayerColor.Purple;
             }
             else
             {
-                currentPlayer = PlayerColor.Silver;
+                currentPlayer = PlayerColor.Orange;
             }
             return currentPlayer;
         }
@@ -928,15 +928,7 @@ public class ExpertAI
         {
             int trad = 0;
             int flag_moreMoves = 0;
-            PlayerColor currentPlayer;
-            if (getcurrentPlayerColor(node) == PlayerColor.Silver)
-            {
-                currentPlayer = PlayerColor.Gold;
-            }
-            else
-            {
-                currentPlayer = PlayerColor.Silver;
-            }
+            PlayerColor currentPlayer = getcurrentPlayerColor(node);
             List<MyBoard> temp = GetPossibleMoves(node.localBoard, currentPlayer, ref trad, ref flag_moreMoves);
             foreach(MyBoard i in temp)
             {
@@ -963,30 +955,50 @@ public class ExpertAI
             PlayerColor winner = PlayerColor.Blank;
             TreeNode temp = node.Copy();
             PlayerColor playerCol= getcurrentPlayerColor(node);
+            PlayerColor otherCol;
             while ( winner == PlayerColor.Blank)
             {
                 
-                if (playerCol == PlayerColor.Silver)
+                if (playerCol == PlayerColor.Orange)
                 {
-                    playerCol = PlayerColor.Gold;
+                    otherCol = PlayerColor.Purple;
                 }
                 else
                 {
-                    playerCol = PlayerColor.Silver;
+                    otherCol = PlayerColor.Orange;
                 }
 
                 if(AIcolor == playerCol)
                 {
                     BeginnerAI tempp = new BeginnerAI(playerCol, temp.localBoard.boardState);
                     temp.localBoard.boardState = tempp.RandomMoveForMCTS(temp.localBoard.boardState, temp.localBoard.aiResources);
+                    int[] res = BeginnerAI.CollectCurrentPlayerResources(temp.localBoard.boardState, otherCol);
+                    for (int i = 0; i < 4; i++)
+                    {
+                        temp.localBoard.playerResources[i] += res[i];
+                    }
+                    
                 }
                 else
                 {
                     BeginnerAI tempp = new BeginnerAI(playerCol, temp.localBoard.boardState);
                     temp.localBoard.boardState = tempp.RandomMoveForMCTS(temp.localBoard.boardState, temp.localBoard.playerResources);
+                    int[] res = BeginnerAI.CollectCurrentPlayerResources(temp.localBoard.boardState, otherCol);
+                    for (int i = 0; i < 4; i++)
+                    {
+                        temp.localBoard.aiResources[i] += res[i];
+                    }
                 }
                 DetectMultiTileCaptures(temp.localBoard.boardState);
                 winner = isEnd(temp.localBoard.boardState);
+                if(playerCol == PlayerColor.Orange)
+                {
+                    playerCol = PlayerColor.Purple;
+                }
+                else
+                {
+                    playerCol = PlayerColor.Orange;
+                }
             }
             return winner;
         }
