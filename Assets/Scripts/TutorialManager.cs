@@ -1,12 +1,7 @@
-using Photon.Pun;
-using Photon.Realtime;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 using UnityEngine.UI;
 using static GameObjectProperties;
-using System;
 
 public class TutorialManager : MonoBehaviour
 {
@@ -266,7 +261,7 @@ public class TutorialManager : MonoBehaviour
                 GameInformation.openingSequence = false;
                 GameInformation.currentPlayer = "AI";
                 currentPlayerMessage.text = "Opponent's Move";
-                gameController.FlipColors();
+                ;
                 int[] one = new int[] { 0, 0, 0, 0 };
                 int[] two = new int[] { 2, 2, 1, 1 };
                 SetResources(one, two);
@@ -285,7 +280,7 @@ public class TutorialManager : MonoBehaviour
             {
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
-                gameController.FlipColors();
+                ;
                 int[] one = new int[] { 1, 1, 2, 2 };
                 int[] two = new int[] { 1, 1, 1, 1 };
                 SetResources(one, two);
@@ -333,7 +328,7 @@ public class TutorialManager : MonoBehaviour
             {
                 GameInformation.currentPlayer = "AI";
                 currentPlayerMessage.text = "Opponent's Move";
-                gameController.FlipColors(); 
+                ; 
                 int[] one = new int[] { 1, 1, 0, 0 };
                 int[] two = new int[] { 3, 3, 2, 2 };
                 SetResources(one, two);
@@ -368,7 +363,7 @@ public class TutorialManager : MonoBehaviour
             {
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
-                gameController.FlipColors();
+                ;
                 int[] one = new int[] { 3, 3, 3, 2 };
                 int[] two = new int[] { 0, 0, 2, 2 };
                 SetResources(one, two);
@@ -424,7 +419,7 @@ public class TutorialManager : MonoBehaviour
                 boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
                 GameInformation.currentPlayer = "AI";
                 currentPlayerMessage.text = "Opponent's Move";
-                gameController.FlipColors(); 
+                ; 
                 int[] one = new int[] { 1, 1, 0, 0 };
                 int[] two = new int[] { 2, 2, 3, 3 };
                 SetResources(one, two);
@@ -461,7 +456,7 @@ public class TutorialManager : MonoBehaviour
                 forwardBtn.interactable = false;
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
-                gameController.FlipColors();
+                ;
                 int[] one = new int[] { 4, 3, 3, 1 };
                 int[] two = new int[] { 0, 0, 3, 3 };
                 SetResources(one, two);
@@ -568,7 +563,7 @@ public class TutorialManager : MonoBehaviour
                 ClaimBranch(11, PlayerColor.Gold, highlightGold);
                 GameInformation.currentPlayer = "AI";
                 currentPlayerMessage.text = "Opponent's Move";
-                gameController.FlipColors();
+                ;
                 gameController.CollectCurrentPlayerResources();
                 playerResourcesManager.UpdateBothPlayersResources();
                 gameController.UpdateScores();
@@ -589,7 +584,7 @@ public class TutorialManager : MonoBehaviour
                 HighlightNode(7);
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
-                gameController.FlipColors();
+                ;
 
                 int[] one = new int[] { 4, 4, 3, 4 };
                 int[] two = new int[] { 2, 2, 4, 4 };
@@ -617,10 +612,10 @@ public class TutorialManager : MonoBehaviour
                 playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
                 playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
                 GameInformation.gameOver = true;
+                winPanel.SetActive(true);
             }
             else if (messageNumber == 36)
             {
-                GameInformation.gameOver = false;
                 winPanel.SetActive(false);
                 topBG.SetActive(true);
                 bottomBG.SetActive(true);
@@ -673,14 +668,15 @@ public class TutorialManager : MonoBehaviour
                 forwardBtn.interactable = true;
                 tutorialPanel.SetActive(false);
                 HighlightNode(0);
-                tutorialNodes[0].ToggleTrigger();
                 arrows[0].gameObject.SetActive(true);
                 StartCoroutine(MoveForward(arrows[0]));
             }
             else if (messageNumber == 4)
             {
                 StopAllCoroutines();
+                GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
+                ;
                 UndoBranch(0, PlayerColor.Blank, tutorialBranches[0].blankSprite);
                 GameInformation.openingMoveNodeSet = true;
                 GameInformation.openingMoveBranchSet = false;
@@ -698,7 +694,6 @@ public class TutorialManager : MonoBehaviour
                 ClaimNode(0, PlayerColor.Silver, avatars[0]);
                 GameInformation.openingMoveNodeSet = true;
                 HighlightBranch(0);
-                tutorialBranches[0].ToggleTrigger();
                 goBtn.interactable = true;
                 forwardBtn.interactable = false;
             }
@@ -720,7 +715,9 @@ public class TutorialManager : MonoBehaviour
                 arrows[3].gameObject.SetActive(false);
                 arrows[2].gameObject.SetActive(false);
                 forwardBtn.interactable = true;
+                GameInformation.currentPlayer = "AI";
                 currentPlayerMessage.text = "Opponent's Move";
+                ;
                 ClaimBranch(0, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
                 ClaimNode(1, PlayerColor.Gold, avatars[1]);
                 ClaimNode(2, PlayerColor.Gold, avatars[1]);
@@ -734,7 +731,6 @@ public class TutorialManager : MonoBehaviour
                 UndoNode(3, PlayerColor.Blank, tutorialNodes[0].blankSprite);
                 UndoBranch(3, PlayerColor.Blank, tutorialBranches[0].blankSprite);
                 GameInformation.openingSequence = true;
-                gameController.FlipColors();
                 int[] one = new int[] { 0, 0, 0, 0 };
                 int[] two = new int[] { 0, 0, 0, 0 };
                 SetResources(one, two);
@@ -744,7 +740,9 @@ public class TutorialManager : MonoBehaviour
                 playerResourcesManager.UpdateBothPlayersResources();
 
                 // redo 6
+                GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
+                ;
                 GameInformation.openingMoveNodeSet = false;
                 GameInformation.openingMoveBranchSet = false;
                 forwardBtn.interactable = false;
@@ -764,7 +762,7 @@ public class TutorialManager : MonoBehaviour
                 GameInformation.openingSequence = false;
                 GameInformation.currentPlayer = "AI";
                 currentPlayerMessage.text = "Opponent's Move";
-                gameController.FlipColors();
+                ;
                 int[] one = new int[] { 0, 0, 0, 0 };
                 int[] two = new int[] { 2, 2, 1, 1 };
                 SetResources(one, two);
@@ -786,7 +784,7 @@ public class TutorialManager : MonoBehaviour
                 // redo 8
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
-                gameController.FlipColors();
+                ;
                 int[] one = new int[] { 1, 1, 2, 2 };
                 int[] two = new int[] { 1, 1, 1, 1 };
                 SetResources(one, two);
@@ -837,7 +835,6 @@ public class TutorialManager : MonoBehaviour
                 forwardBtn.interactable = false;
                 goBtn.interactable = true;
                 HighlightNode(4);
-                tutorialNodes[4].ToggleTrigger();
             }
             else if (messageNumber == 14)
             {
@@ -847,7 +844,7 @@ public class TutorialManager : MonoBehaviour
                 currentPlayerMessage.text = "Your Move";
                 UndoBranch(5, PlayerColor.Blank, tutorialBranches[0].blankSprite);
                 UndoBranch(6, PlayerColor.Blank, tutorialBranches[0].blankSprite);
-                gameController.FlipColors();
+                ;
                 gameController.UpdateScores();
                 playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
                 playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
@@ -867,7 +864,7 @@ public class TutorialManager : MonoBehaviour
             {
                 GameInformation.currentPlayer = "AI";
                 currentPlayerMessage.text = "Opponent's Move";
-                gameController.FlipColors();
+                ;
                 int[] one = new int[] { 1, 1, 0, 0 };
                 int[] two = new int[] { 3, 3, 2, 2 };
                 SetResources(one, two);
@@ -898,7 +895,7 @@ public class TutorialManager : MonoBehaviour
                 // undo 17
                 GameInformation.currentPlayer = "AI";
                 currentPlayerMessage.text = "Opponent's Move";
-                gameController.FlipColors();
+                ;
                 int[] one = new int[] { 3, 3, 3, 2 };
                 int[] two = new int[] { 0, 0, 2, 2 };
                 SetResources(one, two);
@@ -914,7 +911,7 @@ public class TutorialManager : MonoBehaviour
 
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
-                gameController.FlipColors();
+                ;
                 int[] one = new int[] { 3, 3, 3, 2 };
                 int[] two = new int[] { 0, 0, 2, 2 };
                 SetResources(one, two);
@@ -940,10 +937,6 @@ public class TutorialManager : MonoBehaviour
                 HighlightBranch(7);
                 HighlightBranch(8);
                 HighlightBranch(9);
-                tutorialBranches[7].ToggleTrigger();
-                tutorialBranches[8].ToggleTrigger();
-                tutorialBranches[9].ToggleTrigger();
-                tutorialNodes[5].ToggleTrigger();
             }
             else if (messageNumber == 19)
             {
@@ -982,7 +975,7 @@ public class TutorialManager : MonoBehaviour
                 blockSquares[0].sprite = undoBlockSprites[0];
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
-                gameController.FlipColors();
+                ;
                 int[] one = new int[] { 1, 1, 0, 0 };
                 int[] two = new int[] { 0, 0, 2, 2 };
                 SetResources(one, two);
@@ -1008,7 +1001,7 @@ public class TutorialManager : MonoBehaviour
                 boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
                 GameInformation.currentPlayer = "AI";
                 currentPlayerMessage.text = "Opponent's Move";
-                gameController.FlipColors();
+                ;
                 int[] one = new int[] { 1, 1, 0, 0 };
                 int[] two = new int[] { 2, 2, 3, 3 };
                 SetResources(one, two);
@@ -1030,7 +1023,7 @@ public class TutorialManager : MonoBehaviour
                 forwardBtn.interactable = true;
                 GameInformation.currentPlayer = "AI";
                 currentPlayerMessage.text = "Opponent's Move";
-                gameController.FlipColors();
+                ;
                 int[] one = new int[] { 1, 1, 0, 0 };
                 int[] two = new int[] { 2, 2, 3, 3 };
                 SetResources(one, two);
@@ -1057,8 +1050,8 @@ public class TutorialManager : MonoBehaviour
                 UndoBranch(12, PlayerColor.Blank, tutorialBranches[0].blankSprite);
                 tutorialTiles[0].squareState.resourceState = SquareStatus.Open;
                 tutorialTiles[0].squareState.ownerColor = PlayerColor.Blank;
-                tutorialTiles[2].squareState.resourceState = SquareStatus.Open;
-                tutorialTiles[2].squareState.ownerColor = PlayerColor.Blank;
+                tutorialTiles[3].squareState.resourceState = SquareStatus.Open;
+                tutorialTiles[3].squareState.ownerColor = PlayerColor.Blank;
                 blockSquares[0].sprite = undoBlockSprites[3];
                 blockSquares[2].sprite = undoBlockSprites[2];
 
@@ -1074,7 +1067,7 @@ public class TutorialManager : MonoBehaviour
                 forwardBtn.interactable = false;
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
-                gameController.FlipColors();
+                ;
                 int[] one = new int[] { 4, 3, 3, 1 };
                 int[] two = new int[] { 0, 0, 3, 3 };
                 SetResources(one, two);
@@ -1198,7 +1191,7 @@ public class TutorialManager : MonoBehaviour
                 ClaimBranch(11, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
-                gameController.FlipColors();
+                ;
                 int[] one = new int[] { 1, 2, 0, 0 };
                 int[] two = new int[] { 2, 2, 4, 4 };
                 SetResources(one, two);
@@ -1223,7 +1216,6 @@ public class TutorialManager : MonoBehaviour
                 forwardBtn.interactable = true;
                 goBtn.interactable = false;
                 UndoNode(7, PlayerColor.Blank, tutorialNodes[0].blankSprite);
-                gameController.FlipColors();
 
                 int[] one = new int[] { 4, 4, 3, 4 };
                 int[] two = new int[] { 2, 2, 4, 4 };
@@ -1239,7 +1231,7 @@ public class TutorialManager : MonoBehaviour
                 ClaimBranch(11, PlayerColor.Gold, highlightGold);
                 GameInformation.currentPlayer = "AI";
                 currentPlayerMessage.text = "Opponent's Move";
-                gameController.FlipColors();
+                ;
                 gameController.UpdateScores();
                 playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
                 playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
@@ -1265,7 +1257,7 @@ public class TutorialManager : MonoBehaviour
                 tutorialNodes[7].ToggleTrigger();
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
-                gameController.FlipColors();
+                ;
                 int[] one = new int[] { 4, 4, 3, 4 };
                 int[] two = new int[] { 2, 2, 4, 4 };
                 SetResources(one, two);
@@ -1307,14 +1299,16 @@ public class TutorialManager : MonoBehaviour
     {
         SpriteRenderer sprite = tutorialBranches[branchIndex].GetComponent<SpriteRenderer>();
         sprite.sprite = tutorialBranchSprite;
-        tutorialBranches[branchIndex].ToggleTrigger();
+        BoxCollider2D collider = tutorialBranches[branchIndex].GetComponent<BoxCollider2D>();
+        collider.enabled = true;
     }
 
     public void HighlightNode(int nodeIndex)
     {
         SpriteRenderer sprite = tutorialNodes[nodeIndex].GetComponent<SpriteRenderer>();
         sprite.sprite = tutorialSprite;
-        tutorialNodes[nodeIndex].ToggleTrigger();
+        BoxCollider2D collider = tutorialNodes[nodeIndex].GetComponent<BoxCollider2D>();
+        collider.enabled = true;
     }
 
     public void ClaimBranch(int branchIndex, PlayerColor playerColor, Sprite playerImage)
@@ -1323,7 +1317,8 @@ public class TutorialManager : MonoBehaviour
         sprite.sprite = playerImage;
         tutorialBranches[branchIndex].branchEntity.branchState.branchColor = playerColor;
         tutorialBranches[branchIndex].branchEntity.branchState.ownerColor = playerColor;
-        tutorialBranches[branchIndex].ToggleTrigger();
+        BoxCollider2D collider = tutorialBranches[branchIndex].GetComponent<BoxCollider2D>();
+        collider.enabled = false;
     }
 
     public void ClaimNode(int nodeIndex, PlayerColor playerColor, Sprite playerAvatar)
@@ -1331,7 +1326,8 @@ public class TutorialManager : MonoBehaviour
         SpriteRenderer sprite = tutorialNodes[nodeIndex].GetComponent<SpriteRenderer>();
         sprite.sprite = playerAvatar;
         tutorialNodes[nodeIndex].nodeEntity.nodeState.nodeColor = playerColor;
-        tutorialNodes[nodeIndex].ToggleTrigger();
+        BoxCollider2D collider = tutorialNodes[nodeIndex].GetComponent<BoxCollider2D>();
+        collider.enabled = false;
     }
 
     public void UndoNode(int nodeIndex, PlayerColor color, Sprite Sprite)
