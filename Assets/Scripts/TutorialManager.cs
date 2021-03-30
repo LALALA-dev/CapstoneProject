@@ -136,6 +136,9 @@ public class TutorialManager : MonoBehaviour
     public SpriteRenderer[] blockSquares;
     public Sprite[] undoBlockSprites;
 
+    private float[] arrowXLocations = new float[14];
+    private float[] arrowYLocations = new float[14];
+
     #region Setup
     private void Awake()
     {
@@ -154,6 +157,8 @@ public class TutorialManager : MonoBehaviour
         for(int i = 0; i < arrows.Length; i++)
         {
             arrows[i].gameObject.SetActive(false);
+            arrowXLocations[i] = arrows[i].gameObject.transform.position.x;
+            arrowYLocations[i] = arrows[i].gameObject.transform.position.y;
         }
     }
 
@@ -649,14 +654,18 @@ public class TutorialManager : MonoBehaviour
                 StopAllCoroutines();
                 tutorialPanel.SetActive(true);
                 arrows[0].gameObject.SetActive(false);
+                MoveArrow(0);
                 UndoNode(0, PlayerColor.Blank, tutorialNodes[0].blankSprite);
             }
             else if (messageNumber == 3)
             {
                 StopAllCoroutines();
+                MoveArrow(0);
                 arrows[0].gameObject.SetActive(true);
                 arrows[2].gameObject.SetActive(false);
                 arrows[3].gameObject.SetActive(false);
+                MoveArrow(2);
+                MoveArrow(3);
                 UndoNode(0, PlayerColor.Blank, tutorialNodes[0].blankSprite);
                 GameInformation.openingMoveNodeSet = false;
                 UndoBranch(0, PlayerColor.Blank, tutorialBranches[0].blankSprite);
@@ -671,8 +680,6 @@ public class TutorialManager : MonoBehaviour
             else if (messageNumber == 4)
             {
                 StopAllCoroutines();
-                arrows[3].gameObject.SetActive(true);
-                arrows[2].gameObject.SetActive(true);
                 currentPlayerMessage.text = "Your Move";
                 UndoBranch(0, PlayerColor.Blank, tutorialBranches[0].blankSprite);
                 GameInformation.openingMoveNodeSet = true;
@@ -682,7 +689,7 @@ public class TutorialManager : MonoBehaviour
                 UndoNode(2, PlayerColor.Blank, tutorialNodes[0].blankSprite);
                 UndoBranch(1, PlayerColor.Blank, tutorialBranches[0].blankSprite);
                 UndoBranch(2, PlayerColor.Blank, tutorialBranches[0].blankSprite);
-
+                MoveArrow(0);
                 arrows[0].gameObject.SetActive(false);
                 arrows[2].gameObject.SetActive(true);
                 arrows[3].gameObject.SetActive(true);
@@ -708,12 +715,12 @@ public class TutorialManager : MonoBehaviour
                 UndoBranch(3, PlayerColor.Blank, tutorialBranches[0].blankSprite);
 
                 // redo 5
+                MoveArrow(2);
+                MoveArrow(3);
                 arrows[3].gameObject.SetActive(false);
                 arrows[2].gameObject.SetActive(false);
-                goBtn.interactable = false;
                 forwardBtn.interactable = true;
                 currentPlayerMessage.text = "Opponent's Move";
-                goBtn.interactable = false;
                 ClaimBranch(0, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
                 ClaimNode(1, PlayerColor.Gold, avatars[1]);
                 ClaimNode(2, PlayerColor.Gold, avatars[1]);
@@ -773,6 +780,7 @@ public class TutorialManager : MonoBehaviour
             {
                 // undo 9
                 StopAllCoroutines();
+                MoveArrow(0);
                 arrows[0].gameObject.SetActive(false);
 
                 // redo 8
@@ -791,6 +799,7 @@ public class TutorialManager : MonoBehaviour
             {
                 // undo 10
                 StopAllCoroutines();
+                MoveArrow(1);
                 arrows[1].gameObject.SetActive(false);
 
                 // redo 9
@@ -800,6 +809,7 @@ public class TutorialManager : MonoBehaviour
             else if (messageNumber == 10)
             {
                 StopAllCoroutines();
+                MoveArrow(0);
                 arrows[0].gameObject.SetActive(false);
                 arrows[1].gameObject.SetActive(true);
                 StartCoroutine(MoveForward(arrows[1]));
@@ -807,6 +817,7 @@ public class TutorialManager : MonoBehaviour
             else if (messageNumber == 11)
             {
                 StopAllCoroutines();
+                MoveArrow(1);
                 arrows[1].gameObject.SetActive(false);
             }
             else if (messageNumber == 12)
@@ -840,6 +851,7 @@ public class TutorialManager : MonoBehaviour
                 gameController.UpdateScores();
                 playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
                 playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
+                MoveArrow(10);
                 arrows[10].gameObject.SetActive(false);
 
                 // redo 14
@@ -936,6 +948,7 @@ public class TutorialManager : MonoBehaviour
             else if (messageNumber == 19)
             {
                 StopAllCoroutines();
+                MoveArrow(4);
                 arrows[4].gameObject.SetActive(false);
 
                 int[] one = new int[] { 0, 0, 1, 0 };
@@ -960,6 +973,7 @@ public class TutorialManager : MonoBehaviour
                 StopAllCoroutines();
                 goBtn.interactable = false;
                 forwardBtn.interactable = true;
+                MoveArrow(4);
                 arrows[4].gameObject.SetActive(false);
             }
             else if (messageNumber == 22)
@@ -982,6 +996,7 @@ public class TutorialManager : MonoBehaviour
             else if (messageNumber == 23)
             {
                 StopAllCoroutines();
+                MoveArrow(5);
                 arrows[5].gameObject.SetActive(false);
                 UndoBranch(10, PlayerColor.Blank, tutorialBranches[0].blankSprite);
                 UndoBranch(11, PlayerColor.Blank, tutorialBranches[0].blankSprite);
@@ -1006,6 +1021,7 @@ public class TutorialManager : MonoBehaviour
             {
                 StopAllCoroutines();
                 UndoBranch(12, PlayerColor.Blank, tutorialBranches[0].blankSprite);
+                MoveArrow(6);
                 arrows[6].gameObject.SetActive(false);
                 tutorialTiles[1].squareState.resourceState = SquareStatus.Open;
                 tutorialTiles[1].squareState.ownerColor = PlayerColor.Blank;
@@ -1036,6 +1052,7 @@ public class TutorialManager : MonoBehaviour
             else if(messageNumber == 25)
             {
                 StopAllCoroutines();
+                MoveArrow(11);
                 arrows[11].gameObject.SetActive(false);
                 UndoBranch(12, PlayerColor.Blank, tutorialBranches[0].blankSprite);
                 tutorialTiles[0].squareState.resourceState = SquareStatus.Open;
@@ -1045,6 +1062,7 @@ public class TutorialManager : MonoBehaviour
                 blockSquares[0].sprite = undoBlockSprites[3];
                 blockSquares[2].sprite = undoBlockSprites[2];
 
+                MoveArrow(5);
                 arrows[5].gameObject.SetActive(false);
                 arrows[6].gameObject.SetActive(true);
                 StartCoroutine(MoveUp(arrows[6]));
@@ -1070,11 +1088,13 @@ public class TutorialManager : MonoBehaviour
             else if (messageNumber == 26)
             {
                 StopAllCoroutines();
+                MoveArrow(7);
                 arrows[7].gameObject.SetActive(false);
                 int[] one = new int[] { 3, 2, 3, 1 };
                 int[] two = new int[] { 0, 0, 3, 3 };
                 SetResources(one, two);
                 playerResourcesManager.UpdateBothPlayersResources();
+                MoveArrow(6);
                 arrows[6].gameObject.SetActive(false);
                 arrows[11].gameObject.SetActive(true);
                 StartCoroutine(MoveNorthEast(arrows[11]));
@@ -1092,6 +1112,7 @@ public class TutorialManager : MonoBehaviour
             {
                 StopAllCoroutines();
                 tradePanel.SetActive(false);
+                MoveArrow(11);
                 arrows[11].gameObject.SetActive(false);
                 tradeBtn.interactable = true;
                 forwardBtn.interactable = false;
@@ -1109,6 +1130,7 @@ public class TutorialManager : MonoBehaviour
                 GameInformation.resourceTrade = false;
                 tradePanel.SetActive(true);
                 StopAllCoroutines();
+                MoveArrow(7);
                 arrows[7].gameObject.SetActive(false);
                 for (int i = 0; i < tradingButtons.Length; i++)
                     tradingButtons[i].interactable = false;
@@ -1126,6 +1148,8 @@ public class TutorialManager : MonoBehaviour
             else if(messageNumber == 30)
             {
                 UndoNode(6, PlayerColor.Blank, tutorialSprite);
+                MoveArrow(8);
+                MoveArrow(9);
                 arrows[8].gameObject.SetActive(false);
                 arrows[9].gameObject.SetActive(false);
                 int[] one = new int[] { 1, 2, 2, 2 };
@@ -1183,6 +1207,8 @@ public class TutorialManager : MonoBehaviour
                 playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
                 playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
 
+                MoveArrow(8);
+                MoveArrow(9);
                 arrows[8].gameObject.SetActive(false);
                 arrows[9].gameObject.SetActive(false);
                 ClaimBranch(0, PlayerColor.Silver, highlightSilver);
@@ -1254,6 +1280,8 @@ public class TutorialManager : MonoBehaviour
                 winPanel.SetActive(true);
                 topBG.SetActive(false);
                 bottomBG.SetActive(false);
+                MoveArrow(12);
+                MoveArrow(13);
                 arrows[12].gameObject.SetActive(false);
                 arrows[13].gameObject.SetActive(false);
                 forwardBtn.interactable = true;
@@ -1423,4 +1451,8 @@ public class TutorialManager : MonoBehaviour
         GameInformation.playerTwoResources[3] = two[3];
     }
 
+    public void MoveArrow(int arrowNum)
+    {
+        arrows[arrowNum].gameObject.transform.position = new Vector3(arrowXLocations[arrowNum], arrowYLocations[arrowNum]);
+    }
 }
