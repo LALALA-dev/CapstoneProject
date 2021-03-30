@@ -7,8 +7,8 @@ public class GameObjectProperties
     public enum PlayerColor
     {
         Blank,
-        Orange,
-        Purple
+        Silver,
+        Gold
     }
     public enum SquareStatus
     {
