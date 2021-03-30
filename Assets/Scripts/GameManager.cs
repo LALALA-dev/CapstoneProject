@@ -193,7 +193,6 @@ public class GameManager : MonoBehaviour
         if (OpponentHasSentNewMoveToProcess())
         {
             GameInformation.newNetworkMoveSet = false;
-
             string opponentBoard = networkController.GetMove();
             gameController.SetBoardConfiguration(opponentBoard);
             gameController.UpdateGameBoard();
@@ -358,6 +357,7 @@ public class GameManager : MonoBehaviour
         if(!GameInformation.playerIsHost)
         {
             currentPlayerMessage.text = "AI's Move";
+            waitingAnimation.SetActive(true);
             BoardState AIMove = beginnerAI.MakeRandomOpeningMove(gameController.getGameBoard().getBoardState());
             gameController.getGameBoard().setBoard(AIMove.squareStates, AIMove.nodeStates, AIMove.branchStates);
             EndCurrentAIPlayersTurn();
@@ -365,6 +365,7 @@ public class GameManager : MonoBehaviour
         else
         {
             currentPlayerMessage.text = "Your Move";
+            waitingAnimation.SetActive(false);
         }
     }
 
@@ -393,6 +394,7 @@ public class GameManager : MonoBehaviour
                 if(turnNumber == 1)
                 {
                     currentPlayerMessage.text = "AI's Move";
+                    waitingAnimation.SetActive(true);
                     turnNumber++;
                     RandomAIOpeningMove();
 
@@ -402,6 +404,7 @@ public class GameManager : MonoBehaviour
                 else if(turnNumber == 4)
                 {
                     currentPlayerMessage.text = "AI's Move";
+                    waitingAnimation.SetActive(true);
                     GameInformation.openingSequence = false;
                     turnNumber++;
                     GameInformation.currentPlayer = "AI"; 
@@ -428,6 +431,7 @@ public class GameManager : MonoBehaviour
                 if(turnNumber == 2)
                 {
                     currentPlayerMessage.text = "Your Move";
+                    waitingAnimation.SetActive(false);
                     turnNumber++;
                     gameController.FlipColors();
                     BeginHumanOpeningMove();
@@ -435,6 +439,7 @@ public class GameManager : MonoBehaviour
                 else if(turnNumber == 3)
                 {
                     currentPlayerMessage.text = "AI's Move";
+                    waitingAnimation.SetActive(true);
                     turnNumber++;
                     RandomAIOpeningMove();
                     EndCurrentAIPlayersTurn();
@@ -452,11 +457,13 @@ public class GameManager : MonoBehaviour
                     boardManager.RefreshBoardGUI();
                     turnNumber++;
                     currentPlayerMessage.text = "Your Move";
+                    waitingAnimation.SetActive(false);
                     BeginHumanOpeningMove();
                 }
                 else if (turnNumber == 4)
                 {
                     currentPlayerMessage.text = "Your Move";
+                    waitingAnimation.SetActive(false);
                     GameInformation.openingSequence = false;
                     turnNumber++;
                     GameInformation.currentPlayer = "HUMAN";
@@ -474,6 +481,7 @@ public class GameManager : MonoBehaviour
                 if (turnNumber == 2)
                 {
                     currentPlayerMessage.text = "AI's Move";
+                    waitingAnimation.SetActive(true);
                     turnNumber++;
                     RandomAIOpeningMove();
                     GameInformation.humanMoveFinished = false;
@@ -482,6 +490,7 @@ public class GameManager : MonoBehaviour
                 else if (turnNumber == 3)
                 {
                     currentPlayerMessage.text = "Your Move";
+                    waitingAnimation.SetActive(false);
                     turnNumber++;
                     GameInformation.currentPlayer = "HUMAN";
                     gameController.FlipColors();
@@ -505,11 +514,13 @@ public class GameManager : MonoBehaviour
             {
                 GameInformation.currentPlayer = "AI";
                 currentPlayerMessage.text = "AI's Move";
+                waitingAnimation.SetActive(true);
             }
             else
             {
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
+                waitingAnimation.SetActive(false);
             }
             gameController.FlipColors();
             gameController.CollectCurrentPlayerResources();
