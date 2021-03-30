@@ -1107,6 +1107,159 @@ public class TutorialManager : MonoBehaviour
                 for (int i = 0; i < tradingButtons.Length; i++)
                     tradingButtons[i].interactable = false;
             }
+            else if (messageNumber == 29)
+            {
+                int[] one = new int[] { 1, 2, 2, 2 };
+                int[] two = new int[] { 0, 0, 3, 3 };
+                SetResources(one, two);
+                playerResourcesManager.UpdateBothPlayersResources();
+                UndoNode(6, PlayerColor.Blank, tutorialNodes[0].blankSprite);
+                forwardBtn.interactable = true;
+                goBtn.interactable = false;
+            }
+            else if(messageNumber == 30)
+            {
+                UndoNode(6, PlayerColor.Blank, tutorialSprite);
+                arrows[8].gameObject.SetActive(false);
+                arrows[9].gameObject.SetActive(false);
+                int[] one = new int[] { 1, 2, 2, 2 };
+                int[] two = new int[] { 0, 0, 3, 3 };
+                SetResources(one, two);
+                playerResourcesManager.UpdateBothPlayersResources();
+                gameController.UpdateScores();
+                playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
+                playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
+
+                HighlightNode(6);
+                forwardBtn.interactable = false;
+                goBtn.interactable = true;
+            }
+            else if(messageNumber == 31)
+            {
+                UndoBranch(0, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
+                UndoBranch(3, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
+                UndoBranch(7, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
+                UndoBranch(8, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
+                UndoBranch(9, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
+                UndoBranch(12, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
+
+                ClaimNode(6, PlayerColor.Silver, tutorialNodes[0].playerOneSprite);
+                forwardBtn.interactable = true;
+                goBtn.interactable = false;
+                arrows[8].gameObject.SetActive(true);
+                arrows[9].gameObject.SetActive(true);
+                int[] one = new int[] { 1, 2, 0, 0 };
+                int[] two = new int[] { 2, 2, 4, 4 };
+                SetResources(one, two);
+                playerResourcesManager.UpdateBothPlayersResources();
+                gameController.UpdateScores();
+                playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
+                playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
+            }
+            else if (messageNumber == 32)
+            {
+                ClaimBranch(1, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
+                ClaimBranch(2, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
+                ClaimBranch(4, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
+                ClaimBranch(5, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
+                ClaimBranch(6, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
+                ClaimBranch(10, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
+                ClaimBranch(11, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
+                GameInformation.currentPlayer = "HUMAN";
+                currentPlayerMessage.text = "Your Move";
+                gameController.FlipColors();
+                int[] one = new int[] { 1, 2, 0, 0 };
+                int[] two = new int[] { 2, 2, 4, 4 };
+                SetResources(one, two);
+                playerResourcesManager.UpdateBothPlayersResources();
+                gameController.UpdateScores();
+                playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
+                playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
+
+                arrows[8].gameObject.SetActive(false);
+                arrows[9].gameObject.SetActive(false);
+                ClaimBranch(0, PlayerColor.Silver, highlightSilver);
+                ClaimBranch(3, PlayerColor.Silver, highlightSilver);
+                ClaimBranch(7, PlayerColor.Silver, highlightSilver);
+                ClaimBranch(8, PlayerColor.Silver, highlightSilver);
+                ClaimBranch(9, PlayerColor.Silver, highlightSilver);
+                ClaimBranch(12, PlayerColor.Silver, highlightSilver);
+            }
+            else if (messageNumber == 33)
+            {
+                forwardBtn.interactable = true;
+                goBtn.interactable = false;
+                UndoNode(7, PlayerColor.Blank, tutorialNodes[0].blankSprite);
+                gameController.FlipColors();
+
+                int[] one = new int[] { 4, 4, 3, 4 };
+                int[] two = new int[] { 2, 2, 4, 4 };
+                SetResources(one, two);
+                playerResourcesManager.UpdateBothPlayersResources();
+
+                ClaimBranch(1, PlayerColor.Gold, highlightGold);
+                ClaimBranch(2, PlayerColor.Gold, highlightGold);
+                ClaimBranch(4, PlayerColor.Gold, highlightGold);
+                ClaimBranch(5, PlayerColor.Gold, highlightGold);
+                ClaimBranch(6, PlayerColor.Gold, highlightGold);
+                ClaimBranch(10, PlayerColor.Gold, highlightGold);
+                ClaimBranch(11, PlayerColor.Gold, highlightGold);
+                GameInformation.currentPlayer = "AI";
+                currentPlayerMessage.text = "Opponent's Move";
+                gameController.FlipColors();
+                gameController.UpdateScores();
+                playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
+                playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
+            }
+            else if (messageNumber == 34)
+            {
+                topBG.SetActive(true);
+                bottomBG.SetActive(true);
+                UndoNode(7, PlayerColor.Blank, tutorialNodes[0].blankSprite);
+                GameInformation.gameOver = false;
+                winPanel.SetActive(false);
+
+                ClaimBranch(1, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
+                ClaimBranch(2, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
+                ClaimBranch(4, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
+                ClaimBranch(5, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
+                ClaimBranch(6, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
+                ClaimBranch(10, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
+                ClaimBranch(11, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
+                forwardBtn.interactable = false;
+                goBtn.interactable = true;
+                HighlightNode(7);
+                GameInformation.currentPlayer = "HUMAN";
+                currentPlayerMessage.text = "Your Move";
+                gameController.FlipColors();
+                int[] one = new int[] { 4, 4, 3, 4 };
+                int[] two = new int[] { 2, 2, 4, 4 };
+                SetResources(one, two);
+                playerResourcesManager.UpdateBothPlayersResources();
+                gameController.UpdateScores();
+                playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
+                playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
+            }
+            else if (messageNumber == 35)
+            {
+                StopAllCoroutines();
+                winPanel.SetActive(true);
+                topBG.SetActive(false);
+                bottomBG.SetActive(false);
+                arrows[12].gameObject.SetActive(false);
+                arrows[13].gameObject.SetActive(false);
+                forwardBtn.interactable = true;
+                goBtn.interactable = false;
+                ClaimNode(7, PlayerColor.Silver, tutorialNodes[0].playerOneSprite);
+                int[] one = new int[] { 4, 4, 1, 2 };
+                int[] two = new int[] { 2, 2, 4, 4 };
+                SetResources(one, two);
+                playerResourcesManager.UpdateBothPlayersResources();
+                gameController.UpdateScores();
+                playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
+                playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
+                GameInformation.gameOver = true;
+            }
         }
         else
         {

@@ -2195,7 +2195,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 200, y: -170}
-  m_SizeDelta: {x: 300, y: 50}
+  m_SizeDelta: {x: 400, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &304970665
 MonoBehaviour:
@@ -14707,6 +14707,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2063191967}
     - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
+      propertyPath: tradePanel
+      value: 
+      objectReference: {fileID: 11181025}
+    - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
+      propertyPath: blockSquare
+      value: 
+      objectReference: {fileID: 1822587760}
+    - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
       propertyPath: openingNode
       value: 
       objectReference: {fileID: 1472870964}
@@ -14754,6 +14762,10 @@ PrefabInstance:
       propertyPath: playerTwoAvatar
       value: 
       objectReference: {fileID: 299862315}
+    - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
+      propertyPath: undoBlockSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 6527aae62bc5f1f4fbb7b102f4e350bd, type: 3}
     - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
       propertyPath: arrows.Array.size
       value: 14
@@ -14851,6 +14863,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1660268657}
     - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
+      propertyPath: blockSquares.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
       propertyPath: tutorialNodes.Array.size
       value: 8
       objectReference: {fileID: 0}
@@ -14862,6 +14878,18 @@ PrefabInstance:
       propertyPath: tradingButtons.Array.size
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
+      propertyPath: blockSquares.Array.data[0]
+      value: 
+      objectReference: {fileID: 1822587760}
+    - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
+      propertyPath: blockSquares.Array.data[1]
+      value: 
+      objectReference: {fileID: 1221834374}
+    - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
+      propertyPath: blockSquares.Array.data[2]
+      value: 
+      objectReference: {fileID: 238692095}
     - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
       propertyPath: infoOneMessages.Array.size
       value: 29
@@ -14926,6 +14954,10 @@ PrefabInstance:
       propertyPath: tutorialTiles.Array.data[3]
       value: 
       objectReference: {fileID: 1410761992}
+    - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
+      propertyPath: undoBlockSprites.Array.size
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
       propertyPath: tradingButtons.Array.data[0]
       value: 
@@ -15100,6 +15132,22 @@ PrefabInstance:
       propertyPath: tutorialBranches.Array.data[9]
       value: 
       objectReference: {fileID: 1939576456}
+    - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
+      propertyPath: undoBlockSprites.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 6527aae62bc5f1f4fbb7b102f4e350bd, type: 3}
+    - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
+      propertyPath: undoBlockSprites.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: b2c674f3bae607d45a2b2e0754fc359e, type: 3}
+    - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
+      propertyPath: undoBlockSprites.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: fd9ce7d84dfb3ba4195d957dd66dbc18, type: 3}
+    - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
+      propertyPath: undoBlockSprites.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: d06bd1c9b9b30e74596aa0f4b5f1b8a4, type: 3}
     - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
       propertyPath: tutorialBranches.Array.data[10]
       value: 
