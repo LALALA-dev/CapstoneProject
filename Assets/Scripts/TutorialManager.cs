@@ -826,6 +826,7 @@ public class TutorialManager : MonoBehaviour
                 forwardBtn.interactable = false;
                 goBtn.interactable = true;
                 HighlightNode(4);
+                tutorialNodes[4].ToggleTrigger();
             }
             else if (messageNumber == 14)
             {
@@ -927,6 +928,10 @@ public class TutorialManager : MonoBehaviour
                 HighlightBranch(7);
                 HighlightBranch(8);
                 HighlightBranch(9);
+                tutorialBranches[7].ToggleTrigger();
+                tutorialBranches[8].ToggleTrigger();
+                tutorialBranches[9].ToggleTrigger();
+                tutorialNodes[5].ToggleTrigger();
             }
             else if (messageNumber == 19)
             {
@@ -1060,6 +1065,7 @@ public class TutorialManager : MonoBehaviour
                 playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
                 playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
                 HighlightBranch(12);
+                tutorialBranches[12].ToggleTrigger();
             }
             else if (messageNumber == 26)
             {
@@ -1131,6 +1137,7 @@ public class TutorialManager : MonoBehaviour
                 playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
 
                 HighlightNode(6);
+                tutorialNodes[6].ToggleTrigger();
                 forwardBtn.interactable = false;
                 goBtn.interactable = true;
             }
@@ -1229,6 +1236,7 @@ public class TutorialManager : MonoBehaviour
                 forwardBtn.interactable = false;
                 goBtn.interactable = true;
                 HighlightNode(7);
+                tutorialNodes[7].ToggleTrigger();
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
                 gameController.FlipColors();
