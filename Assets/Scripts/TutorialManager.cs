@@ -753,8 +753,6 @@ public class TutorialManager : MonoBehaviour
                 GameInformation.openingMoveBranchSet = false;
                 forwardBtn.interactable = false;
                 goBtn.interactable = true;
-                tutorialBranches[3].ToggleTrigger();
-                tutorialNodes[3].ToggleTrigger();
                 HighlightNode(3);
                 HighlightBranch(3);
             }
@@ -1082,7 +1080,6 @@ public class TutorialManager : MonoBehaviour
                 playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
                 playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
                 HighlightBranch(12);
-                tutorialBranches[12].ToggleTrigger();
             }
             else if (messageNumber == 26)
             {
@@ -1160,7 +1157,6 @@ public class TutorialManager : MonoBehaviour
                 playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
 
                 HighlightNode(6);
-                tutorialNodes[6].ToggleTrigger();
                 forwardBtn.interactable = false;
                 goBtn.interactable = true;
             }
@@ -1261,7 +1257,6 @@ public class TutorialManager : MonoBehaviour
                 forwardBtn.interactable = false;
                 goBtn.interactable = true;
                 HighlightNode(7);
-                tutorialNodes[7].ToggleTrigger();
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
                 ;
