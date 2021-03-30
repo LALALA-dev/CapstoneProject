@@ -2310,9 +2310,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1141476082}
-        m_TargetAssemblyTypeName: LobbyManager, Assembly-CSharp
-        m_MethodName: LeaveRoom
+      - m_Target: {fileID: 1351411972}
+        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
+        m_MethodName: LoadNetworkScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

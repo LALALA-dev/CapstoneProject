@@ -49,7 +49,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         connectMessage.gameObject.SetActive(true);
         Connect();
-        CancelButton.SetActive(false);
     }
     public void Connect()
     {
@@ -89,6 +88,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         connectMessage.gameObject.SetActive(false);
         enterPINMessage.gameObject.SetActive(true);
         privateRoomNameField.gameObject.SetActive(true);
+        CancelButton.SetActive(true);
         gamePINInputBtn.SetActive(true);
     }
 

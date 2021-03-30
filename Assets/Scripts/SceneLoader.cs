@@ -66,6 +66,14 @@ public class SceneLoader : MonoBehaviour
 
     public static void LoadNetworkScene()
     {
+        if (GameInformation.gameType == 'N')
+        {
+            if (PhotonNetwork.IsConnected)
+            {
+                PhotonNetwork.LeaveRoom();
+                PhotonNetwork.Disconnect();
+            }
+        }
         SceneManager.LoadScene("MultiplayerPreferences");
     }
 
