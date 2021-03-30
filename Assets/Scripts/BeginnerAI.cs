@@ -1,9 +1,11 @@
 using System;
+using System.Threading;
 using System.Collections;
 using System.Collections.Generic;
 using static GameObjectProperties;
 using UnityEngine;
 using static ReferenceScript;
+using static ExpertAI;
 public class BeginnerAI
 
 {
@@ -352,7 +354,6 @@ public class BeginnerAI
                                     {
                                         int max = -1;
                                         int ind = -1;
-                                        int spec = -1;
                                         for (int k = 0; k < 4; k++)
                                         {
                                             if (max < aiResources[k] && k != i)
@@ -515,19 +516,31 @@ public class BeginnerAI
       
     }
 
-    public BoardState RandomMove(BoardState currentBoard, int[] aiResources)
+    public BoardState RandomMove(BoardState currentBoard, int[] aiResources) 
     {
+        Thread.Sleep(2000);
         int[] initialResources = CollectCurrentPlayerResources(currentBoard, AIcolor);
         int flag = 0;
         currentBoard = subRandomMove(currentBoard, aiResources, ref flag);
-        //Debug.Log(aiResources[0] + " " + aiResources[1] + " " + aiResources[2] + " " + aiResources[3]);
         ResourceTrading(aiResources, initialResources);
-        //Debug.Log(aiResources[0] + " " + aiResources[1] + " " + aiResources[2] + " " + aiResources[3]);
         while (flag == 1)
         {
             flag = 0; ;
             currentBoard = subRandomMove(currentBoard, aiResources, ref flag);
-         //   Debug.Log(aiResources[0] + " " + aiResources[1] + " " + aiResources[2] + " " + aiResources[3]);
+        }
+        return currentBoard;
+    }
+
+    public BoardState RandomMoveForMCTS(BoardState currentBoard, int[] aiResources)
+    {
+        int[] initialResources = CollectCurrentPlayerResources(currentBoard, AIcolor);
+        int flag = 0;
+        currentBoard = subRandomMove(currentBoard, aiResources, ref flag);
+        ResourceTrading(aiResources, initialResources);
+        while (flag == 1)
+        {
+            flag = 0; ;
+            currentBoard = subRandomMove(currentBoard, aiResources, ref flag);
         }
         return currentBoard;
     }
@@ -577,7 +590,7 @@ public class BeginnerAI
     }
     //********************************************
 
-    public void DetectLocalTileOverloads(BoardState currentBoarrd, int currentNodeLocation)
+    public static void DetectLocalTileOverloads(BoardState currentBoarrd, int currentNodeLocation)
     {
         foreach (int loc in nodeConnectToTheseTiles[currentNodeLocation])
         {
