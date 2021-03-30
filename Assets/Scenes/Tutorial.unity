@@ -15287,6 +15287,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 26369836}
     - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
+      propertyPath: exitBtn
+      value: 
+      objectReference: {fileID: 351755820}
+    - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
       propertyPath: infoBtn
       value: 
       objectReference: {fileID: 1271316940}
@@ -15390,6 +15394,10 @@ PrefabInstance:
       propertyPath: avatars.Array.size
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
+      propertyPath: longestNetworkCard
+      value: 
+      objectReference: {fileID: 1102626553}
     - target: {fileID: 7026525204115316905, guid: 3587b3b63493f05428dbbf20dcfb583e, type: 3}
       propertyPath: arrows.Array.data[0]
       value: 
