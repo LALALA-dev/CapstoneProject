@@ -110,6 +110,7 @@ public class TutorialManager : MonoBehaviour
     public Button tradeBtn;
     public Button infoBtn;
     public Button forwardBtn;
+    public Button exitBtn;
     public Button[] tradingButtons;
 
     public NodeController[] tutorialNodes;
@@ -122,6 +123,7 @@ public class TutorialManager : MonoBehaviour
     public GameObject bottomBG;
     public GameObject winPanel;
     public GameObject tradePanel;
+    public GameObject longestNetworkCard;
 
     public Sprite tutorialSprite;
     public Sprite tutorialBranchSprite;
@@ -148,8 +150,10 @@ public class TutorialManager : MonoBehaviour
         goBtn.interactable = false;
         tradeBtn.interactable = false;
         infoBtn.interactable = false;
+        exitBtn.interactable = false;
+        longestNetworkCard.SetActive(false);
 
-        for(int i = 0; i < arrows.Length; i++)
+        for (int i = 0; i < arrows.Length; i++)
         {
             arrows[i].gameObject.SetActive(false);
             arrowXLocations[i] = arrows[i].gameObject.transform.position.x;
@@ -563,7 +567,7 @@ public class TutorialManager : MonoBehaviour
                 ClaimBranch(11, PlayerColor.Gold, highlightGold);
                 GameInformation.currentPlayer = "AI";
                 currentPlayerMessage.text = "Opponent's Move";
-                ;
+                longestNetworkCard.SetActive(true);
                 gameController.CollectCurrentPlayerResources();
                 playerResourcesManager.UpdateBothPlayersResources();
                 gameController.UpdateScores();
@@ -572,6 +576,8 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 34)
             {
+
+                longestNetworkCard.SetActive(false);
                 ClaimBranch(1, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
                 ClaimBranch(2, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
                 ClaimBranch(4, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
@@ -1191,7 +1197,7 @@ public class TutorialManager : MonoBehaviour
                 ClaimBranch(11, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
-                ;
+                longestNetworkCard.SetActive(false);
                 int[] one = new int[] { 1, 2, 0, 0 };
                 int[] two = new int[] { 2, 2, 4, 4 };
                 SetResources(one, two);
@@ -1216,7 +1222,7 @@ public class TutorialManager : MonoBehaviour
                 forwardBtn.interactable = true;
                 goBtn.interactable = false;
                 UndoNode(7, PlayerColor.Blank, tutorialNodes[0].blankSprite);
-
+                longestNetworkCard.SetActive(true);
                 int[] one = new int[] { 4, 4, 3, 4 };
                 int[] two = new int[] { 2, 2, 4, 4 };
                 SetResources(one, two);
@@ -1244,6 +1250,7 @@ public class TutorialManager : MonoBehaviour
                 GameInformation.gameOver = false;
                 winPanel.SetActive(false);
 
+                longestNetworkCard.SetActive(false);
                 ClaimBranch(1, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
                 ClaimBranch(2, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
                 ClaimBranch(4, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
