@@ -464,13 +464,13 @@ public class ExpertAI
             return PlayerColor.Blank;
         }
 
-        if (currentPlayer == PlayerColor.Orange)
+        if (currentPlayer == PlayerColor.Silver)
         {
-            return PlayerColor.Purple;
+            return PlayerColor.Gold;
         }
         else
         {
-            return PlayerColor.Orange;
+            return PlayerColor.Silver;
         }
     }
 
@@ -592,13 +592,13 @@ public class ExpertAI
 
     static PlayerColor isEnd(BoardState currentBoard)
     {
-        int playerOneScore = GetNumberOfPlayerNodes(currentBoard, PlayerColor.Orange);
-        int playerTwoScore = GetNumberOfPlayerNodes(currentBoard, PlayerColor.Purple);
-        playerOneScore += GetNumberOfPlayerCapturedTiles(currentBoard, PlayerColor.Orange);
-        playerTwoScore += GetNumberOfPlayerCapturedTiles(currentBoard, PlayerColor.Purple);
+        int playerOneScore = GetNumberOfPlayerNodes(currentBoard, PlayerColor.Silver);
+        int playerTwoScore = GetNumberOfPlayerNodes(currentBoard, PlayerColor.Gold);
+        playerOneScore += GetNumberOfPlayerCapturedTiles(currentBoard, PlayerColor.Silver);
+        playerTwoScore += GetNumberOfPlayerCapturedTiles(currentBoard, PlayerColor.Gold);
 
-        int playerOneNetwork = CalculatePlayerLongestNetwork(currentBoard, PlayerColor.Orange);
-        int playerTwoNetwork = CalculatePlayerLongestNetwork(currentBoard, PlayerColor.Purple);
+        int playerOneNetwork = CalculatePlayerLongestNetwork(currentBoard, PlayerColor.Silver);
+        int playerTwoNetwork = CalculatePlayerLongestNetwork(currentBoard, PlayerColor.Gold);
 
         if (playerOneNetwork > playerTwoNetwork)
         {
@@ -611,11 +611,11 @@ public class ExpertAI
 
         if (playerOneScore >= 10)
         {
-            return PlayerColor.Orange;
+            return PlayerColor.Silver;
         }
         else if (playerTwoScore >= 10)
         {
-            return PlayerColor.Purple;
+            return PlayerColor.Gold;
         }
         else
         {
@@ -663,13 +663,13 @@ public class ExpertAI
             {
                 currentPlayer = AIcolor;
             }
-            else if (AIcolor == PlayerColor.Orange)
+            else if (AIcolor == PlayerColor.Silver)
             {
-                currentPlayer = PlayerColor.Purple;
+                currentPlayer = PlayerColor.Gold;
             }
             else
             {
-                currentPlayer = PlayerColor.Orange;
+                currentPlayer = PlayerColor.Silver;
             }
             return currentPlayer;
         }
@@ -959,13 +959,13 @@ public class ExpertAI
             while ( winner == PlayerColor.Blank)
             {
                 
-                if (playerCol == PlayerColor.Orange)
+                if (playerCol == PlayerColor.Silver)
                 {
-                    otherCol = PlayerColor.Purple;
+                    otherCol = PlayerColor.Gold;
                 }
                 else
                 {
-                    otherCol = PlayerColor.Orange;
+                    otherCol = PlayerColor.Silver;
                 }
 
                 if(AIcolor == playerCol)
@@ -991,13 +991,13 @@ public class ExpertAI
                 }
                 DetectMultiTileCaptures(temp.localBoard.boardState);
                 winner = isEnd(temp.localBoard.boardState);
-                if(playerCol == PlayerColor.Orange)
+                if(playerCol == PlayerColor.Silver)
                 {
-                    playerCol = PlayerColor.Purple;
+                    playerCol = PlayerColor.Gold;
                 }
                 else
                 {
-                    playerCol = PlayerColor.Orange;
+                    playerCol = PlayerColor.Silver;
                 }
             }
             return winner;
