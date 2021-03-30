@@ -141,32 +141,56 @@ public class GameManager : MonoBehaviour
                         ToogleTriggers();
                         GameInformation.currentPlayer = "CLIENT";
                         if(GameInformation.playerIsHost)
+                        {
                             currentPlayerMessage.text = "Opponent's Move";
+                            waitingAnimation.SetActive(true);
+                        } 
                         else
+                        {
                             currentPlayerMessage.text = "Your Move";
+                            waitingAnimation.SetActive(false);
+                        }
                         break;
                     case 2:
                         GameInformation.currentPlayer = "CLIENT";
                         if (GameInformation.playerIsHost)
+                        {
                             currentPlayerMessage.text = "Opponent's Move";
+                            waitingAnimation.SetActive(true);
+                        }
                         else
+                        {
                             currentPlayerMessage.text = "Your Move";
+                            waitingAnimation.SetActive(false);
+                        }
                         break;
                     case 3:
                         ToogleTriggers();
                         GameInformation.currentPlayer = "HOST";
                         if (GameInformation.playerIsHost)
+                        {
                             currentPlayerMessage.text = "Your Move";
+                            waitingAnimation.SetActive(false);
+                        }
                         else
+                        {
                             currentPlayerMessage.text = "Opponent's Move";
+                            waitingAnimation.SetActive(true);
+                        }
                         break;
                     case 4:
                         ToogleTriggers();
                         GameInformation.currentPlayer = "CLIENT";
                         if (GameInformation.playerIsHost)
+                        {
                             currentPlayerMessage.text = "Opponent's Move";
+                            waitingAnimation.SetActive(true);
+                        }
                         else
+                        {
                             currentPlayerMessage.text = "Your Move";
+                            waitingAnimation.SetActive(false);
+                        }
                         GameInformation.openingSequence = false;
                         break;
                 }
@@ -180,10 +204,15 @@ public class GameManager : MonoBehaviour
                     GameInformation.currentPlayer = "HOST";
 
                 if (!IsTheCurrentPlayerYourself())
+                {
                     currentPlayerMessage.text = "Opponent's Move";
+                    waitingAnimation.SetActive(true);
+                }   
                 else
+                {
                     currentPlayerMessage.text = "Your Move";
-
+                    waitingAnimation.SetActive(false);
+                }
                 ToogleTriggers();
             }
 
