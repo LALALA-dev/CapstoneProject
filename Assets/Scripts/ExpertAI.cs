@@ -911,7 +911,11 @@ public class ExpertAI
             }
             else
             {
-                return null;
+                if(newBoard.Count == 0)
+                {
+                    newBoard.Add(currentBoard);
+                }
+                return newBoard;
             }
 
 
@@ -932,11 +936,20 @@ public class ExpertAI
             int trad = 0;
             int flag_moreMoves = 0;
             PlayerColor currentPlayer = getcurrentPlayerColor(node);
+             if (currentPlayer == PlayerColor.Silver)
+            {
+                currentPlayer = PlayerColor.Gold;
+            }
+            else
+            {
+                currentPlayer = PlayerColor.Silver;
+            }
             List<MyBoard> temp = GetPossibleMoves(node.localBoard, currentPlayer, ref trad, ref flag_moreMoves);
             foreach (MyBoard i in temp)
             {
                 node.AddChild(i);
             }
+            Debug.Log("expand finished");
         }
 
         private void backpropgation(TreeNode node, PlayerColor winner)
@@ -1012,12 +1025,15 @@ public class ExpertAI
             DateTime beforDT = System.DateTime.Now;
             TimeSpan t = TimeSpan.FromSeconds(timeLimit);
             TreeNode root = new TreeNode(beginBoard);
+            expand(root);
+            Debug.Log(root.child.Count);
             bool timeOut = false;
             while (timeOut == false)
             {
                 int max = -1;
                 int loc = 0;
                 TreeNode promisingNode = traverse(root);
+
                 if (promisingNode.N == 0)
                 {
                     PlayerColor winner = simulation(promisingNode);
@@ -1234,7 +1250,15 @@ public class ExpertAI
                 }
                 else
                 {
-                    score.Add((node.W / node.N) + Math.Sqrt(2) * Math.Sqrt(Math.Log(Math.E, node.parent.N))/node.N);
+                    if(node.parent == null)
+                    {
+                        score.Add((node.W / node.N) + Math.Sqrt(2) * Math.Sqrt(Math.Log(Math.E, node.N)) / node.N);
+                    }
+                    else
+                    {
+                        score.Add((node.W / node.N) + Math.Sqrt(2) * Math.Sqrt(Math.Log(Math.E, node.parent.N)) / node.N);
+                    }
+                    
                 }
             }
             double max = 0;
