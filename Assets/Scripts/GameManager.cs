@@ -406,7 +406,6 @@ public class GameManager : MonoBehaviour
         if (GameInformation.playerIsHost)
         {
             aiColor = PlayerColor.Gold;
-
         }
         else
         {
@@ -414,13 +413,12 @@ public class GameManager : MonoBehaviour
         }
         boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
         expertAI = new ExpertAI(aiColor, gameController.getGameBoard().getBoardState(), resources, resources);
-        
 
         if (!GameInformation.playerIsHost)
         {
             currentPlayerMessage.text = "AI's Move";
             waitingAnimation.SetActive(true);
-            BoardState AIMove = beginnerAI.MakeRandomOpeningMove(gameController.getGameBoard().getBoardState());
+            BoardState AIMove = expertAI.MakeRandomOpeningMove(gameController.getGameBoard().getBoardState());
             gameController.getGameBoard().setBoard(AIMove.squareStates, AIMove.nodeStates, AIMove.branchStates);
             EndCurrentAIPlayersTurn();
         }
