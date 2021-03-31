@@ -374,7 +374,7 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region AI Game
-    private void InitializeBeginnerAI()
+    public void BeginBeginnerAIGame()
     {
         PlayerColor aiColor;
         if (GameInformation.playerIsHost)
@@ -384,11 +384,6 @@ public class GameManager : MonoBehaviour
 
         boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
         beginnerAI = new BeginnerAI(aiColor, gameController.getGameBoard().getBoardState());
-    }
-
-    public void BeginBeginnerAIGame()
-    {
-        InitializeBeginnerAI();
 
         if(!GameInformation.playerIsHost)
         {
@@ -407,9 +402,6 @@ public class GameManager : MonoBehaviour
 
     public void BeginExpertAIGame()
     {
-        // Expert AI game relies on beginner AI for opening moves. 
-        InitializeBeginnerAI();
-
         PlayerColor aiColor;
         int[] resources = new int[] { 0, 0, 0, 0 };
         if (GameInformation.playerIsHost)
@@ -664,7 +656,29 @@ public class GameManager : MonoBehaviour
         GameInformation.currentPlayer = "AI";
         gameController.FlipColors();
         BoardState AIMove;
-        AIMove = beginnerAI.MakeRandomOpeningMove(gameController.getGameBoard().getBoardState());
+        if(GameInformation.gameType == 'A')
+            AIMove = beginnerAI.MakeRandomOpeningMove(gameController.getGameBoard().getBoardState());
+        else
+        {
+            PlayerColor aiColor = PlayerColor.Gold;
+            int[] PlayerResources;
+            int[] AIResources;
+            if (!GameInformation.playerIsHost)
+            {
+                aiColor = PlayerColor.Silver;
+                AIResources = GameInformation.playerOneResources;
+                PlayerResources = GameInformation.playerTwoResources;
+            }
+            else
+            {
+                AIResources = GameInformation.playerTwoResources;
+                PlayerResources = GameInformation.playerOneResources;
+            }
+
+            AI expertMove = new AI(aiColor, gameController.getGameBoard().getBoardState(), AIResources, PlayerResources);
+            AIMove = expertMove.MakeRandomOpeningMove(gameController.getGameBoard().getBoardState());
+        }
+            
         gameController.getGameBoard().setBoard(AIMove.squareStates, AIMove.nodeStates, AIMove.branchStates);
         boardManager.RefreshBoardGUI();
     }
