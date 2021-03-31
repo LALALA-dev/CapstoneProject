@@ -659,7 +659,7 @@ public class GameManager : MonoBehaviour
             }
 
             AI expertMove = new AI(aiColor, gameController.getGameBoard().getBoardState(), AIResources, PlayerResources);
-            AIMove = expertMove.findNextMove(5.5);
+            AIMove = expertMove.MakeRandomOpeningMove(gameController.getGameBoard().getBoardState());
         }
             
         gameController.getGameBoard().setBoard(AIMove.squareStates, AIMove.nodeStates, AIMove.branchStates);
