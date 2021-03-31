@@ -648,10 +648,10 @@ public class ExpertAI
         private PlayerColor AIcolor;
         private MyBoard beginBoard;
 
-        public AI(PlayerColor aiColor, BoardState openningBoardState, int[] aiResources, int[] playerResources)
+        public AI(PlayerColor aiColor, BoardState openingBoardState, int[] aiResources, int[] playerResources)
         {
             AIcolor = aiColor;
-            beginBoard.boardState = CopyBoard(openningBoardState);
+            beginBoard.boardState = CopyBoard(openingBoardState);
             beginBoard.aiResources = aiResources;
             beginBoard.playerResources = playerResources;
         }
@@ -1049,6 +1049,172 @@ public class ExpertAI
                 }
             }
             return best;
+        }
+
+        public BoardState MakeRandomOpeningMove(BoardState currentBoard)
+        {
+
+            beginBoard.boardState = currentBoard;
+            BoardState result = new BoardState();
+
+            if (GameInformation.openingSequence)
+            {
+                List<NodeState> unownedNodes = new List<NodeState>();
+                foreach (NodeState i in currentBoard.nodeStates)
+                {
+                    if (i.nodeColor == PlayerColor.Blank)
+                    {
+                        unownedNodes.Add(i);
+                    }
+                }
+                result = OpeningMove(unownedNodes);
+            }
+            return result;
+        }
+
+        private BoardState OpeningMove(List<NodeState> possibleMoves)
+        {
+            BoardState result = beginBoard.boardState;
+
+            TimeSpan t = (DateTime.UtcNow - new DateTime(1970, 1, 1));
+            var rand = new System.Random();
+            int index = rand.Next(possibleMoves.Count);
+
+            //*********************
+            List<double> temp = evaluateBoardStatus(result);
+            double max = -1;
+            int loc = -1;
+            for (int i = 0; i < temp.Count; i++)
+            {
+                if (temp[i] >= max)
+                {
+                    loc = i;
+                    max = temp[i];
+
+                }
+            }
+            //*********************
+            result.nodeStates[loc].nodeColor = AIcolor;
+            int[] connectedBranche = ReferenceScript.nodeConnectsToTheseBranches[loc];
+            int[] connectedBranches = new int[4];
+            for (int i = 0, j = 0; i < connectedBranche.Length; i++)
+            {
+
+                if (result.branchStates[connectedBranche[i]].ownerColor == PlayerColor.Blank)
+                {
+                    connectedBranches[j] = connectedBranche[i];
+                    j++;
+                }
+            }
+            rand = new System.Random(t.Seconds);
+            index = rand.Next(0, connectedBranches.Length);
+            result.branchStates[connectedBranches[index]].branchColor = AIcolor;
+            result.branchStates[connectedBranches[index]].ownerColor = AIcolor;
+
+            beginBoard.boardState = result;
+            return result;
+        }
+
+        private List<double> evaluateBoardStatus(BoardState currentBoard)
+        {
+            List<double> res = new List<double>();
+            foreach (NodeState temp in currentBoard.nodeStates)
+            {
+
+                double result = 0;
+                int[] col = { 0, 0, 0, 0 };
+
+                foreach (int tile in ReferenceScript.nodeConnectToTheseTiles[temp.location])
+                {
+
+                    SquareResourceAmount flag = SquareResourceAmount.Blank;
+
+                    foreach (int connectedNode in ReferenceScript.tileConnectsToTheseNodes[tile])
+                    {
+
+                        if (currentBoard.nodeStates[connectedNode].nodeColor != PlayerColor.Blank)
+                        {
+                            flag++;
+                        }
+                    }
+                    if (flag < currentBoard.squareStates[tile].resourceAmount)
+                    {
+
+                        if (currentBoard.squareStates[tile].resourceColor == SquareResourceColor.Red)
+                        {
+                            // Debug.Log("1");
+                            col[0]++;
+                        }
+                        if (currentBoard.squareStates[tile].resourceColor == SquareResourceColor.Yellow)
+                        {
+                            col[1]++;
+                            //   Debug.Log("2");
+                        }
+                        if (currentBoard.squareStates[tile].resourceColor == SquareResourceColor.Blue)
+                        {
+                            col[2]++;
+                            //    Debug.Log("3");
+                        }
+                        if (currentBoard.squareStates[tile].resourceColor == SquareResourceColor.Green)
+                        {
+                            col[3]++;
+                            // Debug.Log("4");
+                        }
+                    }
+
+                    flag = 0;
+
+
+                }
+                if (col[0] > 0 && col[2] > 0)
+                {
+                    if (col[0] > 1 && col[2] > 1)
+                    {
+                        result += (1.8 + 1.8);
+                    }
+                    else
+                    {
+                        result += (1.5 + 1.5);
+                    }
+
+                    if (col[1] > 0 && col[3] > 0)
+                    {
+                        result += (2 + 2);
+                    }
+
+                }
+                else if (col[1] > 0 && col[3] > 0)
+                {
+                    if (col[1] > 1 && col[3] > 1)
+                    {
+                        result += (1.8 + 1.8);
+                    }
+                    else
+                    {
+                        result += (1.5 + 1.5);
+                    }
+
+                }
+                for (int i = 0; i < 4; i++)
+                {
+                    if (col[i] > 0)
+                    {
+                        result += 1;
+                    }
+                }
+                if (temp.nodeColor == PlayerColor.Blank)
+                {
+                    res.Add(result);
+                }
+                else
+                {
+                    res.Add(-1);
+                }
+
+                result = 0;
+            }
+
+            return res;
         }
     }
 
