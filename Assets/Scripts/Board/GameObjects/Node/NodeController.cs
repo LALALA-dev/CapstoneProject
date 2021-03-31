@@ -15,7 +15,8 @@ public class NodeController : MonoBehaviour
     public Node nodeEntity;
 
     public bool avatarsSet = false;
-    private int avatarIndex = 0;
+    private int playerOneAvatarIndex = 0;
+    private int playerTwoAvatarIndex = 5;
 
     void Start()
     {
@@ -28,23 +29,23 @@ public class NodeController : MonoBehaviour
             {
                 case "HAT":
                     playerOneSprite = playerAvatars[0];
-                    avatarIndex = 0;
+                    playerOneAvatarIndex = 0;
                     break;
                 case "BATTLESHIP":
                     playerOneSprite = playerAvatars[1];
-                    avatarIndex = 1;
+                    playerOneAvatarIndex = 1;
                     break;
                 case "CAR":
                     playerOneSprite = playerAvatars[2];
-                    avatarIndex = 2;
+                    playerOneAvatarIndex = 2;
                     break;
                 case "THIMBLE":
                     playerOneSprite = playerAvatars[3];
-                    avatarIndex = 3;
+                    playerOneAvatarIndex = 3;
                     break;
                 case "WHEELBARREL":
                     playerOneSprite = playerAvatars[4];
-                    avatarIndex = 4;
+                    playerOneAvatarIndex = 4;
                     break;
                 default:
                     playerOneSprite = playerAvatars[2];
@@ -55,27 +56,27 @@ public class NodeController : MonoBehaviour
             {
                 case "HAT":
                     playerTwoSprite = playerAvatars[5];
-                    avatarIndex = 5;
+                    playerTwoAvatarIndex = 5;
                     break;
                 case "BATTLESHIP":
                     playerTwoSprite = playerAvatars[6];
-                    avatarIndex = 6;
+                    playerTwoAvatarIndex = 6;
                     break;
                 case "CAR":
                     playerTwoSprite = playerAvatars[7];
-                    avatarIndex = 7;
+                    playerTwoAvatarIndex = 7;
                     break;
                 case "THIMBLE":
                     playerTwoSprite = playerAvatars[8];
-                    avatarIndex = 8;
+                    playerTwoAvatarIndex = 8;
                     break;
                 case "WHEELBARREL":
                     playerTwoSprite = playerAvatars[9];
-                    avatarIndex = 9;
+                    playerTwoAvatarIndex = 9;
                     break;
                 default:
                     playerTwoSprite = playerAvatars[9];
-                    avatarIndex = 9;
+                    playerTwoAvatarIndex = 9;
                     break;
             }
     }
@@ -93,9 +94,11 @@ public class NodeController : MonoBehaviour
                     GameInformation.openingNodeId = nodeEntity.id;
 
                     if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Silver)
-                        ClaimNode(playerOneSprite);
+                        //ClaimNode(playerOneSprite);
+                        ClaimNode(highlightAvatars[playerOneAvatarIndex]);
                     else
-                        ClaimNode(playerTwoSprite);
+                        // ClaimNode(playerTwoSprite);
+                        ClaimNode(highlightAvatars[playerTwoAvatarIndex]);
 
                 }
                 else if (isNodeColorOfCurrentPlayer() && GameInformation.openingMoveNodeSet && GameInformation.openingNodeId == nodeEntity.id)
@@ -119,13 +122,15 @@ public class NodeController : MonoBehaviour
                 // Change color
                 if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Silver)
                 {
-                    ClaimNode(playerOneSprite);
+                    // ClaimNode(playerOneSprite);
+                    ClaimNode(highlightAvatars[playerOneAvatarIndex]);
                     GameInformation.playerOneResources[2] -= 2;
                     GameInformation.playerOneResources[3] -= 2;
                 }
                 else
                 {
-                    ClaimNode(playerTwoSprite);
+                    // ClaimNode(playerTwoSprite);
+                    ClaimNode(highlightAvatars[playerTwoAvatarIndex]);
                     GameInformation.playerTwoResources[2] -= 2;
                     GameInformation.playerTwoResources[3] -= 2;
                 }
@@ -186,6 +191,17 @@ public class NodeController : MonoBehaviour
             {
                 ClaimNode(blankSprite);
             }
+        }
+    }
+
+    public void SolidifyNodeClaim(int id)
+    {
+        if (nodeEntity.id == id)
+        {
+            if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Silver)
+                ClaimNode(playerOneSprite);
+            else
+                ClaimNode(playerTwoSprite);
         }
     }
 

@@ -329,4 +329,14 @@ public class BoardManager : MonoBehaviour
         BroadcastMessage("ToggleTrigger");
     }
 
+    public void SolidifyNodeSelections(int id)
+    {
+        BroadcastMessage("SolidifyNodeClaim", id);
+    }
+
+    public void SolidifyBranchSelection(int id)
+    {
+        BroadcastMessage("SolidifyBranchClaim", id);
+    }
+
 }

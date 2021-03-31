@@ -112,7 +112,17 @@ MonoBehaviour:
   - {fileID: 21300000, guid: f2e15ae92db42d94c9e998c790ede1ed, type: 3}
   - {fileID: 21300000, guid: 7941eed6a4b6cc64ab08630ef0a04b18, type: 3}
   - {fileID: 21300000, guid: d4bec1cc85fed1a42ae9a7bdc99ba844, type: 3}
-  highlightAvatars: []
+  highlightAvatars:
+  - {fileID: 21300000, guid: 067c536022a431a489fa6f36d2b476c8, type: 3}
+  - {fileID: 21300000, guid: d9a027601598a9f4bbea820a401743a1, type: 3}
+  - {fileID: 21300000, guid: ac8cda732d90146409c43b45c03ea761, type: 3}
+  - {fileID: 21300000, guid: 1e8a97ad405fe914d95e5b48149e5fbc, type: 3}
+  - {fileID: 21300000, guid: f4a5a7b585d7ad6409c99e5c457b813f, type: 3}
+  - {fileID: 21300000, guid: d6dd09eec4085f149994990c361bf1f5, type: 3}
+  - {fileID: 21300000, guid: f75e363e9a1d0fb41815a4fcb89b6333, type: 3}
+  - {fileID: 21300000, guid: 848f713967938c14ba1b22f40402418a, type: 3}
+  - {fileID: 21300000, guid: e5a17882b20b37441bae8d2ee18cf485, type: 3}
+  - {fileID: 21300000, guid: b3cc85a2ab7bdcb40a0ba67a0ffc3e67, type: 3}
   nodeEntity: {fileID: -4356487210103373749}
   avatarsSet: 0
 --- !u!61 &-4297313528893347514

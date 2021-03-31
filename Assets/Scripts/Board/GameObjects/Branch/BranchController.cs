@@ -11,6 +11,9 @@ public class BranchController : MonoBehaviour
 
     public Sprite highlight;
 
+    public Sprite playerOneHighlight;
+    public Sprite playerTwoHighlight;
+
     public Branch branchEntity;
 
     void Start()
@@ -34,9 +37,11 @@ public class BranchController : MonoBehaviour
                         branchEntity.branchState.branchColor = branchEntity.gameController.getCurrentPlayerColor();
 
                         if (branchEntity.gameController.getCurrentPlayerColor() == PlayerColor.Silver)
-                            ClaimBranch(playerOneSprite);
+                            // ClaimBranch(playerOneSprite);
+                            ClaimBranch(playerOneHighlight);
                         else
-                            ClaimBranch(playerTwoSprite);
+                            // ClaimBranch(playerTwoSprite);
+                            ClaimBranch(playerTwoHighlight);
                     }
                 }
                 else if (isBranchColorOfCurrentPlayer() && GameInformation.openingMoveBranchSet && GameInformation.openingBranchId == branchEntity.id)
@@ -55,13 +60,15 @@ public class BranchController : MonoBehaviour
                 // Change color
                 if (branchEntity.gameController.getCurrentPlayerColor() == PlayerColor.Silver)
                 {
-                    ClaimBranch(playerOneSprite);
+                    //ClaimBranch(playerOneSprite);
+                    ClaimBranch(playerOneHighlight);
                     GameInformation.playerOneResources[0]--;
                     GameInformation.playerOneResources[1]--;
                 }
                 else
                 {
-                    ClaimBranch(playerTwoSprite);
+                    //ClaimBranch(playerTwoSprite);
+                    ClaimBranch(playerTwoHighlight);
                     GameInformation.playerTwoResources[0]--;
                     GameInformation.playerTwoResources[1]--;
                 }
@@ -120,6 +127,17 @@ public class BranchController : MonoBehaviour
             {
                 ClaimBranch(blankSprite);
             }
+        }
+    }
+
+    public void SolidifyBranchClaim(int id)
+    {
+        if (branchEntity.id == id)
+        {
+            if (branchEntity.gameController.getCurrentPlayerColor() == PlayerColor.Silver)
+                ClaimBranch(playerOneSprite);
+            else
+                ClaimBranch(playerTwoSprite);
         }
     }
 

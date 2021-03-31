@@ -416,6 +416,8 @@ public class GameManager : MonoBehaviour
     {
         if (GameInformation.openingSequence && GameInformation.currentPlayer == "HUMAN" && OpeningMoveSatisfied())
         {
+            boardManager.SolidifyNodeSelections(GameInformation.openingNodeId);
+            boardManager.SolidifyBranchSelection(GameInformation.openingBranchId);
             gameController.RefreshBlockedTiles();
             boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
             if(GameInformation.playerIsHost)
@@ -535,12 +537,20 @@ public class GameManager : MonoBehaviour
             gameController.UpdateGameBoard();
             boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
             boardManager.DetectNewBlockCaptures(gameController.getGameBoard().squares);
-            GameInformation.currentRoundPlacedNodes.Clear();
-            GameInformation.currentRoundPlacedBranches.Clear();
 
             GameInformation.resourceTrade = false;
             if (GameInformation.currentPlayer == "HUMAN")
             {
+                for(int i = 0; i <  GameInformation.currentRoundPlacedNodes.Count; i++)
+                {
+                    boardManager.SolidifyNodeSelections(GameInformation.currentRoundPlacedNodes[i]);
+                }
+                for (int i = 0; i < GameInformation.currentRoundPlacedBranches.Count; i++)
+                {
+                    boardManager.SolidifyBranchSelection(GameInformation.currentRoundPlacedBranches[i]);
+                }
+                GameInformation.currentRoundPlacedNodes.Clear();
+                GameInformation.currentRoundPlacedBranches.Clear();
                 GameInformation.currentPlayer = "AI";
                 currentPlayerMessage.text = "AI's Move";
                 waitingAnimation.SetActive(true);
