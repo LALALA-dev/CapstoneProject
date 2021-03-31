@@ -8,7 +8,7 @@ public class NodeController : MonoBehaviour
     public Sprite playerOneSprite;
     public Sprite playerTwoSprite;
     public Sprite blankSprite;
-
+    public Sprite highlight;
     public Sprite[] playerAvatars;
 
     public Node nodeEntity;
@@ -125,6 +125,9 @@ public class NodeController : MonoBehaviour
             {
                 nodeEntity.nodeState.nodeColor = PlayerColor.Blank;
                 nodeEntity.gameController.getGameBoard().getBoardState().nodeStates[nodeEntity.id].nodeColor = PlayerColor.Blank;
+
+                GameInformation.currentRoundPlacedNodes.Remove(nodeEntity.id);
+
                 if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Silver)
                 {
                     GameInformation.playerOneResources[2] += 2;
@@ -139,6 +142,36 @@ public class NodeController : MonoBehaviour
                 ClaimNode(blankSprite);
                 nodeEntity.nodeState.nodeColor = PlayerColor.Blank;
                 nodeEntity.gameController.getGameBoard().getBoardState().nodeStates[nodeEntity.id].nodeColor = PlayerColor.Blank;
+            }
+        }
+    }
+
+    public void OnMouseEnter()
+    {
+        if (isNodeBlank() && hasEnoughResources() && isNodeConnectedToBranch())
+        {
+            ClaimNode(highlight);
+        }
+        else if(GameInformation.openingSequence && !GameInformation.openingMoveNodeSet && isNodeBlank())
+        {
+            ClaimNode(highlight);
+        }
+    }
+
+    public void OnMouseExit()
+    {
+        if (!GameInformation.openingSequence)
+        {
+            if (!GameInformation.currentRoundPlacedNodes.Contains(nodeEntity.id) && nodeEntity.nodeState.nodeColor == PlayerColor.Blank)
+            {
+                ClaimNode(blankSprite);
+            }
+        }
+        else
+        {
+            if (!GameInformation.openingMoveNodeSet && isNodeBlank())
+            {
+                ClaimNode(blankSprite);
             }
         }
     }
