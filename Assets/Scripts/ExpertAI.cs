@@ -911,7 +911,7 @@ public class ExpertAI
             }
             else
             {
-                if(newBoard.Count == 0)
+                if (newBoard.Count == 0)
                 {
                     newBoard.Add(currentBoard);
                 }
@@ -924,6 +924,7 @@ public class ExpertAI
         private TreeNode traverse(TreeNode root)
         {
             TreeNode currentNode = root;
+            Debug.Log("child: " + currentNode.child.Count);
             while (currentNode.child.Count != 0)
             {
                 currentNode = UCT.findBestNode(currentNode);
@@ -936,7 +937,7 @@ public class ExpertAI
             int trad = 0;
             int flag_moreMoves = 0;
             PlayerColor currentPlayer = getcurrentPlayerColor(node);
-             if (currentPlayer == PlayerColor.Silver)
+            if (currentPlayer == PlayerColor.Silver)
             {
                 currentPlayer = PlayerColor.Gold;
             }
@@ -949,7 +950,6 @@ public class ExpertAI
             {
                 node.AddChild(i);
             }
-            Debug.Log("expand finished");
         }
 
         private void backpropgation(TreeNode node, PlayerColor winner)
@@ -1021,15 +1021,16 @@ public class ExpertAI
 
         public BoardState findNextMove(double timeLimit) // timeLimit = 5 means 5 seconds
         {
+            int ccc = 0;
             BoardState best = new BoardState();
             DateTime beforDT = System.DateTime.Now;
             TimeSpan t = TimeSpan.FromSeconds(timeLimit);
             TreeNode root = new TreeNode(beginBoard);
             expand(root);
-            Debug.Log(root.child.Count);
             bool timeOut = false;
             while (timeOut == false)
             {
+                Debug.Log("times: "+ccc);
                 int max = -1;
                 int loc = 0;
                 TreeNode promisingNode = traverse(root);
@@ -1066,6 +1067,7 @@ public class ExpertAI
                     Console.WriteLine(ts);
                     return best;
                 }
+                ccc++;
             }
             return best;
         }
@@ -1242,37 +1244,37 @@ public class ExpertAI
         public static TreeNode findBestNode(TreeNode node)
         {
             List<double> score = new List<double>();
-            for(int i = 0; i < node.child.Count; i++)
+            for (int i = 0; i < node.child.Count; i++)
             {
-                if(node.child[i].N == 0)
+                if (node.child[i].N == 0)
                 {
                     score.Add(99999);
                 }
                 else
                 {
-                    if(node.parent == null)
+                    if (node.parent == null)
                     {
-                        score.Add((node.W / node.N) + Math.Sqrt(2) * Math.Sqrt(Math.Log(Math.E, node.N)) / node.N);
+                        double aut = (node.child[i].W / node.child[i].N) + (Math.Sqrt(2) * Math.Sqrt(Math.Log(Math.E, node.N)) / node.child[i].N);
+                        score.Add(aut);
                     }
-                    else
-                    {
-                        score.Add((node.W / node.N) + Math.Sqrt(2) * Math.Sqrt(Math.Log(Math.E, node.parent.N)) / node.N);
-                    }
-                    
                 }
             }
-            double max = 0;
+            double max = -99999;
             int loc = -1;
-            for(int i = 0; i < score.Count; i++)
+            for (int i = 0; i < score.Count; i++)
             {
-                if(max < score[i])
+                if (max < score[i])
                 {
                     loc = i;
                     max = score[i];
                 }
             }
+            if (loc == -1)
+            {
+                loc = 0;
+            }
+            Debug.Log("Best node: " + loc);
             return node.child[loc];
         }
     }
-
 }
