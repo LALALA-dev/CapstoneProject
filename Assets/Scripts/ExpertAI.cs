@@ -642,13 +642,12 @@ public class ExpertAI
     }
 
     //after instantiate this class, call findNextMove with time limit(5 for exopert AI) 
-    public class AI
-    {
+
         private int t; //total number of simulations
         private PlayerColor AIcolor;
         private MyBoard beginBoard;
 
-        public AI(PlayerColor aiColor, BoardState openingBoardState, int[] aiResources, int[] playerResources)
+        public ExpertAI(PlayerColor aiColor, BoardState openingBoardState, int[] aiResources, int[] playerResources)
         {
             AIcolor = aiColor;
             beginBoard.boardState = CopyBoard(openingBoardState);
@@ -1216,7 +1215,6 @@ public class ExpertAI
 
             return res;
         }
-    }
 
 
     public class UCT
@@ -1248,7 +1246,5 @@ public class ExpertAI
             return node.child[loc];
         }
     }
-
-
 
 }

@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PlayerResourcesManager playerResourcesManager;
     private GameController gameController;
     private BeginnerAI beginnerAI;
+    private ExpertAI expertAI;
     public TextMeshProUGUI playerLeftMessage;
 
     public TMP_InputField HNPInput;
@@ -70,7 +71,7 @@ public class GameManager : MonoBehaviour
         }
         else if(GameInformation.gameType == 'E')
         {
-            ExpertAIGame();
+            BeginExpertAIGame();
         }
         else if (GameInformation.HumanNetworkProtocol)
         {
@@ -398,9 +399,36 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void ExpertAIGame()
+    public void BeginExpertAIGame()
     {
+        PlayerColor aiColor;
+        int[] resources = new int[] { 0, 0, 0, 0 };
+        if (GameInformation.playerIsHost)
+        {
+            aiColor = PlayerColor.Gold;
 
+        }
+        else
+        {
+            aiColor = PlayerColor.Silver;
+        }
+        boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
+        expertAI = new ExpertAI(aiColor, gameController.getGameBoard().getBoardState(), resources, resources);
+        
+
+        if (!GameInformation.playerIsHost)
+        {
+            currentPlayerMessage.text = "AI's Move";
+            waitingAnimation.SetActive(true);
+            BoardState AIMove = beginnerAI.MakeRandomOpeningMove(gameController.getGameBoard().getBoardState());
+            gameController.getGameBoard().setBoard(AIMove.squareStates, AIMove.nodeStates, AIMove.branchStates);
+            EndCurrentAIPlayersTurn();
+        }
+        else
+        {
+            currentPlayerMessage.text = "Your Move";
+            waitingAnimation.SetActive(false);
+        }
     }
 
     public void BeginHumanOpeningMove()
