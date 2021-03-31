@@ -1005,7 +1005,7 @@ public class ExpertAI
             return winner;
         }
 
-        public BoardState findNextMove(int timeLimit) // timeLimit = 5 means 5 seconds
+        public BoardState findNextMove(double timeLimit) // timeLimit = 5 means 5 seconds
         {
             BoardState best = new BoardState();
             DateTime beforDT = System.DateTime.Now;
