@@ -645,12 +645,13 @@ public class ExpertAI
     }
 
     //after instantiate this class, call findNextMove with time limit(5 for exopert AI) 
-
+    public class AI
+    {
         private int t; //total number of simulations
         private PlayerColor AIcolor;
         private MyBoard beginBoard;
 
-        public ExpertAI(PlayerColor aiColor, BoardState openingBoardState, int[] aiResources, int[] playerResources)
+        public AI(PlayerColor aiColor, BoardState openingBoardState, int[] aiResources, int[] playerResources)
         {
             AIcolor = aiColor;
             beginBoard.boardState = CopyBoard(openingBoardState);
@@ -675,7 +676,7 @@ public class ExpertAI
             }
             return currentPlayer;
         }
-      
+
         private List<MyBoard> GetPossibleMoves(MyBoard currentBoard, PlayerColor currentPlayer, ref int trad, ref int flag_moreMoves)  // trad == 0 : haven't trade yet
         {
             List<MyBoard> newBoard = new List<MyBoard>();
@@ -710,13 +711,13 @@ public class ExpertAI
                     {
                         if (trad == 0)
                         {
-                            
+
                             ResourceTrading(temp.aiResources, BeginnerAI.CollectCurrentPlayerResources(currentBoard.boardState, currentPlayer), temp.boardState, currentPlayer, ref trad);
                             if (trad == 1)
                             {
                                 possibleNodes = CalculatePossibleNodes(temp.boardState, temp.aiResources, currentPlayer);
-                               
-                                foreach(int j in possibleNodes)
+
+                                foreach (int j in possibleNodes)
                                 {
                                     MyBoard tempp = new MyBoard();
                                     tempp.aiResources = currentBoard.aiResources;
@@ -726,7 +727,7 @@ public class ExpertAI
                                     newBoard.Add(tempp);
                                     flag_moreMoves = 1;
                                 }
-                                
+
                             }
                         }
                         else
@@ -819,7 +820,7 @@ public class ExpertAI
                             if (trad == 1)
                             {
                                 possibleNodes = CalculatePossibleNodes(temp.boardState, temp.playerResources, currentPlayer);
-                              
+
                                 foreach (int j in possibleNodes)
                                 {
                                     MyBoard tempp = new MyBoard();
@@ -900,7 +901,7 @@ public class ExpertAI
                 foreach (MyBoard i in newBoard)
                 {
                     List<MyBoard> temp = GetPossibleMoves(i, currentPlayer, ref trad, ref flag_moreMoves);
-                    if(temp != null)
+                    if (temp != null)
                     {
                         res = res.Union(temp).ToList();
                     }
@@ -919,7 +920,7 @@ public class ExpertAI
         private TreeNode traverse(TreeNode root)
         {
             TreeNode currentNode = root;
-            while(currentNode.child.Count != 0)
+            while (currentNode.child.Count != 0)
             {
                 currentNode = UCT.findBestNode(currentNode);
             }
@@ -932,7 +933,7 @@ public class ExpertAI
             int flag_moreMoves = 0;
             PlayerColor currentPlayer = getcurrentPlayerColor(node);
             List<MyBoard> temp = GetPossibleMoves(node.localBoard, currentPlayer, ref trad, ref flag_moreMoves);
-            foreach(MyBoard i in temp)
+            foreach (MyBoard i in temp)
             {
                 node.AddChild(i);
             }
@@ -941,9 +942,9 @@ public class ExpertAI
         private void backpropgation(TreeNode node, PlayerColor winner)
         {
             TreeNode temp = node;
-            while(temp != null)
+            while (temp != null)
             {
-                if(winner == AIcolor)
+                if (winner == AIcolor)
                 {
                     temp.W++;
                 }
@@ -956,11 +957,11 @@ public class ExpertAI
         {
             PlayerColor winner = PlayerColor.Blank;
             TreeNode temp = node.Copy();
-            PlayerColor playerCol= getcurrentPlayerColor(node);
+            PlayerColor playerCol = getcurrentPlayerColor(node);
             PlayerColor otherCol;
-            while ( winner == PlayerColor.Blank)
+            while (winner == PlayerColor.Blank)
             {
-                
+
                 if (playerCol == PlayerColor.Silver)
                 {
                     otherCol = PlayerColor.Gold;
@@ -970,7 +971,7 @@ public class ExpertAI
                     otherCol = PlayerColor.Silver;
                 }
 
-                if(AIcolor == playerCol)
+                if (AIcolor == playerCol)
                 {
                     BeginnerAI tempp = new BeginnerAI(playerCol, temp.localBoard.boardState);
                     temp.localBoard.boardState = tempp.RandomMoveForMCTS(temp.localBoard.boardState, temp.localBoard.aiResources);
@@ -979,7 +980,7 @@ public class ExpertAI
                     {
                         temp.localBoard.playerResources[i] += res[i];
                     }
-                    
+
                 }
                 else
                 {
@@ -993,7 +994,7 @@ public class ExpertAI
                 }
                 DetectMultiTileCaptures(temp.localBoard.boardState);
                 winner = isEnd(temp.localBoard.boardState);
-                if(playerCol == PlayerColor.Silver)
+                if (playerCol == PlayerColor.Silver)
                 {
                     playerCol = PlayerColor.Gold;
                 }
@@ -1017,7 +1018,7 @@ public class ExpertAI
                 int max = -1;
                 int loc = 0;
                 TreeNode promisingNode = traverse(root);
-                if(promisingNode.N == 0)
+                if (promisingNode.N == 0)
                 {
                     PlayerColor winner = simulation(promisingNode);
                     backpropgation(promisingNode, winner);
@@ -1025,7 +1026,7 @@ public class ExpertAI
                 else
                 {
                     expand(promisingNode);
-                    if(promisingNode.child.Count == 0)
+                    if (promisingNode.child.Count == 0)
                     {
                         Debug.Log("Error: promisingNode.child.Count = 0");
                     }
@@ -1033,9 +1034,9 @@ public class ExpertAI
                     PlayerColor winner = simulation(promisingNode);
                     backpropgation(promisingNode, winner);
                 }
-                for(int i = 0; i < root.child.Count; i++)
+                for (int i = 0; i < root.child.Count; i++)
                 {
-                    if(root.child[i].N > max)
+                    if (root.child[i].N > max)
                     {
                         loc = i;
                     }
@@ -1043,7 +1044,7 @@ public class ExpertAI
                 best = root.child[loc].localBoard.boardState;
                 DateTime afterDT = System.DateTime.Now;
                 TimeSpan ts = afterDT.Subtract(beforDT);
-                if(ts >= t)
+                if (ts >= t)
                 {
                     timeOut = true;
                     Console.WriteLine(ts);
@@ -1218,7 +1219,7 @@ public class ExpertAI
 
             return res;
         }
-
+    }
 
     public class UCT
     {
