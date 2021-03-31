@@ -451,7 +451,7 @@ public class GameManager : MonoBehaviour
                     currentPlayerMessage.text = "AI's Move";
                     waitingAnimation.SetActive(true);
                     turnNumber++;
-                    RandomAIOpeningMove();
+                    AIOpeningMove();
 
                     GameInformation.humanMoveFinished = false;
                     EndCurrentAIPlayersTurn();
@@ -496,7 +496,7 @@ public class GameManager : MonoBehaviour
                     currentPlayerMessage.text = "AI's Move";
                     waitingAnimation.SetActive(true);
                     turnNumber++;
-                    RandomAIOpeningMove();
+                    AIOpeningMove();
                     EndCurrentAIPlayersTurn();
                 }
             }
@@ -538,7 +538,7 @@ public class GameManager : MonoBehaviour
                     currentPlayerMessage.text = "AI's Move";
                     waitingAnimation.SetActive(true);
                     turnNumber++;
-                    RandomAIOpeningMove();
+                    AIOpeningMove();
                     GameInformation.humanMoveFinished = false;
                     EndCurrentAIPlayersTurn();
                 }
@@ -607,11 +607,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void RandomAIOpeningMove()
+    public void AIOpeningMove()
     {
         GameInformation.currentPlayer = "AI";
         gameController.FlipColors();
-        BoardState AIMove = beginnerAI.MakeRandomOpeningMove(gameController.getGameBoard().getBoardState());
+        BoardState AIMove;
+        if(GameInformation.gameType == 'A')
+            AIMove = beginnerAI.MakeRandomOpeningMove(gameController.getGameBoard().getBoardState());
+        else
+            AIMove = expertAI.MakeRandomOpeningMove(gameController.getGameBoard().getBoardState());
         gameController.getGameBoard().setBoard(AIMove.squareStates, AIMove.nodeStates, AIMove.branchStates);
         boardManager.RefreshBoardGUI();
     }
