@@ -591,7 +591,14 @@ public class GameManager : MonoBehaviour
 
             if (GameInformation.currentPlayer == "AI")
             {
-                RandomAIMove();
+                if (GameInformation.gameType == 'E')
+                {
+                    expertAI.findNextMove(5.5);
+                }
+                else
+                {
+                    RandomAIMove();
+                }
                     
                 gameController.UpdateGameBoard();
                 boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
