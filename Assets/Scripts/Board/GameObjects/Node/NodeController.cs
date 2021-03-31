@@ -10,10 +10,12 @@ public class NodeController : MonoBehaviour
     public Sprite blankSprite;
     public Sprite highlight;
     public Sprite[] playerAvatars;
+    public Sprite[] highlightAvatars;
 
     public Node nodeEntity;
 
     public bool avatarsSet = false;
+    private int avatarIndex = 0;
 
     void Start()
     {
@@ -26,18 +28,23 @@ public class NodeController : MonoBehaviour
             {
                 case "HAT":
                     playerOneSprite = playerAvatars[0];
+                    avatarIndex = 0;
                     break;
                 case "BATTLESHIP":
                     playerOneSprite = playerAvatars[1];
+                    avatarIndex = 1;
                     break;
                 case "CAR":
                     playerOneSprite = playerAvatars[2];
+                    avatarIndex = 2;
                     break;
                 case "THIMBLE":
                     playerOneSprite = playerAvatars[3];
+                    avatarIndex = 3;
                     break;
                 case "WHEELBARREL":
                     playerOneSprite = playerAvatars[4];
+                    avatarIndex = 4;
                     break;
                 default:
                     playerOneSprite = playerAvatars[2];
@@ -48,21 +55,27 @@ public class NodeController : MonoBehaviour
             {
                 case "HAT":
                     playerTwoSprite = playerAvatars[5];
+                    avatarIndex = 5;
                     break;
                 case "BATTLESHIP":
                     playerTwoSprite = playerAvatars[6];
+                    avatarIndex = 6;
                     break;
                 case "CAR":
                     playerTwoSprite = playerAvatars[7];
+                    avatarIndex = 7;
                     break;
                 case "THIMBLE":
                     playerTwoSprite = playerAvatars[8];
+                    avatarIndex = 8;
                     break;
                 case "WHEELBARREL":
                     playerTwoSprite = playerAvatars[9];
+                    avatarIndex = 9;
                     break;
                 default:
                     playerTwoSprite = playerAvatars[9];
+                    avatarIndex = 9;
                     break;
             }
     }
