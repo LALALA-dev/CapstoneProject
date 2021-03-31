@@ -626,6 +626,9 @@ public class ExpertAI
     static BoardState CopyBoard(BoardState myBoard)
     {
         BoardState newBoard = new BoardState();
+        newBoard.squareStates = new SquareState[13];
+        newBoard.nodeStates = new NodeState[24];
+        newBoard.branchStates = new BranchState[36];
         for (int i = 0; i < myBoard.squareStates.Length; i++)
         {
             newBoard.squareStates[i] = myBoard.squareStates[i];
