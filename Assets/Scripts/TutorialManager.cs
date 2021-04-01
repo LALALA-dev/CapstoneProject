@@ -140,7 +140,7 @@ public class TutorialManager : MonoBehaviour
     private void Awake()
     {
         gameController = GameController.getInstance();
-
+        GameInformation.gameType = 'T';
         playerOneAvatar.sprite = avatars[0];
         playerTwoAvatar.sprite = avatars[1];
 

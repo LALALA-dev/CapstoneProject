@@ -94,6 +94,7 @@ public class SceneLoader : MonoBehaviour
 
     public void LoadTutorial()
     {
+        GameInformation.gameType = 'T';
         SceneManager.LoadScene("Tutorial");
     }
 }
