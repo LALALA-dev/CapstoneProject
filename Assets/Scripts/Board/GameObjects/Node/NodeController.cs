@@ -8,12 +8,77 @@ public class NodeController : MonoBehaviour
     public Sprite playerOneSprite;
     public Sprite playerTwoSprite;
     public Sprite blankSprite;
+    public Sprite highlight;
+    public Sprite[] playerAvatars;
+    public Sprite[] highlightAvatars;
 
     public Node nodeEntity;
+
+    public bool avatarsSet = false;
+    private int playerOneAvatarIndex = 0;
+    private int playerTwoAvatarIndex = 5;
 
     void Start()
     {
         ClaimNode(blankSprite);
+    }
+
+    private void Update()
+    {
+            switch (GameInformation.playerOneAvatar)
+            {
+                case "HAT":
+                    playerOneSprite = playerAvatars[0];
+                    playerOneAvatarIndex = 0;
+                    break;
+                case "BATTLESHIP":
+                    playerOneSprite = playerAvatars[1];
+                    playerOneAvatarIndex = 1;
+                    break;
+                case "CAR":
+                    playerOneSprite = playerAvatars[2];
+                    playerOneAvatarIndex = 2;
+                    break;
+                case "THIMBLE":
+                    playerOneSprite = playerAvatars[3];
+                    playerOneAvatarIndex = 3;
+                    break;
+                case "WHEELBARREL":
+                    playerOneSprite = playerAvatars[4];
+                    playerOneAvatarIndex = 4;
+                    break;
+                default:
+                    playerOneSprite = playerAvatars[2];
+                    break;
+            }
+
+            switch (GameInformation.playerTwoAvatar)
+            {
+                case "HAT":
+                    playerTwoSprite = playerAvatars[5];
+                    playerTwoAvatarIndex = 5;
+                    break;
+                case "BATTLESHIP":
+                    playerTwoSprite = playerAvatars[6];
+                    playerTwoAvatarIndex = 6;
+                    break;
+                case "CAR":
+                    playerTwoSprite = playerAvatars[7];
+                    playerTwoAvatarIndex = 7;
+                    break;
+                case "THIMBLE":
+                    playerTwoSprite = playerAvatars[8];
+                    playerTwoAvatarIndex = 8;
+                    break;
+                case "WHEELBARREL":
+                    playerTwoSprite = playerAvatars[9];
+                    playerTwoAvatarIndex = 9;
+                    break;
+                default:
+                    playerTwoSprite = playerAvatars[9];
+                    playerTwoAvatarIndex = 9;
+                    break;
+            }
     }
 
     private void OnMouseDown()
@@ -28,14 +93,18 @@ public class NodeController : MonoBehaviour
                     GameInformation.openingMoveNodeSet = true;
                     GameInformation.openingNodeId = nodeEntity.id;
 
-                    if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
-                        ClaimNode(playerOneSprite);
+                    if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Silver)
+                        //ClaimNode(playerOneSprite);
+                        ClaimNode(highlightAvatars[playerOneAvatarIndex]);
                     else
-                        ClaimNode(playerTwoSprite);
+                        // ClaimNode(playerTwoSprite);
+                        ClaimNode(highlightAvatars[playerTwoAvatarIndex]);
+
                 }
                 else if (isNodeColorOfCurrentPlayer() && GameInformation.openingMoveNodeSet && GameInformation.openingNodeId == nodeEntity.id)
                 {
                     nodeEntity.nodeState.nodeColor = PlayerColor.Blank;
+                    nodeEntity.gameController.getGameBoard().getBoardState().nodeStates[nodeEntity.id].nodeColor = PlayerColor.Blank;
                     GameInformation.openingMoveNodeSet = false;
                     ClaimNode(blankSprite);
 
@@ -51,15 +120,17 @@ public class NodeController : MonoBehaviour
                 nodeEntity.nodeState.nodeColor = nodeEntity.gameController.getCurrentPlayerColor();
 
                 // Change color
-                if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
+                if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Silver)
                 {
-                    ClaimNode(playerOneSprite);
+                    // ClaimNode(playerOneSprite);
+                    ClaimNode(highlightAvatars[playerOneAvatarIndex]);
                     GameInformation.playerOneResources[2] -= 2;
                     GameInformation.playerOneResources[3] -= 2;
                 }
                 else
                 {
-                    ClaimNode(playerTwoSprite);
+                    // ClaimNode(playerTwoSprite);
+                    ClaimNode(highlightAvatars[playerTwoAvatarIndex]);
                     GameInformation.playerTwoResources[2] -= 2;
                     GameInformation.playerTwoResources[3] -= 2;
                 }
@@ -71,7 +142,11 @@ public class NodeController : MonoBehaviour
             else if (isNodeColorOfCurrentPlayer() && isUndoAttemptOnNodePlaceThisRound())
             {
                 nodeEntity.nodeState.nodeColor = PlayerColor.Blank;
-                if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
+                nodeEntity.gameController.getGameBoard().getBoardState().nodeStates[nodeEntity.id].nodeColor = PlayerColor.Blank;
+
+                GameInformation.currentRoundPlacedNodes.Remove(nodeEntity.id);
+
+                if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Silver)
                 {
                     GameInformation.playerOneResources[2] += 2;
                     GameInformation.playerOneResources[3] += 2;
@@ -83,14 +158,64 @@ public class NodeController : MonoBehaviour
                 }
                 SendMessageUpwards("SendMessageToGameManager", "UpdateResourcesUI");
                 ClaimNode(blankSprite);
+                nodeEntity.nodeState.nodeColor = PlayerColor.Blank;
+                nodeEntity.gameController.getGameBoard().getBoardState().nodeStates[nodeEntity.id].nodeColor = PlayerColor.Blank;
             }
         }
     }
 
-    private void ClaimNode(Sprite playerColor)
+    public void OnMouseEnter()
+    {
+        if (GameInformation.gameType != 'T')
+        {
+            if (isNodeBlank() && hasEnoughResources() && isNodeConnectedToBranch())
+            {
+                ClaimNode(highlight);
+            }
+            else if (GameInformation.openingSequence && !GameInformation.openingMoveNodeSet && isNodeBlank())
+            {
+                ClaimNode(highlight);
+            }
+        }
+    }
+
+    public void OnMouseExit()
+    {
+        if (GameInformation.gameType != 'T')
+        {
+
+            if (!GameInformation.openingSequence)
+            {
+                if (!GameInformation.currentRoundPlacedNodes.Contains(nodeEntity.id) && nodeEntity.nodeState.nodeColor == PlayerColor.Blank)
+                {
+                    ClaimNode(blankSprite);
+                }
+            }
+            else
+            {
+                if (!GameInformation.openingMoveNodeSet && isNodeBlank())
+                {
+                    ClaimNode(blankSprite);
+                }
+            }
+        }
+    }
+
+    public void SolidifyNodeClaim(int id)
+    {
+        if (nodeEntity.id == id)
+        {
+            if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Silver)
+                ClaimNode(playerOneSprite);
+            else
+                ClaimNode(playerTwoSprite);
+        }
+    }
+
+    public void ClaimNode(Sprite playerAvatar)
     {
         SpriteRenderer sprite = GetComponent<SpriteRenderer>();
-        sprite.sprite = playerColor;
+        sprite.sprite = playerAvatar;
     }
 
     private bool isUndoAttemptOnNodePlaceThisRound()
@@ -116,7 +241,7 @@ public class NodeController : MonoBehaviour
     public bool hasEnoughResources()
     {
         int[] resources = new int[4];
-        if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
+        if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Silver)
         {
             resources = GameInformation.playerOneResources;
         }
@@ -149,7 +274,7 @@ public class NodeController : MonoBehaviour
         {
             nodeEntity.nodeState.nodeColor = color;
 
-            if (color == PlayerColor.Orange)
+            if (color == PlayerColor.Silver)
                 ClaimNode(playerOneSprite);
             else
                 ClaimNode(playerTwoSprite);
@@ -158,7 +283,6 @@ public class NodeController : MonoBehaviour
 
     public void ToggleTrigger()
     {
-
         BoxCollider2D boxCollider = gameObject.GetComponent<BoxCollider2D>();
         if (boxCollider.enabled)
         {

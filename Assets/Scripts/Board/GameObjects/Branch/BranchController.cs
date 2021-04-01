@@ -9,6 +9,11 @@ public class BranchController : MonoBehaviour
     public Sprite playerTwoSprite;
     public Sprite blankSprite;
 
+    public Sprite highlight;
+
+    public Sprite playerOneHighlight;
+    public Sprite playerTwoHighlight;
+
     public Branch branchEntity;
 
     void Start()
@@ -31,10 +36,12 @@ public class BranchController : MonoBehaviour
                         branchEntity.branchState.ownerColor = branchEntity.gameController.getCurrentPlayerColor();
                         branchEntity.branchState.branchColor = branchEntity.gameController.getCurrentPlayerColor();
 
-                        if (branchEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
-                            ClaimBranch(playerOneSprite);
+                        if (branchEntity.gameController.getCurrentPlayerColor() == PlayerColor.Silver)
+                            // ClaimBranch(playerOneSprite);
+                            ClaimBranch(playerOneHighlight);
                         else
-                            ClaimBranch(playerTwoSprite);
+                            // ClaimBranch(playerTwoSprite);
+                            ClaimBranch(playerTwoHighlight);
                     }
                 }
                 else if (isBranchColorOfCurrentPlayer() && GameInformation.openingMoveBranchSet && GameInformation.openingBranchId == branchEntity.id)
@@ -51,15 +58,17 @@ public class BranchController : MonoBehaviour
                 branchEntity.branchState.ownerColor = branchEntity.gameController.getCurrentPlayerColor();
                 branchEntity.branchState.branchColor = branchEntity.gameController.getCurrentPlayerColor();
                 // Change color
-                if (branchEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
+                if (branchEntity.gameController.getCurrentPlayerColor() == PlayerColor.Silver)
                 {
-                    ClaimBranch(playerOneSprite);
+                    //ClaimBranch(playerOneSprite);
+                    ClaimBranch(playerOneHighlight);
                     GameInformation.playerOneResources[0]--;
                     GameInformation.playerOneResources[1]--;
                 }
                 else
                 {
-                    ClaimBranch(playerTwoSprite);
+                    //ClaimBranch(playerTwoSprite);
+                    ClaimBranch(playerTwoHighlight);
                     GameInformation.playerTwoResources[0]--;
                     GameInformation.playerTwoResources[1]--;
                 }
@@ -72,7 +81,9 @@ public class BranchController : MonoBehaviour
                 branchEntity.branchState.ownerColor = PlayerColor.Blank;
                 branchEntity.branchState.branchColor = PlayerColor.Blank;
 
-                if (branchEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
+                GameInformation.currentRoundPlacedBranches.Remove(branchEntity.id);
+
+                if (branchEntity.gameController.getCurrentPlayerColor() == PlayerColor.Silver)
                 {
                     GameInformation.playerOneResources[0]++;
                     GameInformation.playerOneResources[1]++;
@@ -85,6 +96,54 @@ public class BranchController : MonoBehaviour
                 SendMessageUpwards("SendMessageToGameManager", "UpdateResourcesUI");
                 ClaimBranch(blankSprite);
             }
+        }
+    }
+
+    public void OnMouseEnter()
+    {
+        if (GameInformation.gameType != 'T')
+        {
+            if ((isBranchBlank() && hasEnoughResources() && (isBranchConnectedToBranch()) || isBranchSurroundedByCurrentPlayer()))
+            {
+                ClaimBranch(highlight);
+            }
+            else if (GameInformation.openingSequence && GameInformation.openingMoveNodeSet && !GameInformation.openingMoveBranchSet && isBranchBlank() && isOpeningBranchConnectedToNewNode())
+            {
+                ClaimBranch(highlight);
+            }
+        }
+    }
+
+    public void OnMouseExit()
+    {
+        if (GameInformation.gameType != 'T')
+        {
+            if (!GameInformation.openingSequence)
+            {
+
+                if (!GameInformation.currentRoundPlacedBranches.Contains(branchEntity.id) && (branchEntity.branchState.ownerColor == PlayerColor.Blank || isBranchSurroundedByCurrentPlayer()))
+                {
+                    ClaimBranch(blankSprite);
+                }
+            }
+            else
+            {
+                if (!GameInformation.openingMoveBranchSet && isBranchBlank())
+                {
+                    ClaimBranch(blankSprite);
+                }
+            }
+        }
+    }
+
+    public void SolidifyBranchClaim(int id)
+    {
+        if (branchEntity.id == id)
+        {
+            if (branchEntity.gameController.getCurrentPlayerColor() == PlayerColor.Silver)
+                ClaimBranch(playerOneSprite);
+            else
+                ClaimBranch(playerTwoSprite);
         }
     }
 
@@ -149,7 +208,7 @@ public class BranchController : MonoBehaviour
             branchEntity.branchState.ownerColor = color;
             branchEntity.branchState.branchColor = color;
 
-            if (color == PlayerColor.Orange)
+            if (color == PlayerColor.Silver)
                 ClaimBranch(playerOneSprite);
             else
                 ClaimBranch(playerTwoSprite);
@@ -159,7 +218,7 @@ public class BranchController : MonoBehaviour
     public bool hasEnoughResources()
     {
         int[] resources = new int[4];
-        if(branchEntity.gameController.getCurrentPlayerColor() == PlayerColor.Orange)
+        if(branchEntity.gameController.getCurrentPlayerColor() == PlayerColor.Silver)
         {
             resources = GameInformation.playerOneResources;
         }

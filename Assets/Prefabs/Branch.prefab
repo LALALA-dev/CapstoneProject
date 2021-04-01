@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 718663288249797993}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.89, z: 1}
+  m_LocalScale: {x: 0.75, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -97,9 +97,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72abf45ec17342949bced457c0f0d53a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerOneSprite: {fileID: 21300000, guid: 3b8a552b4ad47db49a9cda70d67a2fa4, type: 3}
+  playerOneSprite: {fileID: 21300000, guid: f15802d2cb93042419110e4a169ba162, type: 3}
   playerTwoSprite: {fileID: 21300000, guid: 71de041819c3aec4b99d90845ee5f033, type: 3}
   blankSprite: {fileID: 21300000, guid: 07aa19f433a5d2d489bd6775dee89e5a, type: 3}
+  highlight: {fileID: 21300000, guid: 564cbcc170726fa44a94c73a05c40a72, type: 3}
+  playerOneHighlight: {fileID: 21300000, guid: 297a4e0431ea6324d9f793a111b0f2cb, type: 3}
+  playerTwoHighlight: {fileID: 21300000, guid: ff297145538f7084f9cdc9ce2588c9aa, type: 3}
   branchEntity: {fileID: 165006778020545375}
 --- !u!61 &7546155273441014467
 BoxCollider2D:
@@ -140,4 +143,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 0
-  gameController: {fileID: 5244961931443105675, guid: e55a20909337c38468549bc1e47e2caa, type: 3}

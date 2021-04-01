@@ -1,3 +1,5 @@
+using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -5,80 +7,85 @@ using UnityEngine;
 
 public class NetworkUIController : MonoBehaviour
 {
-    public TMP_InputField hostCreateRoomNameField;
-    public TMP_InputField privateRoomNameField;
-    public TMP_InputField setNameField;
+    public GameObject avatarSelector;
+    public GameObject gameTypeSelector;
+
+    public GameObject[] avatars;
+    public GameObject[] gameTypes;
+
+    public GameObject helpPanel;
 
     void Start()
     {
-        if(PlayerPrefs.HasKey("NetworkName"))
-        {
-            setNameField.text = PlayerPrefs.GetString("NetworkName");
-        }
-        hostCreateRoomNameField.gameObject.SetActive(false);
-        privateRoomNameField.gameObject.SetActive(false);
         GameInformation.gameType = 'N';
+
+        helpPanel.SetActive(false);
     }
 
-    public void SetName()
+    public void LeaveOnlineRoom()
     {
-        if (setNameField.text.Trim() != "")
+        if (PhotonNetwork.InRoom)
         {
-            PlayerPrefs.SetString("NetworkName", setNameField.text.Trim());
-        }
-        else
-        {
+            PhotonNetwork.LeaveRoom();
+            PhotonNetwork.Disconnect();
         }
     }
 
-    public void EnableCreateHostGameInput()
+    public void OnHatSelect()
     {
-        hostCreateRoomNameField.gameObject.SetActive(true);
-        privateRoomNameField.gameObject.SetActive(false);
+        GameInformation.ownAvatar = "HAT";
+        avatarSelector.transform.position = new Vector3(avatars[0].transform.position.x, avatarSelector.transform.position.y);
     }
 
-    public void EnableJoinPrivateGameInput()
+    public void OnShipSelect()
     {
-        hostCreateRoomNameField.gameObject.SetActive(false);
-        privateRoomNameField.gameObject.SetActive(true);
+        GameInformation.ownAvatar = "BATTLESHIP";
+        avatarSelector.transform.position = new Vector3(avatars[1].transform.position.x, avatarSelector.transform.position.y);
     }
 
-    public void DisableInputs()
+    public void OnCarSelect()
     {
-        SetRoomName();
-        hostCreateRoomNameField.gameObject.SetActive(false);
-        privateRoomNameField.gameObject.SetActive(false);
+        GameInformation.ownAvatar = "CAR";
+        avatarSelector.transform.position = new Vector3(avatars[2].transform.position.x, avatarSelector.transform.position.y);
     }
 
-    public void SetRoomName()
+    public void OnThimbleSelect()
     {
-        if (hostCreateRoomNameField.IsActive())
-        {
-            if(hostCreateRoomNameField.text.Trim() != "")
-            {
-                GameInformation.roomName = hostCreateRoomNameField.text.Trim();
-                GameInformation.networkGameType = NetworkGameType.Host;
-            }
-            else
-            {
-                // TODO: ERROR MESSAGE
-            }
-        }
-        else if(privateRoomNameField.IsActive())
-        {
-            if (privateRoomNameField.text.Trim() != "")
-            {
-                GameInformation.roomName = privateRoomNameField.text.Trim();
-                GameInformation.networkGameType = NetworkGameType.Private;
-            }
-            else
-            {
-                // TODO: ERROR MESSAGE
-            }
-        }
-        else
-        {
-            GameInformation.networkGameType = NetworkGameType.Public;
-        }
+        GameInformation.ownAvatar = "THIMBLE";
+        avatarSelector.transform.position = new Vector3(avatars[3].transform.position.x, avatarSelector.transform.position.y);
+    }
+
+    public void OnWheelBarrelSelect()
+    {
+        GameInformation.ownAvatar = "WHEELBARREL";
+        avatarSelector.transform.position = new Vector3(avatars[4].transform.position.x, avatarSelector.transform.position.y);
+    }
+
+    public void OnHostSelect()
+    {
+        GameInformation.networkGameType = NetworkGameType.Host;
+        gameTypeSelector.transform.position = new Vector3(gameTypeSelector.transform.position.x, gameTypes[0].transform.position.y);
+    }
+
+    public void OnPublicSelect()
+    {
+        GameInformation.networkGameType = NetworkGameType.Public;
+        gameTypeSelector.transform.position = new Vector3(gameTypeSelector.transform.position.x, gameTypes[1].transform.position.y);
+    }
+
+    public void OnPrivateSelect()
+    {
+        GameInformation.networkGameType = NetworkGameType.Private;
+        gameTypeSelector.transform.position = new Vector3(gameTypeSelector.transform.position.x, gameTypes[2].transform.position.y);
+    }
+
+    public void OnHelpClick()
+    {
+        helpPanel.SetActive(true);  
+    }
+
+    public void OnHelpExitClick()
+    {
+        helpPanel.SetActive(false);
     }
 }
