@@ -930,10 +930,10 @@ public class TutorialManager : MonoBehaviour
                 int[] two = new int[] { 0, 0, 2, 2 };
                 SetResources(one, two);
                 playerResourcesManager.UpdateBothPlayersResources();
-                UndoNode(5, PlayerColor.Silver, tutorialNodes[0].playerOneSprite);
-                UndoBranch(7, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
-                UndoBranch(8, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
-                UndoBranch(9, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
+                UndoNode(5, PlayerColor.Blank, tutorialNodes[0].playerOneSprite);
+                UndoBranch(7, PlayerColor.Blank, tutorialBranches[0].playerOneSprite);
+                UndoBranch(8, PlayerColor.Blank, tutorialBranches[0].playerOneSprite);
+                UndoBranch(9, PlayerColor.Blank, tutorialBranches[0].playerOneSprite);
                 GameInformation.currentRoundPlacedBranches.Clear();
                 GameInformation.currentRoundPlacedNodes.Clear();
 
@@ -1346,7 +1346,7 @@ public class TutorialManager : MonoBehaviour
         sprite.sprite = Sprite;
         tutorialBranches[branchIndex].branchEntity.branchState.branchColor = color;
         tutorialBranches[branchIndex].branchEntity.branchState.ownerColor = color;
-         tutorialBranches[branchIndex].ToggleTrigger();
+        tutorialBranches[branchIndex].ToggleTrigger();
     }
 
     IEnumerator MoveForward(ArrowController arrow)
