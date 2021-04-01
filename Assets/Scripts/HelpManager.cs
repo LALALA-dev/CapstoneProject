@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HelpManager : MonoBehaviour
 {
+    private bool isHelpPanelsActive;
     private int currentPanel;
     // The order in which the help panels should be displayed.
     //  Changes as the game advances. 
@@ -12,10 +14,13 @@ public class HelpManager : MonoBehaviour
     public GameObject nextButton;
     public GameObject previousButton;
     public GameObject cancelButton;
+    public GameObject tradeButton;
+    public GameObject goButton;
 
     // Start is called before the first frame update
     void Start()
     {
+        isHelpPanelsActive = false;        
         panelOrderKey = new int[helpPanels.Length];
 
         for (int i = 0; i < helpPanels.Length; ++i)
@@ -24,18 +29,26 @@ public class HelpManager : MonoBehaviour
         }
     }
 
-    // TODO: Might also need to deactivate certain aspects of the board &| buttons.
     public void onHelpClick()
     {
-        // Activate the first help panel that should be shown.
-        helpPanels[panelOrderKey[0]].SetActive(true);
-        currentPanel = 0;
-        
-        if (panelOrderKey[1] != null)
+        if (isHelpPanelsActive)
         {
-            nextButton.SetActive(true);
+            onCancelHelp();
         }
-        cancelButton.SetActive(true);
+        else
+        {
+            isHelpPanelsActive = true;
+            currentPanel = 0;
+            // Activate the first help panel that should be shown.
+            helpPanels[panelOrderKey[currentPanel]].SetActive(true);
+            
+            if (panelOrderKey[1] != null)
+            {
+                nextButton.SetActive(true);
+            }
+            cancelButton.SetActive(true);
+            TradeAndGoCanInteract(false);
+        }
     }
 
     public void onNextHelp()
@@ -66,10 +79,12 @@ public class HelpManager : MonoBehaviour
 
     public void onCancelHelp()
     {
+        isHelpPanelsActive = false;
         helpPanels[currentPanel].SetActive(false);
         nextButton.SetActive(false);
         previousButton.SetActive(false);
         cancelButton.SetActive(false);
+        TradeAndGoCanInteract(true);
     }
 
     // TODO: Set up to change the ordering of the panels based on current turn.
@@ -80,5 +95,11 @@ public class HelpManager : MonoBehaviour
     public void changePanelOrder()
     {
 
+    }
+
+    private void TradeAndGoCanInteract(bool set)
+    {
+        tradeButton.GetComponent<Button>().interactable = set;
+        goButton.GetComponent<Button>().interactable = set;
     }
 }

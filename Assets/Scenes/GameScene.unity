@@ -972,6 +972,8 @@ MonoBehaviour:
   nextButton: {fileID: 1727742800}
   previousButton: {fileID: 1195300094}
   cancelButton: {fileID: 778890170}
+  tradeButton: {fileID: 1260590531}
+  goButton: {fileID: 333054263}
 --- !u!4 &197846059
 Transform:
   m_ObjectHideFlags: 0
