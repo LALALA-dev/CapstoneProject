@@ -338,7 +338,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   teamLogo: {fileID: 875618290}
-  gameLogo: {fileID: 0}
+  gameLogo: {fileID: 620744382}
   introImage: {fileID: 1326261973}
   sl: {fileID: 595688688}
 --- !u!1 &875618288

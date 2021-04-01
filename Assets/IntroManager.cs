@@ -66,7 +66,7 @@ public class IntroManager : MonoBehaviour
 
     IEnumerator MoveCamera()
     {
-        for (float i = -4; i <= 4; i += .02f)
+        for (float i = -4; i <= 4; i += .04f)
         {
             gameObject.transform.position = new Vector3(i, transform.position.y, -5.0f);
             yield return null;
@@ -77,7 +77,7 @@ public class IntroManager : MonoBehaviour
 
     IEnumerator MoveCamera1()
     {
-        for (float i = 2; i >= -2; i -= .02f)
+        for (float i = 2; i >= -2; i -= .03f)
         {
             gameObject.transform.position = new Vector3(transform.position.x, i, -5.0f);
             yield return null;
@@ -88,7 +88,7 @@ public class IntroManager : MonoBehaviour
 
     IEnumerator MoveCamera2()
     {
-        for (float i = 4; i >= -4; i -= .02f)
+        for (float i = 4; i >= -4; i -= .04f)
         {
             gameObject.transform.position = new Vector3(i, transform.position.y, -5.0f);
             yield return null;
