@@ -47,7 +47,7 @@ public class HelpManager : MonoBehaviour
                 nextButton.SetActive(true);
             }
             cancelButton.SetActive(true);
-            TradeAndGoCanInteract(false);
+            FlipTradeAndGoInteraction();
         }
     }
 
@@ -84,7 +84,7 @@ public class HelpManager : MonoBehaviour
         nextButton.SetActive(false);
         previousButton.SetActive(false);
         cancelButton.SetActive(false);
-        TradeAndGoCanInteract(true);
+        FlipTradeAndGoInteraction();
     }
 
     // TODO: Set up to change the ordering of the panels based on current turn.
@@ -97,9 +97,8 @@ public class HelpManager : MonoBehaviour
 
     }
 
-    private void TradeAndGoCanInteract(bool set)
+    private void FlipTradeAndGoInteraction()
     {
-        tradeButton.GetComponent<Button>().interactable = set;
-        goButton.GetComponent<Button>().interactable = set;
+        SendMessageUpwards("ToogleTriggers");
     }
 }
