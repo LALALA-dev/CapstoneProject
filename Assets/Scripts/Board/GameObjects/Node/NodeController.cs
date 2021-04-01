@@ -166,30 +166,37 @@ public class NodeController : MonoBehaviour
 
     public void OnMouseEnter()
     {
-        if (isNodeBlank() && hasEnoughResources() && isNodeConnectedToBranch())
+        if (GameInformation.gameType != 'T')
         {
-            ClaimNode(highlight);
-        }
-        else if(GameInformation.openingSequence && !GameInformation.openingMoveNodeSet && isNodeBlank())
-        {
-            ClaimNode(highlight);
+            if (isNodeBlank() && hasEnoughResources() && isNodeConnectedToBranch())
+            {
+                ClaimNode(highlight);
+            }
+            else if (GameInformation.openingSequence && !GameInformation.openingMoveNodeSet && isNodeBlank())
+            {
+                ClaimNode(highlight);
+            }
         }
     }
 
     public void OnMouseExit()
     {
-        if (!GameInformation.openingSequence)
+        if (GameInformation.gameType != 'T')
         {
-            if (!GameInformation.currentRoundPlacedNodes.Contains(nodeEntity.id) && nodeEntity.nodeState.nodeColor == PlayerColor.Blank)
+
+            if (!GameInformation.openingSequence)
             {
-                ClaimNode(blankSprite);
+                if (!GameInformation.currentRoundPlacedNodes.Contains(nodeEntity.id) && nodeEntity.nodeState.nodeColor == PlayerColor.Blank)
+                {
+                    ClaimNode(blankSprite);
+                }
             }
-        }
-        else
-        {
-            if (!GameInformation.openingMoveNodeSet && isNodeBlank())
+            else
             {
-                ClaimNode(blankSprite);
+                if (!GameInformation.openingMoveNodeSet && isNodeBlank())
+                {
+                    ClaimNode(blankSprite);
+                }
             }
         }
     }
