@@ -18,7 +18,7 @@ public class TutorialManager : MonoBehaviour
     {
         "Nodopoly is a 2 player strategy game, pitting players against one another for real-estate dominance of their city",
         "The cityscape is randomly generated at the start of each game",
-        "Each player gets 2 game pieces, and 2 roads at the start of the game",
+        "Each player gets 2 game pieces and 2 roads at the start of the game",
         "Game pieces can be placed on the corners of the streets throughout city",
         "Houses go on the streets themselves, building your real-estate network",
         "Now it's player 2's turn, they get to place their two opening moves consecutively", // 5
@@ -56,9 +56,9 @@ public class TutorialManager : MonoBehaviour
     };
     private string[] infoTwoMessages = new string[]
     {
-        "Click the green arrow to proceed, click the red arrow to go back",
+        "Click the green arrow to proceed. Click the red arrow to go back. Click the police man in the top left to exit at any time",
         "",
-        "The first two rounds goes player 1 then player 2 twice, and then player 1 and it alternates",
+        "The opening sequence of Nodopoly goes: player 1 then player 2, player 2, player 1 and then back to player 2 to start the game",
         "Tap the highlighted street corner to build a game piece",
         "Tap the highlighted street to build a road to connect to your game piece. Press GO to submit your move",
         "", // 5
@@ -150,7 +150,6 @@ public class TutorialManager : MonoBehaviour
         goBtn.interactable = false;
         tradeBtn.interactable = false;
         infoBtn.interactable = false;
-        exitBtn.interactable = false;
         longestNetworkCard.SetActive(false);
 
         for (int i = 0; i < arrows.Length; i++)
