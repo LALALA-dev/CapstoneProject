@@ -311,6 +311,8 @@ public class GameManager : MonoBehaviour
         {
             if (IsCorrectHostOpeningMove())
             {
+                boardManager.SolidifyNodeSelections(GameInformation.openingNodeId);
+                boardManager.SolidifyBranchSelection(GameInformation.openingBranchId);
                 gameController.UpdateGameBoard();
                 gameController.RefreshBlockedTiles();
                 boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
@@ -329,6 +331,8 @@ public class GameManager : MonoBehaviour
             }
             else if (IsCorrectClientOpeningMove())
             {
+                boardManager.SolidifyNodeSelections(GameInformation.openingNodeId);
+                boardManager.SolidifyBranchSelection(GameInformation.openingBranchId);
                 gameController.UpdateGameBoard();
                 gameController.RefreshBlockedTiles();
                 boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
@@ -345,6 +349,14 @@ public class GameManager : MonoBehaviour
                 boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
                 boardManager.DetectNewBlockCaptures(gameController.getGameBoard().squares);
 
+                for (int i = 0; i < GameInformation.currentRoundPlacedNodes.Count; i++)
+                {
+                    boardManager.SolidifyNodeSelections(GameInformation.currentRoundPlacedNodes[i]);
+                }
+                for (int i = 0; i < GameInformation.currentRoundPlacedBranches.Count; i++)
+                {
+                    boardManager.SolidifyBranchSelection(GameInformation.currentRoundPlacedBranches[i]);
+                }
                 GameInformation.currentRoundPlacedNodes.Clear();
                 GameInformation.currentRoundPlacedBranches.Clear();
                 GameInformation.resourceTrade = false;
