@@ -121,7 +121,7 @@ public class BranchController : MonoBehaviour
             if (!GameInformation.openingSequence)
             {
 
-                if (!GameInformation.currentRoundPlacedBranches.Contains(branchEntity.id) && branchEntity.branchState.ownerColor == PlayerColor.Blank)
+                if (!GameInformation.currentRoundPlacedBranches.Contains(branchEntity.id) && (branchEntity.branchState.ownerColor == PlayerColor.Blank || isBranchSurroundedByCurrentPlayer()))
                 {
                     ClaimBranch(blankSprite);
                 }
