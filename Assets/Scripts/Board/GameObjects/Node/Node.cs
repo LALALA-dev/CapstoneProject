@@ -10,7 +10,7 @@ public class Node : MonoBehaviour
 
     public GameController gameController;
 
-    void Start()
+    void Awake()
     {
         nodeState.location = id;
         nodeState.nodeColor = PlayerColor.Blank;

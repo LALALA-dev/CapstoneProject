@@ -1,0 +1,7 @@
+E:\Visual Studio Project\GameAITest\GameAITest\obj\Debug\GameAITest.csprojAssemblyReference.cache
+E:\Visual Studio Project\GameAITest\GameAITest\obj\Debug\GameAITest.csproj.CoreCompileInputs.cache
+E:\Visual Studio Project\GameAITest\GameAITest\bin\Debug\GameAITest.exe.config
+E:\Visual Studio Project\GameAITest\GameAITest\bin\Debug\GameAITest.exe
+E:\Visual Studio Project\GameAITest\GameAITest\bin\Debug\GameAITest.pdb
+E:\Visual Studio Project\GameAITest\GameAITest\obj\Debug\GameAITest.exe
+E:\Visual Studio Project\GameAITest\GameAITest\obj\Debug\GameAITest.pdb

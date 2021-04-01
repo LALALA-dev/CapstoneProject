@@ -7,8 +7,8 @@ public class GameObjectProperties
     public enum PlayerColor
     {
         Blank,
-        Orange,
-        Purple
+        Silver,
+        Gold
     }
     public enum SquareStatus
     {
@@ -31,6 +31,13 @@ public class GameObjectProperties
         Two,
         Three
     }
+
+    public struct SquareCaptureDetect
+    {
+        public int square;
+        public List<int> blankBranches;
+    }
+
     public struct SquareState
     {
         public int location;
@@ -59,6 +66,4 @@ public class GameObjectProperties
         public PlayerColor branchColor;
         public PlayerColor ownerColor;
     }
-
-
 }
