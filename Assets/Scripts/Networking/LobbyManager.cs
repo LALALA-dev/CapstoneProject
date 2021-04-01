@@ -28,6 +28,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     private bool roomReady = false;
 
+    public GameObject waitingAnimation;
+
     #region Set Up
     private void Awake()
     {
@@ -162,6 +164,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             privateRoomNameField.gameObject.SetActive(false);
             gamePINInputBtn.SetActive(false);
             connectMessage.gameObject.SetActive(true);
+            waitingAnimation.SetActive(true);
         }
         else
         {
@@ -205,6 +208,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             connectMessage.gameObject.SetActive(false);
             waitingForHostMessage.gameObject.SetActive(true);
             CancelButton.SetActive(true);
+            waitingAnimation.SetActive(true);
         }
         else
             GameInformation.playerIsHost = true;
@@ -256,6 +260,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             HostPIN.gameObject.SetActive(false);
             startGameBtn.gameObject.SetActive(false);
             generalError.SetActive(false);
+            waitingAnimation.SetActive(false);
         }
     }
 
