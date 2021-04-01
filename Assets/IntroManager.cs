@@ -6,10 +6,15 @@ using UnityEngine.UI;
 public class IntroManager : MonoBehaviour
 {
     public Image teamLogo;
+    public Image gameLogo;
+    public SpriteRenderer introImage;
     public SceneLoader sl;
 
     private void Awake()
     {
+        introImage.enabled = false;
+        gameLogo.gameObject.SetActive(false);
+        gameLogo.color = new Color(1, 1, 1, 1);
         teamLogo.color = new Color(1, 1, 1, 1);
     }
 
@@ -54,6 +59,68 @@ public class IntroManager : MonoBehaviour
             yield return null;
         }
 
+        //sl.LoadMenuScene();
+        introImage.enabled = true;
+        StartCoroutine(MoveCamera());
+    }
+
+    IEnumerator MoveCamera()
+    {
+        for (float i = -4; i <= 4; i += .02f)
+        {
+            gameObject.transform.position = new Vector3(i, transform.position.y, -5.0f);
+            yield return null;
+        }
+
+        StartCoroutine(MoveCamera1());
+    }
+
+    IEnumerator MoveCamera1()
+    {
+        for (float i = 2; i >= -2; i -= .02f)
+        {
+            gameObject.transform.position = new Vector3(transform.position.x, i, -5.0f);
+            yield return null;
+        }
+
+        StartCoroutine(MoveCamera2());
+    }
+
+    IEnumerator MoveCamera2()
+    {
+        for (float i = 4; i >= -4; i -= .02f)
+        {
+            gameObject.transform.position = new Vector3(i, transform.position.y, -5.0f);
+            yield return null;
+        }
+        StartCoroutine(MoveCamera3());
+    }
+
+    IEnumerator MoveCamera3()
+    {
+        for (float i = 0; i <= 200; i++)
+        {
+            gameObject.transform.position = new Vector3(transform.position.x + .02f, transform.position.y + .01f, transform.position.z - .025f);
+            yield return null;
+        }
+
+        gameLogo.gameObject.SetActive(true);
+        StartCoroutine(FadeIn());
+    }
+    IEnumerator FadeIn()
+    {
+        // loop over 1 second
+        for (float i = 0; i <= 1; i += Time.deltaTime)
+        {
+            // set color with i as alpha
+            gameLogo.color = new Color(1, 1, 1, i);
+            yield return null;
+        }
+        Invoke("LoadMainMenu", 1.0f);
+    }
+
+    public void LoadMainMenu()
+    {
         sl.LoadMenuScene();
     }
 }
