@@ -18,7 +18,7 @@ public class ExpertAI
         private int[] aiResourcesForUpdateBoard;
         public AI(PlayerColor aiColor, BoardState openingBoardState, int[] aiResources, int[] playerResources)
         {
-            //aiResources[0] = 100;
+            Debug.Log(aiResources[0] + " " + aiResources[1] + " " + aiResources[2] + " "+aiResources[3]);
             AIcolor = aiColor;
             beginBoard.boardState = CopyBoard(openingBoardState);
             beginBoard.aiResources = (int[])aiResources.Clone();
@@ -54,10 +54,12 @@ public class ExpertAI
             PlayerColor otherColor= new PlayerColor();
             do
             {
-                List<MyBoard> temp_result = new List<MyBoard>();
+              
                 flag_moved = 0;
+                List<MyBoard> temp_result = new List<MyBoard>();
                 for (int i = 0; i < storage[storage.Count - 1].Count; i++)
                 {
+                    temp_result.Clear();
                     MyBoard temp = storage[storage.Count - 1][i].Clone();
                     int[] resource;
                     if (currentPlayer == AIcolor)
@@ -77,6 +79,8 @@ public class ExpertAI
                         otherColor = AIcolor;
                         resource = temp.playerResources;
                     }
+
+
 
                     //part1:branches
                     int[] temp_resource_branches = (int[])resource.Clone();
@@ -105,11 +109,11 @@ public class ExpertAI
 
                     //part2:nodes
                     int[] temp_resource_nodes = (int[])resource.Clone();
-                    List<int> nodes = CalculatePossibleNodes(temp.boardState, temp_resource_branches, currentPlayer);
+                    List<int> nodes = CalculatePossibleNodes(temp.boardState, temp_resource_nodes, currentPlayer);
                     if (nodes.Count == 0 && trade == 0)
                     {
-                        ResourceTrading(temp_resource_branches, BeginnerAI.CollectCurrentPlayerResources(currentBoard.boardState, currentPlayer), temp.boardState, currentPlayer, ref trade);
-                        nodes = CalculatePossibleNodes(temp.boardState, temp_resource_branches, currentPlayer);
+                        ResourceTrading(temp_resource_nodes, BeginnerAI.CollectCurrentPlayerResources(currentBoard.boardState, currentPlayer), temp.boardState, currentPlayer, ref trade);
+                        nodes = CalculatePossibleNodes(temp.boardState, temp_resource_nodes, currentPlayer);
                     }
                     foreach (int j in nodes)
                     {
@@ -117,11 +121,11 @@ public class ExpertAI
                         tempp.boardState.nodeStates[j].nodeColor = currentPlayer;
                         if (currentPlayer == AIcolor)
                         {
-                            tempp.aiResources = temp_resource_branches;
+                            tempp.aiResources = temp_resource_nodes;
                         }
                         else
                         {
-                            tempp.playerResources = temp_resource_branches;
+                            tempp.playerResources = temp_resource_nodes;
                         }
                         temp_result.Add(tempp);
                         flag_moved = 1;
@@ -155,7 +159,14 @@ public class ExpertAI
                 }
                 
             }
-            return storage[storage.Count - 2];
+            for(int i = 0; i < storage.Count; i++)
+            {
+                if(storage[storage.Count - (1+i)].Count != 0)
+                {
+                    return storage[storage.Count - (1 + i)];
+                }
+            }
+            return storage[0];
         }
 
         private TreeNode traverse(TreeNode root)
@@ -209,8 +220,8 @@ public class ExpertAI
             PlayerColor playerCol = getcurrentPlayerColor(node);
             PlayerColor otherColor = new PlayerColor();
 
-
-            while (winner == PlayerColor.Blank)
+            int copunt = 0;
+            while (winner == PlayerColor.Blank && copunt < 100)
             {
                 if (playerCol == PlayerColor.Silver)
                 {
@@ -258,6 +269,7 @@ public class ExpertAI
                     playerCol = PlayerColor.Silver;
                 }
                 level++;
+                copunt++;
             }
             return winner;
         }
@@ -275,7 +287,7 @@ public class ExpertAI
             while (timeOut == false)//
             {
                 ccc = ccc;
-                //Debug.Log("times: "+ccc);
+                
                 int max = -1;
                 int loc = 0;
                 TreeNode promisingNode = traverse(root);
@@ -301,6 +313,7 @@ public class ExpertAI
                     if (root.child[i].N > max)
                     {
                         loc = i;
+                        max = root.child[i].N;
                     }
                 }
                 best = root.child[loc].localBoard.boardState;
@@ -308,7 +321,8 @@ public class ExpertAI
                 aiResourcesForUpdateBoard = root.child[loc].localBoard.aiResources;
                 DateTime afterDT = System.DateTime.Now;
                 TimeSpan ts = afterDT.Subtract(beforDT);
-                if (ts >= t)//ts >= t || ccc == 1000
+                
+                if (ts >= t)
                 {
                     //Debug.Log("Spent time: "+ts);
                     timeOut = true;
