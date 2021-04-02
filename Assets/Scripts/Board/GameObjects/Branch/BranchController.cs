@@ -101,31 +101,37 @@ public class BranchController : MonoBehaviour
 
     public void OnMouseEnter()
     {
-        if ((isBranchBlank() && hasEnoughResources() && (isBranchConnectedToBranch()) || isBranchSurroundedByCurrentPlayer()))
+        if (GameInformation.gameType != 'T')
         {
-            ClaimBranch(highlight);
-        }
-        else if (GameInformation.openingSequence && GameInformation.openingMoveNodeSet && !GameInformation.openingMoveBranchSet && isBranchBlank() && isOpeningBranchConnectedToNewNode())
-        {
-            ClaimBranch(highlight);
+            if ((isBranchBlank() && hasEnoughResources() && (isBranchConnectedToBranch()) || isBranchSurroundedByCurrentPlayer()))
+            {
+                ClaimBranch(highlight);
+            }
+            else if (GameInformation.openingSequence && GameInformation.openingMoveNodeSet && !GameInformation.openingMoveBranchSet && isBranchBlank() && isOpeningBranchConnectedToNewNode())
+            {
+                ClaimBranch(highlight);
+            }
         }
     }
 
     public void OnMouseExit()
     {
-        if (!GameInformation.openingSequence)
+        if (GameInformation.gameType != 'T')
         {
+            if (!GameInformation.openingSequence)
+            {
 
-            if (!GameInformation.currentRoundPlacedBranches.Contains(branchEntity.id) && branchEntity.branchState.ownerColor == PlayerColor.Blank)
-            {
-                ClaimBranch(blankSprite);
+                if (!GameInformation.currentRoundPlacedBranches.Contains(branchEntity.id) && (branchEntity.branchState.ownerColor == PlayerColor.Blank || isBranchSurroundedByCurrentPlayer()))
+                {
+                    ClaimBranch(blankSprite);
+                }
             }
-        }
-        else
-        {
-            if (!GameInformation.openingMoveBranchSet && isBranchBlank())
+            else
             {
-                ClaimBranch(blankSprite);
+                if (!GameInformation.openingMoveBranchSet && isBranchBlank())
+                {
+                    ClaimBranch(blankSprite);
+                }
             }
         }
     }
