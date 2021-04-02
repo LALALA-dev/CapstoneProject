@@ -497,7 +497,7 @@ public class BeginnerAI
                 }
             }
         }
-        
+        /*
         if(trad == 1)
         {
             Debug.Log("0 = Red, 1 = Blue, 2 =Yellow , 3 = Green");
@@ -512,7 +512,7 @@ public class BeginnerAI
                     Debug.Log("got " +i + ": " + (aiResources[i] - debug[i]));
                 }
             }
-        }
+        }*/
       
     }
 
@@ -573,10 +573,10 @@ public class BeginnerAI
                 case SquareResourceColor.Red:
                     resources[0]++;
                     break;
-                case SquareResourceColor.Yellow:
+                case SquareResourceColor.Blue:
                     resources[1]++;
                     break;
-                case SquareResourceColor.Blue:
+                case SquareResourceColor.Yellow:
                     resources[2]++;
                     break;
                 case SquareResourceColor.Green:
