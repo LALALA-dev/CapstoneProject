@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static GameObjectProperties;
 
 public class HelpManager : MonoBehaviour
 {
@@ -11,6 +13,10 @@ public class HelpManager : MonoBehaviour
     //  Changes as the game advances. 
     private int[] panelOrderKey;
     public GameObject[] helpPanels;
+    public TMP_Text[] tokenScoresText;
+    public TMP_Text[] propertyScoresText;
+    public TMP_Text[] longestRoadsText;
+    public TMP_Text[] totalScoresText;
     public GameObject nextButton;
     public GameObject previousButton;
     public GameObject cancelButton;
@@ -94,7 +100,26 @@ public class HelpManager : MonoBehaviour
     //      3, 1, and 2 for moves > 6|8.
     public void changePanelOrder()
     {
+        
+    }
 
+    public void UpdateHelpPopupScores()
+    {
+        // Tokens
+        tokenScoresText[0].text = GameInformation.playerOneNodes.ToString();
+        tokenScoresText[1].text = GameInformation.playerTwoNodes.ToString();
+
+        // Monopolized Properties
+        propertyScoresText[0].text = GameInformation.playerOneProperties.ToString();
+        propertyScoresText[1].text = GameInformation.playerTwoProperties.ToString();
+
+        // Longest Road
+        longestRoadsText[0].text = GameInformation.playerOneNetwork.ToString();
+        longestRoadsText[1].text = GameInformation.playerTwoNetwork.ToString();
+
+        // Total Scores
+        totalScoresText[0].text = GameInformation.playerOneScore.ToString();
+        totalScoresText[1].text = GameInformation.playerTwoScore.ToString();
     }
 
     private void FlipTradeAndGoInteraction()
