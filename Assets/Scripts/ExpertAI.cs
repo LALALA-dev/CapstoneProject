@@ -18,7 +18,6 @@ public class ExpertAI
         private int[] aiResourcesForUpdateBoard;
         public AI(PlayerColor aiColor, BoardState openingBoardState, int[] aiResources, int[] playerResources)
         {
-            Debug.Log(aiResources[0] + " " + aiResources[1] + " " + aiResources[2] + " "+aiResources[3]);
             AIcolor = aiColor;
             beginBoard.boardState = CopyBoard(openingBoardState);
             beginBoard.aiResources = (int[])aiResources.Clone();
@@ -50,11 +49,12 @@ public class ExpertAI
             int trade = 0;
             List<List<MyBoard>> storage = new List<List<MyBoard>>();
             storage.Add(new List<MyBoard>());
-            storage[0].Add(currentBoard);
-            PlayerColor otherColor= new PlayerColor();
+            MyBoard tem = currentBoard.Clone();
+            storage[0].Add(tem);
+            PlayerColor otherColor = new PlayerColor();
             do
             {
-              
+
                 flag_moved = 0;
                 List<MyBoard> temp_result = new List<MyBoard>();
                 for (int i = 0; i < storage[storage.Count - 1].Count; i++)
@@ -134,10 +134,10 @@ public class ExpertAI
                 storage.Add(temp_result);
 
             } while (flag_moved == 1);
-            
-            foreach(MyBoard i in storage[storage.Count - 2])
+
+            foreach (MyBoard i in storage[storage.Count - 2])
             {
-                for(int j = 0; j < 24; j++)
+                for (int j = 0; j < 24; j++)
                 {
                     BeginnerAI.DetectLocalTileOverloads(i.boardState, j);
                 }
@@ -157,11 +157,11 @@ public class ExpertAI
                         i.playerResources[k] += temp[k];
                     }
                 }
-                
+
             }
-            for(int i = 0; i < storage.Count; i++)
+            for (int i = 0; i < storage.Count; i++)
             {
-                if(storage[storage.Count - (1+i)].Count != 0)
+                if (storage[storage.Count - (1 + i)].Count != 0)
                 {
                     return storage[storage.Count - (1 + i)];
                 }
@@ -172,7 +172,7 @@ public class ExpertAI
         private TreeNode traverse(TreeNode root)
         {
             TreeNode currentNode = root;
-           // Debug.Log("child: " + currentNode.child.Count);
+            // Debug.Log("child: " + currentNode.child.Count);
             while (currentNode.child.Count != 0)
             {
                 currentNode = UCT.findBestNode(currentNode);
@@ -249,7 +249,7 @@ public class ExpertAI
                 else
                 {
                     BeginnerAI tempp = new BeginnerAI(playerCol, temp.localBoard.boardState);
-                        
+
                     temp.localBoard.boardState = tempp.RandomMoveForMCTS(temp.localBoard.boardState, temp.localBoard.playerResources);
                     DetectMultiTileCaptures(temp.localBoard.boardState);
                     int[] res = BeginnerAI.CollectCurrentPlayerResources(temp.localBoard.boardState, otherColor);
@@ -287,7 +287,7 @@ public class ExpertAI
             while (timeOut == false)
             {
                 ccc = ccc;
-                
+
                 int max = -1;
                 int loc = 0;
                 TreeNode promisingNode = traverse(root);
@@ -305,8 +305,12 @@ public class ExpertAI
                         Debug.Log("Error: promisingNode.child.Count = 0");
                     }
                     promisingNode = promisingNode.child[0];
+
+                   
                     PlayerColor winner = simulation(promisingNode);
-                    backpropgation(promisingNode, winner);
+                 
+                        backpropgation(promisingNode, winner);
+                   
                 }
                 for (int i = 0; i < root.child.Count; i++)
                 {
@@ -318,21 +322,22 @@ public class ExpertAI
                 }
                 best = root.child[loc].localBoard.boardState;
                 ttt = loc;
-                
+
                 DateTime afterDT = System.DateTime.Now;
                 TimeSpan ts = afterDT.Subtract(beforDT);
-                
+
                 if (ts >= t)
                 {
                     //Debug.Log("Spent time: "+ts);
                     timeOut = true;
-                    
+
                 }
                 ccc++;
             }
-            for(int i = 0; i < best.branchStates.Count(); i++)
+            /*
+            for (int i = 0; i < best.branchStates.Count(); i++)
             {
-                if(best.branchStates[i].branchColor != beginBoard.boardState.branchStates[i].branchColor)
+                if (best.branchStates[i].branchColor != beginBoard.boardState.branchStates[i].branchColor)
                 {
                     Debug.Log("branch placed: " + i);
                 }
@@ -343,7 +348,8 @@ public class ExpertAI
                 {
                     Debug.Log("node placed: " + i);
                 }
-            }
+            }*/
+
             aiResourcesForUpdateBoard = root.child[ttt].localBoard.aiResources;
 
             // Assign resources
@@ -527,86 +533,86 @@ public class ExpertAI
 
 
         public PlayerColor getCapturedSquareOwner(BoardState currentBoard, int squareId)
-    {
-        PlayerColor captureColor;
-        // Check the surrounding branches for an owner color.
-        for (int branch = 0; branch < 4; ++branch)
         {
-            captureColor = currentBoard.branchStates[Reference.branchesOnSquareConnections[squareId, branch]].branchColor;
-            // If found, return it.
-            if (captureColor != PlayerColor.Blank)
+            PlayerColor captureColor;
+            // Check the surrounding branches for an owner color.
+            for (int branch = 0; branch < 4; ++branch)
             {
-                return captureColor;
-            }
-        }
-        // If all surrounding branches are blank, go to the square above and check it for an owner color. 
-        return getCapturedSquareOwner(currentBoard, Reference.squareOnSquareConnections[squareId, 0]);
-    }
-
-    public void captureArea(BoardState currentBoard, int startSquare, List<int> possibleCaptures, List<int> captures)
-    {
-        List<int> blankBranches = getBlankBranches(currentBoard, startSquare);
-        possibleCaptures.Remove(startSquare);
-        captures.Add(startSquare);
-
-        // For every blank branch on this captured square...
-        foreach (int blankBranch in blankBranches)
-        {
-            // If the connected square hasn't yet been moved from possible to captured then move it.
-            if (possibleCaptures.Contains(getConnectedSquare(blankBranch, startSquare)))
-            {
-                captureArea(currentBoard, getConnectedSquare(blankBranch, startSquare), possibleCaptures, captures);
-            }
-        }
-    }
-
-    public bool IsValidNodeMoves(BoardState currentBoard, PlayerColor AIcolor)
-    {
-
-        List<int> aiOwnedBranches = new List<int>();
-
-        foreach (BranchState branch in currentBoard.branchStates)
-        {
-            if (branch.branchColor == AIcolor || branch.ownerColor == AIcolor)
-            {
-                aiOwnedBranches.Add(branch.location);
-            }
-        }
-
-        List<int> possibleBranchMoves = new List<int>();
-
-        foreach (int ownedBranch in aiOwnedBranches)
-        {
-            int[] connectingBranches = ReferenceScript.branchConnectsToTheseBranches[ownedBranch];
-
-            foreach (int branch in connectingBranches)
-            {
-                if (currentBoard.branchStates[branch].branchColor == PlayerColor.Blank && (currentBoard.branchStates[branch].ownerColor == PlayerColor.Blank || currentBoard.branchStates[branch].ownerColor == AIcolor))
+                captureColor = currentBoard.branchStates[Reference.branchesOnSquareConnections[squareId, branch]].branchColor;
+                // If found, return it.
+                if (captureColor != PlayerColor.Blank)
                 {
-                    possibleBranchMoves.Add(currentBoard.branchStates[branch].location);
+                    return captureColor;
+                }
+            }
+            // If all surrounding branches are blank, go to the square above and check it for an owner color. 
+            return getCapturedSquareOwner(currentBoard, Reference.squareOnSquareConnections[squareId, 0]);
+        }
+
+        public void captureArea(BoardState currentBoard, int startSquare, List<int> possibleCaptures, List<int> captures)
+        {
+            List<int> blankBranches = getBlankBranches(currentBoard, startSquare);
+            possibleCaptures.Remove(startSquare);
+            captures.Add(startSquare);
+
+            // For every blank branch on this captured square...
+            foreach (int blankBranch in blankBranches)
+            {
+                // If the connected square hasn't yet been moved from possible to captured then move it.
+                if (possibleCaptures.Contains(getConnectedSquare(blankBranch, startSquare)))
+                {
+                    captureArea(currentBoard, getConnectedSquare(blankBranch, startSquare), possibleCaptures, captures);
                 }
             }
         }
-        if (possibleBranchMoves.Count > 0)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
 
-    }
-
-    public void ResourceTrading(int[] aiResources, int[] initialResources, BoardState currentBoardState, PlayerColor color, ref int trad)
-    {
-        int[] debug = (int[])aiResources.Clone();
-        for (int i = 0; i < initialResources.Length; i++)
+        public bool IsValidNodeMoves(BoardState currentBoard, PlayerColor AIcolor)
         {
-            if (initialResources[i] == 0 || aiResources[0] + aiResources[1] + aiResources[2] + aiResources[3] > 8)
+
+            List<int> aiOwnedBranches = new List<int>();
+
+            foreach (BranchState branch in currentBoard.branchStates)
             {
-                switch (i)
+                if (branch.branchColor == AIcolor || branch.ownerColor == AIcolor)
                 {
+                    aiOwnedBranches.Add(branch.location);
+                }
+            }
+
+            List<int> possibleBranchMoves = new List<int>();
+
+            foreach (int ownedBranch in aiOwnedBranches)
+            {
+                int[] connectingBranches = ReferenceScript.branchConnectsToTheseBranches[ownedBranch];
+
+                foreach (int branch in connectingBranches)
+                {
+                    if (currentBoard.branchStates[branch].branchColor == PlayerColor.Blank && (currentBoard.branchStates[branch].ownerColor == PlayerColor.Blank || currentBoard.branchStates[branch].ownerColor == AIcolor))
+                    {
+                        possibleBranchMoves.Add(currentBoard.branchStates[branch].location);
+                    }
+                }
+            }
+            if (possibleBranchMoves.Count > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
+        public void ResourceTrading(int[] aiResources, int[] initialResources, BoardState currentBoardState, PlayerColor color, ref int trad)
+        {
+            int[] debug = (int[])aiResources.Clone();
+            for (int i = 0; i < initialResources.Length; i++)
+            {
+                if (initialResources[i] == 0 || aiResources[0] + aiResources[1] + aiResources[2] + aiResources[3] > 8)
+                {
+                    switch (i)
+                    {
                         case 0:
                             if (aiResources[i] == 0 && trad == 0)
                             {
@@ -621,8 +627,8 @@ public class ExpertAI
                             }
                             break;
                         case 1:
-                        if (aiResources[i] == 0 && trad == 0)
-                        {
+                            if (aiResources[i] == 0 && trad == 0)
+                            {
                                 if (aiResources[0] + aiResources[2] + aiResources[3] >= 3)
                                 {
                                     int max = aiResources.Max();
@@ -631,11 +637,11 @@ public class ExpertAI
                                     aiResources[i]++;
                                     trad = 1;
                                 }
-                        }
-                        break;
-                    case 2:
-                        if (aiResources[i] < 2 && trad == 0 && IsValidNodeMoves(currentBoardState, color) == true)
-                        {
+                            }
+                            break;
+                        case 2:
+                            if (aiResources[i] < 2 && trad == 0 && IsValidNodeMoves(currentBoardState, color) == true)
+                            {
                                 if (aiResources[0] + aiResources[1] + aiResources[3] >= 3)
                                 {
                                     int max = aiResources.Max();
@@ -645,10 +651,10 @@ public class ExpertAI
                                     trad = 1;
                                 }
                             }
-                        break;
-                    case 3:
-                        if (aiResources[i] < 2 && trad == 0 && IsValidNodeMoves(currentBoardState, color) == true)
-                        {
+                            break;
+                        case 3:
+                            if (aiResources[i] < 2 && trad == 0 && IsValidNodeMoves(currentBoardState, color) == true)
+                            {
                                 if (aiResources[0] + aiResources[1] + aiResources[2] >= 3)
                                 {
                                     int max = aiResources.Max();
@@ -657,391 +663,391 @@ public class ExpertAI
                                     aiResources[i]++;
                                     trad = 1;
                                 }
-                        }
-                        break;
+                            }
+                            break;
+                    }
                 }
             }
         }
-    }
 
-    public List<int> CalculatePossibleBranches(BoardState currentBoard, int[] aiResources, PlayerColor CurrentPlayerColor)
-    {
-        List<int> aiOwnedBranches = new List<int>();
-
-        foreach (BranchState branch in currentBoard.branchStates)
+        public List<int> CalculatePossibleBranches(BoardState currentBoard, int[] aiResources, PlayerColor CurrentPlayerColor)
         {
-            if (branch.branchColor == CurrentPlayerColor || branch.ownerColor == CurrentPlayerColor)
+            List<int> aiOwnedBranches = new List<int>();
+
+            foreach (BranchState branch in currentBoard.branchStates)
             {
-                aiOwnedBranches.Add(branch.location);
-            }
-        }
-
-        List<int> possibleBranchMoves = new List<int>();
-
-        foreach (int ownedBranch in aiOwnedBranches)
-        {
-            int[] connectingBranches = ReferenceScript.branchConnectsToTheseBranches[ownedBranch];
-
-            foreach (int branch in connectingBranches)
-            {
-                if (currentBoard.branchStates[branch].branchColor == PlayerColor.Blank && (currentBoard.branchStates[branch].ownerColor == PlayerColor.Blank || currentBoard.branchStates[branch].ownerColor == CurrentPlayerColor))
+                if (branch.branchColor == CurrentPlayerColor || branch.ownerColor == CurrentPlayerColor)
                 {
-                    possibleBranchMoves.Add(currentBoard.branchStates[branch].location);
+                    aiOwnedBranches.Add(branch.location);
                 }
             }
-        }
-        if (possibleBranchMoves.Count > 0 && aiResources[0] >= 1 && aiResources[1] >= 1)
-        {
-            aiResources[0]--;
-            aiResources[1]--;
-        }
-        else
-        {
-            possibleBranchMoves.Clear();
-        }
-        return possibleBranchMoves;
-    }
 
-    public List<int> CalculatePossibleNodes(BoardState currentBoard, int[] aiResources, PlayerColor CurrentPlayerColor)
-    {
-        List<int> aiOwnedBranches = new List<int>();
+            List<int> possibleBranchMoves = new List<int>();
 
-        foreach (BranchState branch in currentBoard.branchStates)
-        {
-            if (branch.branchColor == CurrentPlayerColor || branch.ownerColor == CurrentPlayerColor)
+            foreach (int ownedBranch in aiOwnedBranches)
             {
-                aiOwnedBranches.Add(branch.location);
-            }
-        }
+                int[] connectingBranches = ReferenceScript.branchConnectsToTheseBranches[ownedBranch];
 
-        List<int> possibleNodeMoves = new List<int>();
-
-        foreach (int ownedBranch in aiOwnedBranches)
-        {
-            int[] connectingNodes = ReferenceScript.branchesConnectToTheseNodes[ownedBranch];
-
-            foreach (int node in connectingNodes)
-            {
-                if (currentBoard.nodeStates[node].nodeColor == PlayerColor.Blank)
+                foreach (int branch in connectingBranches)
                 {
-                    possibleNodeMoves.Add(currentBoard.nodeStates[node].location);
+                    if (currentBoard.branchStates[branch].branchColor == PlayerColor.Blank && (currentBoard.branchStates[branch].ownerColor == PlayerColor.Blank || currentBoard.branchStates[branch].ownerColor == CurrentPlayerColor))
+                    {
+                        possibleBranchMoves.Add(currentBoard.branchStates[branch].location);
+                    }
                 }
             }
-        }
-        if (possibleNodeMoves.Count > 0 && aiResources[2] >= 2 && aiResources[3] >= 2)
-        {
-            aiResources[2] -= 2;
-            aiResources[3] -= 2;
-        }
-        else
-        {
-            possibleNodeMoves.Clear();
-        }
-        return possibleNodeMoves;
-    }
-
-    public List<int> GetPlayersBranches(BoardState currentBoard, PlayerColor playerColor)
-    {
-        List<int> ownedBranches = new List<int>();
-
-        foreach (BranchState branch in currentBoard.branchStates)
-        {
-            if (branch.branchColor == playerColor)
+            if (possibleBranchMoves.Count > 0 && aiResources[0] >= 1 && aiResources[1] >= 1)
             {
-                ownedBranches.Add(branch.location);
-            }
-        }
-        return ownedBranches;
-    }
-
-    public int CalculatePlayerLongestNetwork(BoardState currentBoard, PlayerColor playerColor)
-    {
-        int longestNetwork = 0;
-        int currentNetwork = 0;
-        List<int> runningNetworkBranches = new List<int>();
-
-        List<int> playerBranches = GetPlayersBranches(currentBoard, playerColor);
-
-        runningNetworkBranches.Add(playerBranches[0]);
-        currentNetwork++;
-        foreach (int ownedBranch in playerBranches)
-        {
-            if (!runningNetworkBranches.Contains(ownedBranch))
-            {
-                longestNetwork = currentNetwork;
-                currentNetwork = 0;
-                runningNetworkBranches.Clear();
-            }
-
-            int[] touchingBranches = ReferenceScript.branchConnectsToTheseBranches[ownedBranch];
-            foreach (int touchedBranch in touchingBranches)
-            {
-                if (!runningNetworkBranches.Contains(touchedBranch) && playerBranches.Contains(touchedBranch))
-                {
-                    runningNetworkBranches.Add(touchedBranch);
-                    currentNetwork++;
-                }
-            }
-        }
-        if (currentNetwork > longestNetwork)
-            longestNetwork = currentNetwork;
-
-        return longestNetwork;
-    }
-
-    public List<int> getBlankBranches(BoardState currentBoard, int squareId)
-    {
-        List<int> blankBranches = new List<int>();
-        for (int branch = 0; branch < 4; ++branch)
-        {
-            int branchId = Reference.branchesOnSquareConnections[squareId, branch];
-            if (currentBoard.branchStates[branchId].branchColor == PlayerColor.Blank)
-            {
-                blankBranches.Add(branchId);
-            }
-        }
-        return blankBranches;
-    }
-
-    public int getConnectedSquare(int branchId, int squareId)
-    {
-        int branchDirection = -1;
-        for (int i = 0; branchDirection == -1 && i < 4; ++i)
-        {
-            if (Reference.branchesOnSquareConnections[squareId, i] == branchId)
-            {
-                branchDirection = i;
-            }
-        }
-        return Reference.squareOnSquareConnections[squareId, branchDirection];
-    }
-
-    public bool isConnectedSquareCaptured(BoardState currentBoard, int square, List<int> checkedSquares, List<int> captures, List<int> possibleCaptures)
-    {
-        List<int> blankBranches = getBlankBranches(currentBoard, square);
-        checkedSquares.Add(square);
-
-        foreach (int blankBranchId in blankBranches)
-        {
-            int connectedSquareId = getConnectedSquare(blankBranchId, square);
-            if (!checkedSquares.Contains(connectedSquareId))
-            {
-                if (!possibleCaptures.Contains(connectedSquareId) ||
-                    !isConnectedSquareCaptured(currentBoard, connectedSquareId, checkedSquares, captures, possibleCaptures))
-                {
-                    possibleCaptures.Remove(square);
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    public bool isCaptured(BoardState currentBoard, int startingSquare, List<int> captures, List<int> possibleCaptures)
-    {
-        List<int> blankBranches = getBlankBranches(currentBoard, startingSquare);
-        List<int> checkedSquares = new List<int>();
-        checkedSquares.Add(startingSquare);
-
-        foreach (int blankBranch in blankBranches)
-        {
-            int connectedSquareId = getConnectedSquare(blankBranch, startingSquare);
-            if (!possibleCaptures.Contains(connectedSquareId) ||
-                !isConnectedSquareCaptured(currentBoard, connectedSquareId, checkedSquares, captures, possibleCaptures))
-            {
-                possibleCaptures.Remove(startingSquare);
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public PlayerColor getOpponentColor(PlayerColor currentPlayer)
-    {
-        if (currentPlayer == PlayerColor.Blank)
-        {
-            return PlayerColor.Blank;
-        }
-
-        if (currentPlayer == PlayerColor.Silver)
-        {
-            return PlayerColor.Gold;
-        }
-        else
-        {
-            return PlayerColor.Silver;
-        }
-    }
-
-    public void DetectMultiTileCaptures(BoardState currentBoard)
-    {
-        const int MAX_SQUARES = 13;
-        List<int> captures = new List<int>();
-        List<int> possibleCaptures = new List<int>();
-
-        for (int currentSquare = 0; currentSquare < MAX_SQUARES; ++currentSquare)
-        {
-            bool couldBeCaptured = true;
-            List<int> blankBranches = new List<int>();
-            // The color of the first branch found on the square with a player's piece associated with it.
-
-            PlayerColor currentCaptureColor = currentBoard.branchStates[Reference.branchesOnSquareConnections[currentSquare, 0]].branchColor;
-            // Look for a player's color.
-            for (int connectedBranch = 1; currentCaptureColor == PlayerColor.Blank && connectedBranch < 4; ++connectedBranch)
-            {
-                currentCaptureColor = currentBoard.branchStates[Reference.branchesOnSquareConnections[currentSquare, connectedBranch]].branchColor;
-            }
-            // If no player has placed a branch along this square then it can be captured, but only if it's surrounded by captured squares,
-            //  so we'll assign it's possible color later and ignore the following for loop. 
-            if (currentCaptureColor == PlayerColor.Blank)
-            {
-                couldBeCaptured = false;
-                possibleCaptures.Add(currentSquare);
-            }
-
-            // If there is at least one branch that has a player's piece on it then check if the other branches are either blank or that color.
-            for (int connectedBranch = 0; connectedBranch < 4 && couldBeCaptured; ++connectedBranch)
-            {
-                BranchState currentBranchState = currentBoard.branchStates[Reference.branchesOnSquareConnections[currentSquare, connectedBranch]];
-
-                // If the node has an unclaimed branch boardering the edge of the board then it cannot be captured.
-                if (currentBranchState.branchColor == PlayerColor.Blank && Reference.squareOnSquareConnections[currentSquare, connectedBranch] == -1)
-                {
-                    couldBeCaptured = false;
-                }
-                // If a connecting branch belongs to the opponent then it cannot be captured.
-                else if (currentBranchState.branchColor == getOpponentColor(currentCaptureColor))
-                {
-                    couldBeCaptured = false;
-                }
-                // If a connecting branch is blank and there's a tile on the otherside, we need to check that tile for capture.
-                else if (currentBranchState.branchColor == PlayerColor.Blank)
-                {
-                    blankBranches.Add(currentBranchState.location);
-                }
-                // Otherwise the branch should belong to the currentCaptureColor and nothing needs to happen.
-            }
-
-            // If the node can possibly be captured, add it to possibleCaptures.
-            if (couldBeCaptured)
-            {
-                // If the none of the branches connected to the tile are blank, it's a single tile capture.
-                if (blankBranches.Count == 0)
-                {
-                    captures.Add(currentSquare);
-                }
-                else
-                {
-                    possibleCaptures.Add(currentSquare);
-                }
-            }
-        }
-
-        // Check the list of possible captures for actual captures.
-        while (possibleCaptures.Count > 0)
-        {
-            int square = possibleCaptures.First();
-            if (isCaptured(currentBoard, square, captures, possibleCaptures))
-            {
-                captureArea(currentBoard, square, possibleCaptures, captures);
+                aiResources[0]--;
+                aiResources[1]--;
             }
             else
             {
-                possibleCaptures.Remove(square);
+                possibleBranchMoves.Clear();
             }
+            return possibleBranchMoves;
         }
 
-        foreach (int squareId in captures)
+        public List<int> CalculatePossibleNodes(BoardState currentBoard, int[] aiResources, PlayerColor CurrentPlayerColor)
         {
-            PlayerColor captureColor = getCapturedSquareOwner(currentBoard, squareId);
+            List<int> aiOwnedBranches = new List<int>();
 
-            currentBoard.squareStates[squareId].ownerColor = captureColor;
-            currentBoard.squareStates[squareId].resourceState = SquareStatus.Captured;
-        }
-    }
-
-    public int GetNumberOfPlayerNodes(BoardState currentBoard, PlayerColor playerColor)
-    {
-        int ownedNodes = 0;
-
-        foreach (NodeState node in currentBoard.nodeStates)
-        {
-            if (node.nodeColor == playerColor)
+            foreach (BranchState branch in currentBoard.branchStates)
             {
-                ownedNodes++;
+                if (branch.branchColor == CurrentPlayerColor || branch.ownerColor == CurrentPlayerColor)
+                {
+                    aiOwnedBranches.Add(branch.location);
+                }
             }
-        }
-        return ownedNodes;
-    }
 
-    public int GetNumberOfPlayerCapturedTiles(BoardState currentBoard, PlayerColor playerColor)
-    {
-        int ownedTiles = 0;
-        DetectMultiTileCaptures(currentBoard);
+            List<int> possibleNodeMoves = new List<int>();
 
-        foreach (SquareState square in currentBoard.squareStates)
-        {
-            if (square.resourceState == SquareStatus.Captured && square.ownerColor == playerColor)
+            foreach (int ownedBranch in aiOwnedBranches)
             {
-                ownedTiles++;
+                int[] connectingNodes = ReferenceScript.branchesConnectToTheseNodes[ownedBranch];
+
+                foreach (int node in connectingNodes)
+                {
+                    if (currentBoard.nodeStates[node].nodeColor == PlayerColor.Blank)
+                    {
+                        possibleNodeMoves.Add(currentBoard.nodeStates[node].location);
+                    }
+                }
+            }
+            if (possibleNodeMoves.Count > 0 && aiResources[2] >= 2 && aiResources[3] >= 2)
+            {
+                aiResources[2] -= 2;
+                aiResources[3] -= 2;
+            }
+            else
+            {
+                possibleNodeMoves.Clear();
+            }
+            return possibleNodeMoves;
+        }
+
+        public List<int> GetPlayersBranches(BoardState currentBoard, PlayerColor playerColor)
+        {
+            List<int> ownedBranches = new List<int>();
+
+            foreach (BranchState branch in currentBoard.branchStates)
+            {
+                if (branch.branchColor == playerColor)
+                {
+                    ownedBranches.Add(branch.location);
+                }
+            }
+            return ownedBranches;
+        }
+
+        public int CalculatePlayerLongestNetwork(BoardState currentBoard, PlayerColor playerColor)
+        {
+            int longestNetwork = 0;
+            int currentNetwork = 0;
+            List<int> runningNetworkBranches = new List<int>();
+
+            List<int> playerBranches = GetPlayersBranches(currentBoard, playerColor);
+
+            runningNetworkBranches.Add(playerBranches[0]);
+            currentNetwork++;
+            foreach (int ownedBranch in playerBranches)
+            {
+                if (!runningNetworkBranches.Contains(ownedBranch))
+                {
+                    longestNetwork = currentNetwork;
+                    currentNetwork = 0;
+                    runningNetworkBranches.Clear();
+                }
+
+                int[] touchingBranches = ReferenceScript.branchConnectsToTheseBranches[ownedBranch];
+                foreach (int touchedBranch in touchingBranches)
+                {
+                    if (!runningNetworkBranches.Contains(touchedBranch) && playerBranches.Contains(touchedBranch))
+                    {
+                        runningNetworkBranches.Add(touchedBranch);
+                        currentNetwork++;
+                    }
+                }
+            }
+            if (currentNetwork > longestNetwork)
+                longestNetwork = currentNetwork;
+
+            return longestNetwork;
+        }
+
+        public List<int> getBlankBranches(BoardState currentBoard, int squareId)
+        {
+            List<int> blankBranches = new List<int>();
+            for (int branch = 0; branch < 4; ++branch)
+            {
+                int branchId = Reference.branchesOnSquareConnections[squareId, branch];
+                if (currentBoard.branchStates[branchId].branchColor == PlayerColor.Blank)
+                {
+                    blankBranches.Add(branchId);
+                }
+            }
+            return blankBranches;
+        }
+
+        public int getConnectedSquare(int branchId, int squareId)
+        {
+            int branchDirection = -1;
+            for (int i = 0; branchDirection == -1 && i < 4; ++i)
+            {
+                if (Reference.branchesOnSquareConnections[squareId, i] == branchId)
+                {
+                    branchDirection = i;
+                }
+            }
+            return Reference.squareOnSquareConnections[squareId, branchDirection];
+        }
+
+        public bool isConnectedSquareCaptured(BoardState currentBoard, int square, List<int> checkedSquares, List<int> captures, List<int> possibleCaptures)
+        {
+            List<int> blankBranches = getBlankBranches(currentBoard, square);
+            checkedSquares.Add(square);
+
+            foreach (int blankBranchId in blankBranches)
+            {
+                int connectedSquareId = getConnectedSquare(blankBranchId, square);
+                if (!checkedSquares.Contains(connectedSquareId))
+                {
+                    if (!possibleCaptures.Contains(connectedSquareId) ||
+                        !isConnectedSquareCaptured(currentBoard, connectedSquareId, checkedSquares, captures, possibleCaptures))
+                    {
+                        possibleCaptures.Remove(square);
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        public bool isCaptured(BoardState currentBoard, int startingSquare, List<int> captures, List<int> possibleCaptures)
+        {
+            List<int> blankBranches = getBlankBranches(currentBoard, startingSquare);
+            List<int> checkedSquares = new List<int>();
+            checkedSquares.Add(startingSquare);
+
+            foreach (int blankBranch in blankBranches)
+            {
+                int connectedSquareId = getConnectedSquare(blankBranch, startingSquare);
+                if (!possibleCaptures.Contains(connectedSquareId) ||
+                    !isConnectedSquareCaptured(currentBoard, connectedSquareId, checkedSquares, captures, possibleCaptures))
+                {
+                    possibleCaptures.Remove(startingSquare);
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public PlayerColor getOpponentColor(PlayerColor currentPlayer)
+        {
+            if (currentPlayer == PlayerColor.Blank)
+            {
+                return PlayerColor.Blank;
+            }
+
+            if (currentPlayer == PlayerColor.Silver)
+            {
+                return PlayerColor.Gold;
+            }
+            else
+            {
+                return PlayerColor.Silver;
             }
         }
-        return ownedTiles;
-    }
 
-    public PlayerColor isEnd(BoardState currentBoard)
-    {
-        int playerOneScore = GetNumberOfPlayerNodes(currentBoard, PlayerColor.Silver);
-        int playerTwoScore = GetNumberOfPlayerNodes(currentBoard, PlayerColor.Gold);
-        playerOneScore += GetNumberOfPlayerCapturedTiles(currentBoard, PlayerColor.Silver);
-        playerTwoScore += GetNumberOfPlayerCapturedTiles(currentBoard, PlayerColor.Gold);
+        public void DetectMultiTileCaptures(BoardState currentBoard)
+        {
+            const int MAX_SQUARES = 13;
+            List<int> captures = new List<int>();
+            List<int> possibleCaptures = new List<int>();
 
-        int playerOneNetwork = CalculatePlayerLongestNetwork(currentBoard, PlayerColor.Silver);
-        int playerTwoNetwork = CalculatePlayerLongestNetwork(currentBoard, PlayerColor.Gold);
+            for (int currentSquare = 0; currentSquare < MAX_SQUARES; ++currentSquare)
+            {
+                bool couldBeCaptured = true;
+                List<int> blankBranches = new List<int>();
+                // The color of the first branch found on the square with a player's piece associated with it.
 
-        if (playerOneNetwork > playerTwoNetwork)
-        {
-            playerOneScore += 2;
-        }
-        else if (playerOneNetwork < playerTwoNetwork)
-        {
-            playerTwoScore += 2;
+                PlayerColor currentCaptureColor = currentBoard.branchStates[Reference.branchesOnSquareConnections[currentSquare, 0]].branchColor;
+                // Look for a player's color.
+                for (int connectedBranch = 1; currentCaptureColor == PlayerColor.Blank && connectedBranch < 4; ++connectedBranch)
+                {
+                    currentCaptureColor = currentBoard.branchStates[Reference.branchesOnSquareConnections[currentSquare, connectedBranch]].branchColor;
+                }
+                // If no player has placed a branch along this square then it can be captured, but only if it's surrounded by captured squares,
+                //  so we'll assign it's possible color later and ignore the following for loop. 
+                if (currentCaptureColor == PlayerColor.Blank)
+                {
+                    couldBeCaptured = false;
+                    possibleCaptures.Add(currentSquare);
+                }
+
+                // If there is at least one branch that has a player's piece on it then check if the other branches are either blank or that color.
+                for (int connectedBranch = 0; connectedBranch < 4 && couldBeCaptured; ++connectedBranch)
+                {
+                    BranchState currentBranchState = currentBoard.branchStates[Reference.branchesOnSquareConnections[currentSquare, connectedBranch]];
+
+                    // If the node has an unclaimed branch boardering the edge of the board then it cannot be captured.
+                    if (currentBranchState.branchColor == PlayerColor.Blank && Reference.squareOnSquareConnections[currentSquare, connectedBranch] == -1)
+                    {
+                        couldBeCaptured = false;
+                    }
+                    // If a connecting branch belongs to the opponent then it cannot be captured.
+                    else if (currentBranchState.branchColor == getOpponentColor(currentCaptureColor))
+                    {
+                        couldBeCaptured = false;
+                    }
+                    // If a connecting branch is blank and there's a tile on the otherside, we need to check that tile for capture.
+                    else if (currentBranchState.branchColor == PlayerColor.Blank)
+                    {
+                        blankBranches.Add(currentBranchState.location);
+                    }
+                    // Otherwise the branch should belong to the currentCaptureColor and nothing needs to happen.
+                }
+
+                // If the node can possibly be captured, add it to possibleCaptures.
+                if (couldBeCaptured)
+                {
+                    // If the none of the branches connected to the tile are blank, it's a single tile capture.
+                    if (blankBranches.Count == 0)
+                    {
+                        captures.Add(currentSquare);
+                    }
+                    else
+                    {
+                        possibleCaptures.Add(currentSquare);
+                    }
+                }
+            }
+
+            // Check the list of possible captures for actual captures.
+            while (possibleCaptures.Count > 0)
+            {
+                int square = possibleCaptures.First();
+                if (isCaptured(currentBoard, square, captures, possibleCaptures))
+                {
+                    captureArea(currentBoard, square, possibleCaptures, captures);
+                }
+                else
+                {
+                    possibleCaptures.Remove(square);
+                }
+            }
+
+            foreach (int squareId in captures)
+            {
+                PlayerColor captureColor = getCapturedSquareOwner(currentBoard, squareId);
+
+                currentBoard.squareStates[squareId].ownerColor = captureColor;
+                currentBoard.squareStates[squareId].resourceState = SquareStatus.Captured;
+            }
         }
 
-        if (playerOneScore >= 10)
+        public int GetNumberOfPlayerNodes(BoardState currentBoard, PlayerColor playerColor)
         {
-            return PlayerColor.Silver;
-        }
-        else if (playerTwoScore >= 10)
-        {
-            return PlayerColor.Gold;
-        }
-        else
-        {
-            return PlayerColor.Blank;
-        }
-    }
+            int ownedNodes = 0;
 
-    public BoardState CopyBoard(BoardState myBoard)
-    {
-        BoardState newBoard = new BoardState();
-        newBoard.squareStates = new SquareState[13];
-        newBoard.nodeStates = new NodeState[24];
-        newBoard.branchStates = new BranchState[36];
-        for (int i = 0; i < myBoard.squareStates.Length; i++)
-        {
-            newBoard.squareStates[i] = myBoard.squareStates[i];
+            foreach (NodeState node in currentBoard.nodeStates)
+            {
+                if (node.nodeColor == playerColor)
+                {
+                    ownedNodes++;
+                }
+            }
+            return ownedNodes;
         }
-        for (int i = 0; i < myBoard.nodeStates.Length; i++)
+
+        public int GetNumberOfPlayerCapturedTiles(BoardState currentBoard, PlayerColor playerColor)
         {
-            newBoard.nodeStates[i] = myBoard.nodeStates[i];
+            int ownedTiles = 0;
+            DetectMultiTileCaptures(currentBoard);
+
+            foreach (SquareState square in currentBoard.squareStates)
+            {
+                if (square.resourceState == SquareStatus.Captured && square.ownerColor == playerColor)
+                {
+                    ownedTiles++;
+                }
+            }
+            return ownedTiles;
         }
-        for (int i = 0; i < myBoard.branchStates.Length; i++)
+
+        public PlayerColor isEnd(BoardState currentBoard)
         {
-            newBoard.branchStates[i] = myBoard.branchStates[i];
+            int playerOneScore = GetNumberOfPlayerNodes(currentBoard, PlayerColor.Silver);
+            int playerTwoScore = GetNumberOfPlayerNodes(currentBoard, PlayerColor.Gold);
+            playerOneScore += GetNumberOfPlayerCapturedTiles(currentBoard, PlayerColor.Silver);
+            playerTwoScore += GetNumberOfPlayerCapturedTiles(currentBoard, PlayerColor.Gold);
+
+            int playerOneNetwork = CalculatePlayerLongestNetwork(currentBoard, PlayerColor.Silver);
+            int playerTwoNetwork = CalculatePlayerLongestNetwork(currentBoard, PlayerColor.Gold);
+
+            if (playerOneNetwork > playerTwoNetwork)
+            {
+                playerOneScore += 2;
+            }
+            else if (playerOneNetwork < playerTwoNetwork)
+            {
+                playerTwoScore += 2;
+            }
+
+            if (playerOneScore >= 10)
+            {
+                return PlayerColor.Silver;
+            }
+            else if (playerTwoScore >= 10)
+            {
+                return PlayerColor.Gold;
+            }
+            else
+            {
+                return PlayerColor.Blank;
+            }
         }
-        return newBoard;
-    }
+
+        public BoardState CopyBoard(BoardState myBoard)
+        {
+            BoardState newBoard = new BoardState();
+            newBoard.squareStates = new SquareState[13];
+            newBoard.nodeStates = new NodeState[24];
+            newBoard.branchStates = new BranchState[36];
+            for (int i = 0; i < myBoard.squareStates.Length; i++)
+            {
+                newBoard.squareStates[i] = myBoard.squareStates[i];
+            }
+            for (int i = 0; i < myBoard.nodeStates.Length; i++)
+            {
+                newBoard.nodeStates[i] = myBoard.nodeStates[i];
+            }
+            for (int i = 0; i < myBoard.branchStates.Length; i++)
+            {
+                newBoard.branchStates[i] = myBoard.branchStates[i];
+            }
+            return newBoard;
+        }
 
         //********************************************
     }
@@ -1075,7 +1081,7 @@ public class ExpertAI
             }
             if (loc == -1)
             {
-                loc = score.Count-1;
+                loc = score.Count - 1;
             }
             //Debug.Log("Best node: " + loc);
             return node.child[loc];
