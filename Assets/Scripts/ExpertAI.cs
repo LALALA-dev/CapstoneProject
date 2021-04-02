@@ -501,10 +501,10 @@ public class ExpertAI
 
 
 
-        //***********************************************
-       
+        // assistant function *********************************************** 
 
-    public PlayerColor getCapturedSquareOwner(BoardState currentBoard, int squareId)
+
+        public PlayerColor getCapturedSquareOwner(BoardState currentBoard, int squareId)
     {
         PlayerColor captureColor;
         // Check the surrounding branches for an owner color.
