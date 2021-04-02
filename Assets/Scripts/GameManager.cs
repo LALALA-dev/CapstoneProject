@@ -642,14 +642,14 @@ public class GameManager : MonoBehaviour
             longestNetworkPlayerText.text = "Player One";
             longestNetworkLengthText.text = GameInformation.playerOneNetwork.ToString() + " Roads";
             longestNetworkMessage.SetActive(true);
-            longestNetworkMessage.transform.position = new Vector3(545f, 860f, 0f);
+            longestNetworkMessage.transform.position = new Vector3(620f, 885f, 0f);
         }
         else if (GameInformation.playerTwoNetwork > GameInformation.playerOneNetwork)
         {
             longestNetworkPlayerText.text = "Player Two";
             longestNetworkLengthText.text = GameInformation.playerTwoNetwork.ToString() + " Roads";
             longestNetworkMessage.SetActive(true);
-            longestNetworkMessage.transform.position = new Vector3(1360f, 860f, 0f);
+            longestNetworkMessage.transform.position = new Vector3(1250f, 885f, 0f);
         }
         else
         {
