@@ -284,7 +284,7 @@ public class ExpertAI
             TreeNode root = new TreeNode(beginBoard);
             expand(root);
             bool timeOut = false;
-            while (timeOut == false)//
+            while (timeOut == false)
             {
                 ccc = ccc;
                 
@@ -318,7 +318,7 @@ public class ExpertAI
                 }
                 best = root.child[loc].localBoard.boardState;
                 ttt = loc;
-                aiResourcesForUpdateBoard = root.child[loc].localBoard.aiResources;
+                
                 DateTime afterDT = System.DateTime.Now;
                 TimeSpan ts = afterDT.Subtract(beforDT);
                 
@@ -344,6 +344,7 @@ public class ExpertAI
                     Debug.Log("node placed: " + i);
                 }
             }
+            aiResourcesForUpdateBoard = root.child[ttt].localBoard.aiResources;
             return best;
         }
 
@@ -599,155 +600,56 @@ public class ExpertAI
             {
                 switch (i)
                 {
-                    case 0:
-                        if (aiResources[i] == 0 && trad == 0)
-                        {
-                            if (aiResources[1] + aiResources[2] + aiResources[3] >= 3)
+                        case 0:
+                            if (aiResources[i] == 0 && trad == 0)
                             {
-                                if (initialResources[1] != 0 || ((initialResources[1] == 0) && aiResources[1] > 1))
+                                if (aiResources[1] + aiResources[2] + aiResources[3] >= 3)
                                 {
-                                    for (int j = 0; j < 3; j++)
-                                    {
-                                        int max = -1;
-                                        int ind = -1;
-                                        for (int k = 0; k < 4; k++)
-                                        {
-                                            if (max < aiResources[k] && k != i)
-                                            {
-                                                if (aiResources[k] == 1 && k == 1)
-                                                {
-                                                    if (aiResources[2] == 1)
-                                                    {
-                                                        ind = 2;
-                                                        max = aiResources[2];
-                                                    }
-                                                    else if (aiResources[3] == 1)
-                                                    {
-                                                        ind = 3;
-                                                        max = aiResources[3];
-                                                    }
-                                                    else
-                                                    {
-                                                        ind = k;
-                                                        max = aiResources[k];
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    ind = k;
-                                                    max = aiResources[k];
-                                                }
-
-                                            }
-                                        }
-                                        aiResources[ind]--;
-                                    }
+                                    int max = aiResources.Max();
+                                    int index = Array.IndexOf(aiResources, max);
+                                    aiResources[index]--;
                                     aiResources[i]++;
                                     trad = 1;
                                 }
                             }
-                        }
-                        break;
-                    case 1:
+                            break;
+                        case 1:
                         if (aiResources[i] == 0 && trad == 0)
                         {
-                            if (aiResources[0] + aiResources[1] + aiResources[3] >= 3)
-                            {
-                                if (initialResources[0] != 0 || ((initialResources[0] == 0) && aiResources[0] > 1))
+                                if (aiResources[0] + aiResources[2] + aiResources[3] >= 3)
                                 {
-                                    for (int j = 0; j < 3; j++)
-                                    {
-                                        int max = -1;
-                                        int ind = -1;
-                                        for (int k = 0; k < 4; k++)
-                                        {
-                                            if (max < aiResources[k] && k != i)
-                                            {
-                                                if (aiResources[k] == 1 && k == 0)
-                                                {
-                                                    if (aiResources[2] == 1)
-                                                    {
-                                                        ind = 2;
-                                                        max = aiResources[2];
-                                                    }
-                                                    else if (aiResources[3] == 1)
-                                                    {
-                                                        ind = 3;
-                                                        max = aiResources[3];
-                                                    }
-                                                    else
-                                                    {
-                                                        ind = k;
-                                                        max = aiResources[k];
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    ind = k;
-                                                    max = aiResources[k];
-                                                }
-                                            }
-                                        }
-                                        aiResources[ind]--;
-                                    }
+                                    int max = aiResources.Max();
+                                    int index = Array.IndexOf(aiResources, max);
+                                    aiResources[index]--;
                                     aiResources[i]++;
                                     trad = 1;
                                 }
-                            }
                         }
                         break;
                     case 2:
                         if (aiResources[i] < 2 && trad == 0 && IsValidNodeMoves(currentBoardState, color) == true)
                         {
-                            if (aiResources[0] + aiResources[2] + aiResources[3] >= 3)
-                            {
-                                if (initialResources[3] != 0 || ((initialResources[3] == 0) && aiResources[3] > 2))
+                                if (aiResources[0] + aiResources[1] + aiResources[3] >= 3)
                                 {
-                                    for (int j = 0; j < 3; j++)
-                                    {
-                                        int max = -1;
-                                        int ind = -1;
-                                        for (int k = 0; k < 4; k++)
-                                        {
-                                            if (max < aiResources[k] && k != i)
-                                            {
-                                                ind = k;
-                                                max = aiResources[k];
-                                            }
-                                        }
-                                        aiResources[ind]--;
-                                    }
+                                    int max = aiResources.Max();
+                                    int index = Array.IndexOf(aiResources, max);
+                                    aiResources[index]--;
                                     aiResources[i]++;
                                     trad = 1;
                                 }
                             }
-                        }
                         break;
                     case 3:
                         if (aiResources[i] < 2 && trad == 0 && IsValidNodeMoves(currentBoardState, color) == true)
                         {
-                            if (aiResources[0] + aiResources[1] + aiResources[2] >= 3)
-                            {
-                                if (initialResources[2] != 0 || ((initialResources[2] == 0) && aiResources[2] > 2))
+                                if (aiResources[0] + aiResources[1] + aiResources[2] >= 3)
                                 {
-                                    for (int j = 0; j < 3; j++)
-                                    {
-                                        int max = -1;
-                                        int ind = -1;
-                                        for (int k = 0; k < 4; k++)
-                                        {
-                                            if (max < aiResources[k] && k != i)
-                                            {
-                                                ind = k;
-                                                max = aiResources[k];
-                                            }
-                                        }
-                                        aiResources[ind]--;
-                                    }
+                                    int max = aiResources.Max();
+                                    int index = Array.IndexOf(aiResources, max);
+                                    aiResources[index]--;
                                     aiResources[i]++;
                                     trad = 1;
                                 }
-                            }
                         }
                         break;
                 }
