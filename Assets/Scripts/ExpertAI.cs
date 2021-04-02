@@ -345,6 +345,13 @@ public class ExpertAI
                 }
             }
             aiResourcesForUpdateBoard = root.child[ttt].localBoard.aiResources;
+
+            // Assign resources
+            if (GameInformation.playerIsHost)
+                GameInformation.playerTwoResources = aiResourcesForUpdateBoard;
+            else
+                GameInformation.playerOneResources = aiResourcesForUpdateBoard;
+
             return best;
         }
 

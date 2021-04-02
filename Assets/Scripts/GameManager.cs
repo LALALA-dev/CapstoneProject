@@ -495,6 +495,7 @@ public class GameManager : MonoBehaviour
                         AIMove = expertMove.findNextMove(5.5);
                     }
 
+                    playerResourcesManager.UpdateBothPlayersResources();
                     gameController.getGameBoard().setBoard(AIMove.squareStates, AIMove.nodeStates, AIMove.branchStates);
                     boardManager.RefreshBoardGUI();
                     EndCurrentAIPlayersTurn();
