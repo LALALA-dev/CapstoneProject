@@ -30,7 +30,7 @@ public class TutorialManager : MonoBehaviour
         "Meaning that you've collected rent in the form of 2 green, 2 yellow, 1 blue, and 1 red for this turn",
         "Players use collected rent to build additional game pieces and roads",
         "Tap the street corner of the property to place a new game piece",
-        "Now it's the gold player's turn, they recieve their rent from their properties",
+        "Now it's the gold player's turn, they receive their rent from their properties",
         "Houses are legally connected even if they pass through an opponent's game piece", // 15
         "The gold player now submits their move...",
         "The silver player gets rent from all their placed game pieces",
@@ -89,7 +89,7 @@ public class TutorialManager : MonoBehaviour
         "", // 30
         "",
         "All 6 of player 1's roads are connected",
-        "The player with the longest road network will recieve this card",
+        "The player with the longest road network will receive this card",
         "Finishing this turn will get you a score a 10",
         "", // 35
         "Click the green arrow to exit"
