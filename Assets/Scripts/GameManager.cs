@@ -655,6 +655,8 @@ public class GameManager : MonoBehaviour
         {
             longestNetworkMessage.SetActive(false);
         }
+
+        BroadcastMessage("UpdateHelpPopupScores");
     }
 
     #region Logic Checks
