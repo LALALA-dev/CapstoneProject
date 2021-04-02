@@ -283,6 +283,16 @@ public class GameManager : MonoBehaviour
                 GameInformation.playerOneAvatar = networkController.GetOpponentInfo();
             SetAvatars();
         }
+
+        // Update in-game help popup ordering.
+        if (turnNumber > 4 && turnNumber < 9)
+        {
+            BroadcastMessage("SetPanelOrderTurnFive");
+        }
+        else if (turnNumber > 8)
+        {
+            BroadcastMessage("SetPanelOrderTurnNine");
+        }
     }
 
     #region Network Game

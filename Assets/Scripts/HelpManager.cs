@@ -46,12 +46,10 @@ public class HelpManager : MonoBehaviour
             isHelpPanelsActive = true;
             currentPanel = 0;
             // Activate the first help panel that should be shown.
+            Debug.Log("First Panel Order Key: " + panelOrderKey[currentPanel]);
             helpPanels[panelOrderKey[currentPanel]].SetActive(true);
             
-            if (panelOrderKey[1] != null)
-            {
-                nextButton.SetActive(true);
-            }
+            nextButton.SetActive(true);
             cancelButton.SetActive(true);
             FlipTradeAndGoInteraction();
         }
@@ -64,7 +62,7 @@ public class HelpManager : MonoBehaviour
 
         previousButton.SetActive(true);
 
-        if ((currentPanel + 1) == panelOrderKey.Length || panelOrderKey[currentPanel + 1] == null)
+        if ((currentPanel + 1) == panelOrderKey.Length)
         {
             nextButton.SetActive(false);
         }
@@ -72,8 +70,8 @@ public class HelpManager : MonoBehaviour
 
     public void onPreviousHelp()
     {
-        helpPanels[currentPanel].SetActive(false);
-        helpPanels[--currentPanel].SetActive(true);
+        helpPanels[panelOrderKey[currentPanel]].SetActive(false);
+        helpPanels[panelOrderKey[--currentPanel]].SetActive(true);
 
         nextButton.SetActive(true);
 
@@ -86,7 +84,7 @@ public class HelpManager : MonoBehaviour
     public void onCancelHelp()
     {
         isHelpPanelsActive = false;
-        helpPanels[currentPanel].SetActive(false);
+        helpPanels[panelOrderKey[currentPanel]].SetActive(false);
         nextButton.SetActive(false);
         previousButton.SetActive(false);
         cancelButton.SetActive(false);
@@ -95,12 +93,25 @@ public class HelpManager : MonoBehaviour
 
     // TODO: Set up to change the ordering of the panels based on current turn.
     //  Example:
-    //      0 and 1 for opening moves.
-    //      1, 2, and 3 for moves 4-6|8.
-    //      3, 1, and 2 for moves > 6|8.
-    public void changePanelOrder()
+    //      0, 1, 2, and 3 for opening moves.
+    //      1, 2, 3, and 0 for moves 5-8.
+    //      3, 1, 2, and 0 for moves > 8.
+    public void SetPanelOrderTurnFive()
     {
-        
+        Debug.Log("Panel Order Turn Five");
+        panelOrderKey[0] = 1;
+        panelOrderKey[1] = 2;
+        panelOrderKey[2] = 3;
+        panelOrderKey[3] = 0;
+    }
+
+    public void SetPanelOrderTurnNine()
+    {
+        Debug.Log("Panel Order Turn Nine");
+        panelOrderKey[0] = 3;
+        panelOrderKey[1] = 1;
+        panelOrderKey[2] = 2;
+        panelOrderKey[3] = 0;
     }
 
     public void UpdateHelpPopupScores()
