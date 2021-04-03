@@ -512,6 +512,7 @@ public class TutorialManager : MonoBehaviour
                 int[] one = new int[] { 1, 2, 2, 2 };
                 int[] two = new int[] { 0, 0, 3, 3 };
                 SetResources(one, two);
+                ToggleTriggers();
                 tradeBtn.interactable = false;
                 forwardBtn.interactable = true;
             }
@@ -1139,6 +1140,7 @@ public class TutorialManager : MonoBehaviour
                 SetResources(one, two);
                 playerResourcesManager.UpdateBothPlayersResources();
                 UndoNode(6, PlayerColor.Blank, tutorialNodes[0].blankSprite);
+                ToggleTriggers();
                 forwardBtn.interactable = true;
                 goBtn.interactable = false;
             }
@@ -1156,7 +1158,7 @@ public class TutorialManager : MonoBehaviour
                 gameController.UpdateScores();
                 playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
                 playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
-
+                ToggleTriggers();
                 HighlightNode(6);
                 forwardBtn.interactable = false;
                 goBtn.interactable = true;
