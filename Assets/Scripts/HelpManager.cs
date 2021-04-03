@@ -46,6 +46,7 @@ public class HelpManager : MonoBehaviour
             isHelpPanelsActive = true;
             currentPanel = 0;
             // Activate the first help panel that should be shown.
+            Debug.Log("First Panel Order Key: " + panelOrderKey[currentPanel]);
             helpPanels[panelOrderKey[currentPanel]].SetActive(true);
             
             nextButton.SetActive(true);
@@ -97,8 +98,14 @@ public class HelpManager : MonoBehaviour
         }
     }
 
+    // TODO: Set up to change the ordering of the panels based on current turn.
+    //  Example:
+    //      0, 1, 2, and 3 for opening moves.
+    //      1, 2, 3, and 0 for moves 5-8.
+    //      3, 1, 2, and 0 for moves > 8.
     public void SetPanelOrderTurnFive()
     {
+        Debug.Log("Panel Order Turn Five");
         panelOrderKey[0] = 1;
         panelOrderKey[1] = 2;
         panelOrderKey[2] = 3;
@@ -107,6 +114,7 @@ public class HelpManager : MonoBehaviour
 
     public void SetPanelOrderTurnNine()
     {
+        Debug.Log("Panel Order Turn Nine");
         panelOrderKey[0] = 3;
         panelOrderKey[1] = 1;
         panelOrderKey[2] = 2;
