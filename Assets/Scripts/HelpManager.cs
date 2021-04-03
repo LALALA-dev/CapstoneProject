@@ -50,7 +50,11 @@ public class HelpManager : MonoBehaviour
             
             nextButton.SetActive(true);
             cancelButton.SetActive(true);
-            FlipTradeAndGoInteraction();
+            
+            if (!GameInformation.gameOver)
+            {
+                FlipTradeAndGoInteraction();
+            }
         }
     }
 
@@ -87,7 +91,10 @@ public class HelpManager : MonoBehaviour
         nextButton.SetActive(false);
         previousButton.SetActive(false);
         cancelButton.SetActive(false);
-        FlipTradeAndGoInteraction();
+
+        if (!GameInformation.gameOver) {
+            FlipTradeAndGoInteraction();
+        }
     }
 
     public void SetPanelOrderTurnFive()
