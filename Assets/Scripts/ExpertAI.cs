@@ -211,16 +211,14 @@ public class ExpertAI
                 temp = temp.parent;
             }
         }
-
-        private PlayerColor simulation(TreeNode node)
+        private PlayerColor simulation3(TreeNode node)
         {
-            int level = node.level;
             PlayerColor winner = PlayerColor.Blank;
             TreeNode temp = node.Copy();
             PlayerColor playerCol = getcurrentPlayerColor(node);
             PlayerColor otherColor = new PlayerColor();
-
             int copunt = 0;
+            System.Random rnd = new System.Random();
             while (winner == PlayerColor.Blank && copunt < 100)
             {
                 if (playerCol == PlayerColor.Silver)
@@ -231,33 +229,99 @@ public class ExpertAI
                 {
                     otherColor = PlayerColor.Silver;
                 }
-                if (AIcolor == playerCol)
+
+                int moved = 1;
+                int trad = 0;
+                int[] resource_temp_curr = new int[4];
+                int[] resource_temp_othr = new int[4];
+                do
                 {
-                    BeginnerAI tempp = new BeginnerAI(playerCol, temp.localBoard.boardState);
-
-
-                    temp.localBoard.boardState = tempp.RandomMoveForMCTS(temp.localBoard.boardState, temp.localBoard.aiResources);
-                    DetectMultiTileCaptures(temp.localBoard.boardState);
-                    int[] res = BeginnerAI.CollectCurrentPlayerResources(temp.localBoard.boardState, otherColor);
-                    for (int i = 0; i < 4; i++)
+                    if (playerCol == AIcolor)
                     {
-                        temp.localBoard.playerResources[i] += res[i];
+                        resource_temp_curr = temp.localBoard.aiResources;
+                        resource_temp_othr = temp.localBoard.playerResources;
                     }
+                    else
+                    {
+                        resource_temp_curr = temp.localBoard.playerResources;
+                        resource_temp_othr = temp.localBoard.aiResources;
+                    }
+                    if (rnd.Next(0, 2) == 0 && moved == 1)
+                    {//branches
+                        moved = 0;
+                        List<int> result = CalculatePossibleBranches(temp.localBoard.boardState, resource_temp_curr, playerCol);
+                        if (result.Count == 0)
+                        {
+                            ResourceTradingForBranches(resource_temp_curr, BeginnerAI.CollectCurrentPlayerResources(temp.localBoard.boardState, playerCol), temp.localBoard.boardState, playerCol,ref trad);
+                            result = CalculatePossibleBranches(temp.localBoard.boardState, resource_temp_curr, playerCol);
+                            if (result.Count == 0)
+                            {
+                                result = CalculatePossibleNodes(temp.localBoard.boardState, resource_temp_curr, playerCol);
+                                if(result.Count == 0)
+                                {
+                                    ResourceTradingForNodes(resource_temp_curr, BeginnerAI.CollectCurrentPlayerResources(temp.localBoard.boardState, playerCol), temp.localBoard.boardState, playerCol, ref trad);
+                                    result = CalculatePossibleNodes(temp.localBoard.boardState, resource_temp_curr, playerCol);
+                                }
+                                if(result.Count != 0)
+                                {
+                                    int index = rnd.Next(0, result.Count);
+                                    temp.localBoard.boardState.nodeStates[result[index]].nodeColor = playerCol;
+                                    moved = 1;
+                                }
+                               
+                            }
+                        }
+                        if(moved == 0 && result.Count != 0)
+                        {
+                            int index = rnd.Next(0, result.Count);
+                            temp.localBoard.boardState.branchStates[result[index]].ownerColor = playerCol;
+                            temp.localBoard.boardState.branchStates[result[index]].branchColor = playerCol;
+                            moved = 1;
+                        }
+                    }
+                    else
+                    {//nodes
+                        moved = 0;
+                        List<int> result = CalculatePossibleNodes(temp.localBoard.boardState, resource_temp_curr, playerCol);
+                        if (result.Count == 0)
+                        {
+                            ResourceTradingForNodes(resource_temp_curr, BeginnerAI.CollectCurrentPlayerResources(temp.localBoard.boardState, playerCol), temp.localBoard.boardState, playerCol, ref trad);
+                            result = CalculatePossibleNodes(temp.localBoard.boardState, resource_temp_curr, playerCol);
+                            if (result.Count == 0)
+                            {
+                                result = CalculatePossibleBranches(temp.localBoard.boardState, resource_temp_curr, playerCol);
+                                if(result.Count == 0)
+                                {
+                                    ResourceTradingForBranches(resource_temp_curr, BeginnerAI.CollectCurrentPlayerResources(temp.localBoard.boardState, playerCol), temp.localBoard.boardState, playerCol, ref trad);
+                                    result = CalculatePossibleBranches(temp.localBoard.boardState, resource_temp_curr, playerCol);
+                                }
+                                if(result.Count != 0)
+                                {
+                                    int index = rnd.Next(0, result.Count);
+                                    temp.localBoard.boardState.branchStates[result[index]].ownerColor = playerCol;
+                                    temp.localBoard.boardState.branchStates[result[index]].branchColor = playerCol;
+                                    moved = 1;
 
+                                }
+                            }
+                        }
+                        if (moved == 0 && result.Count != 0)
+                        {
+                            int index = rnd.Next(0, result.Count);
+                            temp.localBoard.boardState.nodeStates[result[index]].nodeColor = playerCol;
+                            moved = 1;
+                        }
+                    }
+                } while (moved == 1);
 
-                }
-                else
+                DetectMultiTileCaptures(temp.localBoard.boardState);
+                int[] res = BeginnerAI.CollectCurrentPlayerResources(temp.localBoard.boardState, otherColor);
+                for (int i = 0; i < 4; i++)
                 {
-                    BeginnerAI tempp = new BeginnerAI(playerCol, temp.localBoard.boardState);
-
-                    temp.localBoard.boardState = tempp.RandomMoveForMCTS(temp.localBoard.boardState, temp.localBoard.playerResources);
-                    DetectMultiTileCaptures(temp.localBoard.boardState);
-                    int[] res = BeginnerAI.CollectCurrentPlayerResources(temp.localBoard.boardState, otherColor);
-                    for (int i = 0; i < 4; i++)
-                    {
-                        temp.localBoard.aiResources[i] += res[i];
-                    }
+                    resource_temp_othr[i] += res[i];
                 }
+
+
                 winner = isEnd(temp.localBoard.boardState);
 
                 if (playerCol == PlayerColor.Silver)
@@ -268,7 +332,6 @@ public class ExpertAI
                 {
                     playerCol = PlayerColor.Silver;
                 }
-                level++;
                 copunt++;
             }
             return winner;
@@ -294,7 +357,7 @@ public class ExpertAI
 
                 if (promisingNode.N == 0)
                 {
-                    PlayerColor winner = simulation(promisingNode);
+                    PlayerColor winner = simulation3(promisingNode);
                     backpropgation(promisingNode, winner);
                 }
                 else
@@ -307,7 +370,7 @@ public class ExpertAI
                     promisingNode = promisingNode.child[0];
 
                    
-                    PlayerColor winner = simulation(promisingNode);
+                    PlayerColor winner = simulation3(promisingNode);
                  
                         backpropgation(promisingNode, winner);
                    
@@ -328,7 +391,7 @@ public class ExpertAI
 
                 if (ts >= t)
                 {
-                    //Debug.Log("Spent time: "+ts);
+                    Debug.Log("times: "+ccc);
                     timeOut = true;
 
                 }
