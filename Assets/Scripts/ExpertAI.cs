@@ -81,7 +81,6 @@ public class ExpertAI
                     }
 
 
-
                     //part1:branches
                     int[] temp_resource_branches = (int[])resource.Clone();
                     List<int> branches = CalculatePossibleBranches(temp.boardState, temp_resource_branches, currentPlayer);
@@ -162,7 +161,31 @@ public class ExpertAI
             for (int i = 0; i < storage.Count; i++)
             {
                 if (storage[storage.Count - (1 + i)].Count != 0)
-                {
+                {/*
+                    for (int k = 0; k < storage[storage.Count - (1 + i)].Count - 1; k++)
+                    {
+                        int cc = 0;
+                        int nn = 0;
+                        for (int j = 0; j < 36; j++)
+                        {
+                            if (storage[storage.Count - (1 + i)][k].boardState.branchStates[j].branchColor == storage[storage.Count - (1 + i)][k + 1].boardState.branchStates[j].branchColor)
+                            {
+                                cc++;
+                            }
+                        }
+                        for (int j = 0; j < 24; j++)
+                        {
+                            if (storage[storage.Count - (1 + i)][k].boardState.nodeStates[j].nodeColor == storage[storage.Count - (1 + i)][k + 1].boardState.nodeStates[j].nodeColor)
+                            {
+                                nn++;
+                            }
+                        }
+                        if (nn == 24 && cc == 36)
+                        {
+                            storage[storage.Count - (1 + i)].RemoveAt(k);
+                        }
+                    }
+                    */
                     return storage[storage.Count - (1 + i)];
                 }
             }
@@ -175,7 +198,7 @@ public class ExpertAI
             // Debug.Log("child: " + currentNode.child.Count);
             while (currentNode.child.Count != 0)
             {
-                currentNode = UCT.findBestNode(currentNode);
+                currentNode = UCT.findBestNode(currentNode, root);
             }
             return currentNode;
         }
@@ -198,28 +221,27 @@ public class ExpertAI
             }
         }
 
-        private void backpropgation(TreeNode node, PlayerColor winner)
+        private void backpropgation(TreeNode node, int winner)
         {
             TreeNode temp = node;
             while (temp != null)
             {
-                if (winner == AIcolor)
-                {
-                    temp.W++;
-                }
+              
+                temp.W += winner;
                 temp.N++;
                 temp = temp.parent;
             }
         }
-        private PlayerColor simulation3(TreeNode node)
+
+        private int simulation3(TreeNode node)
         {
-            PlayerColor winner = PlayerColor.Blank;
+            int winner = 0;
             TreeNode temp = node.Copy();
             PlayerColor playerCol = getcurrentPlayerColor(node);
             PlayerColor otherColor = new PlayerColor();
             int copunt = 0;
             System.Random rnd = new System.Random();
-            while (winner == PlayerColor.Blank && copunt < 100)
+            while (winner == 0 && copunt < 100)
             {
                 if (playerCol == PlayerColor.Silver)
                 {
@@ -322,7 +344,7 @@ public class ExpertAI
                 }
 
 
-                winner = isEnd(temp.localBoard.boardState);
+                winner = isEnd(temp.localBoard.boardState, AIcolor);
 
                 if (playerCol == PlayerColor.Silver)
                 {
@@ -357,7 +379,7 @@ public class ExpertAI
 
                 if (promisingNode.N == 0)
                 {
-                    PlayerColor winner = simulation3(promisingNode);
+                    int winner = simulation3(promisingNode);
                     backpropgation(promisingNode, winner);
                 }
                 else
@@ -370,17 +392,20 @@ public class ExpertAI
                     promisingNode = promisingNode.child[0];
 
                    
-                    PlayerColor winner = simulation3(promisingNode);
+                    int winner = simulation3(promisingNode);
                  
                         backpropgation(promisingNode, winner);
                    
                 }
                 for (int i = 0; i < root.child.Count; i++)
                 {
-                    if (root.child[i].N > max)
+                    if (root.child[i].N >= max)
                     {
-                        loc = i;
-                        max = root.child[i].N;
+                        if((root.child[i].N == max && root.child[i].W > root.child[loc].W) || root.child[i].N > max)
+                        {
+                            loc = i;
+                            max = root.child[i].N;
+                        }
                     }
                 }
                 best = root.child[loc].localBoard.boardState;
@@ -414,7 +439,30 @@ public class ExpertAI
             }*/
 
             aiResourcesForUpdateBoard = root.child[ttt].localBoard.aiResources;
-
+            /*
+            for(int i = 0; i < root.child.Count-1; i++)
+            {
+                int cc = 0;
+                int nn = 0;
+                for (int j = 0; j < best.branchStates.Count(); j++)
+                {
+                    if(root.child[i].localBoard.boardState.branchStates[j].branchColor == root.child[i + 1].localBoard.boardState.branchStates[j].branchColor)
+                    {
+                        cc++;
+                    }
+                }
+                for (int j = 0; j < best.nodeStates.Count(); j++)
+                {
+                    if (root.child[i].localBoard.boardState.nodeStates[j].nodeColor == root.child[i + 1].localBoard.boardState.nodeStates[j].nodeColor)
+                    {
+                        nn++;
+                    }
+                }
+                if(nn == best.nodeStates.Count() && cc == best.branchStates.Count() )
+                {
+                    Debug.Log("root.child[" + i + "] is the same as " + "root.child[" + (i+1) + "]");
+                }
+            }*/
             // Assign resources
             if (GameInformation.playerIsHost)
                 GameInformation.playerTwoResources = aiResourcesForUpdateBoard;
@@ -536,7 +584,17 @@ public class ExpertAI
                     }
 
                     flag = 0;
-
+                    if(currentBoard.squareStates[tile].resourceAmount == SquareResourceAmount.One)
+                    {
+                        result += 0.2;
+                    }else if(currentBoard.squareStates[tile].resourceAmount == SquareResourceAmount.Two)
+                    {
+                        result += 0.3;
+                    }
+                    else if (currentBoard.squareStates[tile].resourceAmount == SquareResourceAmount.Three)
+                    {
+                        result += 0.4;
+                    }
 
                 }
                 if (col[0] > 0 && col[2] > 0)
@@ -575,6 +633,7 @@ public class ExpertAI
                         result += 1;
                     }
                 }
+
                 if (temp.nodeColor == PlayerColor.Blank)
                 {
                     res.Add(result);
@@ -1073,7 +1132,7 @@ public class ExpertAI
             return ownedTiles;
         }
 
-        public PlayerColor isEnd(BoardState currentBoard)
+        public int isEnd(BoardState currentBoard, PlayerColor AIcolor)
         {
             int playerOneScore = GetNumberOfPlayerNodes(currentBoard, PlayerColor.Silver);
             int playerTwoScore = GetNumberOfPlayerNodes(currentBoard, PlayerColor.Gold);
@@ -1091,18 +1150,13 @@ public class ExpertAI
             {
                 playerTwoScore += 2;
             }
-
-            if (playerOneScore >= 10)
+            if(AIcolor == PlayerColor.Silver)
             {
-                return PlayerColor.Silver;
-            }
-            else if (playerTwoScore >= 10)
-            {
-                return PlayerColor.Gold;
+                return (playerOneScore - playerTwoScore);
             }
             else
             {
-                return PlayerColor.Blank;
+                return (playerTwoScore-playerOneScore );
             }
         }
 
@@ -1132,7 +1186,7 @@ public class ExpertAI
 
     public class UCT
     {
-        public static TreeNode findBestNode(TreeNode node)
+        public static TreeNode findBestNode(TreeNode node, TreeNode root)
         {
             List<double> score = new List<double>();
             for (int i = 0; i < node.child.Count; i++)
@@ -1143,7 +1197,7 @@ public class ExpertAI
                 }
                 else
                 {
-                    double aut = (node.child[i].W / node.child[i].N) + (Math.Sqrt(2) * Math.Sqrt(Math.Log(Math.E, node.N)) / node.child[i].N);
+                    double aut = (node.child[i].W / node.child[i].N) + (Math.Sqrt(2) * Math.Sqrt(Math.Log(Math.E, root.N)) / node.child[i].N);
                     score.Add(aut);
                 }
             }
