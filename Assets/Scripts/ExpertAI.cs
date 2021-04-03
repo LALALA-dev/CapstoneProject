@@ -87,7 +87,7 @@ public class ExpertAI
                     List<int> branches = CalculatePossibleBranches(temp.boardState, temp_resource_branches, currentPlayer);
                     if (branches.Count == 0 && trade == 0)
                     {
-                        ResourceTrading(temp_resource_branches, BeginnerAI.CollectCurrentPlayerResources(currentBoard.boardState, currentPlayer), temp.boardState, currentPlayer, ref trade);
+                        ResourceTradingForBranches(temp_resource_branches, BeginnerAI.CollectCurrentPlayerResources(currentBoard.boardState, currentPlayer), temp.boardState, currentPlayer, ref trade);
                         branches = CalculatePossibleBranches(temp.boardState, temp_resource_branches, currentPlayer);
                     }
                     foreach (int j in branches)
@@ -112,7 +112,7 @@ public class ExpertAI
                     List<int> nodes = CalculatePossibleNodes(temp.boardState, temp_resource_nodes, currentPlayer);
                     if (nodes.Count == 0 && trade == 0)
                     {
-                        ResourceTrading(temp_resource_nodes, BeginnerAI.CollectCurrentPlayerResources(currentBoard.boardState, currentPlayer), temp.boardState, currentPlayer, ref trade);
+                        ResourceTradingForNodes(temp_resource_nodes, BeginnerAI.CollectCurrentPlayerResources(currentBoard.boardState, currentPlayer), temp.boardState, currentPlayer, ref trade);
                         nodes = CalculatePossibleNodes(temp.boardState, temp_resource_nodes, currentPlayer);
                     }
                     foreach (int j in nodes)
@@ -604,10 +604,10 @@ public class ExpertAI
 
         }
 
-        public void ResourceTrading(int[] aiResources, int[] initialResources, BoardState currentBoardState, PlayerColor color, ref int trad)
+        public void ResourceTradingForBranches(int[] aiResources, int[] initialResources, BoardState currentBoardState, PlayerColor color, ref int trad)
         {
             int[] debug = (int[])aiResources.Clone();
-            for (int i = 0; i < initialResources.Length; i++)
+            for (int i = 0; i <2 ; i++)
             {
                 if (initialResources[i] == 0 || aiResources[0] + aiResources[1] + aiResources[2] + aiResources[3] > 8)
                 {
@@ -639,6 +639,21 @@ public class ExpertAI
                                 }
                             }
                             break;
+                   
+                    }
+                }
+            }
+        }
+
+        public void ResourceTradingForNodes(int[] aiResources, int[] initialResources, BoardState currentBoardState, PlayerColor color, ref int trad)
+        {
+            int[] debug = (int[])aiResources.Clone();
+            for (int i = 2; i < 4; i++)
+            {
+                if (initialResources[i] == 0 || aiResources[0] + aiResources[1] + aiResources[2] + aiResources[3] > 8)
+                {
+                    switch (i)
+                    {
                         case 2:
                             if (aiResources[i] < 2 && trad == 0 && IsValidNodeMoves(currentBoardState, color) == true)
                             {
