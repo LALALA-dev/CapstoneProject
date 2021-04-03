@@ -81,7 +81,7 @@ public class TutorialManager : MonoBehaviour
         "",
         "Monopolizing a property builds a hotel on that property and stop paying rent to the opposing player",
         " ",
-        " ", // 25
+        "Surrounding a foreclosed property also monopolizes it, and starts paying rent only to the player who surrounded it", // 25
         "The gold player cannot build through the silver perimeter now that these properties are monopolized",
         "Click the chest to open the trading menu",
         "Click the 2 yellow dollars and a red dollar to trade for a needed green dollar",
