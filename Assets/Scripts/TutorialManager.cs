@@ -162,7 +162,7 @@ public class TutorialManager : MonoBehaviour
 
     void Start()
     {
-        ToogleTriggers();
+        ToggleTriggers();
         BeginTutorial();
     }
     #endregion
@@ -193,7 +193,7 @@ public class TutorialManager : MonoBehaviour
         currentPlayerMessage.text = "Your Move";
     }
 
-    public void ToogleTriggers()
+    public void ToggleTriggers()
     {
         BroadcastMessage("ToggleNodeBranchTriggers");
     }
@@ -502,6 +502,7 @@ public class TutorialManager : MonoBehaviour
             else if (messageNumber == 28)
             {
                 StopAllCoroutines();
+                ToggleTriggers();
                 arrows[7].gameObject.SetActive(false);
                 for (int i = 0; i < tradingButtons.Length; i++)
                     tradingButtons[i].interactable = false;
@@ -1124,6 +1125,7 @@ public class TutorialManager : MonoBehaviour
                 forwardBtn.interactable = false;
                 GameInformation.resourceTrade = false;
                 tradePanel.SetActive(true);
+                ToggleTriggers();
                 StopAllCoroutines();
                 MoveArrow(7);
                 arrows[7].gameObject.SetActive(false);
