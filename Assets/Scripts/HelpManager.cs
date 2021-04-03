@@ -29,10 +29,10 @@ public class HelpManager : MonoBehaviour
         isHelpPanelsActive = false;        
         panelOrderKey = new int[helpPanels.Length];
 
-        for (int i = 0; i < helpPanels.Length; ++i)
-        {
-            panelOrderKey[i] = i;
-        }
+        panelOrderKey[0] = 0;
+        panelOrderKey[1] = 1;
+        panelOrderKey[2] = -1;
+        panelOrderKey[3] = -1;
     }
 
     public void onHelpClick()
@@ -62,7 +62,7 @@ public class HelpManager : MonoBehaviour
 
         previousButton.SetActive(true);
 
-        if ((currentPanel + 1) == panelOrderKey.Length)
+        if ((currentPanel + 1) == panelOrderKey.Length || panelOrderKey[currentPanel + 1] == -1)
         {
             nextButton.SetActive(false);
         }
@@ -102,7 +102,7 @@ public class HelpManager : MonoBehaviour
         panelOrderKey[0] = 1;
         panelOrderKey[1] = 2;
         panelOrderKey[2] = 3;
-        panelOrderKey[3] = 0;
+        panelOrderKey[3] = -1;
     }
 
     public void SetPanelOrderTurnNine()
@@ -111,7 +111,7 @@ public class HelpManager : MonoBehaviour
         panelOrderKey[0] = 3;
         panelOrderKey[1] = 1;
         panelOrderKey[2] = 2;
-        panelOrderKey[3] = 0;
+        panelOrderKey[3] = -1;
     }
 
     public void UpdateHelpPopupScores()
