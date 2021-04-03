@@ -38,6 +38,7 @@ public class GameManager : MonoBehaviour
 
     public AudioSource resoureAllocation;
     public AudioSource whistle;
+    public AudioSource button;
 
     #region Setup
     private void Awake()
@@ -90,6 +91,11 @@ public class GameManager : MonoBehaviour
 
     }
     #endregion
+
+    public void ButtonClick()
+    {
+        button.Play();
+    }
 
     private void Update()
     {

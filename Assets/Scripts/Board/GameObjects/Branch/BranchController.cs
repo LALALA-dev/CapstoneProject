@@ -16,6 +16,9 @@ public class BranchController : MonoBehaviour
 
     public Branch branchEntity;
 
+    public AudioSource place;
+    public AudioSource remove;
+
     void Start()
     {
         ClaimBranch(blankSprite);
@@ -42,6 +45,7 @@ public class BranchController : MonoBehaviour
                         else
                             // ClaimBranch(playerTwoSprite);
                             ClaimBranch(playerTwoHighlight);
+                        place.Play();
                     }
                 }
                 else if (isBranchColorOfCurrentPlayer() && GameInformation.openingMoveBranchSet && GameInformation.openingBranchId == branchEntity.id)
@@ -50,6 +54,7 @@ public class BranchController : MonoBehaviour
                     branchEntity.branchState.branchColor = PlayerColor.Blank;
                     GameInformation.openingMoveBranchSet = false;
                     ClaimBranch(blankSprite);
+                    remove.Play();
                 }
 
             }
@@ -72,6 +77,7 @@ public class BranchController : MonoBehaviour
                     GameInformation.playerTwoResources[0]--;
                     GameInformation.playerTwoResources[1]--;
                 }
+                place.Play();
                 GameInformation.currentRoundPlacedBranches.Add(branchEntity.id);
                 SendMessageUpwards("SendMessageToGameManager", "UpdateResourcesUI");
             }
@@ -95,6 +101,7 @@ public class BranchController : MonoBehaviour
                 }
                 SendMessageUpwards("SendMessageToGameManager", "UpdateResourcesUI");
                 ClaimBranch(blankSprite);
+                remove.Play();
             }
         }
     }
