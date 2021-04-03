@@ -36,6 +36,9 @@ public class GameManager : MonoBehaviour
 
     public int turnNumber = 1;
 
+    public AudioSource resoureAllocation;
+    public AudioSource whistle;
+
     #region Setup
     private void Awake()
     {
@@ -100,10 +103,12 @@ public class GameManager : MonoBehaviour
         {
             GameInformation.tradeHasBeenMade = false;
             playerResourcesManager.UpdateBothPlayersResources();
+            resoureAllocation.Play();
         }
 
         if (GameInformation.gameType == 'N' && PhotonNetwork.CurrentRoom.PlayerCount < 2 && !GameInformation.gameOver)
         {
+            whistle.Play();
             playerLeftErrorMessage.SetActive(true);
             CompleteTurnBtn.SetActive(false);
             TradeBtn.SetActive(false);
@@ -210,6 +215,7 @@ public class GameManager : MonoBehaviour
                 }   
                 else
                 {
+                    resoureAllocation.Play();
                     currentPlayerMessage.text = "Your Move";
                     waitingAnimation.SetActive(false);
                 }
@@ -523,6 +529,7 @@ public class GameManager : MonoBehaviour
                     GameInformation.humanMoveFinished = false;
                     gameController.FlipColors();
                     gameController.CollectCurrentPlayerResources();
+                    resoureAllocation.Play();
                     gameController.UpdateScores();
                     playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
                     playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
@@ -582,6 +589,7 @@ public class GameManager : MonoBehaviour
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
                 waitingAnimation.SetActive(false);
+                resoureAllocation.Play();
             }
             gameController.FlipColors();
             gameController.CollectCurrentPlayerResources();
