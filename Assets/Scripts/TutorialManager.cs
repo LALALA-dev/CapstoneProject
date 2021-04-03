@@ -1140,7 +1140,7 @@ public class TutorialManager : MonoBehaviour
                 SetResources(one, two);
                 playerResourcesManager.UpdateBothPlayersResources();
                 UndoNode(6, PlayerColor.Blank, tutorialNodes[0].blankSprite);
-                ToggleTriggers();
+                //ToggleTriggers();
                 forwardBtn.interactable = true;
                 goBtn.interactable = false;
             }
@@ -1158,7 +1158,6 @@ public class TutorialManager : MonoBehaviour
                 gameController.UpdateScores();
                 playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
                 playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
-                ToggleTriggers();
                 HighlightNode(6);
                 forwardBtn.interactable = false;
                 goBtn.interactable = true;
