@@ -18,6 +18,9 @@ public class NodeController : MonoBehaviour
     private int playerOneAvatarIndex = 0;
     private int playerTwoAvatarIndex = 5;
 
+    public AudioSource place;
+    public AudioSource remove;
+
     void Start()
     {
         ClaimNode(blankSprite);
@@ -99,7 +102,7 @@ public class NodeController : MonoBehaviour
                     else
                         // ClaimNode(playerTwoSprite);
                         ClaimNode(highlightAvatars[playerTwoAvatarIndex]);
-
+                    place.Play();
                 }
                 else if (isNodeColorOfCurrentPlayer() && GameInformation.openingMoveNodeSet && GameInformation.openingNodeId == nodeEntity.id)
                 {
@@ -113,6 +116,7 @@ public class NodeController : MonoBehaviour
                         SendMessageUpwards("BranchUIUpdate", GameInformation.openingBranchId);
                         GameInformation.openingMoveBranchSet = false;
                     }
+                    remove.Play();
                 }
             }
             else if (hasEnoughResources() && isNodeConnectedToBranch() && isNodeBlank())
@@ -134,7 +138,7 @@ public class NodeController : MonoBehaviour
                     GameInformation.playerTwoResources[2] -= 2;
                     GameInformation.playerTwoResources[3] -= 2;
                 }
-
+                place.Play();
                 GameInformation.currentRoundPlacedNodes.Add(nodeEntity.id);
                 SendMessageUpwards("SendMessageToGameManager", "UpdateResourcesUI");
             }
@@ -160,6 +164,7 @@ public class NodeController : MonoBehaviour
                 ClaimNode(blankSprite);
                 nodeEntity.nodeState.nodeColor = PlayerColor.Blank;
                 nodeEntity.gameController.getGameBoard().getBoardState().nodeStates[nodeEntity.id].nodeColor = PlayerColor.Blank;
+                remove.Play();
             }
         }
     }
