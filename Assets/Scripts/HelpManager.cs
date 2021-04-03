@@ -51,11 +51,7 @@ public class HelpManager : MonoBehaviour
             
             nextButton.SetActive(true);
             cancelButton.SetActive(true);
-            
-            if (!GameInformation.gameOver)
-            {
-                FlipTradeAndGoInteraction();
-            }
+            FlipTradeAndGoInteraction();
         }
     }
 
@@ -92,10 +88,7 @@ public class HelpManager : MonoBehaviour
         nextButton.SetActive(false);
         previousButton.SetActive(false);
         cancelButton.SetActive(false);
-
-        if (!GameInformation.gameOver) {
-            FlipTradeAndGoInteraction();
-        }
+        FlipTradeAndGoInteraction();
     }
 
     // TODO: Set up to change the ordering of the panels based on current turn.
