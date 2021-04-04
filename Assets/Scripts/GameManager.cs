@@ -84,9 +84,15 @@ public class GameManager : MonoBehaviour
         }
 
         if(GameInformation.playerIsHost)
+        {
             GameInformation.playerOneAvatar = GameInformation.ownAvatar;
+            GameInformation.playerTwoAvatar = GameInformation.aiAvatar;
+        }
         else
+        {
             GameInformation.playerTwoAvatar = GameInformation.ownAvatar;
+            GameInformation.playerOneAvatar = GameInformation.aiAvatar;
+        }
 
         if(GameInformation.gameType != 'N')
             SetAvatars();
