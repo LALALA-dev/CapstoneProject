@@ -624,6 +624,7 @@ public class TutorialManager : MonoBehaviour
             else if (messageNumber == 36)
             {
                 winPanel.SetActive(false);
+                infoBtn.interactable = true;
                 topBG.SetActive(true);
                 bottomBG.SetActive(true);
                 GameInformation.gameOver = false;
@@ -1276,6 +1277,7 @@ public class TutorialManager : MonoBehaviour
                 winPanel.SetActive(true);
                 topBG.SetActive(false);
                 bottomBG.SetActive(false);
+                infoBtn.interactable = false;
                 MoveArrow(12);
                 MoveArrow(13);
                 arrows[12].gameObject.SetActive(false);
