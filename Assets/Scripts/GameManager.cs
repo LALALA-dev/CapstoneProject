@@ -7,6 +7,7 @@ using TMPro;
 using UnityEngine.UI;
 using static GameObjectProperties;
 using System;
+using static ExpertAI;
 
 public class GameManager : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PlayerResourcesManager playerResourcesManager;
     private GameController gameController;
     private BeginnerAI beginnerAI;
+    private ExpertAI expertAI;
     public TextMeshProUGUI playerLeftMessage;
 
     public TMP_InputField HNPInput;
@@ -74,7 +76,7 @@ public class GameManager : MonoBehaviour
         }
         else if(GameInformation.gameType == 'E')
         {
-            ExpertAIGame();
+            BeginExpertAIGame();
         }
         else if (GameInformation.HumanNetworkProtocol)
         {
@@ -82,9 +84,15 @@ public class GameManager : MonoBehaviour
         }
 
         if(GameInformation.playerIsHost)
+        {
             GameInformation.playerOneAvatar = GameInformation.ownAvatar;
+            GameInformation.playerTwoAvatar = GameInformation.aiAvatar;
+        }
         else
+        {
             GameInformation.playerTwoAvatar = GameInformation.ownAvatar;
+            GameInformation.playerOneAvatar = GameInformation.aiAvatar;
+        }
 
         if(GameInformation.gameType != 'N')
             SetAvatars();
@@ -432,9 +440,35 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void ExpertAIGame()
+    public void BeginExpertAIGame()
     {
+        PlayerColor aiColor;
+        int[] resources = new int[] { 0, 0, 0, 0 };
+        if (GameInformation.playerIsHost)
+        {
+            aiColor = PlayerColor.Gold;
+        }
+        else
+        {
+            aiColor = PlayerColor.Silver;
+        }
+        boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
+        expertAI = new ExpertAI();
 
+        if (!GameInformation.playerIsHost)
+        {
+            currentPlayerMessage.text = "AI's Move";
+            waitingAnimation.SetActive(true);
+            AI move = new AI(aiColor, gameController.getGameBoard().getBoardState(), resources, resources);
+            BoardState AIMove = move.MakeRandomOpeningMove(gameController.getGameBoard().getBoardState());
+            gameController.getGameBoard().setBoard(AIMove.squareStates, AIMove.nodeStates, AIMove.branchStates);
+            EndCurrentAIPlayersTurn();
+        }
+        else
+        {
+            currentPlayerMessage.text = "Your Move";
+            waitingAnimation.SetActive(false);
+        }
     }
 
     public void BeginHumanOpeningMove()
@@ -461,7 +495,7 @@ public class GameManager : MonoBehaviour
                     currentPlayerMessage.text = "AI's Move";
                     waitingAnimation.SetActive(true);
                     turnNumber++;
-                    RandomAIOpeningMove();
+                    AIOpeningMove();
 
                     GameInformation.humanMoveFinished = false;
                     EndCurrentAIPlayersTurn();
@@ -479,13 +513,31 @@ public class GameManager : MonoBehaviour
                     gameController.UpdateScores();
                     UpdateScoresUI();
 
+                    BoardState AIMove;
+                    PlayerColor aiColor = PlayerColor.Gold;
+                    int[] PlayerResources;
                     int[] AIResources;
                     if (!GameInformation.playerIsHost)
+                    {
+                        aiColor = PlayerColor.Silver;
                         AIResources = GameInformation.playerOneResources;
+                        PlayerResources = GameInformation.playerTwoResources;
+                    }
                     else
+                    {
                         AIResources = GameInformation.playerTwoResources;
+                        PlayerResources = GameInformation.playerOneResources;
+                    }
 
-                    BoardState AIMove = beginnerAI.RandomMove(gameController.getGameBoard().getBoardState(), AIResources);
+                    if(GameInformation.gameType == 'A')
+                        AIMove = beginnerAI.RandomMove(gameController.getGameBoard().getBoardState(), AIResources);
+                    else
+                    {
+                        AI expertMove = new AI(aiColor, gameController.getGameBoard().getBoardState(), AIResources, PlayerResources);
+                        AIMove = expertMove.findNextMove(5.5);
+                    }
+
+                    playerResourcesManager.UpdateBothPlayersResources();
                     gameController.getGameBoard().setBoard(AIMove.squareStates, AIMove.nodeStates, AIMove.branchStates);
                     boardManager.RefreshBoardGUI();
                     EndCurrentAIPlayersTurn();
@@ -506,7 +558,7 @@ public class GameManager : MonoBehaviour
                     currentPlayerMessage.text = "AI's Move";
                     waitingAnimation.SetActive(true);
                     turnNumber++;
-                    RandomAIOpeningMove();
+                    AIOpeningMove();
                     EndCurrentAIPlayersTurn();
                 }
             }
@@ -549,7 +601,7 @@ public class GameManager : MonoBehaviour
                     currentPlayerMessage.text = "AI's Move";
                     waitingAnimation.SetActive(true);
                     turnNumber++;
-                    RandomAIOpeningMove();
+                    AIOpeningMove();
                     GameInformation.humanMoveFinished = false;
                     EndCurrentAIPlayersTurn();
                 }
@@ -611,7 +663,32 @@ public class GameManager : MonoBehaviour
 
             if (GameInformation.currentPlayer == "AI")
             {
-                RandomAIMove();
+                if (GameInformation.gameType == 'E')
+                {
+                    PlayerColor aiColor = PlayerColor.Gold;
+                    int[] PlayerResources;
+                    int[] AIResources;
+                    if (!GameInformation.playerIsHost)
+                    {
+                        aiColor = PlayerColor.Silver;
+                        AIResources = GameInformation.playerOneResources;
+                        PlayerResources = GameInformation.playerTwoResources;
+                    }
+                    else
+                    {
+                        AIResources = GameInformation.playerTwoResources;
+                        PlayerResources = GameInformation.playerOneResources;
+                    }
+
+                    AI expertMove = new AI(aiColor, gameController.getGameBoard().getBoardState(), AIResources, PlayerResources);
+                    BoardState AIMove = expertMove.findNextMove(5.5);
+                    gameController.getGameBoard().setBoard(AIMove.squareStates, AIMove.nodeStates, AIMove.branchStates);
+                    boardManager.RefreshBoardGUI();
+                }
+                else
+                {
+                    RandomAIMove();
+                }
                     
                 gameController.UpdateGameBoard();
                 boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
@@ -627,11 +704,34 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void RandomAIOpeningMove()
+    public void AIOpeningMove()
     {
         GameInformation.currentPlayer = "AI";
         gameController.FlipColors();
-        BoardState AIMove = beginnerAI.MakeRandomOpeningMove(gameController.getGameBoard().getBoardState());
+        BoardState AIMove;
+        if(GameInformation.gameType == 'A')
+            AIMove = beginnerAI.MakeRandomOpeningMove(gameController.getGameBoard().getBoardState());
+        else
+        {
+            PlayerColor aiColor = PlayerColor.Gold;
+            int[] PlayerResources;
+            int[] AIResources;
+            if (!GameInformation.playerIsHost)
+            {
+                aiColor = PlayerColor.Silver;
+                AIResources = GameInformation.playerOneResources;
+                PlayerResources = GameInformation.playerTwoResources;
+            }
+            else
+            {
+                AIResources = GameInformation.playerTwoResources;
+                PlayerResources = GameInformation.playerOneResources;
+            }
+
+            AI expertMove = new AI(aiColor, gameController.getGameBoard().getBoardState(), AIResources, PlayerResources);
+            AIMove = expertMove.MakeRandomOpeningMove(gameController.getGameBoard().getBoardState());
+        }
+            
         gameController.getGameBoard().setBoard(AIMove.squareStates, AIMove.nodeStates, AIMove.branchStates);
         boardManager.RefreshBoardGUI();
     }
