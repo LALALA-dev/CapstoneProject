@@ -59,6 +59,7 @@ public class SceneLoader : MonoBehaviour
         GameInformation.renderClientBoard = false;
         GameInformation.newNetworkMoveSet = false;
         GameInformation.ownAvatar = "CAR";
+        GameInformation.aiAvatar = "WHEELBARREL";
         GameInformation.playerOneAvatar = "CAR";
         GameInformation.playerTwoAvatar = "WHEELBARREL";
         GameInformation.needToSyncGameVariables = false;
