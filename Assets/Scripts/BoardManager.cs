@@ -339,4 +339,9 @@ public class BoardManager : MonoBehaviour
         BroadcastMessage("SolidifyBranchClaim", id);
     }
 
+    public void OrphanBranchFound(int id)
+    {
+        BroadcastMessage("UnclaimOrphan", id);
+    }
+
 }
