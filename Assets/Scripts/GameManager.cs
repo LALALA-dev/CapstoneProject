@@ -38,6 +38,10 @@ public class GameManager : MonoBehaviour
 
     public int turnNumber = 1;
 
+    public AudioSource resoureAllocation;
+    public AudioSource whistle;
+    public AudioSource button;
+
     #region Setup
     private void Awake()
     {
@@ -90,6 +94,11 @@ public class GameManager : MonoBehaviour
     }
     #endregion
 
+    public void ButtonClick()
+    {
+        button.Play();
+    }
+
     private void Update()
     {
         if(GameInformation.renderClientBoard && GameInformation.gameType == 'N' && !GameInformation.playerIsHost)
@@ -102,10 +111,12 @@ public class GameManager : MonoBehaviour
         {
             GameInformation.tradeHasBeenMade = false;
             playerResourcesManager.UpdateBothPlayersResources();
+            resoureAllocation.Play();
         }
 
         if (GameInformation.gameType == 'N' && PhotonNetwork.CurrentRoom.PlayerCount < 2 && !GameInformation.gameOver)
         {
+            whistle.Play();
             playerLeftErrorMessage.SetActive(true);
             CompleteTurnBtn.SetActive(false);
             TradeBtn.SetActive(false);
@@ -212,6 +223,7 @@ public class GameManager : MonoBehaviour
                 }   
                 else
                 {
+                    resoureAllocation.Play();
                     currentPlayerMessage.text = "Your Move";
                     waitingAnimation.SetActive(false);
                 }
@@ -285,6 +297,16 @@ public class GameManager : MonoBehaviour
                 GameInformation.playerOneAvatar = networkController.GetOpponentInfo();
             SetAvatars();
         }
+
+        // Update in-game help popup ordering.
+        if (turnNumber > 4 && turnNumber < 9)
+        {
+            BroadcastMessage("SetPanelOrderTurnFive");
+        }
+        else if (turnNumber > 8)
+        {
+            BroadcastMessage("SetPanelOrderTurnNine");
+        }
     }
 
     #region Network Game
@@ -313,6 +335,8 @@ public class GameManager : MonoBehaviour
         {
             if (IsCorrectHostOpeningMove())
             {
+                boardManager.SolidifyNodeSelections(GameInformation.openingNodeId);
+                boardManager.SolidifyBranchSelection(GameInformation.openingBranchId);
                 gameController.UpdateGameBoard();
                 gameController.RefreshBlockedTiles();
                 boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
@@ -331,6 +355,8 @@ public class GameManager : MonoBehaviour
             }
             else if (IsCorrectClientOpeningMove())
             {
+                boardManager.SolidifyNodeSelections(GameInformation.openingNodeId);
+                boardManager.SolidifyBranchSelection(GameInformation.openingBranchId);
                 gameController.UpdateGameBoard();
                 gameController.RefreshBlockedTiles();
                 boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
@@ -347,6 +373,14 @@ public class GameManager : MonoBehaviour
                 boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
                 boardManager.DetectNewBlockCaptures(gameController.getGameBoard().squares);
 
+                for (int i = 0; i < GameInformation.currentRoundPlacedNodes.Count; i++)
+                {
+                    boardManager.SolidifyNodeSelections(GameInformation.currentRoundPlacedNodes[i]);
+                }
+                for (int i = 0; i < GameInformation.currentRoundPlacedBranches.Count; i++)
+                {
+                    boardManager.SolidifyBranchSelection(GameInformation.currentRoundPlacedBranches[i]);
+                }
                 GameInformation.currentRoundPlacedNodes.Clear();
                 GameInformation.currentRoundPlacedBranches.Clear();
                 GameInformation.resourceTrade = false;
@@ -444,6 +478,8 @@ public class GameManager : MonoBehaviour
     {
         if (GameInformation.openingSequence && GameInformation.currentPlayer == "HUMAN" && OpeningMoveSatisfied())
         {
+            boardManager.SolidifyNodeSelections(GameInformation.openingNodeId);
+            boardManager.SolidifyBranchSelection(GameInformation.openingBranchId);
             gameController.RefreshBlockedTiles();
             boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
             if(GameInformation.playerIsHost)
@@ -545,6 +581,7 @@ public class GameManager : MonoBehaviour
                     GameInformation.humanMoveFinished = false;
                     gameController.FlipColors();
                     gameController.CollectCurrentPlayerResources();
+                    resoureAllocation.Play();
                     gameController.UpdateScores();
                     playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
                     playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
@@ -581,12 +618,20 @@ public class GameManager : MonoBehaviour
             gameController.UpdateGameBoard();
             boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
             boardManager.DetectNewBlockCaptures(gameController.getGameBoard().squares);
-            GameInformation.currentRoundPlacedNodes.Clear();
-            GameInformation.currentRoundPlacedBranches.Clear();
 
             GameInformation.resourceTrade = false;
             if (GameInformation.currentPlayer == "HUMAN")
             {
+                for(int i = 0; i <  GameInformation.currentRoundPlacedNodes.Count; i++)
+                {
+                    boardManager.SolidifyNodeSelections(GameInformation.currentRoundPlacedNodes[i]);
+                }
+                for (int i = 0; i < GameInformation.currentRoundPlacedBranches.Count; i++)
+                {
+                    boardManager.SolidifyBranchSelection(GameInformation.currentRoundPlacedBranches[i]);
+                }
+                GameInformation.currentRoundPlacedNodes.Clear();
+                GameInformation.currentRoundPlacedBranches.Clear();
                 GameInformation.currentPlayer = "AI";
                 currentPlayerMessage.text = "AI's Move";
                 waitingAnimation.SetActive(true);
@@ -596,6 +641,7 @@ public class GameManager : MonoBehaviour
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
                 waitingAnimation.SetActive(false);
+                resoureAllocation.Play();
             }
             gameController.FlipColors();
             gameController.CollectCurrentPlayerResources();
@@ -714,19 +760,21 @@ public class GameManager : MonoBehaviour
             longestNetworkPlayerText.text = "Player One";
             longestNetworkLengthText.text = GameInformation.playerOneNetwork.ToString() + " Roads";
             longestNetworkMessage.SetActive(true);
-            longestNetworkMessage.transform.position = new Vector3(545f, 860f, 0f);
+            longestNetworkMessage.transform.position = new Vector3(620f, 885f, 0f);
         }
         else if (GameInformation.playerTwoNetwork > GameInformation.playerOneNetwork)
         {
             longestNetworkPlayerText.text = "Player Two";
             longestNetworkLengthText.text = GameInformation.playerTwoNetwork.ToString() + " Roads";
             longestNetworkMessage.SetActive(true);
-            longestNetworkMessage.transform.position = new Vector3(1360f, 860f, 0f);
+            longestNetworkMessage.transform.position = new Vector3(1250f, 885f, 0f);
         }
         else
         {
             longestNetworkMessage.SetActive(false);
         }
+
+        BroadcastMessage("UpdateHelpPopupScores");
     }
 
     #region Logic Checks

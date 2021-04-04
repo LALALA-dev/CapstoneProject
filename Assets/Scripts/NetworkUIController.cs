@@ -15,6 +15,8 @@ public class NetworkUIController : MonoBehaviour
 
     public GameObject helpPanel;
 
+    public AudioSource button;
+
     void Start()
     {
         GameInformation.gameType = 'N';
@@ -87,5 +89,10 @@ public class NetworkUIController : MonoBehaviour
     public void OnHelpExitClick()
     {
         helpPanel.SetActive(false);
+    }
+
+    public void OnButtonClick()
+    {
+        button.Play();
     }
 }

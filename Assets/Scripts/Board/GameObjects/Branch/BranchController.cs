@@ -9,7 +9,15 @@ public class BranchController : MonoBehaviour
     public Sprite playerTwoSprite;
     public Sprite blankSprite;
 
+    public Sprite highlight;
+
+    public Sprite playerOneHighlight;
+    public Sprite playerTwoHighlight;
+
     public Branch branchEntity;
+
+    public AudioSource place;
+    public AudioSource remove;
 
     void Start()
     {
@@ -32,9 +40,10 @@ public class BranchController : MonoBehaviour
                         branchEntity.branchState.branchColor = branchEntity.gameController.getCurrentPlayerColor();
 
                         if (branchEntity.gameController.getCurrentPlayerColor() == PlayerColor.Silver)
-                            ClaimBranch(playerOneSprite);
+                            ClaimBranch(playerOneHighlight);
                         else
-                            ClaimBranch(playerTwoSprite);
+                            ClaimBranch(playerTwoHighlight);
+                        place.Play();
                     }
                 }
                 else if (isBranchColorOfCurrentPlayer() && GameInformation.openingMoveBranchSet && GameInformation.openingBranchId == branchEntity.id)
@@ -43,6 +52,7 @@ public class BranchController : MonoBehaviour
                     branchEntity.branchState.branchColor = PlayerColor.Blank;
                     GameInformation.openingMoveBranchSet = false;
                     ClaimBranch(blankSprite);
+                    remove.Play();
                 }
 
             }
@@ -53,16 +63,17 @@ public class BranchController : MonoBehaviour
                 // Change color
                 if (branchEntity.gameController.getCurrentPlayerColor() == PlayerColor.Silver)
                 {
-                    ClaimBranch(playerOneSprite);
+                    ClaimBranch(playerOneHighlight);
                     GameInformation.playerOneResources[0]--;
                     GameInformation.playerOneResources[1]--;
                 }
                 else
                 {
-                    ClaimBranch(playerTwoSprite);
+                    ClaimBranch(playerTwoHighlight);
                     GameInformation.playerTwoResources[0]--;
                     GameInformation.playerTwoResources[1]--;
                 }
+                place.Play();
                 GameInformation.currentRoundPlacedBranches.Add(branchEntity.id);
                 SendMessageUpwards("SendMessageToGameManager", "UpdateResourcesUI");
             }
@@ -71,6 +82,41 @@ public class BranchController : MonoBehaviour
             {
                 branchEntity.branchState.ownerColor = PlayerColor.Blank;
                 branchEntity.branchState.branchColor = PlayerColor.Blank;
+
+                GameInformation.currentRoundPlacedBranches.Remove(branchEntity.id);
+
+                // check for orphans
+                // check remaining clicked branches
+                for (int i = 0; i < GameInformation.currentRoundPlacedBranches.Count; i++)
+                {
+                    // for every clicked branch, gather its connected branches
+                    int[] connectedBranches = ReferenceScript.branchConnectsToTheseBranches[GameInformation.currentRoundPlacedBranches[i]];
+
+                    bool ownedBranchFound = false;
+                    // for every connected branch, if the you own the branch, an owned branch has been found
+                    for (int j = 0; j < connectedBranches.Length; j++)
+                    {
+                        if(branchEntity.gameController.getGameBoard().branches[connectedBranches[j]].branchState.ownerColor == branchEntity.gameController.getCurrentPlayerColor())
+                        {
+                            ownedBranchFound = true;
+                        }
+                    }
+
+                    if(!ownedBranchFound)
+                    {
+                        BroadcastOrphanBranchFound(GameInformation.currentRoundPlacedBranches[i]);
+                        if (branchEntity.gameController.getCurrentPlayerColor() == PlayerColor.Silver)
+                        {
+                            GameInformation.playerOneResources[0]++;
+                            GameInformation.playerOneResources[1]++;
+                        }
+                        else
+                        {
+                            GameInformation.playerTwoResources[0]++;
+                            GameInformation.playerTwoResources[1]++;
+                        }
+                    }
+                }
 
                 if (branchEntity.gameController.getCurrentPlayerColor() == PlayerColor.Silver)
                 {
@@ -84,7 +130,56 @@ public class BranchController : MonoBehaviour
                 }
                 SendMessageUpwards("SendMessageToGameManager", "UpdateResourcesUI");
                 ClaimBranch(blankSprite);
+                remove.Play();
             }
+        }
+    }
+
+    public void OnMouseEnter()
+    {
+        if (GameInformation.gameType != 'T')
+        {
+            if ((isBranchBlank() && hasEnoughResources() && (isBranchConnectedToBranch()) || isBranchSurroundedByCurrentPlayer()))
+            {
+                ClaimBranch(highlight);
+            }
+            else if (GameInformation.openingSequence && GameInformation.openingMoveNodeSet && !GameInformation.openingMoveBranchSet && isBranchBlank() && isOpeningBranchConnectedToNewNode())
+            {
+                ClaimBranch(highlight);
+            }
+        }
+    }
+
+    public void OnMouseExit()
+    {
+        if (GameInformation.gameType != 'T')
+        {
+            if (!GameInformation.openingSequence)
+            {
+
+                if (!GameInformation.currentRoundPlacedBranches.Contains(branchEntity.id) && (branchEntity.branchState.ownerColor == PlayerColor.Blank || isBranchSurroundedByCurrentPlayer()))
+                {
+                    ClaimBranch(blankSprite);
+                }
+            }
+            else
+            {
+                if (!GameInformation.openingMoveBranchSet && isBranchBlank())
+                {
+                    ClaimBranch(blankSprite);
+                }
+            }
+        }
+    }
+
+    public void SolidifyBranchClaim(int id)
+    {
+        if (branchEntity.id == id)
+        {
+            if (branchEntity.gameController.getCurrentPlayerColor() == PlayerColor.Silver)
+                ClaimBranch(playerOneSprite);
+            else
+                ClaimBranch(playerTwoSprite);
         }
     }
 
@@ -197,6 +292,21 @@ public class BranchController : MonoBehaviour
         else
         {
             boxCollider.enabled = true;
+        }
+    }
+
+    public void BroadcastOrphanBranchFound(int id)
+    {
+        SendMessageUpwards("OrphanBranchFound", id);
+    }
+
+    public void UnclaimOrphan(int id)
+    {
+        if(branchEntity.id == id)
+        {
+            branchEntity.branchState.branchColor = PlayerColor.Blank;
+            branchEntity.branchState.ownerColor = PlayerColor.Blank;
+            ClaimBranch(blankSprite);
         }
     }
 }

@@ -8,12 +8,18 @@ public class NodeController : MonoBehaviour
     public Sprite playerOneSprite;
     public Sprite playerTwoSprite;
     public Sprite blankSprite;
-
+    public Sprite highlight;
     public Sprite[] playerAvatars;
+    public Sprite[] highlightAvatars;
 
     public Node nodeEntity;
 
     public bool avatarsSet = false;
+    private int playerOneAvatarIndex = 0;
+    private int playerTwoAvatarIndex = 5;
+
+    public AudioSource place;
+    public AudioSource remove;
 
     void Start()
     {
@@ -26,18 +32,23 @@ public class NodeController : MonoBehaviour
             {
                 case "HAT":
                     playerOneSprite = playerAvatars[0];
+                    playerOneAvatarIndex = 0;
                     break;
                 case "BATTLESHIP":
                     playerOneSprite = playerAvatars[1];
+                    playerOneAvatarIndex = 1;
                     break;
                 case "CAR":
                     playerOneSprite = playerAvatars[2];
+                    playerOneAvatarIndex = 2;
                     break;
                 case "THIMBLE":
                     playerOneSprite = playerAvatars[3];
+                    playerOneAvatarIndex = 3;
                     break;
                 case "WHEELBARREL":
                     playerOneSprite = playerAvatars[4];
+                    playerOneAvatarIndex = 4;
                     break;
                 default:
                     playerOneSprite = playerAvatars[2];
@@ -48,21 +59,27 @@ public class NodeController : MonoBehaviour
             {
                 case "HAT":
                     playerTwoSprite = playerAvatars[5];
+                    playerTwoAvatarIndex = 5;
                     break;
                 case "BATTLESHIP":
                     playerTwoSprite = playerAvatars[6];
+                    playerTwoAvatarIndex = 6;
                     break;
                 case "CAR":
                     playerTwoSprite = playerAvatars[7];
+                    playerTwoAvatarIndex = 7;
                     break;
                 case "THIMBLE":
                     playerTwoSprite = playerAvatars[8];
+                    playerTwoAvatarIndex = 8;
                     break;
                 case "WHEELBARREL":
                     playerTwoSprite = playerAvatars[9];
+                    playerTwoAvatarIndex = 9;
                     break;
                 default:
                     playerTwoSprite = playerAvatars[9];
+                    playerTwoAvatarIndex = 9;
                     break;
             }
     }
@@ -80,10 +97,12 @@ public class NodeController : MonoBehaviour
                     GameInformation.openingNodeId = nodeEntity.id;
 
                     if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Silver)
-                        ClaimNode(playerOneSprite);
+                        //ClaimNode(playerOneSprite);
+                        ClaimNode(highlightAvatars[playerOneAvatarIndex]);
                     else
-                        ClaimNode(playerTwoSprite);
-
+                        // ClaimNode(playerTwoSprite);
+                        ClaimNode(highlightAvatars[playerTwoAvatarIndex]);
+                    place.Play();
                 }
                 else if (isNodeColorOfCurrentPlayer() && GameInformation.openingMoveNodeSet && GameInformation.openingNodeId == nodeEntity.id)
                 {
@@ -97,6 +116,7 @@ public class NodeController : MonoBehaviour
                         SendMessageUpwards("BranchUIUpdate", GameInformation.openingBranchId);
                         GameInformation.openingMoveBranchSet = false;
                     }
+                    remove.Play();
                 }
             }
             else if (hasEnoughResources() && isNodeConnectedToBranch() && isNodeBlank())
@@ -106,17 +126,19 @@ public class NodeController : MonoBehaviour
                 // Change color
                 if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Silver)
                 {
-                    ClaimNode(playerOneSprite);
+                    // ClaimNode(playerOneSprite);
+                    ClaimNode(highlightAvatars[playerOneAvatarIndex]);
                     GameInformation.playerOneResources[2] -= 2;
                     GameInformation.playerOneResources[3] -= 2;
                 }
                 else
                 {
-                    ClaimNode(playerTwoSprite);
+                    // ClaimNode(playerTwoSprite);
+                    ClaimNode(highlightAvatars[playerTwoAvatarIndex]);
                     GameInformation.playerTwoResources[2] -= 2;
                     GameInformation.playerTwoResources[3] -= 2;
                 }
-
+                place.Play();
                 GameInformation.currentRoundPlacedNodes.Add(nodeEntity.id);
                 SendMessageUpwards("SendMessageToGameManager", "UpdateResourcesUI");
             }
@@ -125,6 +147,9 @@ public class NodeController : MonoBehaviour
             {
                 nodeEntity.nodeState.nodeColor = PlayerColor.Blank;
                 nodeEntity.gameController.getGameBoard().getBoardState().nodeStates[nodeEntity.id].nodeColor = PlayerColor.Blank;
+
+                GameInformation.currentRoundPlacedNodes.Remove(nodeEntity.id);
+
                 if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Silver)
                 {
                     GameInformation.playerOneResources[2] += 2;
@@ -139,7 +164,56 @@ public class NodeController : MonoBehaviour
                 ClaimNode(blankSprite);
                 nodeEntity.nodeState.nodeColor = PlayerColor.Blank;
                 nodeEntity.gameController.getGameBoard().getBoardState().nodeStates[nodeEntity.id].nodeColor = PlayerColor.Blank;
+                remove.Play();
             }
+        }
+    }
+
+    public void OnMouseEnter()
+    {
+        if (GameInformation.gameType != 'T')
+        {
+            if (isNodeBlank() && hasEnoughResources() && isNodeConnectedToBranch())
+            {
+                ClaimNode(highlight);
+            }
+            else if (GameInformation.openingSequence && !GameInformation.openingMoveNodeSet && isNodeBlank())
+            {
+                ClaimNode(highlight);
+            }
+        }
+    }
+
+    public void OnMouseExit()
+    {
+        if (GameInformation.gameType != 'T')
+        {
+
+            if (!GameInformation.openingSequence)
+            {
+                if (!GameInformation.currentRoundPlacedNodes.Contains(nodeEntity.id) && nodeEntity.nodeState.nodeColor == PlayerColor.Blank)
+                {
+                    ClaimNode(blankSprite);
+                }
+            }
+            else
+            {
+                if (!GameInformation.openingMoveNodeSet && isNodeBlank())
+                {
+                    ClaimNode(blankSprite);
+                }
+            }
+        }
+    }
+
+    public void SolidifyNodeClaim(int id)
+    {
+        if (nodeEntity.id == id)
+        {
+            if (nodeEntity.gameController.getCurrentPlayerColor() == PlayerColor.Silver)
+                ClaimNode(playerOneSprite);
+            else
+                ClaimNode(playerTwoSprite);
         }
     }
 

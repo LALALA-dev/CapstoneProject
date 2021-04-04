@@ -18,7 +18,7 @@ public class TutorialManager : MonoBehaviour
     {
         "Nodopoly is a 2 player strategy game, pitting players against one another for real-estate dominance of their city",
         "The cityscape is randomly generated at the start of each game",
-        "Each player gets 2 game pieces, and 2 roads at the start of the game",
+        "Each player gets 2 game pieces and 2 roads at the start of the game",
         "Game pieces can be placed on the corners of the streets throughout city",
         "Houses go on the streets themselves, building your real-estate network",
         "Now it's player 2's turn, they get to place their two opening moves consecutively", // 5
@@ -30,7 +30,7 @@ public class TutorialManager : MonoBehaviour
         "Meaning that you've collected rent in the form of 2 green, 2 yellow, 1 blue, and 1 red for this turn",
         "Players use collected rent to build additional game pieces and roads",
         "Tap the street corner of the property to place a new game piece",
-        "Now it's the gold player's turn, they recieve their rent from their properties",
+        "Now it's the gold player's turn, they receive their rent from their properties",
         "Houses are legally connected even if they pass through an opponent's game piece", // 15
         "The gold player now submits their move...",
         "The silver player gets rent from all their placed game pieces",
@@ -56,9 +56,9 @@ public class TutorialManager : MonoBehaviour
     };
     private string[] infoTwoMessages = new string[]
     {
-        "Click the green arrow to proceed, click the red arrow to go back",
+        "Click the green arrow to proceed. Click the red arrow to go back. Click the police man in the top left to exit at any time",
         "",
-        "The first two rounds goes player 1 then player 2 twice, and then player 1 and it alternates",
+        "The opening sequence of Nodopoly goes: player 1 then player 2, player 2, player 1 and then back to player 2 to start the game",
         "Tap the highlighted street corner to build a game piece",
         "Tap the highlighted street to build a road to connect to your game piece. Press GO to submit your move",
         "", // 5
@@ -81,7 +81,7 @@ public class TutorialManager : MonoBehaviour
         "",
         "Monopolizing a property builds a hotel on that property and stop paying rent to the opposing player",
         " ",
-        " ", // 25
+        "Surrounding a foreclosed property also monopolizes it, and starts paying rent only to the player who surrounded it", // 25
         "The gold player cannot build through the silver perimeter now that these properties are monopolized",
         "Click the chest to open the trading menu",
         "Click the 2 yellow dollars and a red dollar to trade for a needed green dollar",
@@ -89,7 +89,7 @@ public class TutorialManager : MonoBehaviour
         "", // 30
         "",
         "All 6 of player 1's roads are connected",
-        "The player with the longest road network will recieve this card",
+        "The player with the longest road network will receive this card",
         "Finishing this turn will get you a score a 10",
         "", // 35
         "Click the green arrow to exit"
@@ -140,7 +140,7 @@ public class TutorialManager : MonoBehaviour
     private void Awake()
     {
         gameController = GameController.getInstance();
-
+        GameInformation.gameType = 'T';
         playerOneAvatar.sprite = avatars[0];
         playerTwoAvatar.sprite = avatars[1];
 
@@ -150,7 +150,6 @@ public class TutorialManager : MonoBehaviour
         goBtn.interactable = false;
         tradeBtn.interactable = false;
         infoBtn.interactable = false;
-        exitBtn.interactable = false;
         longestNetworkCard.SetActive(false);
 
         for (int i = 0; i < arrows.Length; i++)
@@ -163,7 +162,7 @@ public class TutorialManager : MonoBehaviour
 
     void Start()
     {
-        ToogleTriggers();
+        ToggleTriggers();
         BeginTutorial();
     }
     #endregion
@@ -194,7 +193,7 @@ public class TutorialManager : MonoBehaviour
         currentPlayerMessage.text = "Your Move";
     }
 
-    public void ToogleTriggers()
+    public void ToggleTriggers()
     {
         BroadcastMessage("ToggleNodeBranchTriggers");
     }
@@ -503,6 +502,7 @@ public class TutorialManager : MonoBehaviour
             else if (messageNumber == 28)
             {
                 StopAllCoroutines();
+                ToggleTriggers();
                 arrows[7].gameObject.SetActive(false);
                 for (int i = 0; i < tradingButtons.Length; i++)
                     tradingButtons[i].interactable = false;
@@ -512,6 +512,7 @@ public class TutorialManager : MonoBehaviour
                 int[] one = new int[] { 1, 2, 2, 2 };
                 int[] two = new int[] { 0, 0, 3, 3 };
                 SetResources(one, two);
+                ToggleTriggers();
                 tradeBtn.interactable = false;
                 forwardBtn.interactable = true;
             }
@@ -930,10 +931,10 @@ public class TutorialManager : MonoBehaviour
                 int[] two = new int[] { 0, 0, 2, 2 };
                 SetResources(one, two);
                 playerResourcesManager.UpdateBothPlayersResources();
-                UndoNode(5, PlayerColor.Silver, tutorialNodes[0].playerOneSprite);
-                UndoBranch(7, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
-                UndoBranch(8, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
-                UndoBranch(9, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
+                UndoNode(5, PlayerColor.Blank, tutorialNodes[0].playerOneSprite);
+                UndoBranch(7, PlayerColor.Blank, tutorialBranches[0].playerOneSprite);
+                UndoBranch(8, PlayerColor.Blank, tutorialBranches[0].playerOneSprite);
+                UndoBranch(9, PlayerColor.Blank, tutorialBranches[0].playerOneSprite);
                 GameInformation.currentRoundPlacedBranches.Clear();
                 GameInformation.currentRoundPlacedNodes.Clear();
 
@@ -1125,6 +1126,7 @@ public class TutorialManager : MonoBehaviour
                 forwardBtn.interactable = false;
                 GameInformation.resourceTrade = false;
                 tradePanel.SetActive(true);
+                ToggleTriggers();
                 StopAllCoroutines();
                 MoveArrow(7);
                 arrows[7].gameObject.SetActive(false);
@@ -1138,6 +1140,7 @@ public class TutorialManager : MonoBehaviour
                 SetResources(one, two);
                 playerResourcesManager.UpdateBothPlayersResources();
                 UndoNode(6, PlayerColor.Blank, tutorialNodes[0].blankSprite);
+                //ToggleTriggers();
                 forwardBtn.interactable = true;
                 goBtn.interactable = false;
             }
@@ -1155,7 +1158,6 @@ public class TutorialManager : MonoBehaviour
                 gameController.UpdateScores();
                 playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
                 playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
-
                 HighlightNode(6);
                 forwardBtn.interactable = false;
                 goBtn.interactable = true;
@@ -1346,7 +1348,7 @@ public class TutorialManager : MonoBehaviour
         sprite.sprite = Sprite;
         tutorialBranches[branchIndex].branchEntity.branchState.branchColor = color;
         tutorialBranches[branchIndex].branchEntity.branchState.ownerColor = color;
-         tutorialBranches[branchIndex].ToggleTrigger();
+        tutorialBranches[branchIndex].ToggleTrigger();
     }
 
     IEnumerator MoveForward(ArrowController arrow)

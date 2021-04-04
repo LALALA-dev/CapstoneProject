@@ -7,6 +7,7 @@ public class AISelectionManager : MonoBehaviour
     public GameObject selector;
 
     public GameObject[] avatars;
+    public AudioSource button;
 
     private void Start()
     {
@@ -57,5 +58,10 @@ public class AISelectionManager : MonoBehaviour
     {
         GameInformation.ownAvatar = "WHEELBARREL";
         selector.transform.position = new Vector3(avatars[4].transform.position.x, selector.transform.position.y);
+    }
+
+    public void OnButtonClick()
+    {
+        button.Play();
     }
 }
