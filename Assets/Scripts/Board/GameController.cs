@@ -235,10 +235,10 @@ public class GameController
 
     public void UpdateScores()
     {
-        GameInformation.playerOneScore = gameBoard.GetNumberOfPlayerNodes(PlayerColor.Silver);
-        GameInformation.playerTwoScore = gameBoard.GetNumberOfPlayerNodes(PlayerColor.Gold);
-        GameInformation.playerOneScore += gameBoard.GetNumberOfPlayerCapturedTiles(PlayerColor.Silver);
-        GameInformation.playerTwoScore += gameBoard.GetNumberOfPlayerCapturedTiles(PlayerColor.Gold);
+        GameInformation.playerOneScore = GameInformation.playerOneNodes = gameBoard.GetNumberOfPlayerNodes(PlayerColor.Silver);
+        GameInformation.playerTwoScore = GameInformation.playerTwoNodes = gameBoard.GetNumberOfPlayerNodes(PlayerColor.Gold);
+        GameInformation.playerOneScore += GameInformation.playerOneProperties = gameBoard.GetNumberOfPlayerCapturedTiles(PlayerColor.Silver);
+        GameInformation.playerTwoScore += GameInformation.playerTwoProperties = gameBoard.GetNumberOfPlayerCapturedTiles(PlayerColor.Gold);
 
         GameInformation.playerOneNetwork = CalculatePlayerLongestNetwork(PlayerColor.Silver);
         GameInformation.playerTwoNetwork = CalculatePlayerLongestNetwork(PlayerColor.Gold);

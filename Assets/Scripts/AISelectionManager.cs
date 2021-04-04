@@ -7,6 +7,7 @@ public class AISelectionManager : MonoBehaviour
     public GameObject selector;
 
     public GameObject[] avatars;
+    public AudioSource button;
 
     private void Start()
     {
@@ -17,6 +18,16 @@ public class AISelectionManager : MonoBehaviour
 
     public void OnGoSelect()
     {
+        Debug.Log("OOooohhh, I'm a log statement!");
+        // Assign a random avatar to the AI that is not selected by player.
+        int aiAvatarID;
+        do
+        {
+            aiAvatarID = UnityEngine.Random.Range(0, GameInformation.avatarNames.Length);
+        } while (aiAvatarID == GetPlayerTokenID());
+        
+        GameInformation.aiAvatar = GameInformation.avatarNames[aiAvatarID];
+
         SceneLoader.LoadLocalGameScene();
     }
 
@@ -57,5 +68,37 @@ public class AISelectionManager : MonoBehaviour
     {
         GameInformation.ownAvatar = "WHEELBARREL";
         selector.transform.position = new Vector3(avatars[4].transform.position.x, selector.transform.position.y);
+    }
+
+    public void OnButtonClick()
+    {
+        button.Play();
+    }
+
+    private int GetPlayerTokenID()
+    {
+        int id;
+        switch (GameInformation.ownAvatar)
+        {
+            case "HAT":
+                id = 0;
+                break;
+            case "BATTLESHIP":
+                id = 1;
+                break;
+            case "CAR":
+                id = 2;
+                break;
+            case "THIMBLE":
+                id = 3;
+                break;
+            case "WHEELBARREL":
+                id = 4;
+                break;
+            default:
+                id = 2;
+                break;
+        }
+        return id;
     }
 }
