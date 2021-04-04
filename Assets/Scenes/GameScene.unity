@@ -3254,7 +3254,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1820888909}
+      - m_Target: {fileID: 862785163}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: ButtonClick
         m_Mode: 1
@@ -3478,7 +3478,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1820888909}
+      - m_Target: {fileID: 862785163}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: ButtonClick
         m_Mode: 1
@@ -3623,7 +3623,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1820888909}
+      - m_Target: {fileID: 862785163}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: ButtonClick
         m_Mode: 1
@@ -6207,7 +6207,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1820888909}
+      - m_Target: {fileID: 862785163}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: ButtonClick
         m_Mode: 1
@@ -6921,6 +6921,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8509858555601679724, guid: e55a20909337c38468549bc1e47e2caa, type: 3}
+      propertyPath: button
+      value: 
+      objectReference: {fileID: 2037632922}
     - target: {fileID: 8509858555601679724, guid: e55a20909337c38468549bc1e47e2caa, type: 3}
       propertyPath: whistle
       value: 
@@ -9698,7 +9702,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1820888909}
+      - m_Target: {fileID: 862785163}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: ButtonClick
         m_Mode: 1
@@ -10209,7 +10213,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1820888909}
+      - m_Target: {fileID: 862785163}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: ButtonClick
         m_Mode: 1
@@ -10354,7 +10358,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1820888909}
+      - m_Target: {fileID: 862785163}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: ButtonClick
         m_Mode: 1
@@ -14243,7 +14247,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1820888909}
+      - m_Target: {fileID: 862785163}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: ButtonClick
         m_Mode: 1
@@ -14950,8 +14954,6 @@ GameObject:
   - component: {fileID: 1820888908}
   - component: {fileID: 1820888907}
   - component: {fileID: 1820888906}
-  - component: {fileID: 1820888909}
-  - component: {fileID: 1820888910}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -15024,137 +15026,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1820888909
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1820888905}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c5bbfa0c53134a4ba42446b42048749, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  networkController: {fileID: 0}
-  boardManager: {fileID: 0}
-  playerResourcesManager: {fileID: 0}
-  playerLeftMessage: {fileID: 0}
-  HNPInput: {fileID: 0}
-  longestNetworkPlayerText: {fileID: 0}
-  longestNetworkLengthText: {fileID: 0}
-  CompleteTurnBtn: {fileID: 0}
-  TradeBtn: {fileID: 0}
-  longestNetworkMessage: {fileID: 0}
-  playerLeftErrorMessage: {fileID: 0}
-  generalErrorMessage: {fileID: 0}
-  playerOneAvatar: {fileID: 0}
-  playerTwoAvatar: {fileID: 0}
-  playerOneScore: {fileID: 0}
-  playerTwoScore: {fileID: 0}
-  currentPlayerMessage: {fileID: 0}
-  avatars: []
-  waitingAnimation: {fileID: 0}
-  turnNumber: 1
-  resoureAllocation: {fileID: 0}
-  whistle: {fileID: 0}
-  button: {fileID: 1820888910}
---- !u!82 &1820888910
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1820888905}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 7db123cf1352bfc4f9f4b66210903a7f, type: 3}
-  m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!212 &1822587760 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 5177666182526677977, guid: d797cffd6fd17144c9fe75d4ef066d2c, type: 3}
@@ -15329,7 +15200,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1820888909}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: ButtonClick
         m_Mode: 1
@@ -16478,6 +16349,102 @@ AudioSource:
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 38
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!82 &2037632922
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2037632919}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
