@@ -43,6 +43,10 @@ public class SceneLoader : MonoBehaviour
         GameInformation.resourceTrade = false;
         GameInformation.playerOneScore = 0;
         GameInformation.playerTwoScore = 0;
+        GameInformation.playerOneNodes = 0;
+        GameInformation.playerTwoNodes = 0;
+        GameInformation.playerOneProperties = 0;
+        GameInformation.playerTwoProperties = 0;
         GameInformation.playerOneNetwork = 0;
         GameInformation.playerTwoNetwork = 0;
         GameInformation.gameOver = false;
