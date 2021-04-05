@@ -86,7 +86,7 @@ public class NodeController : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if(!GameInformation.gameOver)
+        if(!GameInformation.gameOver && GameInformation.currentPlayer != "AI")
         {
             if (GameInformation.openingSequence)
             {
@@ -171,7 +171,7 @@ public class NodeController : MonoBehaviour
 
     public void OnMouseEnter()
     {
-        if (GameInformation.gameType != 'T')
+        if (GameInformation.gameType != 'T' && GameInformation.currentPlayer != "AI")
         {
             if (isNodeBlank() && hasEnoughResources() && isNodeConnectedToBranch())
             {
@@ -186,7 +186,7 @@ public class NodeController : MonoBehaviour
 
     public void OnMouseExit()
     {
-        if (GameInformation.gameType != 'T')
+        if (GameInformation.gameType != 'T' && GameInformation.currentPlayer != "AI")
         {
 
             if (!GameInformation.openingSequence)
