@@ -6,6 +6,8 @@ using static GameObjectProperties;
 using UnityEngine;
 using static ReferenceScript;
 using static ExpertAI;
+using System.Threading.Tasks;
+
 public class BeginnerAI
 
 {
@@ -516,18 +518,22 @@ public class BeginnerAI
       
     }
 
-    public BoardState RandomMove(BoardState currentBoard, int[] aiResources) 
+    public async Task<BoardState> RandomMove(BoardState currentBoard, int[] aiResources) 
     {
-        // Thread.Sleep(2000);
-        int[] initialResources = CollectCurrentPlayerResources(currentBoard, AIcolor);
-        int flag = 0;
-        currentBoard = subRandomMove(currentBoard, aiResources, ref flag);
-        ResourceTrading(aiResources, initialResources);
-        while (flag == 1)
+        await Task.Run(() =>
         {
-            flag = 0; ;
+            Thread.Sleep(2000);
+            int[] initialResources = CollectCurrentPlayerResources(currentBoard, AIcolor);
+            int flag = 0;
             currentBoard = subRandomMove(currentBoard, aiResources, ref flag);
-        }
+            ResourceTrading(aiResources, initialResources);
+            while (flag == 1)
+            {
+                flag = 0; ;
+                currentBoard = subRandomMove(currentBoard, aiResources, ref flag);
+            }
+
+        });
         return currentBoard;
     }
 

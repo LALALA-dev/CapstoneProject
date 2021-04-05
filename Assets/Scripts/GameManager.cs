@@ -8,6 +8,7 @@ using UnityEngine.UI;
 using static GameObjectProperties;
 using System;
 using static ExpertAI;
+using System.Threading.Tasks;
 
 public class GameManager : MonoBehaviour
 {
@@ -476,6 +477,7 @@ public class GameManager : MonoBehaviour
         GameInformation.openingMoveBranchSet = false;
         GameInformation.openingMoveNodeSet = false;
         GameInformation.currentPlayer = "HUMAN";
+        CompleteTurnBtn.GetComponent<Button>().interactable = true;
         gameController.FlipColors();
         GameInformation.humanMoveFinished = false;
     }
@@ -506,7 +508,8 @@ public class GameManager : MonoBehaviour
                     waitingAnimation.SetActive(true);
                     GameInformation.openingSequence = false;
                     turnNumber++;
-                    GameInformation.currentPlayer = "AI"; 
+                    GameInformation.currentPlayer = "AI";
+                    CompleteTurnBtn.GetComponent<Button>().interactable = false;
                     gameController.FlipColors();
 
                     gameController.CollectCurrentPlayerResources();
@@ -529,8 +532,10 @@ public class GameManager : MonoBehaviour
                         PlayerResources = GameInformation.playerOneResources;
                     }
 
-                    if(GameInformation.gameType == 'A')
-                        AIMove = beginnerAI.RandomMove(gameController.getGameBoard().getBoardState(), AIResources);
+                    if (GameInformation.gameType == 'A')
+                    {
+                        AIMove = await beginnerAI.RandomMove(gameController.getGameBoard().getBoardState(), AIResources);
+                    }
                     else
                     {
                         AI expertMove = new AI(aiColor, gameController.getGameBoard().getBoardState(), AIResources, PlayerResources);
@@ -584,6 +589,7 @@ public class GameManager : MonoBehaviour
                     GameInformation.openingSequence = false;
                     turnNumber++;
                     GameInformation.currentPlayer = "HUMAN";
+                    CompleteTurnBtn.GetComponent<Button>().interactable = true;
                     GameInformation.humanMoveFinished = false;
                     gameController.FlipColors();
                     gameController.CollectCurrentPlayerResources();
@@ -611,6 +617,7 @@ public class GameManager : MonoBehaviour
                     waitingAnimation.SetActive(false);
                     turnNumber++;
                     GameInformation.currentPlayer = "HUMAN";
+                    CompleteTurnBtn.GetComponent<Button>().interactable = true;
                     gameController.FlipColors();
 
                     GameInformation.humanMoveFinished = false;
@@ -639,12 +646,14 @@ public class GameManager : MonoBehaviour
                 GameInformation.currentRoundPlacedNodes.Clear();
                 GameInformation.currentRoundPlacedBranches.Clear();
                 GameInformation.currentPlayer = "AI";
+                CompleteTurnBtn.GetComponent<Button>().interactable = false;
                 currentPlayerMessage.text = "AI's Move";
                 waitingAnimation.SetActive(true);
             }
             else
             {
                 GameInformation.currentPlayer = "HUMAN";
+                CompleteTurnBtn.GetComponent<Button>().interactable = true;
                 currentPlayerMessage.text = "Your Move";
                 waitingAnimation.SetActive(false);
                 resoureAllocation.Play();
@@ -687,7 +696,7 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-                    RandomAIMove();
+                    await RandomAIMove();
                 }
                     
                 gameController.UpdateGameBoard();
@@ -707,6 +716,7 @@ public class GameManager : MonoBehaviour
     public void AIOpeningMove()
     {
         GameInformation.currentPlayer = "AI";
+        CompleteTurnBtn.GetComponent<Button>().interactable = false;
         gameController.FlipColors();
         BoardState AIMove;
         if(GameInformation.gameType == 'A')
@@ -736,7 +746,7 @@ public class GameManager : MonoBehaviour
         boardManager.RefreshBoardGUI();
     }
 
-    public void RandomAIMove()
+    public async Task RandomAIMove()
     {
         int[] AIResources;
         if (!GameInformation.playerIsHost)
@@ -744,7 +754,7 @@ public class GameManager : MonoBehaviour
         else
             AIResources = GameInformation.playerTwoResources;
 
-        BoardState AIMove = beginnerAI.RandomMove(gameController.getGameBoard().getBoardState(), AIResources);
+        BoardState AIMove = await beginnerAI.RandomMove(gameController.getGameBoard().getBoardState(), AIResources);
         gameController.getGameBoard().setBoard(AIMove.squareStates, AIMove.nodeStates, AIMove.branchStates);
         boardManager.RefreshBoardGUI();
     }
