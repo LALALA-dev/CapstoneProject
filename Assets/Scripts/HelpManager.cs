@@ -134,6 +134,6 @@ public class HelpManager : MonoBehaviour
 
     private void FlipTradeAndGoInteraction()
     {
-        SendMessageUpwards("ToogleTriggers");
+        SendMessageUpwards("ToggleTriggers");
     }
 }
