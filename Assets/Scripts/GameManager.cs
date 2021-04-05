@@ -478,6 +478,7 @@ public class GameManager : MonoBehaviour
         GameInformation.openingMoveNodeSet = false;
         GameInformation.currentPlayer = "HUMAN";
         CompleteTurnBtn.GetComponent<Button>().interactable = true;
+        TradeBtn.GetComponent<Button>().interactable = true;
         gameController.FlipColors();
         GameInformation.humanMoveFinished = false;
     }
@@ -510,6 +511,7 @@ public class GameManager : MonoBehaviour
                     turnNumber++;
                     GameInformation.currentPlayer = "AI";
                     CompleteTurnBtn.GetComponent<Button>().interactable = false;
+                    TradeBtn.GetComponent<Button>().interactable = false;
                     gameController.FlipColors();
 
                     gameController.CollectCurrentPlayerResources();
@@ -590,6 +592,7 @@ public class GameManager : MonoBehaviour
                     turnNumber++;
                     GameInformation.currentPlayer = "HUMAN";
                     CompleteTurnBtn.GetComponent<Button>().interactable = true;
+                    TradeBtn.GetComponent<Button>().interactable = true;
                     GameInformation.humanMoveFinished = false;
                     gameController.FlipColors();
                     gameController.CollectCurrentPlayerResources();
@@ -618,6 +621,7 @@ public class GameManager : MonoBehaviour
                     turnNumber++;
                     GameInformation.currentPlayer = "HUMAN";
                     CompleteTurnBtn.GetComponent<Button>().interactable = true;
+                    TradeBtn.GetComponent<Button>().interactable = true;
                     gameController.FlipColors();
 
                     GameInformation.humanMoveFinished = false;
@@ -647,6 +651,7 @@ public class GameManager : MonoBehaviour
                 GameInformation.currentRoundPlacedBranches.Clear();
                 GameInformation.currentPlayer = "AI";
                 CompleteTurnBtn.GetComponent<Button>().interactable = false;
+                TradeBtn.GetComponent<Button>().interactable = false;
                 currentPlayerMessage.text = "AI's Move";
                 waitingAnimation.SetActive(true);
             }
@@ -654,6 +659,7 @@ public class GameManager : MonoBehaviour
             {
                 GameInformation.currentPlayer = "HUMAN";
                 CompleteTurnBtn.GetComponent<Button>().interactable = true;
+                TradeBtn.GetComponent<Button>().interactable = true;
                 currentPlayerMessage.text = "Your Move";
                 waitingAnimation.SetActive(false);
                 resoureAllocation.Play();
@@ -717,6 +723,7 @@ public class GameManager : MonoBehaviour
     {
         GameInformation.currentPlayer = "AI";
         CompleteTurnBtn.GetComponent<Button>().interactable = false;
+        TradeBtn.GetComponent<Button>().interactable = false;
         gameController.FlipColors();
         BoardState AIMove;
         if(GameInformation.gameType == 'A')
