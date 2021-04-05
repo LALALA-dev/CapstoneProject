@@ -480,7 +480,7 @@ public class GameManager : MonoBehaviour
         GameInformation.humanMoveFinished = false;
     }
 
-    private void EndCurrentAIPlayersTurn()
+    private async void EndCurrentAIPlayersTurn()
     {
         if (GameInformation.openingSequence && GameInformation.currentPlayer == "HUMAN" && OpeningMoveSatisfied())
         {
@@ -534,7 +534,7 @@ public class GameManager : MonoBehaviour
                     else
                     {
                         AI expertMove = new AI(aiColor, gameController.getGameBoard().getBoardState(), AIResources, PlayerResources);
-                        AIMove = expertMove.findNextMove(5.5);
+                        AIMove = await expertMove.findNextMove(5.5);
                     }
 
                     playerResourcesManager.UpdateBothPlayersResources();
@@ -681,7 +681,7 @@ public class GameManager : MonoBehaviour
                     }
 
                     AI expertMove = new AI(aiColor, gameController.getGameBoard().getBoardState(), AIResources, PlayerResources);
-                    BoardState AIMove = expertMove.findNextMove(5.5);
+                    BoardState AIMove = await expertMove.findNextMove(5.5);
                     gameController.getGameBoard().setBoard(AIMove.squareStates, AIMove.nodeStates, AIMove.branchStates);
                     boardManager.RefreshBoardGUI();
                 }
