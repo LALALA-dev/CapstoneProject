@@ -532,10 +532,14 @@ public class ExpertAI
                     j++;
                 }
             }
-            rand = new System.Random(t.Seconds);
-            index = rand.Next(0, connectedBranches.Length);
-            result.branchStates[connectedBranches[index]].branchColor = AIcolor;
-            result.branchStates[connectedBranches[index]].ownerColor = AIcolor;
+            do
+            {
+                rand = new System.Random(t.Seconds);
+                index = rand.Next(0, connectedBranches.Length);
+                result.branchStates[connectedBranches[index]].branchColor = AIcolor;
+                result.branchStates[connectedBranches[index]].ownerColor = AIcolor;
+                // POTIENTAL BUG PATCH 
+            } while (result.branchStates[connectedBranches[index]].location == 0 && (result.nodeStates[0].nodeColor != AIcolor || result.nodeStates[1].nodeColor != AIcolor));
 
             beginBoard.boardState = result;
             return result;
