@@ -363,6 +363,7 @@ MonoBehaviour:
   - {fileID: 1000140582}
   - {fileID: 1857067557}
   button: {fileID: 87658153}
+  hnpButton: {fileID: 235794140}
 --- !u!114 &87658151
 MonoBehaviour:
   m_ObjectHideFlags: 0

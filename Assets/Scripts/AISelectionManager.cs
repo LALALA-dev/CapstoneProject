@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AISelectionManager : MonoBehaviour
 {
@@ -8,12 +9,16 @@ public class AISelectionManager : MonoBehaviour
 
     public GameObject[] avatars;
     public AudioSource button;
+    public Button hnpButton;
 
     private void Start()
     {
         GameInformation.ownAvatar = "CAR";
         GameInformation.playerOneAvatar = "CAR";
         GameInformation.playerTwoAvatar = "WHEELBARREL";
+
+        if (!GameInformation.aiCompetition)
+            hnpButton.gameObject.SetActive(false);
     }
 
     public void OnGoSelect()

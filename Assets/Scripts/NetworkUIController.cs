@@ -17,11 +17,18 @@ public class NetworkUIController : MonoBehaviour
 
     public AudioSource button;
 
+    public GameObject helpSuggestion;
+
     void Start()
     {
         GameInformation.gameType = 'N';
-
         helpPanel.SetActive(false);
+
+        helpSuggestion.SetActive(false);
+        if (GameInformation.networkHelpNeeded)
+        {
+            helpSuggestion.SetActive(true);
+        }
     }
 
     public void LeaveOnlineRoom()
@@ -83,7 +90,9 @@ public class NetworkUIController : MonoBehaviour
 
     public void OnHelpClick()
     {
-        helpPanel.SetActive(true);  
+        helpPanel.SetActive(true);
+        helpSuggestion.SetActive(false);
+        GameInformation.networkHelpNeeded = false;
     }
 
     public void OnHelpExitClick()

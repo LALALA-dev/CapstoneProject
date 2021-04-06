@@ -83,5 +83,9 @@ public class GameInformation
 
     public static bool tutorialNeeded = false;
 
+    public static bool networkHelpNeeded = true;
+
     public static string[] avatarNames = { "HAT", "BATTLESHIP", "CAR", "THIMBLE", "WHEELBARREL" };
+
+    public static bool aiCompetition = false;
 }
