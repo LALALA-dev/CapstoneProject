@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     public GameObject longestNetworkMessage;
     public GameObject playerLeftErrorMessage;
     public GameObject generalErrorMessage;
+    public GameObject badOpeningMove;
     public Image playerOneAvatar;
     public Image playerTwoAvatar;
     public Text playerOneScore;
@@ -51,8 +52,9 @@ public class GameManager : MonoBehaviour
         longestNetworkMessage.SetActive(false);
         generalErrorMessage.SetActive(false);
         playerLeftErrorMessage.SetActive(false);
+        badOpeningMove.SetActive(false);
 
-        if(!GameInformation.HumanNetworkProtocol)
+        if (!GameInformation.HumanNetworkProtocol)
             HNPInput.gameObject.SetActive(false);
 
         if(!GameInformation.playerIsHost)
@@ -409,6 +411,11 @@ public class GameManager : MonoBehaviour
                 networkController.SendMove(gameController.getGameBoard().ToString());
                 networkController.SyncPlayerVariables(turnNumber, GameInformation.currentPlayer, ToStringResources(resources));
             }
+            else if (GameInformation.openingSequence)
+            {
+                whistle.Play();
+                badOpeningMove.SetActive(true);
+            }
         }
     }
 
@@ -717,6 +724,11 @@ public class GameManager : MonoBehaviour
                 EndCurrentAIPlayersTurn();
             }
         }
+        else if (GameInformation.openingSequence)
+        {
+            whistle.Play();
+            badOpeningMove.SetActive(true);
+        }
     }
 
     public void AIOpeningMove()
@@ -941,5 +953,10 @@ public class GameManager : MonoBehaviour
                 playerTwoAvatar.sprite = avatars[9];
                 break;
         }
+    }
+
+    public void OnCancelButtonClick(GameObject gb)
+    {
+        gb.SetActive(false);
     }
 }
