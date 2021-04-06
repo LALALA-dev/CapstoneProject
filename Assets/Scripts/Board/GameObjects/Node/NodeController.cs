@@ -298,4 +298,14 @@ public class NodeController : MonoBehaviour
             boxCollider.enabled = true;
         }
     }
+
+    public void UnclaimOrphanNode(int id)
+    {
+        if (nodeEntity.id == id)
+        {
+            nodeEntity.nodeState.nodeColor = PlayerColor.Blank;
+            ClaimNode(blankSprite);
+            remove.Play();
+        }
+    }
 }
