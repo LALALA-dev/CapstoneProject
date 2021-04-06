@@ -341,7 +341,12 @@ public class BoardManager : MonoBehaviour
 
     public void OrphanBranchFound(int id)
     {
-        BroadcastMessage("UnclaimOrphan", id);
+        BroadcastMessage("UnclaimOrphanBranch", id);
+    }
+
+    public void OrphanNodeFound(int id)
+    {
+        BroadcastMessage("UnclaimOrphanNode", id);
     }
 
 }

@@ -40,9 +40,13 @@ public class GameInformation
     public static int playerOneScore = 0;
 
     public static int playerTwoScore = 0;
+
     public static int playerOneNodes = 0;
+
     public static int playerTwoNodes = 0;
+
     public static int playerOneProperties = 0;
+
     public static int playerTwoProperties = 0;
 
     public static int playerOneNetwork = 0;

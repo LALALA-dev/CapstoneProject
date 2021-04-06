@@ -870,7 +870,7 @@ namespace Photon.Pun
             bool cached = this.ResourceCache.TryGetValue(prefabId, out res);
             if (!cached)
             {
-                res = Resources.Load<GameObject>(prefabId);
+                res = (GameObject)Resources.Load(prefabId, typeof(GameObject));
                 if (res == null)
                 {
                     Debug.LogError("DefaultPool failed to load \"" + prefabId + "\". Make sure it's in a \"Resources\" folder. Or use a custom IPunPrefabPool.");

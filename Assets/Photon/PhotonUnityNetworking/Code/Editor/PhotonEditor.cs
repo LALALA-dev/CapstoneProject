@@ -21,9 +21,6 @@ using UnityEngine;
 
 namespace Photon.Pun
 {
-    using Realtime;
-
-
     public class PunWizardText
     {
         public string WindowTitle = "PUN Wizard";
