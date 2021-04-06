@@ -279,18 +279,17 @@ public class BeginnerAI
         //*********************
         result.nodeStates[loc].nodeColor = AIcolor;
         int[] connectedBranche = ReferenceScript.nodeConnectsToTheseBranches[loc];
-        int[] connectedBranches = new int[4];
-        for (int i = 0, j = 0; i < connectedBranche.Length; i++)
+        List<int> connectedBranches = new List<int>();
+        for (int i = 0; i < connectedBranche.Length; i++)
         {
 
             if (result.branchStates[connectedBranche[i]].ownerColor == PlayerColor.Blank)
             {
-                connectedBranches[j] = connectedBranche[i];
-                j++;
+                connectedBranches.Add(connectedBranche[i]);
             }
         }
         rand = new System.Random(t.Seconds);
-        index = rand.Next(0, connectedBranches.Length);
+        index = rand.Next(0, connectedBranches.Count);
         result.branchStates[connectedBranches[index]].branchColor = AIcolor;
         result.branchStates[connectedBranches[index]].ownerColor = AIcolor;
 
@@ -395,7 +394,7 @@ public class BeginnerAI
                     case 1:
                         if (aiResources[i] == 0 && trad == 0)
                         {
-                            if (aiResources[0] + aiResources[1] + aiResources[3] >= 3)
+                            if (aiResources[0] + aiResources[2] + aiResources[3] >= 3)
                             {
                                 if (initialResources[0] != 0 || ((initialResources[0] == 0) && aiResources[0] > 1))
                                 {
@@ -443,7 +442,7 @@ public class BeginnerAI
                     case 2:
                         if (aiResources[i] < 2 && trad == 0 && IsValidNodeMoves(currentBoardState) == true )
                         {
-                            if (aiResources[0] + aiResources[2] + aiResources[3] >= 3)
+                            if (aiResources[0] + aiResources[1] + aiResources[3] >= 3)
                             {
                                 if (initialResources[3] != 0 || ((initialResources[3] == 0) && aiResources[3] > 2))
                                 {
