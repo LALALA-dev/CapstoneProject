@@ -526,10 +526,14 @@ public class ExpertAI
                     connectedBranches.Add(connectedBranche[i]);
                 }
             }
-            rand = new System.Random(t.Seconds);
-            index = rand.Next(0, connectedBranches.Count);
-            result.branchStates[connectedBranches[index]].branchColor = AIcolor;
-            result.branchStates[connectedBranches[index]].ownerColor = AIcolor;
+            do
+            {
+                rand = new System.Random(t.Seconds);
+                index = rand.Next(0, connectedBranches.Count);
+                result.branchStates[connectedBranches[index]].branchColor = AIcolor;
+                result.branchStates[connectedBranches[index]].ownerColor = AIcolor;
+            } while (result.branchStates[connectedBranches[index]].location == 0 && (result.nodeStates[0].nodeColor != AIcolor || result.nodeStates[1].nodeColor != AIcolor));
+          
 
             beginBoard.boardState = result;
             return result;
@@ -989,7 +993,7 @@ public class ExpertAI
             {
                 int connectedSquareId = getConnectedSquare(blankBranch, startingSquare);
                 if (!possibleCaptures.Contains(connectedSquareId) ||
-                    !isConnectedSquareCaptured(currentBoard, connectedSquareId, checkedSquares, captures, possibleCaptures))
+                    !isConnectedSquareCaptured(currentBoard, connectedSquareId, checkedSquares, captures, possibleCaptures)|| getCapturedSquareOwner(currentBoard,startingSquare) != getCapturedSquareOwner(currentBoard,connectedSquareId))
                 {
                     possibleCaptures.Remove(startingSquare);
                     return false;
