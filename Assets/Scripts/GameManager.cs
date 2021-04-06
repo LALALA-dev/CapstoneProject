@@ -212,6 +212,7 @@ public class GameManager : MonoBehaviour
                         {
                             currentPlayerMessage.text = "Your Move";
                             waitingAnimation.SetActive(false);
+                            resoureAllocation.Play();
                         }
                         GameInformation.openingSequence = false;
                         break;

@@ -1205,7 +1205,7 @@ MonoBehaviour:
   privateRoomNameField: {fileID: 1279562054}
   waitingAnimation: {fileID: 1567327230}
   whistle: {fileID: 1141476084}
-  button: {fileID: 1141476084}
+  button: {fileID: 1141476086}
 --- !u!114 &1141476083
 MonoBehaviour:
   m_ObjectHideFlags: 0
