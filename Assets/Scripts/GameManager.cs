@@ -31,8 +31,6 @@ public class GameManager : MonoBehaviour
     public GameObject badOpeningMove;
     public Image playerOneAvatar;
     public Image playerTwoAvatar;
-    public Text playerOneName;
-    public Text playerTwoName;
     public Text playerOneScore;
     public Text playerTwoScore;
     public Text currentPlayerMessage;
@@ -59,17 +57,11 @@ public class GameManager : MonoBehaviour
         if (!GameInformation.HumanNetworkProtocol)
             HNPInput.gameObject.SetActive(false);
 
-        if(!GameInformation.playerIsHost) {
+        if(!GameInformation.playerIsHost)
             currentPlayerMessage.text = "Opponent's Move";
-            playerOneName.text = "Opponent";
-            playerTwoName.text = "You";
-        }
 
-        if (GameInformation.playerIsHost) {
+        if (GameInformation.playerIsHost)
             waitingAnimation.SetActive(false);
-            playerOneName.text = "You";
-            playerTwoName.text = "Opponent";
-        }
     }
 
     void Start()

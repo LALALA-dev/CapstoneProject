@@ -6719,7 +6719,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Opponent
+  m_Text: Player 2
 --- !u!222 &909714732
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -11697,7 +11697,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: You
+  m_Text: Player 1
 --- !u!222 &1496429629
 CanvasRenderer:
   m_ObjectHideFlags: 0
