@@ -676,9 +676,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1534454096}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: ButtonClick
+      - m_Target: {fileID: 1534454095}
+        m_TargetAssemblyTypeName: MainMenuController, Assembly-CSharp
+        m_MethodName: OnButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1003,7 +1003,6 @@ GameObject:
   - component: {fileID: 1534454093}
   - component: {fileID: 1534454092}
   - component: {fileID: 1534454095}
-  - component: {fileID: 1534454096}
   - component: {fileID: 1534454097}
   m_Layer: 0
   m_Name: Main Camera
@@ -1091,42 +1090,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tutorialPrompt: {fileID: 813473764}
   suggestionArrow: {fileID: 1618755098}
-  forward: 1
---- !u!114 &1534454096
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1534454091}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c5bbfa0c53134a4ba42446b42048749, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  networkController: {fileID: 0}
-  boardManager: {fileID: 0}
-  playerResourcesManager: {fileID: 0}
-  playerLeftMessage: {fileID: 0}
-  HNPInput: {fileID: 0}
-  longestNetworkPlayerText: {fileID: 0}
-  longestNetworkLengthText: {fileID: 0}
-  CompleteTurnBtn: {fileID: 0}
-  TradeBtn: {fileID: 0}
-  longestNetworkMessage: {fileID: 0}
-  playerLeftErrorMessage: {fileID: 0}
-  generalErrorMessage: {fileID: 0}
-  playerOneAvatar: {fileID: 0}
-  playerTwoAvatar: {fileID: 0}
-  playerOneScore: {fileID: 0}
-  playerTwoScore: {fileID: 0}
-  currentPlayerMessage: {fileID: 0}
-  avatars: []
-  waitingAnimation: {fileID: 0}
-  turnNumber: 1
-  resoureAllocation: {fileID: 0}
-  whistle: {fileID: 0}
   button: {fileID: 1534454097}
+  forward: 1
 --- !u!82 &1534454097
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1551,9 +1516,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1534454096}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: ButtonClick
+      - m_Target: {fileID: 1534454095}
+        m_TargetAssemblyTypeName: MainMenuController, Assembly-CSharp
+        m_MethodName: OnButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1696,9 +1661,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1534454096}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: ButtonClick
+      - m_Target: {fileID: 1534454095}
+        m_TargetAssemblyTypeName: MainMenuController, Assembly-CSharp
+        m_MethodName: OnButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1991,9 +1956,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1534454096}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: ButtonClick
+      - m_Target: {fileID: 1534454095}
+        m_TargetAssemblyTypeName: MainMenuController, Assembly-CSharp
+        m_MethodName: OnButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -30,6 +30,12 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public GameObject waitingAnimation;
     public AudioSource whistle;
+    public AudioSource button;
+
+    public void OnButtonClick()
+    {
+        button.Play();
+    }
 
     #region Set Up
     private void Awake()

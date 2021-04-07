@@ -61,7 +61,7 @@ public class IntroManager : MonoBehaviour
             yield return null;
         }
 
-        //sl.LoadMenuScene();
+        teamLogo.gameObject.SetActive(false);
         introImage.enabled = true;
         introMusic.Play();
         StartCoroutine(MoveCamera());
