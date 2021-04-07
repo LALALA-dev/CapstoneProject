@@ -6,6 +6,8 @@ using static GameObjectProperties;
 using UnityEngine;
 using static ReferenceScript;
 using static ExpertAI;
+using System.Threading.Tasks;
+
 public class BeginnerAI
 
 {
@@ -279,19 +281,25 @@ public class BeginnerAI
         //*********************
         result.nodeStates[loc].nodeColor = AIcolor;
         int[] connectedBranche = ReferenceScript.nodeConnectsToTheseBranches[loc];
-        List<int> connectedBranches = new List<int>();
-        for (int i = 0; i < connectedBranche.Length; i++)
+        int[] connectedBranches = new int[4];
+        for (int i = 0, j = 0; i < connectedBranche.Length; i++)
         {
 
             if (result.branchStates[connectedBranche[i]].ownerColor == PlayerColor.Blank)
             {
-                connectedBranches.Add(connectedBranche[i]);
+                connectedBranches[j] = connectedBranche[i];
+                j++;
             }
         }
-        rand = new System.Random(t.Seconds);
-        index = rand.Next(0, connectedBranches.Count);
-        result.branchStates[connectedBranches[index]].branchColor = AIcolor;
-        result.branchStates[connectedBranches[index]].ownerColor = AIcolor;
+
+        do
+        {
+            rand = new System.Random(t.Seconds);
+            index = rand.Next(0, connectedBranches.Length);
+            result.branchStates[connectedBranches[index]].branchColor = AIcolor;
+            result.branchStates[connectedBranches[index]].ownerColor = AIcolor;
+            // POTIENTAL BUG PATCH 
+        } while (result.branchStates[connectedBranches[index]].location == 0 && (result.nodeStates[0].nodeColor != AIcolor || result.nodeStates[1].nodeColor != AIcolor));
 
         currentBoardState = result;
         return result;
@@ -394,7 +402,7 @@ public class BeginnerAI
                     case 1:
                         if (aiResources[i] == 0 && trad == 0)
                         {
-                            if (aiResources[0] + aiResources[2] + aiResources[3] >= 3)
+                            if (aiResources[0] + aiResources[1] + aiResources[3] >= 3)
                             {
                                 if (initialResources[0] != 0 || ((initialResources[0] == 0) && aiResources[0] > 1))
                                 {
@@ -442,7 +450,7 @@ public class BeginnerAI
                     case 2:
                         if (aiResources[i] < 2 && trad == 0 && IsValidNodeMoves(currentBoardState) == true )
                         {
-                            if (aiResources[0] + aiResources[1] + aiResources[3] >= 3)
+                            if (aiResources[0] + aiResources[2] + aiResources[3] >= 3)
                             {
                                 if (initialResources[3] != 0 || ((initialResources[3] == 0) && aiResources[3] > 2))
                                 {
@@ -515,18 +523,22 @@ public class BeginnerAI
       
     }
 
-    public BoardState RandomMove(BoardState currentBoard, int[] aiResources) 
+    public async Task<BoardState> RandomMove(BoardState currentBoard, int[] aiResources) 
     {
-        // Thread.Sleep(2000);
-        int[] initialResources = CollectCurrentPlayerResources(currentBoard, AIcolor);
-        int flag = 0;
-        currentBoard = subRandomMove(currentBoard, aiResources, ref flag);
-        ResourceTrading(aiResources, initialResources);
-        while (flag == 1)
+        await Task.Run(() =>
         {
-            flag = 0; ;
+            Thread.Sleep(2000);
+            int[] initialResources = CollectCurrentPlayerResources(currentBoard, AIcolor);
+            int flag = 0;
             currentBoard = subRandomMove(currentBoard, aiResources, ref flag);
-        }
+            ResourceTrading(aiResources, initialResources);
+            while (flag == 1)
+            {
+                flag = 0; ;
+                currentBoard = subRandomMove(currentBoard, aiResources, ref flag);
+            }
+
+        });
         return currentBoard;
     }
 
