@@ -41,8 +41,7 @@ public class ToggleController : MonoBehaviour
         {
             toggleButton.transform.position = new Vector3(toggleButton.transform.position.x + 112.0f, toggleButton.transform.position.y);
             toggleBackground.sprite = optionTwo;
-            // TODO: CHANGE THIS TO 'E' ONCE EXPERT AI IS DONE AND INTEGRATED
-            GameInformation.gameType = 'A';
+            GameInformation.gameType = 'E';
         }
         else
         {
