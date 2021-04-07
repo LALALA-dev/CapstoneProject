@@ -1284,7 +1284,7 @@ RectTransform:
   m_Children:
   - {fileID: 577182133}
   m_Father: {fileID: 1405729582}
-  m_RootOrder: 17
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -1365,7 +1365,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 369, y: 287}
+  m_AnchoredPosition: {x: 0, y: -293}
   m_SizeDelta: {x: 60, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &577182134
@@ -1424,9 +1424,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 2059609669}
-        m_TargetAssemblyTypeName: NetworkUIController, Assembly-CSharp
-        m_MethodName: OnButtonClick
+      - m_Target: {fileID: 2059609670}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: ButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1569,9 +1569,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 2059609669}
-        m_TargetAssemblyTypeName: NetworkUIController, Assembly-CSharp
-        m_MethodName: OnButtonClick
+      - m_Target: {fileID: 2059609670}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: ButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1859,9 +1859,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 2059609669}
-        m_TargetAssemblyTypeName: NetworkUIController, Assembly-CSharp
-        m_MethodName: OnButtonClick
+      - m_Target: {fileID: 2059609670}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: ButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1988,8 +1988,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -420}
-  m_SizeDelta: {x: 180, y: 90}
+  m_AnchoredPosition: {x: 0, y: -390}
+  m_SizeDelta: {x: 140, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1043215516
 MonoBehaviour:
@@ -2047,9 +2047,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 2059609669}
-        m_TargetAssemblyTypeName: NetworkUIController, Assembly-CSharp
-        m_MethodName: OnButtonClick
+      - m_Target: {fileID: 2059609670}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: ButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2079,7 +2079,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: ded43a682913f94419edff26588e047b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e1d329bfa849f2543930d1aad9369be9, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2346,9 +2346,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 2059609669}
-        m_TargetAssemblyTypeName: NetworkUIController, Assembly-CSharp
-        m_MethodName: OnButtonClick
+      - m_Target: {fileID: 2059609670}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: ButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2432,8 +2432,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -302}
-  m_SizeDelta: {x: 180, y: 80}
+  m_AnchoredPosition: {x: 0, y: -292}
+  m_SizeDelta: {x: 140, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1388497426
 MonoBehaviour:
@@ -2491,9 +2491,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 2059609669}
-        m_TargetAssemblyTypeName: NetworkUIController, Assembly-CSharp
-        m_MethodName: OnButtonClick
+      - m_Target: {fileID: 2059609670}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: ButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2523,7 +2523,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: fc514a662c42fa841aef340696c77ee0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ba1b030bd91063f4e99ed127f19a231b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2648,7 +2648,6 @@ RectTransform:
   - {fileID: 694316301}
   - {fileID: 489545837}
   - {fileID: 1739390423}
-  - {fileID: 1628531990}
   - {fileID: 520905636}
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -3082,81 +3081,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1549772409}
   m_CullTransparentMesh: 0
---- !u!1 &1628531989
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1628531990}
-  - component: {fileID: 1628531992}
-  - component: {fileID: 1628531991}
-  m_Layer: 5
-  m_Name: TutorialPrompt
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1628531990
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1628531989}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.3999999, y: 2.3999999, z: 2.3999999}
-  m_Children: []
-  m_Father: {fileID: 1405729582}
-  m_RootOrder: 16
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -761, y: -340}
-  m_SizeDelta: {x: 162.13, y: 166}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1628531991
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1628531989}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 06a1ae87a838a4d4caee4877d6ff46c9, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &1628531992
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1628531989}
-  m_CullTransparentMesh: 1
 --- !u!1 &1637803562
 GameObject:
   m_ObjectHideFlags: 0
@@ -3817,8 +3741,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -192}
-  m_SizeDelta: {x: 180, y: 80}
+  m_AnchoredPosition: {x: 0, y: -202}
+  m_SizeDelta: {x: 140, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2003385275
 MonoBehaviour:
@@ -3876,9 +3800,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 2059609669}
-        m_TargetAssemblyTypeName: NetworkUIController, Assembly-CSharp
-        m_MethodName: OnButtonClick
+      - m_Target: {fileID: 2059609670}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: ButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3908,7 +3832,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 1c1d82c80eca9aa4da11f97610aa8397, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f354a32702c014f4c982731074b30123, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3938,6 +3862,7 @@ GameObject:
   - component: {fileID: 2059609667}
   - component: {fileID: 2059609666}
   - component: {fileID: 2059609669}
+  - component: {fileID: 2059609670}
   - component: {fileID: 2059609671}
   m_Layer: 0
   m_Name: Main Camera
@@ -4036,8 +3961,41 @@ MonoBehaviour:
   - {fileID: 2003385273}
   - {fileID: 1043215514}
   helpPanel: {fileID: 520905635}
+--- !u!114 &2059609670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2059609665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c5bbfa0c53134a4ba42446b42048749, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  networkController: {fileID: 0}
+  boardManager: {fileID: 0}
+  playerResourcesManager: {fileID: 0}
+  playerLeftMessage: {fileID: 0}
+  HNPInput: {fileID: 0}
+  longestNetworkPlayerText: {fileID: 0}
+  longestNetworkLengthText: {fileID: 0}
+  CompleteTurnBtn: {fileID: 0}
+  TradeBtn: {fileID: 0}
+  longestNetworkMessage: {fileID: 0}
+  playerLeftErrorMessage: {fileID: 0}
+  generalErrorMessage: {fileID: 0}
+  playerOneAvatar: {fileID: 0}
+  playerTwoAvatar: {fileID: 0}
+  playerOneScore: {fileID: 0}
+  playerTwoScore: {fileID: 0}
+  currentPlayerMessage: {fileID: 0}
+  avatars: []
+  waitingAnimation: {fileID: 0}
+  turnNumber: 1
+  resoureAllocation: {fileID: 0}
+  whistle: {fileID: 0}
   button: {fileID: 2059609671}
-  helpSuggestion: {fileID: 1628531989}
 --- !u!82 &2059609671
 AudioSource:
   m_ObjectHideFlags: 0

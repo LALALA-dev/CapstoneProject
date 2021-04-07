@@ -31,8 +31,6 @@ public class WinController : MonoBehaviour
         if (GameInformation.gameOver && !gameInReview) {
             gameInReview = true;
             GameInformation.tutorialNeeded = true;
-            if (GameInformation.gameType == 'N')
-                GameInformation.networkHelpNeeded = false;
             EnableWinPanel();
         }
     }

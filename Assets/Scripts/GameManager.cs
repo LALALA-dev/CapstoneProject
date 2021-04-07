@@ -7,8 +7,6 @@ using TMPro;
 using UnityEngine.UI;
 using static GameObjectProperties;
 using System;
-using static ExpertAI;
-using System.Threading.Tasks;
 
 public class GameManager : MonoBehaviour
 {
@@ -17,7 +15,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PlayerResourcesManager playerResourcesManager;
     private GameController gameController;
     private BeginnerAI beginnerAI;
-    private ExpertAI expertAI;
     public TextMeshProUGUI playerLeftMessage;
 
     public TMP_InputField HNPInput;
@@ -28,7 +25,6 @@ public class GameManager : MonoBehaviour
     public GameObject longestNetworkMessage;
     public GameObject playerLeftErrorMessage;
     public GameObject generalErrorMessage;
-    public GameObject badOpeningMove;
     public Image playerOneAvatar;
     public Image playerTwoAvatar;
     public Text playerOneScore;
@@ -52,9 +48,8 @@ public class GameManager : MonoBehaviour
         longestNetworkMessage.SetActive(false);
         generalErrorMessage.SetActive(false);
         playerLeftErrorMessage.SetActive(false);
-        badOpeningMove.SetActive(false);
 
-        if (!GameInformation.HumanNetworkProtocol)
+        if(!GameInformation.HumanNetworkProtocol)
             HNPInput.gameObject.SetActive(false);
 
         if(!GameInformation.playerIsHost)
@@ -79,7 +74,7 @@ public class GameManager : MonoBehaviour
         }
         else if(GameInformation.gameType == 'E')
         {
-            BeginExpertAIGame();
+            ExpertAIGame();
         }
         else if (GameInformation.HumanNetworkProtocol)
         {
@@ -87,15 +82,9 @@ public class GameManager : MonoBehaviour
         }
 
         if(GameInformation.playerIsHost)
-        {
             GameInformation.playerOneAvatar = GameInformation.ownAvatar;
-            GameInformation.playerTwoAvatar = GameInformation.aiAvatar;
-        }
         else
-        {
             GameInformation.playerTwoAvatar = GameInformation.ownAvatar;
-            GameInformation.playerOneAvatar = GameInformation.aiAvatar;
-        }
 
         if(GameInformation.gameType != 'N')
             SetAvatars();
@@ -212,7 +201,6 @@ public class GameManager : MonoBehaviour
                         {
                             currentPlayerMessage.text = "Your Move";
                             waitingAnimation.SetActive(false);
-                            resoureAllocation.Play();
                         }
                         GameInformation.openingSequence = false;
                         break;
@@ -306,16 +294,6 @@ public class GameManager : MonoBehaviour
             else
                 GameInformation.playerOneAvatar = networkController.GetOpponentInfo();
             SetAvatars();
-        }
-
-        // Update in-game help popup ordering.
-        if (turnNumber > 4 && turnNumber < 9)
-        {
-            BroadcastMessage("SetPanelOrderTurnFive");
-        }
-        else if (turnNumber > 8)
-        {
-            BroadcastMessage("SetPanelOrderTurnNine");
         }
     }
 
@@ -412,11 +390,6 @@ public class GameManager : MonoBehaviour
                 networkController.SendMove(gameController.getGameBoard().ToString());
                 networkController.SyncPlayerVariables(turnNumber, GameInformation.currentPlayer, ToStringResources(resources));
             }
-            else if (GameInformation.openingSequence)
-            {
-                whistle.Play();
-                badOpeningMove.SetActive(true);
-            }
         }
     }
 
@@ -449,35 +422,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void BeginExpertAIGame()
+    public void ExpertAIGame()
     {
-        PlayerColor aiColor;
-        int[] resources = new int[] { 0, 0, 0, 0 };
-        if (GameInformation.playerIsHost)
-        {
-            aiColor = PlayerColor.Gold;
-        }
-        else
-        {
-            aiColor = PlayerColor.Silver;
-        }
-        boardManager.SetSquareUI(gameController.getGameBoard().GetSquareStates());
-        expertAI = new ExpertAI();
 
-        if (!GameInformation.playerIsHost)
-        {
-            currentPlayerMessage.text = "AI's Move";
-            waitingAnimation.SetActive(true);
-            AI move = new AI(aiColor, gameController.getGameBoard().getBoardState(), resources, resources);
-            BoardState AIMove = move.MakeRandomOpeningMove(gameController.getGameBoard().getBoardState());
-            gameController.getGameBoard().setBoard(AIMove.squareStates, AIMove.nodeStates, AIMove.branchStates);
-            EndCurrentAIPlayersTurn();
-        }
-        else
-        {
-            currentPlayerMessage.text = "Your Move";
-            waitingAnimation.SetActive(false);
-        }
     }
 
     public void BeginHumanOpeningMove()
@@ -485,13 +432,11 @@ public class GameManager : MonoBehaviour
         GameInformation.openingMoveBranchSet = false;
         GameInformation.openingMoveNodeSet = false;
         GameInformation.currentPlayer = "HUMAN";
-        CompleteTurnBtn.GetComponent<Button>().interactable = true;
-        TradeBtn.GetComponent<Button>().interactable = true;
         gameController.FlipColors();
         GameInformation.humanMoveFinished = false;
     }
 
-    private async void EndCurrentAIPlayersTurn()
+    private void EndCurrentAIPlayersTurn()
     {
         if (GameInformation.openingSequence && GameInformation.currentPlayer == "HUMAN" && OpeningMoveSatisfied())
         {
@@ -506,7 +451,7 @@ public class GameManager : MonoBehaviour
                     currentPlayerMessage.text = "AI's Move";
                     waitingAnimation.SetActive(true);
                     turnNumber++;
-                    AIOpeningMove();
+                    RandomAIOpeningMove();
 
                     GameInformation.humanMoveFinished = false;
                     EndCurrentAIPlayersTurn();
@@ -517,42 +462,20 @@ public class GameManager : MonoBehaviour
                     waitingAnimation.SetActive(true);
                     GameInformation.openingSequence = false;
                     turnNumber++;
-                    GameInformation.currentPlayer = "AI";
-                    CompleteTurnBtn.GetComponent<Button>().interactable = false;
-                    TradeBtn.GetComponent<Button>().interactable = false;
+                    GameInformation.currentPlayer = "AI"; 
                     gameController.FlipColors();
 
                     gameController.CollectCurrentPlayerResources();
                     gameController.UpdateScores();
                     UpdateScoresUI();
 
-                    BoardState AIMove;
-                    PlayerColor aiColor = PlayerColor.Gold;
-                    int[] PlayerResources;
                     int[] AIResources;
                     if (!GameInformation.playerIsHost)
-                    {
-                        aiColor = PlayerColor.Silver;
                         AIResources = GameInformation.playerOneResources;
-                        PlayerResources = GameInformation.playerTwoResources;
-                    }
                     else
-                    {
                         AIResources = GameInformation.playerTwoResources;
-                        PlayerResources = GameInformation.playerOneResources;
-                    }
 
-                    if (GameInformation.gameType == 'A')
-                    {
-                        AIMove = await beginnerAI.RandomMove(gameController.getGameBoard().getBoardState(), AIResources);
-                    }
-                    else
-                    {
-                        AI expertMove = new AI(aiColor, gameController.getGameBoard().getBoardState(), AIResources, PlayerResources);
-                        AIMove = await expertMove.findNextMove(5.5);
-                    }
-
-                    playerResourcesManager.UpdateBothPlayersResources();
+                    BoardState AIMove = beginnerAI.RandomMove(gameController.getGameBoard().getBoardState(), AIResources);
                     gameController.getGameBoard().setBoard(AIMove.squareStates, AIMove.nodeStates, AIMove.branchStates);
                     boardManager.RefreshBoardGUI();
                     EndCurrentAIPlayersTurn();
@@ -573,7 +496,7 @@ public class GameManager : MonoBehaviour
                     currentPlayerMessage.text = "AI's Move";
                     waitingAnimation.SetActive(true);
                     turnNumber++;
-                    AIOpeningMove();
+                    RandomAIOpeningMove();
                     EndCurrentAIPlayersTurn();
                 }
             }
@@ -599,8 +522,6 @@ public class GameManager : MonoBehaviour
                     GameInformation.openingSequence = false;
                     turnNumber++;
                     GameInformation.currentPlayer = "HUMAN";
-                    CompleteTurnBtn.GetComponent<Button>().interactable = true;
-                    TradeBtn.GetComponent<Button>().interactable = true;
                     GameInformation.humanMoveFinished = false;
                     gameController.FlipColors();
                     gameController.CollectCurrentPlayerResources();
@@ -618,7 +539,7 @@ public class GameManager : MonoBehaviour
                     currentPlayerMessage.text = "AI's Move";
                     waitingAnimation.SetActive(true);
                     turnNumber++;
-                    AIOpeningMove();
+                    RandomAIOpeningMove();
                     GameInformation.humanMoveFinished = false;
                     EndCurrentAIPlayersTurn();
                 }
@@ -628,8 +549,6 @@ public class GameManager : MonoBehaviour
                     waitingAnimation.SetActive(false);
                     turnNumber++;
                     GameInformation.currentPlayer = "HUMAN";
-                    CompleteTurnBtn.GetComponent<Button>().interactable = true;
-                    TradeBtn.GetComponent<Button>().interactable = true;
                     gameController.FlipColors();
 
                     GameInformation.humanMoveFinished = false;
@@ -658,16 +577,12 @@ public class GameManager : MonoBehaviour
                 GameInformation.currentRoundPlacedNodes.Clear();
                 GameInformation.currentRoundPlacedBranches.Clear();
                 GameInformation.currentPlayer = "AI";
-                CompleteTurnBtn.GetComponent<Button>().interactable = false;
-                TradeBtn.GetComponent<Button>().interactable = false;
                 currentPlayerMessage.text = "AI's Move";
                 waitingAnimation.SetActive(true);
             }
             else
             {
                 GameInformation.currentPlayer = "HUMAN";
-                CompleteTurnBtn.GetComponent<Button>().interactable = true;
-                TradeBtn.GetComponent<Button>().interactable = true;
                 currentPlayerMessage.text = "Your Move";
                 waitingAnimation.SetActive(false);
                 resoureAllocation.Play();
@@ -686,32 +601,7 @@ public class GameManager : MonoBehaviour
 
             if (GameInformation.currentPlayer == "AI")
             {
-                if (GameInformation.gameType == 'E')
-                {
-                    PlayerColor aiColor = PlayerColor.Gold;
-                    int[] PlayerResources;
-                    int[] AIResources;
-                    if (!GameInformation.playerIsHost)
-                    {
-                        aiColor = PlayerColor.Silver;
-                        AIResources = GameInformation.playerOneResources;
-                        PlayerResources = GameInformation.playerTwoResources;
-                    }
-                    else
-                    {
-                        AIResources = GameInformation.playerTwoResources;
-                        PlayerResources = GameInformation.playerOneResources;
-                    }
-
-                    AI expertMove = new AI(aiColor, gameController.getGameBoard().getBoardState(), AIResources, PlayerResources);
-                    BoardState AIMove = await expertMove.findNextMove(5.5);
-                    gameController.getGameBoard().setBoard(AIMove.squareStates, AIMove.nodeStates, AIMove.branchStates);
-                    boardManager.RefreshBoardGUI();
-                }
-                else
-                {
-                    await RandomAIMove();
-                }
+                RandomAIMove();
                     
                 gameController.UpdateGameBoard();
                 boardManager.DetectNewTileBlocks(gameController.getGameBoard().squares);
@@ -725,48 +615,18 @@ public class GameManager : MonoBehaviour
                 EndCurrentAIPlayersTurn();
             }
         }
-        else if (GameInformation.openingSequence)
-        {
-            whistle.Play();
-            badOpeningMove.SetActive(true);
-        }
     }
 
-    public void AIOpeningMove()
+    public void RandomAIOpeningMove()
     {
         GameInformation.currentPlayer = "AI";
-        CompleteTurnBtn.GetComponent<Button>().interactable = false;
-        TradeBtn.GetComponent<Button>().interactable = false;
         gameController.FlipColors();
-        BoardState AIMove;
-        if(GameInformation.gameType == 'A')
-            AIMove = beginnerAI.MakeRandomOpeningMove(gameController.getGameBoard().getBoardState());
-        else
-        {
-            PlayerColor aiColor = PlayerColor.Gold;
-            int[] PlayerResources;
-            int[] AIResources;
-            if (!GameInformation.playerIsHost)
-            {
-                aiColor = PlayerColor.Silver;
-                AIResources = GameInformation.playerOneResources;
-                PlayerResources = GameInformation.playerTwoResources;
-            }
-            else
-            {
-                AIResources = GameInformation.playerTwoResources;
-                PlayerResources = GameInformation.playerOneResources;
-            }
-
-            AI expertMove = new AI(aiColor, gameController.getGameBoard().getBoardState(), AIResources, PlayerResources);
-            AIMove = expertMove.MakeRandomOpeningMove(gameController.getGameBoard().getBoardState());
-        }
-            
+        BoardState AIMove = beginnerAI.MakeRandomOpeningMove(gameController.getGameBoard().getBoardState());
         gameController.getGameBoard().setBoard(AIMove.squareStates, AIMove.nodeStates, AIMove.branchStates);
         boardManager.RefreshBoardGUI();
     }
 
-    public async Task RandomAIMove()
+    public void RandomAIMove()
     {
         int[] AIResources;
         if (!GameInformation.playerIsHost)
@@ -774,7 +634,7 @@ public class GameManager : MonoBehaviour
         else
             AIResources = GameInformation.playerTwoResources;
 
-        BoardState AIMove = await beginnerAI.RandomMove(gameController.getGameBoard().getBoardState(), AIResources);
+        BoardState AIMove = beginnerAI.RandomMove(gameController.getGameBoard().getBoardState(), AIResources);
         gameController.getGameBoard().setBoard(AIMove.squareStates, AIMove.nodeStates, AIMove.branchStates);
         boardManager.RefreshBoardGUI();
     }
@@ -796,21 +656,19 @@ public class GameManager : MonoBehaviour
             longestNetworkPlayerText.text = "Player One";
             longestNetworkLengthText.text = GameInformation.playerOneNetwork.ToString() + " Roads";
             longestNetworkMessage.SetActive(true);
-            longestNetworkMessage.transform.position = new Vector3(620f, 885f, 0f);
+            longestNetworkMessage.transform.position = new Vector3(545f, 860f, 0f);
         }
         else if (GameInformation.playerTwoNetwork > GameInformation.playerOneNetwork)
         {
             longestNetworkPlayerText.text = "Player Two";
             longestNetworkLengthText.text = GameInformation.playerTwoNetwork.ToString() + " Roads";
             longestNetworkMessage.SetActive(true);
-            longestNetworkMessage.transform.position = new Vector3(1250f, 885f, 0f);
+            longestNetworkMessage.transform.position = new Vector3(1360f, 860f, 0f);
         }
         else
         {
             longestNetworkMessage.SetActive(false);
         }
-
-        BroadcastMessage("UpdateHelpPopupScores");
     }
 
     #region Logic Checks
@@ -954,10 +812,5 @@ public class GameManager : MonoBehaviour
                 playerTwoAvatar.sprite = avatars[9];
                 break;
         }
-    }
-
-    public void OnCancelButtonClick(GameObject gb)
-    {
-        gb.SetActive(false);
     }
 }

@@ -43,10 +43,6 @@ public class SceneLoader : MonoBehaviour
         GameInformation.resourceTrade = false;
         GameInformation.playerOneScore = 0;
         GameInformation.playerTwoScore = 0;
-        GameInformation.playerOneNodes = 0;
-        GameInformation.playerTwoNodes = 0;
-        GameInformation.playerOneProperties = 0;
-        GameInformation.playerTwoProperties = 0;
         GameInformation.playerOneNetwork = 0;
         GameInformation.playerTwoNetwork = 0;
         GameInformation.gameOver = false;
@@ -59,7 +55,6 @@ public class SceneLoader : MonoBehaviour
         GameInformation.renderClientBoard = false;
         GameInformation.newNetworkMoveSet = false;
         GameInformation.ownAvatar = "CAR";
-        GameInformation.aiAvatar = "WHEELBARREL";
         GameInformation.playerOneAvatar = "CAR";
         GameInformation.playerTwoAvatar = "WHEELBARREL";
         GameInformation.needToSyncGameVariables = false;

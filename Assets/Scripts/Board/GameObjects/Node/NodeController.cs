@@ -86,7 +86,7 @@ public class NodeController : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if(!GameInformation.gameOver && GameInformation.currentPlayer != "AI")
+        if(!GameInformation.gameOver)
         {
             if (GameInformation.openingSequence)
             {
@@ -171,7 +171,7 @@ public class NodeController : MonoBehaviour
 
     public void OnMouseEnter()
     {
-        if (GameInformation.gameType != 'T' && GameInformation.currentPlayer != "AI")
+        if (GameInformation.gameType != 'T')
         {
             if (isNodeBlank() && hasEnoughResources() && isNodeConnectedToBranch())
             {
@@ -186,7 +186,7 @@ public class NodeController : MonoBehaviour
 
     public void OnMouseExit()
     {
-        if (GameInformation.gameType != 'T' && GameInformation.currentPlayer != "AI")
+        if (GameInformation.gameType != 'T')
         {
 
             if (!GameInformation.openingSequence)
@@ -296,16 +296,6 @@ public class NodeController : MonoBehaviour
         else
         {
             boxCollider.enabled = true;
-        }
-    }
-
-    public void UnclaimOrphanNode(int id)
-    {
-        if (nodeEntity.id == id)
-        {
-            nodeEntity.nodeState.nodeColor = PlayerColor.Blank;
-            ClaimNode(blankSprite);
-            remove.Play();
         }
     }
 }

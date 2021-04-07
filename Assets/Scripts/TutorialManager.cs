@@ -30,7 +30,7 @@ public class TutorialManager : MonoBehaviour
         "Meaning that you've collected rent in the form of 2 green, 2 yellow, 1 blue, and 1 red for this turn",
         "Players use collected rent to build additional game pieces and roads",
         "Tap the street corner of the property to place a new game piece",
-        "Now it's the gold player's turn, they receive their rent from their properties",
+        "Now it's the gold player's turn, they recieve their rent from their properties",
         "Houses are legally connected even if they pass through an opponent's game piece", // 15
         "The gold player now submits their move...",
         "The silver player gets rent from all their placed game pieces",
@@ -81,7 +81,7 @@ public class TutorialManager : MonoBehaviour
         "",
         "Monopolizing a property builds a hotel on that property and stop paying rent to the opposing player",
         " ",
-        "Surrounding a foreclosed property also monopolizes it, and starts paying rent only to the player who surrounded it", // 25
+        " ", // 25
         "The gold player cannot build through the silver perimeter now that these properties are monopolized",
         "Click the chest to open the trading menu",
         "Click the 2 yellow dollars and a red dollar to trade for a needed green dollar",
@@ -89,7 +89,7 @@ public class TutorialManager : MonoBehaviour
         "", // 30
         "",
         "All 6 of player 1's roads are connected",
-        "The player with the longest road network will receive this card",
+        "The player with the longest road network will recieve this card",
         "Finishing this turn will get you a score a 10",
         "", // 35
         "Click the green arrow to exit"
@@ -162,7 +162,7 @@ public class TutorialManager : MonoBehaviour
 
     void Start()
     {
-        ToggleTriggers();
+        ToogleTriggers();
         BeginTutorial();
     }
     #endregion
@@ -193,7 +193,7 @@ public class TutorialManager : MonoBehaviour
         currentPlayerMessage.text = "Your Move";
     }
 
-    public void ToggleTriggers()
+    public void ToogleTriggers()
     {
         BroadcastMessage("ToggleNodeBranchTriggers");
     }
@@ -502,7 +502,6 @@ public class TutorialManager : MonoBehaviour
             else if (messageNumber == 28)
             {
                 StopAllCoroutines();
-                ToggleTriggers();
                 arrows[7].gameObject.SetActive(false);
                 for (int i = 0; i < tradingButtons.Length; i++)
                     tradingButtons[i].interactable = false;
@@ -512,7 +511,6 @@ public class TutorialManager : MonoBehaviour
                 int[] one = new int[] { 1, 2, 2, 2 };
                 int[] two = new int[] { 0, 0, 3, 3 };
                 SetResources(one, two);
-                ToggleTriggers();
                 tradeBtn.interactable = false;
                 forwardBtn.interactable = true;
             }
@@ -624,7 +622,6 @@ public class TutorialManager : MonoBehaviour
             else if (messageNumber == 36)
             {
                 winPanel.SetActive(false);
-                infoBtn.interactable = true;
                 topBG.SetActive(true);
                 bottomBG.SetActive(true);
                 GameInformation.gameOver = false;
@@ -1127,7 +1124,6 @@ public class TutorialManager : MonoBehaviour
                 forwardBtn.interactable = false;
                 GameInformation.resourceTrade = false;
                 tradePanel.SetActive(true);
-                ToggleTriggers();
                 StopAllCoroutines();
                 MoveArrow(7);
                 arrows[7].gameObject.SetActive(false);
@@ -1141,7 +1137,6 @@ public class TutorialManager : MonoBehaviour
                 SetResources(one, two);
                 playerResourcesManager.UpdateBothPlayersResources();
                 UndoNode(6, PlayerColor.Blank, tutorialNodes[0].blankSprite);
-                //ToggleTriggers();
                 forwardBtn.interactable = true;
                 goBtn.interactable = false;
             }
@@ -1159,6 +1154,7 @@ public class TutorialManager : MonoBehaviour
                 gameController.UpdateScores();
                 playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
                 playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
+
                 HighlightNode(6);
                 forwardBtn.interactable = false;
                 goBtn.interactable = true;
@@ -1277,7 +1273,6 @@ public class TutorialManager : MonoBehaviour
                 winPanel.SetActive(true);
                 topBG.SetActive(false);
                 bottomBG.SetActive(false);
-                infoBtn.interactable = false;
                 MoveArrow(12);
                 MoveArrow(13);
                 arrows[12].gameObject.SetActive(false);

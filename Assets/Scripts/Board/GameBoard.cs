@@ -460,7 +460,7 @@ public class GameBoard
         {
             bool couldBeCaptured = true;
             List<int> blankBranches = new List<int>();
-            // The color of the first branch found on the square with a player's branch associated with it.
+            // The color of the first branch found on the square with a player's piece associated with it.
             PlayerColor currentCaptureColor = branches[Reference.branchesOnSquareConnections[currentSquare, 0]].branchState.branchColor;
             // Look for a player's color.
             for (int connectedBranch = 1; currentCaptureColor == PlayerColor.Blank && connectedBranch < 4; ++connectedBranch)
@@ -480,7 +480,7 @@ public class GameBoard
             {
                 BranchState currentBranchState = branches[Reference.branchesOnSquareConnections[currentSquare, connectedBranch]].branchState;
                 
-                // If the square has an unclaimed branch boardering the edge of the board then it cannot be captured.
+                // If the node has an unclaimed branch boardering the edge of the board then it cannot be captured.
                 if (currentBranchState.branchColor == PlayerColor.Blank && Reference.squareOnSquareConnections[currentSquare, connectedBranch] == -1)
                 {
                     couldBeCaptured = false;
@@ -490,7 +490,7 @@ public class GameBoard
                 {
                     couldBeCaptured = false;
                 }
-                // If a connecting branch is blank and there's a tile on the otherside, we need to check that connecting tile for capture.
+                // If a connecting branch is blank and there's a tile on the otherside, we need to check that tile for capture.
                 else if (currentBranchState.branchColor == PlayerColor.Blank)
                 {
                     blankBranches.Add(currentBranchState.location);
@@ -498,7 +498,7 @@ public class GameBoard
                 // Otherwise the branch should belong to the currentCaptureColor and nothing needs to happen.
             }
 
-            // If the square can possibly be captured, add it to possibleCaptures.
+            // If the node can possibly be captured, add it to possibleCaptures.
             if (couldBeCaptured)
             {
                 // If the none of the branches connected to the tile are blank, it's a single tile capture.
@@ -590,13 +590,11 @@ public class GameBoard
         List<int> checkedSquares = new List<int>();
         checkedSquares.Add(startingSquare);
 
-        // javan's mistake is here (the first one anyway)
         foreach (int blankBranch in blankBranches)
         {
             int connectedSquareId = getConnectedSquare(blankBranch, startingSquare);
             if (!possibleCaptures.Contains(connectedSquareId) ||
-                !isConnectedSquareCaptured(connectedSquareId, checkedSquares, captures, possibleCaptures) ||
-                getCapturedSquareOwner(startingSquare) != getCapturedSquareOwner(connectedSquareId))
+                !isConnectedSquareCaptured(connectedSquareId, checkedSquares, captures, possibleCaptures))
             {
                 possibleCaptures.Remove(startingSquare);
                 return false;

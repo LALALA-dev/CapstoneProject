@@ -6,8 +6,6 @@ using static GameObjectProperties;
 using UnityEngine;
 using static ReferenceScript;
 using static ExpertAI;
-using System.Threading.Tasks;
-
 public class BeginnerAI
 
 {
@@ -291,15 +289,10 @@ public class BeginnerAI
                 j++;
             }
         }
-
-        do
-        {
-            rand = new System.Random(t.Seconds);
-            index = rand.Next(0, connectedBranches.Length);
-            result.branchStates[connectedBranches[index]].branchColor = AIcolor;
-            result.branchStates[connectedBranches[index]].ownerColor = AIcolor;
-            // POTIENTAL BUG PATCH 
-        } while (result.branchStates[connectedBranches[index]].location == 0 && (result.nodeStates[0].nodeColor != AIcolor || result.nodeStates[1].nodeColor != AIcolor));
+        rand = new System.Random(t.Seconds);
+        index = rand.Next(0, connectedBranches.Length);
+        result.branchStates[connectedBranches[index]].branchColor = AIcolor;
+        result.branchStates[connectedBranches[index]].ownerColor = AIcolor;
 
         currentBoardState = result;
         return result;
@@ -504,7 +497,7 @@ public class BeginnerAI
                 }
             }
         }
-        /*
+        
         if(trad == 1)
         {
             Debug.Log("0 = Red, 1 = Blue, 2 =Yellow , 3 = Green");
@@ -519,26 +512,22 @@ public class BeginnerAI
                     Debug.Log("got " +i + ": " + (aiResources[i] - debug[i]));
                 }
             }
-        }*/
+        }
       
     }
 
-    public async Task<BoardState> RandomMove(BoardState currentBoard, int[] aiResources) 
+    public BoardState RandomMove(BoardState currentBoard, int[] aiResources) 
     {
-        await Task.Run(() =>
+        // Thread.Sleep(2000);
+        int[] initialResources = CollectCurrentPlayerResources(currentBoard, AIcolor);
+        int flag = 0;
+        currentBoard = subRandomMove(currentBoard, aiResources, ref flag);
+        ResourceTrading(aiResources, initialResources);
+        while (flag == 1)
         {
-            Thread.Sleep(2000);
-            int[] initialResources = CollectCurrentPlayerResources(currentBoard, AIcolor);
-            int flag = 0;
+            flag = 0; ;
             currentBoard = subRandomMove(currentBoard, aiResources, ref flag);
-            ResourceTrading(aiResources, initialResources);
-            while (flag == 1)
-            {
-                flag = 0; ;
-                currentBoard = subRandomMove(currentBoard, aiResources, ref flag);
-            }
-
-        });
+        }
         return currentBoard;
     }
 
@@ -584,10 +573,10 @@ public class BeginnerAI
                 case SquareResourceColor.Red:
                     resources[0]++;
                     break;
-                case SquareResourceColor.Blue:
+                case SquareResourceColor.Yellow:
                     resources[1]++;
                     break;
-                case SquareResourceColor.Yellow:
+                case SquareResourceColor.Blue:
                     resources[2]++;
                     break;
                 case SquareResourceColor.Green:

@@ -41,14 +41,6 @@ public class GameInformation
 
     public static int playerTwoScore = 0;
 
-    public static int playerOneNodes = 0;
-
-    public static int playerTwoNodes = 0;
-
-    public static int playerOneProperties = 0;
-
-    public static int playerTwoProperties = 0;
-
     public static int playerOneNetwork = 0;
 
     public static int playerTwoNetwork = 0;
@@ -72,8 +64,6 @@ public class GameInformation
     public static bool newNetworkMoveSet = false;
 
     public static string ownAvatar = "CAR";
-    
-    public static string aiAvatar = "WHEELBARREL";
 
     public static string playerOneAvatar = "CAR";
 
@@ -86,10 +76,4 @@ public class GameInformation
     public static bool needToSyncAvatars = false;
 
     public static bool tutorialNeeded = false;
-
-    public static bool networkHelpNeeded = true;
-
-    public static string[] avatarNames = { "HAT", "BATTLESHIP", "CAR", "THIMBLE", "WHEELBARREL" };
-
-    public static bool aiCompetition = false;
 }

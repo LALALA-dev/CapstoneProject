@@ -6,7 +6,7 @@ public class MainMenuController : MonoBehaviour
 {
     public GameObject tutorialPrompt;
     public ArrowController suggestionArrow;
-    public AudioSource button;
+
     public bool forward = true; 
 
     void Start()
@@ -43,10 +43,5 @@ public class MainMenuController : MonoBehaviour
         }
 
         StartCoroutine(MoveForward());
-    }
-
-    public void OnButtonClick()
-    {
-        button.Play();
     }
 }
