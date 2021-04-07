@@ -23,7 +23,6 @@ public class AISelectionManager : MonoBehaviour
 
     public void OnGoSelect()
     {
-        Debug.Log("OOooohhh, I'm a log statement!");
         // Assign a random avatar to the AI that is not selected by player.
         int aiAvatarID;
         do
