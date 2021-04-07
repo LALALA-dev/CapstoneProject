@@ -47,6 +47,7 @@ public class ExpertAI
 
         private List<MyBoard> GetPossibleMoves(MyBoard currentBoard, PlayerColor currentPlayer)
         {
+            int[] resource_collected = new int[4]; resource_collected = BeginnerAI.CollectCurrentPlayerResources(currentBoard.boardState, currentPlayer);
             int[] backup_resource = new int[4];
             int flag_moved = 0;
             int trade = 0;
@@ -92,7 +93,7 @@ public class ExpertAI
                     List<int> branches = CalculatePossibleBranches(temp.boardState, temp_resource_branches, currentPlayer);
                     if (branches.Count == 0 && trade == 0)
                     {
-                        ResourceTradingForBranches(temp_resource_branches, BeginnerAI.CollectCurrentPlayerResources(currentBoard.boardState, currentPlayer), temp.boardState, currentPlayer, ref trade);
+                        ResourceTradingForBranches(temp_resource_branches, resource_collected, temp.boardState, currentPlayer, ref trade);
                         branches = CalculatePossibleBranches(temp.boardState, temp_resource_branches, currentPlayer);
                     }
                     foreach (int j in branches)
@@ -117,7 +118,7 @@ public class ExpertAI
                     List<int> nodes = CalculatePossibleNodes(temp.boardState, temp_resource_nodes, currentPlayer);
                     if (nodes.Count == 0 && trade == 0)
                     {
-                        ResourceTradingForNodes(temp_resource_nodes, BeginnerAI.CollectCurrentPlayerResources(currentBoard.boardState, currentPlayer), temp.boardState, currentPlayer, ref trade);
+                        ResourceTradingForNodes(temp_resource_nodes, resource_collected, temp.boardState, currentPlayer, ref trade);
                         nodes = CalculatePossibleNodes(temp.boardState, temp_resource_nodes, currentPlayer);
                     }
                     foreach (int j in nodes)
@@ -168,40 +169,7 @@ public class ExpertAI
             {
                 if (storage[storage.Count - (1 + i)].Count != 0)
                 {
-                    int ttrade = 0;
-                    int[] ttemp_resource = (int[])backup_resource.Clone();
-                    ResourceTradingForBranches(ttemp_resource, BeginnerAI.CollectCurrentPlayerResources(currentBoard.boardState, currentPlayer), currentBoard.boardState, currentPlayer, ref ttrade);
-                    if (ttrade == 1)
-                    {
-                        MyBoard localBoard = currentBoard.Clone();
-                        if (currentPlayer == AIcolor)
-                        {
-                            localBoard.aiResources = ttemp_resource;
-                        }
-                        else
-                        {
-                            localBoard.playerResources = ttemp_resource;
-
-                        }
-                        storage[storage.Count - (1 + i)].Add(localBoard);
-                        ttrade = 0;
-                    }
-                    ttemp_resource = (int[])backup_resource.Clone();
-                    ResourceTradingForNodes(ttemp_resource, BeginnerAI.CollectCurrentPlayerResources(currentBoard.boardState, currentPlayer), currentBoard.boardState, currentPlayer, ref ttrade);
-                    if (ttrade == 1)
-                    {
-                        MyBoard localBoard = currentBoard.Clone();
-                        if (currentPlayer == AIcolor)
-                        {
-                            localBoard.aiResources = ttemp_resource;
-                        }
-                        else
-                        {
-                            localBoard.playerResources = ttemp_resource;
-
-                        }
-                        storage[storage.Count - (1 + i)].Add(localBoard);
-                    }
+                  
                     return storage[storage.Count - (1 + i)];
                 }
             }
@@ -209,7 +177,7 @@ public class ExpertAI
 
             int tttrade = 0;
             int[] tttemp_resource = (int[])backup_resource.Clone();
-            ResourceTradingForBranches(tttemp_resource, BeginnerAI.CollectCurrentPlayerResources(currentBoard.boardState, currentPlayer), currentBoard.boardState, currentPlayer, ref tttrade);
+            ResourceTradingForBranches(tttemp_resource, resource_collected, currentBoard.boardState, currentPlayer, ref tttrade);
             if (tttrade == 1)
             {
                 MyBoard localBoard = currentBoard.Clone();
@@ -226,7 +194,7 @@ public class ExpertAI
                 tttrade = 0;
             }
             tttemp_resource = (int[])backup_resource.Clone();
-            ResourceTradingForNodes(tttemp_resource, BeginnerAI.CollectCurrentPlayerResources(currentBoard.boardState, currentPlayer), currentBoard.boardState, currentPlayer, ref tttrade);
+            ResourceTradingForNodes(tttemp_resource, resource_collected, currentBoard.boardState, currentPlayer, ref tttrade);
             if (tttrade == 1)
             {
                 MyBoard localBoard = currentBoard.Clone();
