@@ -7,6 +7,8 @@ using static ReferenceScript;
 using static TreeNode;
 using System.Threading;
 using UnityEngine;
+using System.Threading.Tasks;
+
 public class ExpertAI
 {
     //after instantiate this class, call findNextMove with time limit(5 for exopert AI) 
@@ -359,7 +361,7 @@ public class ExpertAI
             return winner;
         }
 
-        public BoardState findNextMove(double timeLimit) // timeLimit = 5 means 5 seconds
+        public async Task<BoardState> findNextMove(double timeLimit) // timeLimit = 5 means 5 seconds
         {
             int ttt = new int();
             int ccc = 0;
@@ -369,100 +371,104 @@ public class ExpertAI
             TreeNode root = new TreeNode(beginBoard);
             expand(root);
             bool timeOut = false;
-            while (timeOut == false)
+
+            await Task.Run(() =>
             {
-                ccc = ccc;
-
-                int max = -1;
-                int loc = 0;
-                TreeNode promisingNode = traverse(root);
-
-                if (promisingNode.N == 0)
+                while (timeOut == false)
                 {
-                    int winner = simulation3(promisingNode);
-                    backpropgation(promisingNode, winner);
-                }
-                else
-                {
-                    expand(promisingNode);
-                    if (promisingNode.child.Count == 0)
+                    ccc = ccc;
+
+                    int max = -1;
+                    int loc = 0;
+                    TreeNode promisingNode = traverse(root);
+
+                    if (promisingNode.N == 0)
                     {
-                        Debug.Log("Error: promisingNode.child.Count = 0");
-                    }
-                    promisingNode = promisingNode.child[0];
-
-                   
-                    int winner = simulation3(promisingNode);
-                 
+                        int winner = simulation3(promisingNode);
                         backpropgation(promisingNode, winner);
-                   
-                }
-                for (int i = 0; i < root.child.Count; i++)
-                {
-                    if (root.child[i].N >= max)
+                    }
+                    else
                     {
-                        if((root.child[i].N == max && root.child[i].W > root.child[loc].W) || root.child[i].N > max)
+                        expand(promisingNode);
+                        if (promisingNode.child.Count == 0)
                         {
-                            loc = i;
-                            max = root.child[i].N;
+                            Debug.Log("Error: promisingNode.child.Count = 0");
+                        }
+                        promisingNode = promisingNode.child[0];
+
+
+                        int winner = simulation3(promisingNode);
+
+                        backpropgation(promisingNode, winner);
+
+                    }
+                    for (int i = 0; i < root.child.Count; i++)
+                    {
+                        if (root.child[i].N >= max)
+                        {
+                            if ((root.child[i].N == max && root.child[i].W > root.child[loc].W) || root.child[i].N > max)
+                            {
+                                loc = i;
+                                max = root.child[i].N;
+                            }
                         }
                     }
-                }
-                best = root.child[loc].localBoard.boardState;
-                ttt = loc;
+                    best = root.child[loc].localBoard.boardState;
+                    ttt = loc;
 
-                DateTime afterDT = System.DateTime.Now;
-                TimeSpan ts = afterDT.Subtract(beforDT);
+                    DateTime afterDT = System.DateTime.Now;
+                    TimeSpan ts = afterDT.Subtract(beforDT);
 
-                if (ts >= t)
-                {
-                    Debug.Log("times: "+ccc);
-                    timeOut = true;
-
-                }
-                ccc++;
-            }
-            /*
-            for (int i = 0; i < best.branchStates.Count(); i++)
-            {
-                if (best.branchStates[i].branchColor != beginBoard.boardState.branchStates[i].branchColor)
-                {
-                    Debug.Log("branch placed: " + i);
-                }
-            }
-            for (int i = 0; i < best.nodeStates.Count(); i++)
-            {
-                if (best.nodeStates[i].nodeColor != beginBoard.boardState.nodeStates[i].nodeColor)
-                {
-                    Debug.Log("node placed: " + i);
-                }
-            }*/
-
-            aiResourcesForUpdateBoard = root.child[ttt].localBoard.aiResources;
-            /*
-            for(int i = 0; i < root.child.Count-1; i++)
-            {
-                int cc = 0;
-                int nn = 0;
-                for (int j = 0; j < best.branchStates.Count(); j++)
-                {
-                    if(root.child[i].localBoard.boardState.branchStates[j].branchColor == root.child[i + 1].localBoard.boardState.branchStates[j].branchColor)
+                    if (ts >= t)
                     {
-                        cc++;
+                        Debug.Log("times: " + ccc);
+                        timeOut = true;
+
+                    }
+                    ccc++;
+                }
+                /*
+                for (int i = 0; i < best.branchStates.Count(); i++)
+                {
+                    if (best.branchStates[i].branchColor != beginBoard.boardState.branchStates[i].branchColor)
+                    {
+                        Debug.Log("branch placed: " + i);
                     }
                 }
-                for (int j = 0; j < best.nodeStates.Count(); j++)
+                for (int i = 0; i < best.nodeStates.Count(); i++)
                 {
-                    if (root.child[i].localBoard.boardState.nodeStates[j].nodeColor == root.child[i + 1].localBoard.boardState.nodeStates[j].nodeColor)
+                    if (best.nodeStates[i].nodeColor != beginBoard.boardState.nodeStates[i].nodeColor)
                     {
-                        nn++;
+                        Debug.Log("node placed: " + i);
                     }
-                }
-                if(nn == best.nodeStates.Count() && cc == best.branchStates.Count() )
+                }*/
+
+                aiResourcesForUpdateBoard = root.child[ttt].localBoard.aiResources;
+                /*
+                for(int i = 0; i < root.child.Count-1; i++)
                 {
-                    Debug.Log("root.child[" + i + "] is the same as " + "root.child[" + (i+1) + "]");
-                }
-            }*/
+                    int cc = 0;
+                    int nn = 0;
+                    for (int j = 0; j < best.branchStates.Count(); j++)
+                    {
+                        if(root.child[i].localBoard.boardState.branchStates[j].branchColor == root.child[i + 1].localBoard.boardState.branchStates[j].branchColor)
+                        {
+                            cc++;
+                        }
+                    }
+                    for (int j = 0; j < best.nodeStates.Count(); j++)
+                    {
+                        if (root.child[i].localBoard.boardState.nodeStates[j].nodeColor == root.child[i + 1].localBoard.boardState.nodeStates[j].nodeColor)
+                        {
+                            nn++;
+                        }
+                    }
+                    if(nn == best.nodeStates.Count() && cc == best.branchStates.Count() )
+                    {
+                        Debug.Log("root.child[" + i + "] is the same as " + "root.child[" + (i+1) + "]");
+                    }
+                }*/
+            });
             // Assign resources
             if (GameInformation.playerIsHost)
                 GameInformation.playerTwoResources = aiResourcesForUpdateBoard;
