@@ -99,18 +99,22 @@ public class HelpManager : MonoBehaviour
 
     public void SetPanelOrderTurnFive()
     {
-        panelOrderKey[0] = 1;
-        panelOrderKey[1] = 2;
-        panelOrderKey[2] = 3;
-        panelOrderKey[3] = -1;
+        if (!isHelpPanelsActive) {
+            panelOrderKey[0] = 1;
+            panelOrderKey[1] = 2;
+            panelOrderKey[2] = 3;
+            panelOrderKey[3] = -1;
+        }
     }
 
     public void SetPanelOrderTurnNine()
     {
-        panelOrderKey[0] = 3;
-        panelOrderKey[1] = 1;
-        panelOrderKey[2] = 2;
-        panelOrderKey[3] = -1;
+        if (!isHelpPanelsActive) {
+            panelOrderKey[0] = 3;
+            panelOrderKey[1] = 1;
+            panelOrderKey[2] = 2;
+            panelOrderKey[3] = -1;
+        }
     }
 
     public void UpdateHelpPopupScores()
