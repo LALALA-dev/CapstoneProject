@@ -26,7 +26,7 @@ public class BranchController : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if(!GameInformation.gameOver)
+        if(!GameInformation.gameOver && GameInformation.currentPlayer != "AI")
         {
             if (GameInformation.openingSequence)
             {
@@ -77,56 +77,30 @@ public class BranchController : MonoBehaviour
                 GameInformation.currentRoundPlacedBranches.Add(branchEntity.id);
                 SendMessageUpwards("SendMessageToGameManager", "UpdateResourcesUI");
             }
-            // Are you trying to undo a selection?
             else if (isBranchColorOfCurrentPlayer() && isUndoAttemptOnBranchPlaceThisRound())
             {
+                int branchesUndone = 1;
+                int nodesUndone = 0;
                 branchEntity.branchState.ownerColor = PlayerColor.Blank;
                 branchEntity.branchState.branchColor = PlayerColor.Blank;
-
                 GameInformation.currentRoundPlacedBranches.Remove(branchEntity.id);
 
-                // check for orphans
-                // check remaining clicked branches
-                for (int i = 0; i < GameInformation.currentRoundPlacedBranches.Count; i++)
-                {
-                    // for every clicked branch, gather its connected branches
-                    int[] connectedBranches = ReferenceScript.branchConnectsToTheseBranches[GameInformation.currentRoundPlacedBranches[i]];
-
-                    bool ownedBranchFound = false;
-                    // for every connected branch, if the you own the branch, an owned branch has been found
-                    for (int j = 0; j < connectedBranches.Length; j++)
-                    {
-                        if(branchEntity.gameController.getGameBoard().branches[connectedBranches[j]].branchState.ownerColor == branchEntity.gameController.getCurrentPlayerColor())
-                        {
-                            ownedBranchFound = true;
-                        }
-                    }
-
-                    if(!ownedBranchFound)
-                    {
-                        BroadcastOrphanBranchFound(GameInformation.currentRoundPlacedBranches[i]);
-                        if (branchEntity.gameController.getCurrentPlayerColor() == PlayerColor.Silver)
-                        {
-                            GameInformation.playerOneResources[0]++;
-                            GameInformation.playerOneResources[1]++;
-                        }
-                        else
-                        {
-                            GameInformation.playerTwoResources[0]++;
-                            GameInformation.playerTwoResources[1]++;
-                        }
-                    }
-                }
+                branchesUndone += CheckForBranchOrphans();
+                nodesUndone += CheckForNodeOrphans();
 
                 if (branchEntity.gameController.getCurrentPlayerColor() == PlayerColor.Silver)
                 {
-                    GameInformation.playerOneResources[0]++;
-                    GameInformation.playerOneResources[1]++;
+                    GameInformation.playerOneResources[0] += branchesUndone;
+                    GameInformation.playerOneResources[1] += branchesUndone;
+                    GameInformation.playerOneResources[2] += (nodesUndone * 2);
+                    GameInformation.playerOneResources[3] += (nodesUndone * 2);
                 }
                 else
                 {
-                    GameInformation.playerTwoResources[0]++;
-                    GameInformation.playerTwoResources[1]++;
+                    GameInformation.playerTwoResources[0] += branchesUndone;
+                    GameInformation.playerTwoResources[1] += branchesUndone;
+                    GameInformation.playerTwoResources[2] += (nodesUndone * 2);
+                    GameInformation.playerTwoResources[3] += (nodesUndone * 2);
                 }
                 SendMessageUpwards("SendMessageToGameManager", "UpdateResourcesUI");
                 ClaimBranch(blankSprite);
@@ -137,7 +111,7 @@ public class BranchController : MonoBehaviour
 
     public void OnMouseEnter()
     {
-        if (GameInformation.gameType != 'T')
+        if (GameInformation.gameType != 'T' && GameInformation.currentPlayer != "AI")
         {
             if ((isBranchBlank() && hasEnoughResources() && (isBranchConnectedToBranch()) || isBranchSurroundedByCurrentPlayer()))
             {
@@ -152,7 +126,7 @@ public class BranchController : MonoBehaviour
 
     public void OnMouseExit()
     {
-        if (GameInformation.gameType != 'T')
+        if (GameInformation.gameType != 'T' && GameInformation.currentPlayer != "AI")
         {
             if (!GameInformation.openingSequence)
             {
@@ -300,13 +274,112 @@ public class BranchController : MonoBehaviour
         SendMessageUpwards("OrphanBranchFound", id);
     }
 
-    public void UnclaimOrphan(int id)
+    public void BroadcastOrphanNodeFound(int id)
+    {
+        SendMessageUpwards("OrphanNodeFound", id);
+    }
+
+    public void UnclaimOrphanBranch(int id)
     {
         if(branchEntity.id == id)
         {
             branchEntity.branchState.branchColor = PlayerColor.Blank;
             branchEntity.branchState.ownerColor = PlayerColor.Blank;
             ClaimBranch(blankSprite);
+            remove.Play();
         }
+    }
+
+    public int CheckForBranchOrphans()
+    {
+        // Definition of an orphan, a branch or branches that are no longer connected to either the existing network
+        // nor to a current round placed branch that is connected to the existing network 
+
+        // TODO: FIND THE BRANCHES THAT ARE STILL CONNECTED TO THE EXISTING NETWORK, PUSH THE ONES THAT AREN'T ONTO A LIST OF POTENTIAL ORPHANS
+        // PUSH THE ONES THAT ARE ONTO ANOTHER LIKE OF CONFIRMED LEGAL BRANCHES
+        List<int> confirmedLegalBranches = new List<int>();
+        List<int> possibleOrphans = new List<int>();
+        int numberRemoved = 0;
+        for (int i = 0; i < GameInformation.currentRoundPlacedBranches.Count; i++)
+        {
+            bool ownedBranchFound = false;
+            int[] connectedBranches = ReferenceScript.branchConnectsToTheseBranches[GameInformation.currentRoundPlacedBranches[i]];
+            for (int j = 0; j < connectedBranches.Length; j++)
+            {
+                if (branchEntity.gameController.getGameBoard().branches[connectedBranches[j]].branchState.ownerColor == branchEntity.gameController.getCurrentPlayerColor()
+                    && !GameInformation.currentRoundPlacedBranches.Contains(connectedBranches[j]))
+                {
+                    ownedBranchFound = true;
+                }
+            }
+
+            if(ownedBranchFound)
+                confirmedLegalBranches.Add(GameInformation.currentRoundPlacedBranches[i]);
+            else
+                possibleOrphans.Add(GameInformation.currentRoundPlacedBranches[i]);
+        }
+
+        // TODO: CYCLE THROUGH POTENTIAL ORPHAN BRANCHES -- FOR EACH ONE -- IF THE BRANCH IS NOT CONNECTED TO ONE OF THE CONFIRM LEGAL BRANCHES, ITS AN ORPHAN, REMOVE IT
+        List<int> orphans = new List<int>();
+        for (int i = 0; i < possibleOrphans.Count; i++)
+        {
+            bool ownedBranchFound = false;
+            int[] connectedBranches = ReferenceScript.branchConnectsToTheseBranches[possibleOrphans[i]];
+
+            for (int j = 0; j < connectedBranches.Length; j++)
+            {
+                if (confirmedLegalBranches.Contains(connectedBranches[j]))
+                {
+                    ownedBranchFound = true;
+                }
+            }
+
+            if (!ownedBranchFound)
+            {
+                BroadcastOrphanBranchFound(possibleOrphans[i]);
+                orphans.Add(possibleOrphans[i]);
+                numberRemoved++;
+            }
+        }
+
+        foreach(int orphan in orphans)
+        {
+            GameInformation.currentRoundPlacedBranches.Remove(orphan);
+        }
+
+        return numberRemoved;
+    }
+
+    public int CheckForNodeOrphans()
+    {
+        List<int> confirmedLegalNodes = new List<int>();
+        List<int> orphans = new List<int>();
+        int numberRemoved = 0;
+        for (int i = 0; i < GameInformation.currentRoundPlacedNodes.Count; i++)
+        {
+            bool ownedNodeFound = false;
+            int[] connectedBranches = ReferenceScript.nodeConnectsToTheseBranches[GameInformation.currentRoundPlacedNodes[i]];
+            for (int j = 0; j < connectedBranches.Length; j++)
+            {
+                if (branchEntity.gameController.getGameBoard().branches[connectedBranches[j]].branchState.ownerColor == branchEntity.gameController.getCurrentPlayerColor())
+                {
+                    ownedNodeFound = true;
+                }
+            }
+
+            if (!ownedNodeFound)
+            {
+                BroadcastOrphanNodeFound(GameInformation.currentRoundPlacedNodes[i]);
+                orphans.Add(GameInformation.currentRoundPlacedNodes[i]);
+                numberRemoved++;
+            }
+        }
+
+        foreach (int orphan in orphans)
+        {
+            GameInformation.currentRoundPlacedNodes.Remove(orphan);
+        }
+
+        return numberRemoved;
     }
 }
