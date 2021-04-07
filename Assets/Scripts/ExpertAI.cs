@@ -7,6 +7,8 @@ using static ReferenceScript;
 using static TreeNode;
 using System.Threading;
 using UnityEngine;
+using System.Threading.Tasks;
+
 public class ExpertAI
 {
     //after instantiate this class, call findNextMove with time limit(5 for exopert AI) 
@@ -45,6 +47,7 @@ public class ExpertAI
 
         private List<MyBoard> GetPossibleMoves(MyBoard currentBoard, PlayerColor currentPlayer)
         {
+            int[] backup_resource = new int[4];
             int flag_moved = 0;
             int trade = 0;
             List<List<MyBoard>> storage = new List<List<MyBoard>>();
@@ -62,9 +65,11 @@ public class ExpertAI
                     temp_result.Clear();
                     MyBoard temp = storage[storage.Count - 1][i].Clone();
                     int[] resource;
+                    
                     if (currentPlayer == AIcolor)
                     {
                         resource = temp.aiResources;
+                        backup_resource = (int[])temp.aiResources.Clone();
                         if (AIcolor == PlayerColor.Silver)
                         {
                             otherColor = PlayerColor.Gold;
@@ -78,6 +83,7 @@ public class ExpertAI
                     {
                         otherColor = AIcolor;
                         resource = temp.playerResources;
+                        backup_resource = (int[])temp.playerResources.Clone();
                     }
 
 
@@ -161,33 +167,79 @@ public class ExpertAI
             for (int i = 0; i < storage.Count; i++)
             {
                 if (storage[storage.Count - (1 + i)].Count != 0)
-                {/*
-                    for (int k = 0; k < storage[storage.Count - (1 + i)].Count - 1; k++)
+                {
+                    int ttrade = 0;
+                    int[] ttemp_resource = (int[])backup_resource.Clone();
+                    ResourceTradingForBranches(ttemp_resource, BeginnerAI.CollectCurrentPlayerResources(currentBoard.boardState, currentPlayer), currentBoard.boardState, currentPlayer, ref ttrade);
+                    if (ttrade == 1)
                     {
-                        int cc = 0;
-                        int nn = 0;
-                        for (int j = 0; j < 36; j++)
+                        MyBoard localBoard = currentBoard.Clone();
+                        if (currentPlayer == AIcolor)
                         {
-                            if (storage[storage.Count - (1 + i)][k].boardState.branchStates[j].branchColor == storage[storage.Count - (1 + i)][k + 1].boardState.branchStates[j].branchColor)
-                            {
-                                cc++;
-                            }
+                            localBoard.aiResources = ttemp_resource;
                         }
-                        for (int j = 0; j < 24; j++)
+                        else
                         {
-                            if (storage[storage.Count - (1 + i)][k].boardState.nodeStates[j].nodeColor == storage[storage.Count - (1 + i)][k + 1].boardState.nodeStates[j].nodeColor)
-                            {
-                                nn++;
-                            }
+                            localBoard.playerResources = ttemp_resource;
+
                         }
-                        if (nn == 24 && cc == 36)
-                        {
-                            storage[storage.Count - (1 + i)].RemoveAt(k);
-                        }
+                        storage[storage.Count - (1 + i)].Add(localBoard);
+                        ttrade = 0;
                     }
-                    */
+                    ttemp_resource = (int[])backup_resource.Clone();
+                    ResourceTradingForNodes(ttemp_resource, BeginnerAI.CollectCurrentPlayerResources(currentBoard.boardState, currentPlayer), currentBoard.boardState, currentPlayer, ref ttrade);
+                    if (ttrade == 1)
+                    {
+                        MyBoard localBoard = currentBoard.Clone();
+                        if (currentPlayer == AIcolor)
+                        {
+                            localBoard.aiResources = ttemp_resource;
+                        }
+                        else
+                        {
+                            localBoard.playerResources = ttemp_resource;
+
+                        }
+                        storage[storage.Count - (1 + i)].Add(localBoard);
+                    }
                     return storage[storage.Count - (1 + i)];
                 }
+            }
+
+
+            int tttrade = 0;
+            int[] tttemp_resource = (int[])backup_resource.Clone();
+            ResourceTradingForBranches(tttemp_resource, BeginnerAI.CollectCurrentPlayerResources(currentBoard.boardState, currentPlayer), currentBoard.boardState, currentPlayer, ref tttrade);
+            if (tttrade == 1)
+            {
+                MyBoard localBoard = currentBoard.Clone();
+                if (currentPlayer == AIcolor)
+                {
+                    localBoard.aiResources = tttemp_resource;
+                }
+                else
+                {
+                    localBoard.playerResources = tttemp_resource;
+
+                }
+                storage[0].Add(localBoard);
+                tttrade = 0;
+            }
+            tttemp_resource = (int[])backup_resource.Clone();
+            ResourceTradingForNodes(tttemp_resource, BeginnerAI.CollectCurrentPlayerResources(currentBoard.boardState, currentPlayer), currentBoard.boardState, currentPlayer, ref tttrade);
+            if (tttrade == 1)
+            {
+                MyBoard localBoard = currentBoard.Clone();
+                if (currentPlayer == AIcolor)
+                {
+                    localBoard.aiResources = tttemp_resource;
+                }
+                else
+                {
+                    localBoard.playerResources = tttemp_resource;
+
+                }
+                storage[0].Add(localBoard);
             }
             return storage[0];
         }
@@ -323,7 +375,6 @@ public class ExpertAI
                                     temp.localBoard.boardState.branchStates[result[index]].ownerColor = playerCol;
                                     temp.localBoard.boardState.branchStates[result[index]].branchColor = playerCol;
                                     moved = 1;
-
                                 }
                             }
                         }
@@ -334,9 +385,9 @@ public class ExpertAI
                             moved = 1;
                         }
                     }
+                    DetectMultiTileCaptures(temp.localBoard.boardState);
                 } while (moved == 1);
 
-                DetectMultiTileCaptures(temp.localBoard.boardState);
                 int[] res = BeginnerAI.CollectCurrentPlayerResources(temp.localBoard.boardState, otherColor);
                 for (int i = 0; i < 4; i++)
                 {
@@ -359,7 +410,7 @@ public class ExpertAI
             return winner;
         }
 
-        public BoardState findNextMove(double timeLimit) // timeLimit = 5 means 5 seconds
+        public async Task<BoardState> findNextMove(double timeLimit) // timeLimit = 5 means 5 seconds
         {
             int ttt = new int();
             int ccc = 0;
@@ -369,100 +420,105 @@ public class ExpertAI
             TreeNode root = new TreeNode(beginBoard);
             expand(root);
             bool timeOut = false;
-            while (timeOut == false)
+
+            await Task.Run(() =>
             {
-                ccc = ccc;
-
-                int max = -1;
-                int loc = 0;
-                TreeNode promisingNode = traverse(root);
-
-                if (promisingNode.N == 0)
+                while (timeOut == false)
                 {
-                    int winner = simulation3(promisingNode);
-                    backpropgation(promisingNode, winner);
-                }
-                else
-                {
-                    expand(promisingNode);
-                    if (promisingNode.child.Count == 0)
+                    ccc = ccc;
+
+                    int max = -1;
+                    int loc = 0;
+                    TreeNode promisingNode = traverse(root);
+
+                    if (promisingNode.N == 0)
                     {
-                        Debug.Log("Error: promisingNode.child.Count = 0");
-                    }
-                    promisingNode = promisingNode.child[0];
-
-                   
-                    int winner = simulation3(promisingNode);
-                 
+                        int winner = simulation3(promisingNode);
                         backpropgation(promisingNode, winner);
-                   
-                }
-                for (int i = 0; i < root.child.Count; i++)
-                {
-                    if (root.child[i].N >= max)
+                    }
+                    else
                     {
-                        if((root.child[i].N == max && root.child[i].W > root.child[loc].W) || root.child[i].N > max)
+                        expand(promisingNode);
+                        if (promisingNode.child.Count == 0)
                         {
-                            loc = i;
-                            max = root.child[i].N;
+                            Debug.Log("Error: promisingNode.child.Count = 0");
+                        }
+                        promisingNode = promisingNode.child[0];
+
+
+                        int winner = simulation3(promisingNode);
+
+                        backpropgation(promisingNode, winner);
+
+                    }
+               
+
+                    DateTime afterDT = System.DateTime.Now;
+                    TimeSpan ts = afterDT.Subtract(beforDT);
+
+                    if (ts >= t)
+                    {
+                        Debug.Log("times: " + ccc);
+                        timeOut = true;
+                        for (int i = 0; i < root.child.Count; i++)
+                        {
+                            if (root.child[i].N >= max)
+                            {
+                                if ((root.child[i].N == max && root.child[i].W > root.child[loc].W) || root.child[i].N > max)
+                                {
+                                    loc = i;
+                                    max = root.child[i].N;
+                                }
+                            }
+                        }
+                        best = root.child[loc].localBoard.boardState;
+                        ttt = loc;
+
+                    }
+                    ccc++;
+                }
+                /*
+                for (int i = 0; i < best.branchStates.Count(); i++)
+                {
+                    if (best.branchStates[i].branchColor != beginBoard.boardState.branchStates[i].branchColor)
+                    {
+                        Debug.Log("branch placed: " + i);
+                    }
+                }
+                for (int i = 0; i < best.nodeStates.Count(); i++)
+                {
+                    if (best.nodeStates[i].nodeColor != beginBoard.boardState.nodeStates[i].nodeColor)
+                    {
+                        Debug.Log("node placed: " + i);
+                    }
+                }*/
+
+                aiResourcesForUpdateBoard = root.child[ttt].localBoard.aiResources;
+                /*
+                for(int i = 0; i < root.child.Count-1; i++)
+                {
+                    int cc = 0;
+                    int nn = 0;
+                    for (int j = 0; j < best.branchStates.Count(); j++)
+                    {
+                        if(root.child[i].localBoard.boardState.branchStates[j].branchColor == root.child[i + 1].localBoard.boardState.branchStates[j].branchColor)
+                        {
+                            cc++;
                         }
                     }
-                }
-                best = root.child[loc].localBoard.boardState;
-                ttt = loc;
-
-                DateTime afterDT = System.DateTime.Now;
-                TimeSpan ts = afterDT.Subtract(beforDT);
-
-                if (ts >= t)
-                {
-                    Debug.Log("times: "+ccc);
-                    timeOut = true;
-
-                }
-                ccc++;
-            }
-            /*
-            for (int i = 0; i < best.branchStates.Count(); i++)
-            {
-                if (best.branchStates[i].branchColor != beginBoard.boardState.branchStates[i].branchColor)
-                {
-                    Debug.Log("branch placed: " + i);
-                }
-            }
-            for (int i = 0; i < best.nodeStates.Count(); i++)
-            {
-                if (best.nodeStates[i].nodeColor != beginBoard.boardState.nodeStates[i].nodeColor)
-                {
-                    Debug.Log("node placed: " + i);
-                }
-            }*/
-
-            aiResourcesForUpdateBoard = root.child[ttt].localBoard.aiResources;
-            /*
-            for(int i = 0; i < root.child.Count-1; i++)
-            {
-                int cc = 0;
-                int nn = 0;
-                for (int j = 0; j < best.branchStates.Count(); j++)
-                {
-                    if(root.child[i].localBoard.boardState.branchStates[j].branchColor == root.child[i + 1].localBoard.boardState.branchStates[j].branchColor)
+                    for (int j = 0; j < best.nodeStates.Count(); j++)
                     {
-                        cc++;
+                        if (root.child[i].localBoard.boardState.nodeStates[j].nodeColor == root.child[i + 1].localBoard.boardState.nodeStates[j].nodeColor)
+                        {
+                            nn++;
+                        }
                     }
-                }
-                for (int j = 0; j < best.nodeStates.Count(); j++)
-                {
-                    if (root.child[i].localBoard.boardState.nodeStates[j].nodeColor == root.child[i + 1].localBoard.boardState.nodeStates[j].nodeColor)
+                    if(nn == best.nodeStates.Count() && cc == best.branchStates.Count() )
                     {
-                        nn++;
+                        Debug.Log("root.child[" + i + "] is the same as " + "root.child[" + (i+1) + "]");
                     }
-                }
-                if(nn == best.nodeStates.Count() && cc == best.branchStates.Count() )
-                {
-                    Debug.Log("root.child[" + i + "] is the same as " + "root.child[" + (i+1) + "]");
-                }
-            }*/
+                }*/
+            });
             // Assign resources
             if (GameInformation.playerIsHost)
                 GameInformation.playerTwoResources = aiResourcesForUpdateBoard;
