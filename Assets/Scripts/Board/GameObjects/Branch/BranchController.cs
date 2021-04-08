@@ -111,7 +111,7 @@ public class BranchController : MonoBehaviour
 
     public void OnMouseEnter()
     {
-        if (GameInformation.gameType != 'T' && GameInformation.currentPlayer != "AI")
+        if (GameInformation.gameType != 'T' && GameInformation.currentPlayer != "AI" && !GameInformation.gameOver)
         {
             if ((isBranchBlank() && hasEnoughResources() && (isBranchConnectedToBranch()) || isBranchSurroundedByCurrentPlayer()))
             {
@@ -126,7 +126,7 @@ public class BranchController : MonoBehaviour
 
     public void OnMouseExit()
     {
-        if (GameInformation.gameType != 'T' && GameInformation.currentPlayer != "AI")
+        if (GameInformation.gameType != 'T' && GameInformation.currentPlayer != "AI" && !GameInformation.gameOver)
         {
             if (!GameInformation.openingSequence)
             {
