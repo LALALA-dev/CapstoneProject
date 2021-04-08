@@ -150,7 +150,7 @@ public class HelpManager : MonoBehaviour
     {
         if (!GameInformation.gameOver)
         {
-            SendMessageUpwards("ToggleTriggers");
+            SendMessageUpwards("ToogleTriggers");
         }
     }
     
