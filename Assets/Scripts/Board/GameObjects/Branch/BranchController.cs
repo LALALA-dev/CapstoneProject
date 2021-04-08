@@ -56,7 +56,7 @@ public class BranchController : MonoBehaviour
                 }
 
             }
-            else if ((isBranchBlank() && hasEnoughResources() && isBranchConnectedToBranch()) || isBranchSurroundedByCurrentPlayer())
+            else if ((isBranchBlank() || isBranchSurroundedByCurrentPlayer()) && hasEnoughResources() && isBranchConnectedToBranch())
             {
                 branchEntity.branchState.ownerColor = branchEntity.gameController.getCurrentPlayerColor();
                 branchEntity.branchState.branchColor = branchEntity.gameController.getCurrentPlayerColor();
