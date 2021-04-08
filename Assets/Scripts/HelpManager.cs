@@ -159,7 +159,7 @@ public class HelpManager : MonoBehaviour
         char gameType = GameInformation.gameType;
 
         // Local Game
-        if (gameType == 'A' || gameType == 'E' || gametype == 'P') {
+        if (gameType == 'A' || gameType == 'E' || gameType == 'P') {
             return (GameInformation.currentPlayer == "HUMAN" && GameInformation.playerIsHost) || (GameInformation.currentPlayer == "AI" && !GameInformation.playerIsHost);
         }
         // Network Game
