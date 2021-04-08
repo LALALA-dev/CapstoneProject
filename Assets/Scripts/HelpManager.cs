@@ -35,6 +35,25 @@ public class HelpManager : MonoBehaviour
         panelOrderKey[3] = -1;
     }
 
+    void Update()
+    {
+        // Deactivate the go and trade buttons and gameboard if it's not your turn and the buttons are interactable.
+        if (!isCurrentPlayer() && buttonsInteractable())
+        {
+            FlipTradeAndGoInteraction();
+        }
+        // Activate the go and trade buttons and gameboard if it's your turn, the buttons are not interactable, and the help panel is closed. 
+        else if (isCurrentPlayer() && !buttonsInteractable() && !isHelpPanelsActive)
+        {
+            FlipTradeAndGoInteraction();
+        }
+        // Deactivate the go and trade buttons and gameboard if it's your turn, the buttons are interactable, and the help panel is open. 
+        else if (isCurrentPlayer() && buttonsInteractable() && isHelpPanelsActive)
+        {
+            FlipTradeAndGoInteraction();
+        }
+    }
+
     public void onHelpClick()
     {
         if (isHelpPanelsActive)
@@ -50,11 +69,6 @@ public class HelpManager : MonoBehaviour
             
             nextButton.SetActive(true);
             cancelButton.SetActive(true);
-            
-            if (!GameInformation.gameOver)
-            {
-                FlipTradeAndGoInteraction();
-            }
         }
     }
 
@@ -91,10 +105,6 @@ public class HelpManager : MonoBehaviour
         nextButton.SetActive(false);
         previousButton.SetActive(false);
         cancelButton.SetActive(false);
-
-        if (!GameInformation.gameOver) {
-            FlipTradeAndGoInteraction();
-        }
     }
 
     public void SetPanelOrderTurnFive()
@@ -138,6 +148,29 @@ public class HelpManager : MonoBehaviour
 
     private void FlipTradeAndGoInteraction()
     {
-        SendMessageUpwards("ToggleTriggers");
+        if (!GameInformation.gameOver)
+        {
+            SendMessageUpwards("ToogleTriggers");
+        }
+    }
+    
+    private bool isCurrentPlayer()
+    {
+        char gameType = GameInformation.gameType;
+
+        // Local Game
+        if (gameType == 'A' || gameType == 'E' || gametype == 'P') {
+            return (GameInformation.currentPlayer == "HUMAN" && GameInformation.playerIsHost) || (GameInformation.currentPlayer == "AI" && !GameInformation.playerIsHost);
+        }
+        // Network Game
+        if (gameType == 'N') {
+            return (GameInformation.currentPlayer == "HOST" && GameInformation.playerIsHost) || (GameInformation.currentPlayer == "CLIENT" && !GameInformation.playerIsHost);
+        }
+        // Reaching this statement is an error; there are only four possibilities for GameInformation.gameType.
+        return false;
+    }
+
+    private bool buttonsInteractable() {
+        return goButton.GetComponent<Button>().interactable && tradeButton.GetComponent<Button>().interactable;
     }
 }
