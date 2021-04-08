@@ -420,7 +420,6 @@ public class ExpertAI
 
                     }
                
-
                     DateTime afterDT = System.DateTime.Now;
                     TimeSpan ts = afterDT.Subtract(beforDT);
 
