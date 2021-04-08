@@ -113,7 +113,7 @@ public class BranchController : MonoBehaviour
     {
         if (GameInformation.gameType != 'T' && GameInformation.currentPlayer != "AI" && !GameInformation.gameOver)
         {
-            if ((isBranchBlank() && hasEnoughResources() && (isBranchConnectedToBranch()) || isBranchSurroundedByCurrentPlayer()))
+            if ((isBranchBlank() || isBranchSurroundedByCurrentPlayer()) && hasEnoughResources() && isBranchConnectedToBranch())
             {
                 ClaimBranch(highlight);
             }
@@ -130,7 +130,6 @@ public class BranchController : MonoBehaviour
         {
             if (!GameInformation.openingSequence)
             {
-
                 if (!GameInformation.currentRoundPlacedBranches.Contains(branchEntity.id) && (branchEntity.branchState.ownerColor == PlayerColor.Blank || isBranchSurroundedByCurrentPlayer()))
                 {
                     ClaimBranch(blankSprite);
