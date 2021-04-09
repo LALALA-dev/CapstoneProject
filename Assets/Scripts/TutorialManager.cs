@@ -677,7 +677,11 @@ public class TutorialManager : MonoBehaviour
             infoOne.text = infoOneMessages[messageNumber];
             infoTwo.text = infoTwoMessages[messageNumber];
 
-            if (messageNumber == 2)
+            if(messageNumber == 0)
+            {
+                bottomBG.SetActive(true);
+            }
+            else if (messageNumber == 2)
             {
                 StopAllCoroutines();
                 tutorialPanel.SetActive(true);
@@ -706,6 +710,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 4)
             {
+                bottomBG.SetActive(true);
                 StopAllCoroutines();
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
@@ -811,7 +816,7 @@ public class TutorialManager : MonoBehaviour
                 StopAllCoroutines();
                 MoveArrow(0);
                 arrows[0].gameObject.SetActive(false);
-
+                bottomBG.SetActive(true);
                 // redo 8
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
@@ -935,6 +940,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 17)
             {
+                bottomBG.SetActive(true);
                 UndoNode(5, PlayerColor.Blank, tutorialNodes[0].blankSprite);
                 UndoBranch(7, PlayerColor.Blank, tutorialBranches[0].blankSprite);
                 UndoBranch(8, PlayerColor.Blank, tutorialBranches[0].blankSprite);
@@ -994,6 +1000,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 21)
             {
+                bottomBG.SetActive(true);
                 StopAllCoroutines();
                 goBtn.interactable = false;
                 forwardBtn.interactable = true;
@@ -1019,6 +1026,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 23)
             {
+                bottomBG.SetActive(true);
                 StopAllCoroutines();
                 MoveArrow(5);
                 arrows[5].gameObject.SetActive(false);
@@ -1144,6 +1152,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 28)
             {
+                bottomBG.SetActive(true);
                 int[] one = new int[] { 3, 2, 3, 1 };
                 int[] two = new int[] { 0, 0, 3, 3 };
                 SetResources(one, two);
@@ -1166,12 +1175,12 @@ public class TutorialManager : MonoBehaviour
                 SetResources(one, two);
                 playerResourcesManager.UpdateBothPlayersResources();
                 UndoNode(6, PlayerColor.Blank, tutorialNodes[0].blankSprite);
-                //ToggleTriggers();
                 forwardBtn.interactable = true;
                 goBtn.interactable = false;
             }
             else if(messageNumber == 30)
             {
+                bottomBG.SetActive(true);
                 UndoNode(6, PlayerColor.Blank, tutorialSprite);
                 MoveArrow(8);
                 MoveArrow(9);
