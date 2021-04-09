@@ -3837,8 +3837,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 764966184}
-        m_TargetAssemblyTypeName: HelpManager, Assembly-CSharp
+      - m_Target: {fileID: 764966185}
+        m_TargetAssemblyTypeName: TutorialHelpPanelManager, Assembly-CSharp
         m_MethodName: onNextHelp
         m_Mode: 1
         m_Arguments:
@@ -5697,7 +5697,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 764966183}
-  - component: {fileID: 764966184}
+  - component: {fileID: 764966185}
   m_Layer: 0
   m_Name: HelpManager
   m_TagString: Untagged
@@ -5719,7 +5719,7 @@ Transform:
   m_Father: {fileID: 1670892855}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &764966184
+--- !u!114 &764966185
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5728,7 +5728,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 764966182}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f825cd567d5947d4ebd61b99cdb1b8ca, type: 3}
+  m_Script: {fileID: 11500000, guid: 470ec8ca618a3fe458205753bb6ac5d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   helpPanels:
@@ -9390,8 +9390,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 764966184}
-        m_TargetAssemblyTypeName: HelpManager, Assembly-CSharp
+      - m_Target: {fileID: 764966185}
+        m_TargetAssemblyTypeName: TutorialHelpPanelManager, Assembly-CSharp
         m_MethodName: onHelpClick
         m_Mode: 1
         m_Arguments:
@@ -11072,8 +11072,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 764966184}
-        m_TargetAssemblyTypeName: HelpManager, Assembly-CSharp
+      - m_Target: {fileID: 764966185}
+        m_TargetAssemblyTypeName: TutorialHelpPanelManager, Assembly-CSharp
         m_MethodName: onPreviousHelp
         m_Mode: 1
         m_Arguments:
@@ -14145,8 +14145,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 764966184}
-        m_TargetAssemblyTypeName: HelpManager, Assembly-CSharp
+      - m_Target: {fileID: 764966185}
+        m_TargetAssemblyTypeName: TutorialHelpPanelManager, Assembly-CSharp
         m_MethodName: onCancelHelp
         m_Mode: 1
         m_Arguments:

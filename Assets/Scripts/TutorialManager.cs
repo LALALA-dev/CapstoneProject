@@ -162,7 +162,7 @@ public class TutorialManager : MonoBehaviour
 
     void Start()
     {
-        ToggleTriggers();
+        ToogleTriggers();
         BeginTutorial();
     }
     #endregion
@@ -193,7 +193,7 @@ public class TutorialManager : MonoBehaviour
         currentPlayerMessage.text = "Your Move";
     }
 
-    public void ToggleTriggers()
+    public void ToogleTriggers()
     {
         BroadcastMessage("ToggleNodeBranchTriggers");
     }
@@ -523,7 +523,7 @@ public class TutorialManager : MonoBehaviour
             else if (messageNumber == 28)
             {
                 StopAllCoroutines();
-                ToggleTriggers();
+                ToogleTriggers();
                 arrows[7].gameObject.SetActive(false);
                 for (int i = 0; i < tradingButtons.Length; i++)
                     tradingButtons[i].interactable = false;
@@ -534,7 +534,7 @@ public class TutorialManager : MonoBehaviour
                 int[] one = new int[] { 1, 2, 2, 2 };
                 int[] two = new int[] { 0, 0, 3, 3 };
                 SetResources(one, two);
-                ToggleTriggers();
+                ToogleTriggers();
                 tradeBtn.interactable = false;
                 forwardBtn.interactable = true;
             }
@@ -681,6 +681,10 @@ public class TutorialManager : MonoBehaviour
             {
                 bottomBG.SetActive(true);
             }
+            else if(messageNumber == 1)
+            {
+                bottomBG.SetActive(false);
+            }
             else if (messageNumber == 2)
             {
                 StopAllCoroutines();
@@ -738,7 +742,7 @@ public class TutorialManager : MonoBehaviour
             else if (messageNumber == 5)
             {
                 StopAllCoroutines();
-
+                bottomBG.SetActive(false);
                 // undo 6
                 GameInformation.openingMoveNodeSet = false;
                 GameInformation.openingMoveBranchSet = false;
@@ -835,13 +839,14 @@ public class TutorialManager : MonoBehaviour
                 StopAllCoroutines();
                 MoveArrow(1);
                 arrows[1].gameObject.SetActive(false);
-
+                bottomBG.SetActive(false);
                 // redo 9
                 arrows[0].gameObject.SetActive(true);
                 StartCoroutine(MoveForward(arrows[0]));
             }
             else if (messageNumber == 10)
             {
+                bottomBG.SetActive(false);
                 StopAllCoroutines();
                 MoveArrow(0);
                 arrows[0].gameObject.SetActive(false);
@@ -850,6 +855,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 11)
             {
+                bottomBG.SetActive(false);
                 StopAllCoroutines();
                 MoveArrow(1);
                 arrows[1].gameObject.SetActive(false);
@@ -959,6 +965,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 18)
             {
+                bottomBG.SetActive(false);
                 int[] one = new int[] { 3, 3, 3, 2 };
                 int[] two = new int[] { 0, 0, 2, 2 };
                 SetResources(one, two);
@@ -1009,6 +1016,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 22)
             {
+                bottomBG.SetActive(false);
                 tutorialTiles[0].squareState.resourceState = SquareStatus.Open;
                 blockSquares[0].sprite = undoBlockSprites[0];
                 GameInformation.currentPlayer = "HUMAN";
@@ -1051,6 +1059,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 24)
             {
+                bottomBG.SetActive(false);
                 StopAllCoroutines();
                 UndoBranch(12, PlayerColor.Blank, tutorialBranches[0].blankSprite);
                 MoveArrow(6);
@@ -1161,7 +1170,7 @@ public class TutorialManager : MonoBehaviour
                 forwardBtn.interactable = false;
                 GameInformation.resourceTrade = false;
                 tradePanel.SetActive(true);
-                ToggleTriggers();
+                ToogleTriggers();
                 StopAllCoroutines();
                 MoveArrow(7);
                 arrows[7].gameObject.SetActive(false);
@@ -1170,6 +1179,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 29)
             {
+                bottomBG.SetActive(false);
                 int[] one = new int[] { 1, 2, 2, 2 };
                 int[] two = new int[] { 0, 0, 3, 3 };
                 SetResources(one, two);
@@ -1199,6 +1209,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if(messageNumber == 31)
             {
+                bottomBG.SetActive(false);
                 UndoBranch(0, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
                 UndoBranch(3, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
                 UndoBranch(7, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
