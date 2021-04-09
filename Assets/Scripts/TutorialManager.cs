@@ -523,7 +523,6 @@ public class TutorialManager : MonoBehaviour
             else if (messageNumber == 28)
             {
                 StopAllCoroutines();
-                ToogleTriggers();
                 arrows[7].gameObject.SetActive(false);
                 for (int i = 0; i < tradingButtons.Length; i++)
                     tradingButtons[i].interactable = false;
@@ -534,7 +533,6 @@ public class TutorialManager : MonoBehaviour
                 int[] one = new int[] { 1, 2, 2, 2 };
                 int[] two = new int[] { 0, 0, 3, 3 };
                 SetResources(one, two);
-                ToogleTriggers();
                 tradeBtn.interactable = false;
                 forwardBtn.interactable = true;
             }
@@ -1170,7 +1168,6 @@ public class TutorialManager : MonoBehaviour
                 forwardBtn.interactable = false;
                 GameInformation.resourceTrade = false;
                 tradePanel.SetActive(true);
-                ToogleTriggers();
                 StopAllCoroutines();
                 MoveArrow(7);
                 arrows[7].gameObject.SetActive(false);

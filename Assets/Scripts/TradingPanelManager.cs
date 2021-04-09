@@ -96,8 +96,9 @@ public class TradingPanelManager : MonoBehaviour
             createResourceBtn[i].gameObject.SetActive(false);
             tilesSelected[i].text = "0";
         }
-        
-        SendMessageUpwards("ToogleTriggers");
+
+        if (GameInformation.gameType != 'T')
+            SendMessageUpwards("ToogleTriggers");
         panel.SetActive(false);
         GameInformation.resourceTrade = true;
         GameInformation.tradeHasBeenMade = true;
@@ -128,7 +129,9 @@ public class TradingPanelManager : MonoBehaviour
             else
                 GameInformation.maxTradeResources = GameInformation.playerTwoResources;
             panel.SetActive(true);
-            SendMessageUpwards("ToogleTriggers");
+
+            if(GameInformation.gameType != 'T')
+                SendMessageUpwards("ToogleTriggers");
         }
     }
 }
