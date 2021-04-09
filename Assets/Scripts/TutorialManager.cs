@@ -86,7 +86,7 @@ public class TutorialManager : MonoBehaviour
         "Click the chest to open the trading menu",
         "Click the 2 yellow dollars and a red dollar to trade for a needed green dollar",
         " ",
-        "", // 30
+        "Press GO to submit your move", // 30
         "",
         "All 6 of player 1's roads are connected",
         "The player with the longest road network will receive this card",
@@ -207,7 +207,15 @@ public class TutorialManager : MonoBehaviour
             infoOne.text = infoOneMessages[messageNumber];
             infoTwo.text = infoTwoMessages[messageNumber];
 
-            if (messageNumber == 3)
+            if(messageNumber == 1)
+            {
+                bottomBG.SetActive(false);
+            }
+            else if(messageNumber == 2)
+            {
+                bottomBG.SetActive(true);
+            }
+            else if (messageNumber == 3)
             {
                 tutorialPanel.SetActive(false);
                 HighlightNode(0);
@@ -230,6 +238,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 5)
             {
+                bottomBG.SetActive(false);
                 StopAllCoroutines();
                 arrows[3].gameObject.SetActive(false);
                 arrows[2].gameObject.SetActive(false);
@@ -247,6 +256,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 6)
             {
+                bottomBG.SetActive(true);
                 currentPlayerMessage.text = "Your Move";
                 GameInformation.openingMoveNodeSet = false;
                 GameInformation.openingMoveBranchSet = false;
@@ -296,6 +306,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 9)
             {
+                bottomBG.SetActive(false);
                 arrows[0].gameObject.SetActive(true);
                 StartCoroutine(MoveForward(arrows[0]));
             }
@@ -310,6 +321,10 @@ public class TutorialManager : MonoBehaviour
             {
                 StopAllCoroutines();
                 arrows[1].gameObject.SetActive(false);
+            }
+            else if(messageNumber == 12)
+            {
+                bottomBG.SetActive(true);
             }
             else if (messageNumber == 13)
             {
@@ -379,6 +394,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 18)
             {
+                bottomBG.SetActive(false);
                 HighlightNode(5);
 
                 HighlightBranch(7);
@@ -387,6 +403,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if(messageNumber == 19)
             {
+                bottomBG.SetActive(true);
                 int[] one = new int[] { 0, 0, 1, 0 };
                 int[] two = new int[] { 0, 0, 2, 2 };
                 SetResources(one, two);
@@ -410,11 +427,13 @@ public class TutorialManager : MonoBehaviour
             }
             else if(messageNumber == 22)
             {
+                bottomBG.SetActive(false);
                 goBtn.interactable = true;
                 forwardBtn.interactable = false;
             }
             else if(messageNumber == 23)
             {
+                bottomBG.SetActive(true);
                 forwardBtn.interactable = true;
                 goBtn.interactable = false;
                 tutorialTiles[0].squareState.resourceState = SquareStatus.Blocked;
@@ -435,6 +454,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 24)
             {
+                bottomBG.SetActive(false);
                 arrows[5].gameObject.SetActive(true);
                 StartCoroutine(MoveForward(arrows[5]));
                 ClaimBranch(10, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
@@ -447,6 +467,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 25)
             {
+                bottomBG.SetActive(true);
                 StopAllCoroutines();
                 arrows[5].gameObject.SetActive(false);
                 arrows[6].gameObject.SetActive(true);
@@ -509,6 +530,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if(messageNumber == 29)
             {
+                bottomBG.SetActive(false);
                 int[] one = new int[] { 1, 2, 2, 2 };
                 int[] two = new int[] { 0, 0, 3, 3 };
                 SetResources(one, two);
@@ -518,12 +540,14 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 30)
             {
+                bottomBG.SetActive(true);
                 HighlightNode(6);
                 forwardBtn.interactable = false;
                 goBtn.interactable = true;
             }
             else if (messageNumber == 31)
             {
+                bottomBG.SetActive(false);
                 ClaimNode(6, PlayerColor.Silver, tutorialNodes[0].playerOneSprite);
                 forwardBtn.interactable = true;
                 goBtn.interactable = false;
@@ -542,6 +566,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 32)
             {
+                bottomBG.SetActive(true);
                 arrows[8].gameObject.SetActive(false);
                 arrows[9].gameObject.SetActive(false);
                 ClaimBranch(0, PlayerColor.Silver, highlightSilver);
