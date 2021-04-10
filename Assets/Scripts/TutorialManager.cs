@@ -133,8 +133,8 @@ public class TutorialManager : MonoBehaviour
     public SpriteRenderer[] blockSquares;
     public Sprite[] undoBlockSprites;
 
-    private float[] arrowXLocations = new float[14];
-    private float[] arrowYLocations = new float[14];
+    private float[] arrowXLocations = new float[15];
+    private float[] arrowYLocations = new float[15];
 
     #region Setup
     private void Awake()
@@ -321,9 +321,14 @@ public class TutorialManager : MonoBehaviour
             {
                 StopAllCoroutines();
                 arrows[1].gameObject.SetActive(false);
+                arrows[14].gameObject.SetActive(true);
+                StartCoroutine(MoveBackward(arrows[14]));
             }
             else if(messageNumber == 12)
             {
+                StopAllCoroutines();
+                arrows[14].gameObject.SetActive(false);
+                MoveArrow(14);
                 bottomBG.SetActive(true);
             }
             else if (messageNumber == 13)
@@ -853,9 +858,11 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 11)
             {
-                bottomBG.SetActive(false);
                 StopAllCoroutines();
+                bottomBG.SetActive(false);
                 MoveArrow(1);
+                arrows[14].gameObject.SetActive(true);
+                StartCoroutine(MoveBackward(arrows[14]));
                 arrows[1].gameObject.SetActive(false);
             }
             else if (messageNumber == 12)
