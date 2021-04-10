@@ -22,6 +22,7 @@ public class HelpManager : MonoBehaviour
     public GameObject cancelButton;
     public GameObject tradeButton;
     public GameObject goButton;
+    public GameObject tradePanel;
 
     // Start is called before the first frame update
     void Start()
@@ -43,7 +44,7 @@ public class HelpManager : MonoBehaviour
             FlipTradeAndGoInteraction();
         }
         // Activate the go and trade buttons and gameboard if it's your turn, the buttons are not interactable, and the help panel is closed. 
-        else if (isCurrentPlayer() && !buttonsInteractable() && !isHelpPanelsActive)
+        else if (isCurrentPlayer() && !buttonsInteractable() && !isHelpPanelsActive && !tradePanel.activeSelf)
         {
             FlipTradeAndGoInteraction();
         }

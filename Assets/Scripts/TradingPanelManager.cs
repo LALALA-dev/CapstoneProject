@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class TradingPanelManager : MonoBehaviour
 {
     public TMP_Text[] tilesSelected;
+    public Text[] resourcesRemaining;
     public Button[] createResourceBtn;
     public GameObject panel;
 
@@ -125,9 +126,17 @@ public class TradingPanelManager : MonoBehaviour
         if(!GameInformation.resourceTrade)
         {
             if (GameInformation.currentPlayer == "HOST" || (GameInformation.currentPlayer == "HUMAN" && GameInformation.playerIsHost) || (GameInformation.currentPlayer == "AI" && !GameInformation.playerIsHost))
+            {
                 GameInformation.maxTradeResources = GameInformation.playerOneResources;
+            }
             else
+            {
                 GameInformation.maxTradeResources = GameInformation.playerTwoResources;
+            }
+            resourcesRemaining[0].text = GameInformation.maxTradeResources[0].ToString();
+            resourcesRemaining[1].text = GameInformation.maxTradeResources[1].ToString();
+            resourcesRemaining[2].text = GameInformation.maxTradeResources[2].ToString();
+            resourcesRemaining[3].text = GameInformation.maxTradeResources[3].ToString();
             panel.SetActive(true);
 
             if(GameInformation.gameType != 'T')
