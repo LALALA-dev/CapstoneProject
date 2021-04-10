@@ -133,6 +133,8 @@ public class TutorialManager : MonoBehaviour
     public SpriteRenderer[] blockSquares;
     public Sprite[] undoBlockSprites;
 
+    public AudioSource resourceSound;
+
     private float[] arrowXLocations = new float[15];
     private float[] arrowYLocations = new float[15];
 
@@ -293,7 +295,9 @@ public class TutorialManager : MonoBehaviour
             {
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
-                ;
+
+                resourceSound.Play();
+
                 int[] one = new int[] { 1, 1, 2, 2 };
                 int[] two = new int[] { 1, 1, 1, 1 };
                 SetResources(one, two);
@@ -386,7 +390,7 @@ public class TutorialManager : MonoBehaviour
             {
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
-                ;
+                resourceSound.Play();
                 int[] one = new int[] { 3, 3, 3, 2 };
                 int[] two = new int[] { 0, 0, 2, 2 };
                 SetResources(one, two);
@@ -485,7 +489,7 @@ public class TutorialManager : MonoBehaviour
                 forwardBtn.interactable = false;
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
-                ;
+                resourceSound.Play();
                 int[] one = new int[] { 4, 3, 3, 1 };
                 int[] two = new int[] { 0, 0, 3, 3 };
                 SetResources(one, two);
@@ -534,6 +538,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if(messageNumber == 29)
             {
+                resourceSound.Play();
                 bottomBG.SetActive(false);
                 int[] one = new int[] { 1, 2, 2, 2 };
                 int[] two = new int[] { 0, 0, 3, 3 };
@@ -619,7 +624,7 @@ public class TutorialManager : MonoBehaviour
                 HighlightNode(7);
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
-                ;
+                resourceSound.Play();
 
                 int[] one = new int[] { 4, 4, 3, 4 };
                 int[] two = new int[] { 2, 2, 4, 4 };
@@ -721,7 +726,6 @@ public class TutorialManager : MonoBehaviour
                 StopAllCoroutines();
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
-                ;
                 UndoBranch(0, PlayerColor.Blank, tutorialBranches[0].blankSprite);
                 GameInformation.openingMoveNodeSet = true;
                 GameInformation.openingMoveBranchSet = false;
@@ -787,7 +791,6 @@ public class TutorialManager : MonoBehaviour
                 // redo 6
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
-                ;
                 GameInformation.openingMoveNodeSet = false;
                 GameInformation.openingMoveBranchSet = false;
                 forwardBtn.interactable = false;
@@ -827,7 +830,7 @@ public class TutorialManager : MonoBehaviour
                 // redo 8
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
-                ;
+                resourceSound.Play();
                 int[] one = new int[] { 1, 1, 2, 2 };
                 int[] two = new int[] { 1, 1, 1, 1 };
                 SetResources(one, two);
@@ -891,7 +894,7 @@ public class TutorialManager : MonoBehaviour
                 currentPlayerMessage.text = "Your Move";
                 UndoBranch(5, PlayerColor.Blank, tutorialBranches[0].blankSprite);
                 UndoBranch(6, PlayerColor.Blank, tutorialBranches[0].blankSprite);
-                ;
+                resourceSound.Play();
                 gameController.UpdateScores();
                 playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
                 playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
@@ -959,7 +962,7 @@ public class TutorialManager : MonoBehaviour
 
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
-                ;
+                resourceSound.Play();
                 int[] one = new int[] { 3, 3, 3, 2 };
                 int[] two = new int[] { 0, 0, 2, 2 };
                 SetResources(one, two);
@@ -1026,7 +1029,7 @@ public class TutorialManager : MonoBehaviour
                 blockSquares[0].sprite = undoBlockSprites[0];
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
-                ;
+                resourceSound.Play();
                 int[] one = new int[] { 1, 1, 0, 0 };
                 int[] two = new int[] { 0, 0, 2, 2 };
                 SetResources(one, two);
@@ -1120,7 +1123,7 @@ public class TutorialManager : MonoBehaviour
                 forwardBtn.interactable = false;
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
-                ;
+                resourceSound.Play();
                 int[] one = new int[] { 4, 3, 3, 1 };
                 int[] two = new int[] { 0, 0, 3, 3 };
                 SetResources(one, two);
@@ -1245,6 +1248,7 @@ public class TutorialManager : MonoBehaviour
                 ClaimBranch(11, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
+                resourceSound.Play();
                 longestNetworkCard.SetActive(false);
                 int[] one = new int[] { 1, 2, 0, 0 };
                 int[] two = new int[] { 2, 2, 4, 4 };
@@ -1311,7 +1315,7 @@ public class TutorialManager : MonoBehaviour
                 HighlightNode(7);
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
-                ;
+                resourceSound.Play();
                 int[] one = new int[] { 4, 4, 3, 4 };
                 int[] two = new int[] { 2, 2, 4, 4 };
                 SetResources(one, two);
