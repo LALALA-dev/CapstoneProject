@@ -256,7 +256,6 @@ public class BranchController : MonoBehaviour
 
     public void ToggleTrigger()
     {
-
         BoxCollider2D boxCollider = gameObject.GetComponent<BoxCollider2D>();
         if (boxCollider.enabled)
         {

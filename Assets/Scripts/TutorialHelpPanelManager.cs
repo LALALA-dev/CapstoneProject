@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using static GameObjectProperties;
 
-public class HelpManager : MonoBehaviour
+public class TutorialHelpPanelManager : MonoBehaviour
 {
     private bool isHelpPanelsActive;
     private int currentPanel;
@@ -22,12 +22,11 @@ public class HelpManager : MonoBehaviour
     public GameObject cancelButton;
     public GameObject tradeButton;
     public GameObject goButton;
-    public GameObject tradePanel;
 
     // Start is called before the first frame update
     void Start()
     {
-        isHelpPanelsActive = false;        
+        isHelpPanelsActive = false;
         panelOrderKey = new int[helpPanels.Length];
 
         panelOrderKey[0] = 0;
@@ -44,7 +43,7 @@ public class HelpManager : MonoBehaviour
             FlipTradeAndGoInteraction();
         }
         // Activate the go and trade buttons and gameboard if it's your turn, the buttons are not interactable, and the help panel is closed. 
-        else if (isCurrentPlayer() && !buttonsInteractable() && !isHelpPanelsActive && !tradePanel.activeSelf)
+        else if (isCurrentPlayer() && !buttonsInteractable() && !isHelpPanelsActive)
         {
             FlipTradeAndGoInteraction();
         }
@@ -67,7 +66,7 @@ public class HelpManager : MonoBehaviour
             currentPanel = 0;
             // Activate the first help panel that should be shown.
             helpPanels[panelOrderKey[currentPanel]].SetActive(true);
-            
+
             nextButton.SetActive(true);
             cancelButton.SetActive(true);
         }
@@ -110,7 +109,8 @@ public class HelpManager : MonoBehaviour
 
     public void SetPanelOrderTurnFive()
     {
-        if (!isHelpPanelsActive) {
+        if (!isHelpPanelsActive)
+        {
             panelOrderKey[0] = 1;
             panelOrderKey[1] = 2;
             panelOrderKey[2] = 3;
@@ -120,7 +120,8 @@ public class HelpManager : MonoBehaviour
 
     public void SetPanelOrderTurnNine()
     {
-        if (!isHelpPanelsActive) {
+        if (!isHelpPanelsActive)
+        {
             panelOrderKey[0] = 3;
             panelOrderKey[1] = 1;
             panelOrderKey[2] = 2;
@@ -154,24 +155,27 @@ public class HelpManager : MonoBehaviour
             SendMessageUpwards("ToogleTriggers");
         }
     }
-    
+
     private bool isCurrentPlayer()
     {
         char gameType = GameInformation.gameType;
 
         // Local Game
-        if (gameType == 'A' || gameType == 'E' || gameType == 'P') {
+        if (gameType == 'A' || gameType == 'E' || gameType == 'P')
+        {
             return GameInformation.currentPlayer == "HUMAN";
         }
         // Network Game
-        if (gameType == 'N') {
+        if (gameType == 'N')
+        {
             return (GameInformation.currentPlayer == "HOST" && GameInformation.playerIsHost) || (GameInformation.currentPlayer == "CLIENT" && !GameInformation.playerIsHost);
         }
         // Reaching this statement is an error; there are only four possibilities for GameInformation.gameType.
         return false;
     }
 
-    private bool buttonsInteractable() {
+    private bool buttonsInteractable()
+    {
         return goButton.GetComponent<Button>().interactable && tradeButton.GetComponent<Button>().interactable;
     }
 }
