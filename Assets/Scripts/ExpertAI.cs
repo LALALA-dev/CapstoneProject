@@ -47,6 +47,8 @@ public class ExpertAI
 
         private List<MyBoard> GetPossibleMoves(MyBoard currentBoard, PlayerColor currentPlayer)
         {
+            int[] resource_collected = new int[4]; resource_collected = BeginnerAI.CollectCurrentPlayerResources(currentBoard.boardState, currentPlayer);
+            int[] backup_resource = new int[4];
             int flag_moved = 0;
             int trade = 0;
             List<List<MyBoard>> storage = new List<List<MyBoard>>();
@@ -64,9 +66,11 @@ public class ExpertAI
                     temp_result.Clear();
                     MyBoard temp = storage[storage.Count - 1][i].Clone();
                     int[] resource;
+                    
                     if (currentPlayer == AIcolor)
                     {
                         resource = temp.aiResources;
+                        backup_resource = (int[])temp.aiResources.Clone();
                         if (AIcolor == PlayerColor.Silver)
                         {
                             otherColor = PlayerColor.Gold;
@@ -80,6 +84,7 @@ public class ExpertAI
                     {
                         otherColor = AIcolor;
                         resource = temp.playerResources;
+                        backup_resource = (int[])temp.playerResources.Clone();
                     }
 
 
@@ -88,7 +93,7 @@ public class ExpertAI
                     List<int> branches = CalculatePossibleBranches(temp.boardState, temp_resource_branches, currentPlayer);
                     if (branches.Count == 0 && trade == 0)
                     {
-                        ResourceTradingForBranches(temp_resource_branches, BeginnerAI.CollectCurrentPlayerResources(currentBoard.boardState, currentPlayer), temp.boardState, currentPlayer, ref trade);
+                        ResourceTradingForBranches(temp_resource_branches, resource_collected, temp.boardState, currentPlayer, ref trade);
                         branches = CalculatePossibleBranches(temp.boardState, temp_resource_branches, currentPlayer);
                     }
                     foreach (int j in branches)
@@ -113,7 +118,7 @@ public class ExpertAI
                     List<int> nodes = CalculatePossibleNodes(temp.boardState, temp_resource_nodes, currentPlayer);
                     if (nodes.Count == 0 && trade == 0)
                     {
-                        ResourceTradingForNodes(temp_resource_nodes, BeginnerAI.CollectCurrentPlayerResources(currentBoard.boardState, currentPlayer), temp.boardState, currentPlayer, ref trade);
+                        ResourceTradingForNodes(temp_resource_nodes, resource_collected, temp.boardState, currentPlayer, ref trade);
                         nodes = CalculatePossibleNodes(temp.boardState, temp_resource_nodes, currentPlayer);
                     }
                     foreach (int j in nodes)
@@ -163,33 +168,46 @@ public class ExpertAI
             for (int i = 0; i < storage.Count; i++)
             {
                 if (storage[storage.Count - (1 + i)].Count != 0)
-                {/*
-                    for (int k = 0; k < storage[storage.Count - (1 + i)].Count - 1; k++)
-                    {
-                        int cc = 0;
-                        int nn = 0;
-                        for (int j = 0; j < 36; j++)
-                        {
-                            if (storage[storage.Count - (1 + i)][k].boardState.branchStates[j].branchColor == storage[storage.Count - (1 + i)][k + 1].boardState.branchStates[j].branchColor)
-                            {
-                                cc++;
-                            }
-                        }
-                        for (int j = 0; j < 24; j++)
-                        {
-                            if (storage[storage.Count - (1 + i)][k].boardState.nodeStates[j].nodeColor == storage[storage.Count - (1 + i)][k + 1].boardState.nodeStates[j].nodeColor)
-                            {
-                                nn++;
-                            }
-                        }
-                        if (nn == 24 && cc == 36)
-                        {
-                            storage[storage.Count - (1 + i)].RemoveAt(k);
-                        }
-                    }
-                    */
+                {
+                  
                     return storage[storage.Count - (1 + i)];
                 }
+            }
+
+
+            int tttrade = 0;
+            int[] tttemp_resource = (int[])backup_resource.Clone();
+            ResourceTradingForBranches(tttemp_resource, resource_collected, currentBoard.boardState, currentPlayer, ref tttrade);
+            if (tttrade == 1)
+            {
+                MyBoard localBoard = currentBoard.Clone();
+                if (currentPlayer == AIcolor)
+                {
+                    localBoard.aiResources = tttemp_resource;
+                }
+                else
+                {
+                    localBoard.playerResources = tttemp_resource;
+
+                }
+                storage[0].Add(localBoard);
+                tttrade = 0;
+            }
+            tttemp_resource = (int[])backup_resource.Clone();
+            ResourceTradingForNodes(tttemp_resource, resource_collected, currentBoard.boardState, currentPlayer, ref tttrade);
+            if (tttrade == 1)
+            {
+                MyBoard localBoard = currentBoard.Clone();
+                if (currentPlayer == AIcolor)
+                {
+                    localBoard.aiResources = tttemp_resource;
+                }
+                else
+                {
+                    localBoard.playerResources = tttemp_resource;
+
+                }
+                storage[0].Add(localBoard);
             }
             return storage[0];
         }
@@ -325,7 +343,6 @@ public class ExpertAI
                                     temp.localBoard.boardState.branchStates[result[index]].ownerColor = playerCol;
                                     temp.localBoard.boardState.branchStates[result[index]].branchColor = playerCol;
                                     moved = 1;
-
                                 }
                             }
                         }
@@ -336,9 +353,9 @@ public class ExpertAI
                             moved = 1;
                         }
                     }
+                    DetectMultiTileCaptures(temp.localBoard.boardState);
                 } while (moved == 1);
 
-                DetectMultiTileCaptures(temp.localBoard.boardState);
                 int[] res = BeginnerAI.CollectCurrentPlayerResources(temp.localBoard.boardState, otherColor);
                 for (int i = 0; i < 4; i++)
                 {
@@ -402,20 +419,7 @@ public class ExpertAI
                         backpropgation(promisingNode, winner);
 
                     }
-                    for (int i = 0; i < root.child.Count; i++)
-                    {
-                        if (root.child[i].N >= max)
-                        {
-                            if ((root.child[i].N == max && root.child[i].W > root.child[loc].W) || root.child[i].N > max)
-                            {
-                                loc = i;
-                                max = root.child[i].N;
-                            }
-                        }
-                    }
-                    best = root.child[loc].localBoard.boardState;
-                    ttt = loc;
-
+               
                     DateTime afterDT = System.DateTime.Now;
                     TimeSpan ts = afterDT.Subtract(beforDT);
 
@@ -423,6 +427,19 @@ public class ExpertAI
                     {
                         Debug.Log("times: " + ccc);
                         timeOut = true;
+                        for (int i = 0; i < root.child.Count; i++)
+                        {
+                            if (root.child[i].N >= max)
+                            {
+                                if ((root.child[i].N == max && root.child[i].W > root.child[loc].W) || root.child[i].N > max)
+                                {
+                                    loc = i;
+                                    max = root.child[i].N;
+                                }
+                            }
+                        }
+                        best = root.child[loc].localBoard.boardState;
+                        ttt = loc;
 
                     }
                     ccc++;

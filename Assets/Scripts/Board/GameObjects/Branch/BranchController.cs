@@ -56,7 +56,7 @@ public class BranchController : MonoBehaviour
                 }
 
             }
-            else if ((isBranchBlank() && hasEnoughResources() && isBranchConnectedToBranch()) || isBranchSurroundedByCurrentPlayer())
+            else if ((isBranchBlank() || isBranchSurroundedByCurrentPlayer()) && hasEnoughResources() && isBranchConnectedToBranch())
             {
                 branchEntity.branchState.ownerColor = branchEntity.gameController.getCurrentPlayerColor();
                 branchEntity.branchState.branchColor = branchEntity.gameController.getCurrentPlayerColor();
@@ -111,9 +111,9 @@ public class BranchController : MonoBehaviour
 
     public void OnMouseEnter()
     {
-        if (GameInformation.gameType != 'T' && GameInformation.currentPlayer != "AI")
+        if (GameInformation.gameType != 'T' && GameInformation.currentPlayer != "AI" && !GameInformation.gameOver)
         {
-            if ((isBranchBlank() && hasEnoughResources() && (isBranchConnectedToBranch()) || isBranchSurroundedByCurrentPlayer()))
+            if ((isBranchBlank() || isBranchSurroundedByCurrentPlayer()) && hasEnoughResources() && isBranchConnectedToBranch())
             {
                 ClaimBranch(highlight);
             }
@@ -126,11 +126,10 @@ public class BranchController : MonoBehaviour
 
     public void OnMouseExit()
     {
-        if (GameInformation.gameType != 'T' && GameInformation.currentPlayer != "AI")
+        if (GameInformation.gameType != 'T' && GameInformation.currentPlayer != "AI" && !GameInformation.gameOver)
         {
             if (!GameInformation.openingSequence)
             {
-
                 if (!GameInformation.currentRoundPlacedBranches.Contains(branchEntity.id) && (branchEntity.branchState.ownerColor == PlayerColor.Blank || isBranchSurroundedByCurrentPlayer()))
                 {
                     ClaimBranch(blankSprite);
@@ -257,7 +256,6 @@ public class BranchController : MonoBehaviour
 
     public void ToggleTrigger()
     {
-
         BoxCollider2D boxCollider = gameObject.GetComponent<BoxCollider2D>();
         if (boxCollider.enabled)
         {

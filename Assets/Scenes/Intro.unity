@@ -316,6 +316,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 620744380}
   m_CullTransparentMesh: 1
+--- !u!82 &738442992 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 3614029177257396343, guid: b2dee08db062ab14da0dd5636489fb51, type: 3}
+  m_PrefabInstance: {fileID: 1006911376}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &781454334
 GameObject:
   m_ObjectHideFlags: 0
@@ -416,6 +421,7 @@ MonoBehaviour:
   gameLogo: {fileID: 620744382}
   introImage: {fileID: 1326261973}
   sl: {fileID: 595688688}
+  introMusic: {fileID: 738442992}
 --- !u!1 &875618288
 GameObject:
   m_ObjectHideFlags: 0
@@ -509,7 +515,11 @@ PrefabInstance:
     - target: {fileID: 3614029177257396343, guid: b2dee08db062ab14da0dd5636489fb51, type: 3}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: c1f8f79943f3de84b936ed43a6bbc51b, type: 3}
+      objectReference: {fileID: 8300000, guid: 7b26f9b9428637a4bb76158a6ded5e82, type: 3}
+    - target: {fileID: 3614029177257396343, guid: b2dee08db062ab14da0dd5636489fb51, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3614029177257396344, guid: b2dee08db062ab14da0dd5636489fb51, type: 3}
       propertyPath: m_RootOrder
       value: 5
