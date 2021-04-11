@@ -19,6 +19,8 @@ public class TutorialHelpPanelManager : MonoBehaviour
     public TMP_Text[] totalScoresText;
     public GameObject nextButton;
     public GameObject previousButton;
+    public GameObject tutorialNextGameButton;
+    public GameObject tutorialPreviousButton;
     public GameObject cancelButton;
     public GameObject tradeButton;
     public GameObject goButton;
@@ -31,8 +33,10 @@ public class TutorialHelpPanelManager : MonoBehaviour
 
         panelOrderKey[0] = 0;
         panelOrderKey[1] = 1;
-        panelOrderKey[2] = -1;
-        panelOrderKey[3] = -1;
+        panelOrderKey[2] = 2;
+        panelOrderKey[3] = 3;
+
+        SetTutorialHelpPopupScores();
     }
 
     void Update()
@@ -69,6 +73,8 @@ public class TutorialHelpPanelManager : MonoBehaviour
 
             nextButton.SetActive(true);
             cancelButton.SetActive(true);
+            tutorialNextGameButton.SetActive(false);
+            tutorialPreviousButton.SetActive(false);
         }
     }
 
@@ -105,54 +111,34 @@ public class TutorialHelpPanelManager : MonoBehaviour
         nextButton.SetActive(false);
         previousButton.SetActive(false);
         cancelButton.SetActive(false);
+        tutorialNextGameButton.SetActive(true);
+        tutorialPreviousButton.SetActive(true);
     }
 
-    public void SetPanelOrderTurnFive()
-    {
-        if (!isHelpPanelsActive)
-        {
-            panelOrderKey[0] = 1;
-            panelOrderKey[1] = 2;
-            panelOrderKey[2] = 3;
-            panelOrderKey[3] = -1;
-        }
-    }
-
-    public void SetPanelOrderTurnNine()
-    {
-        if (!isHelpPanelsActive)
-        {
-            panelOrderKey[0] = 3;
-            panelOrderKey[1] = 1;
-            panelOrderKey[2] = 2;
-            panelOrderKey[3] = -1;
-        }
-    }
-
-    public void UpdateHelpPopupScores()
+    public void SetTutorialHelpPopupScores()
     {
         // Tokens
-        tokenScoresText[0].text = GameInformation.playerOneNodes.ToString();
-        tokenScoresText[1].text = GameInformation.playerTwoNodes.ToString();
+        tokenScoresText[0].text = "6";
+        tokenScoresText[1].text = "2";
 
         // Monopolized Properties
-        propertyScoresText[0].text = GameInformation.playerOneProperties.ToString();
-        propertyScoresText[1].text = GameInformation.playerTwoProperties.ToString();
+        propertyScoresText[0].text = "2";
+        propertyScoresText[1].text = "1";
 
         // Longest Road
-        longestRoadsText[0].text = GameInformation.playerOneNetwork.ToString();
-        longestRoadsText[1].text = GameInformation.playerTwoNetwork.ToString();
+        longestRoadsText[0].text = "6";
+        longestRoadsText[1].text = "5";
 
         // Total Scores
-        totalScoresText[0].text = GameInformation.playerOneScore.ToString();
-        totalScoresText[1].text = GameInformation.playerTwoScore.ToString();
+        totalScoresText[0].text = "10";
+        totalScoresText[1].text = "3";
     }
 
     private void FlipTradeAndGoInteraction()
     {
         if (!GameInformation.gameOver)
         {
-            SendMessageUpwards("ToogleTriggers");
+            // SendMessageUpwards("ToogleTriggers");
         }
     }
 

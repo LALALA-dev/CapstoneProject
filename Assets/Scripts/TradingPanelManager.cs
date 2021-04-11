@@ -11,11 +11,14 @@ public class TradingPanelManager : MonoBehaviour
     public Button[] createResourceBtn;
     public GameObject panel;
 
+    public Image tradeError;
+
     private int numberOfTilesSelected = 0;
     private int[] resources = new int[4] { 0, 0, 0, 0 };
 
     void Start()
     {
+        tradeError.gameObject.SetActive(false);
         panel.SetActive(false);
         for (int i = 0; i < 4; i++)
             createResourceBtn[i].gameObject.SetActive(false);
@@ -69,11 +72,14 @@ public class TradingPanelManager : MonoBehaviour
         else if (numSelected == GameInformation.maxTradeResources[colorId])
         {
             numberOfTilesSelected -= numSelected;
-            tilesSelected[colorId].text = "0";
+            numSelected = 0;
+            tilesSelected[colorId].text = numSelected.ToString();
             resources[colorId] = 0;
             for (int i = 0; i < 4; i++)
                 createResourceBtn[i].gameObject.SetActive(false);
         }
+        
+        resourcesRemaining[colorId].text = (GameInformation.maxTradeResources[colorId] - numSelected).ToString();
 
         RenderCreateBtnChoices();
     }
@@ -141,6 +147,10 @@ public class TradingPanelManager : MonoBehaviour
 
             if(GameInformation.gameType != 'T')
                 SendMessageUpwards("ToogleTriggers");
+        }
+        else
+        {
+            tradeError.gameObject.SetActive(true);
         }
     }
 }
