@@ -855,6 +855,8 @@ public class TutorialManager : MonoBehaviour
                 bottomBG.SetActive(false);
                 StopAllCoroutines();
                 MoveArrow(0);
+                arrows[14].gameObject.SetActive(false);
+                MoveArrow(14);
                 arrows[0].gameObject.SetActive(false);
                 arrows[1].gameObject.SetActive(true);
                 StartCoroutine(MoveForward(arrows[1]));
