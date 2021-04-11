@@ -25,13 +25,13 @@ public class TutorialManager : MonoBehaviour
         "For the first two rounds for each player, the game piece-road combo can go anywhere in the city...",
         "It's now player 2's turn",
         "Every piece collects a rent from all non-foreclosed properties it touches, this is done at the start of every turn",
-        "This game piece collects rent from 1 green, 1 red, and 1 yellow property",
-        "And this game piece collects rent from 1 green, 1 yellow, and 1 blue property", // 10
+        "This game piece collects rent from Pacific Avenue, one from Illinois Avenue, and one from Marvin Gardens",
+        "And this game piece collects rent from North Carolina Avenue, one from Marvin Gardens, and one from Connecticut Avenue", // 10
         "Meaning that you've collected rent in the form of 2 green, 2 yellow, 1 blue, and 1 red for this turn",
         "Players use collected rent to build additional game pieces and roads",
-        "Tap the street corner of the property to place a new game piece",
+        "Click the street corner of the property to place a new game piece",
         "Now it's the gold player's turn, they receive their rent from their properties",
-        "Houses are legally connected even if they pass through an opponent's game piece", // 15
+        "Roads are legally connected even if they pass through an opponent's game piece", // 15
         "The gold player now submits their move...",
         "The silver player gets rent from all their placed game pieces",
         "Build the highlighted roads and game pieces",
@@ -46,11 +46,11 @@ public class TutorialManager : MonoBehaviour
         "If you don't have the right mix of rent, you can trade for it",
         "Once per turn, you may trade any 3 types of rent for one of another color",
         "Now you have the rent required to build 1 more game piece",
-        "Tap the highlighted street corner to build a game piece", // 30
+        "Click the highlighted street corner to build a game piece", // 30
         "The goal of Nodopoly is to be the first to 10 points",
-        "1 point is rewarded for each game piece placed and monopolized property. 2 points are rewarded for having the longest chain of roads",
-        "While the gold player has 7 roads placed, but not all connected. This means the silver player has the longest network because 6 > 5",
-        "Tap the highlighted corner to build a game piece",
+        "1 point is rewarded for each game piece placed and one point for each monopolized property. 2 points are rewarded for having the longest chain of roads",
+        "While the gold player has 7 roads placed, not all are connected. This means the silver player has the longest network because 6 > 5",
+        "Click the highlighted corner to build a game piece",
         "", // 35
         "Click the Police Man to quit any game, click the Question for in-game rule summary and score breakdown"
     };
@@ -59,8 +59,8 @@ public class TutorialManager : MonoBehaviour
         "Click the green arrow to proceed. Click the red arrow to go back. Click the police man in the top left to exit at any time",
         "",
         "The opening sequence of Nodopoly goes: player 1 then player 2, player 2, player 1 and then back to player 2 to start the game",
-        "Tap the highlighted street corner to build a game piece",
-        "Tap the highlighted street to build a road to connect to your game piece. Press GO to submit your move",
+        "Click the highlighted street corner to build a game piece",
+        "Click the highlighted street to build a road to connect to your game piece. Press GO to submit your move",
         "", // 5
         "...but after the first two moves, new placements must connect to an already established network",
         "They collect their rent and make their move, they complete the turn to pass it back to you",
@@ -68,18 +68,18 @@ public class TutorialManager : MonoBehaviour
         " ",
         " ", // 10
         "",
-        "A road costs 1 red and 1 blue, while a game piece costs 2 yellow, and 2 green",
+        "A road costs 1 red and 1 blue, while a game piece costs 2 yellow and 2 green",
         "Press Go to submit your move",
         " ",
         "And you may build additional roads without any game pieces on them", // 15
         "...and any unused rent are saved for future rounds",
         "Including from the new game piece they placed last turn",
         "",
-        "If more game pieces are on property than it's star amount, it forecloses and stops paying rent out to either player",
+        "If more game pieces are on property than its star amount, it forecloses and stops paying rent out to either player",
         "But the silver player is about to place a 2nd game piece on it, which will foreclose it", // 20
         "Remember, game pieces from both players count towards the total limit!",
         "",
-        "Monopolizing a property builds a hotel on that property and stop paying rent to the opposing player",
+        "Monopolizing a property builds a hotel on that property and stops it paying rent to the opposing player",
         " ",
         "Surrounding a foreclosed property also monopolizes it, and starts paying rent only to the player who surrounded it", // 25
         "The gold player cannot build through the silver perimeter now that these properties are monopolized",
