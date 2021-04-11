@@ -6289,6 +6289,8 @@ MonoBehaviour:
   - {fileID: 809804699}
   nextButton: {fileID: 364638673}
   previousButton: {fileID: 1433891470}
+  tutorialNextGameButton: {fileID: 2063191965}
+  tutorialPreviousButton: {fileID: 1371512776}
   cancelButton: {fileID: 1713162449}
   tradeButton: {fileID: 1260590531}
   goButton: {fileID: 333054263}
