@@ -19,6 +19,8 @@ public class TutorialHelpPanelManager : MonoBehaviour
     public TMP_Text[] totalScoresText;
     public GameObject nextButton;
     public GameObject previousButton;
+    public GameObject tutorialNextGameButton;
+    public GameObject tutorialPreviousButton;
     public GameObject cancelButton;
     public GameObject tradeButton;
     public GameObject goButton;
@@ -69,6 +71,8 @@ public class TutorialHelpPanelManager : MonoBehaviour
 
             nextButton.SetActive(true);
             cancelButton.SetActive(true);
+            tutorialNextGameButton.SetActive(false);
+            tutorialPreviousButton.SetActive(false);
         }
     }
 
@@ -105,6 +109,8 @@ public class TutorialHelpPanelManager : MonoBehaviour
         nextButton.SetActive(false);
         previousButton.SetActive(false);
         cancelButton.SetActive(false);
+            tutorialNextGameButton.SetActive(true);
+            tutorialPreviousButton.SetActive(true);
     }
 
     public void SetPanelOrderTurnFive()
