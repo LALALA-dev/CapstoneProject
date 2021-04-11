@@ -72,11 +72,14 @@ public class TradingPanelManager : MonoBehaviour
         else if (numSelected == GameInformation.maxTradeResources[colorId])
         {
             numberOfTilesSelected -= numSelected;
-            tilesSelected[colorId].text = "0";
+            numSelected = 0;
+            tilesSelected[colorId].text = numSelected.ToString();
             resources[colorId] = 0;
             for (int i = 0; i < 4; i++)
                 createResourceBtn[i].gameObject.SetActive(false);
         }
+        
+        resourcesRemaining[colorId].text = (GameInformation.maxTradeResources[colorId] - numSelected).ToString();
 
         RenderCreateBtnChoices();
     }
