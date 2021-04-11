@@ -138,7 +138,7 @@ public class TutorialHelpPanelManager : MonoBehaviour
     {
         if (!GameInformation.gameOver)
         {
-            SendMessageUpwards("ToogleTriggers");
+            // SendMessageUpwards("ToogleTriggers");
         }
     }
 
