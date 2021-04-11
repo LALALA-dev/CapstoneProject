@@ -11,11 +11,14 @@ public class TradingPanelManager : MonoBehaviour
     public Button[] createResourceBtn;
     public GameObject panel;
 
+    public Image tradeError;
+
     private int numberOfTilesSelected = 0;
     private int[] resources = new int[4] { 0, 0, 0, 0 };
 
     void Start()
     {
+        tradeError.gameObject.SetActive(false);
         panel.SetActive(false);
         for (int i = 0; i < 4; i++)
             createResourceBtn[i].gameObject.SetActive(false);
@@ -141,6 +144,10 @@ public class TradingPanelManager : MonoBehaviour
 
             if(GameInformation.gameType != 'T')
                 SendMessageUpwards("ToogleTriggers");
+        }
+        else
+        {
+            tradeError.gameObject.SetActive(true);
         }
     }
 }
