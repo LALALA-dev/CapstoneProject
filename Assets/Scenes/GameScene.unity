@@ -18766,6 +18766,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11181025}
     - target: {fileID: 6360407185267274220, guid: 15adae69043f22240b430d76f5f37927, type: 3}
+      propertyPath: tradeError
+      value: 
+      objectReference: {fileID: 1498160094}
+    - target: {fileID: 6360407185267274220, guid: 15adae69043f22240b430d76f5f37927, type: 3}
       propertyPath: tilesSelected.Array.size
       value: 4
       objectReference: {fileID: 0}
