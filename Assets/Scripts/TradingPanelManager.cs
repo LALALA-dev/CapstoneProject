@@ -7,14 +7,18 @@ using UnityEngine.UI;
 public class TradingPanelManager : MonoBehaviour
 {
     public TMP_Text[] tilesSelected;
+    public Text[] resourcesRemaining;
     public Button[] createResourceBtn;
     public GameObject panel;
+
+    public Image tradeError;
 
     private int numberOfTilesSelected = 0;
     private int[] resources = new int[4] { 0, 0, 0, 0 };
 
     void Start()
     {
+        tradeError.gameObject.SetActive(false);
         panel.SetActive(false);
         for (int i = 0; i < 4; i++)
             createResourceBtn[i].gameObject.SetActive(false);
@@ -68,11 +72,14 @@ public class TradingPanelManager : MonoBehaviour
         else if (numSelected == GameInformation.maxTradeResources[colorId])
         {
             numberOfTilesSelected -= numSelected;
-            tilesSelected[colorId].text = "0";
+            numSelected = 0;
+            tilesSelected[colorId].text = numSelected.ToString();
             resources[colorId] = 0;
             for (int i = 0; i < 4; i++)
                 createResourceBtn[i].gameObject.SetActive(false);
         }
+        
+        resourcesRemaining[colorId].text = (GameInformation.maxTradeResources[colorId] - numSelected).ToString();
 
         RenderCreateBtnChoices();
     }
@@ -96,8 +103,9 @@ public class TradingPanelManager : MonoBehaviour
             createResourceBtn[i].gameObject.SetActive(false);
             tilesSelected[i].text = "0";
         }
-        
-        SendMessageUpwards("ToogleTriggers");
+
+        if (GameInformation.gameType != 'T')
+            SendMessageUpwards("ToogleTriggers");
         panel.SetActive(false);
         GameInformation.resourceTrade = true;
         GameInformation.tradeHasBeenMade = true;
@@ -124,11 +132,25 @@ public class TradingPanelManager : MonoBehaviour
         if(!GameInformation.resourceTrade)
         {
             if (GameInformation.currentPlayer == "HOST" || (GameInformation.currentPlayer == "HUMAN" && GameInformation.playerIsHost) || (GameInformation.currentPlayer == "AI" && !GameInformation.playerIsHost))
+            {
                 GameInformation.maxTradeResources = GameInformation.playerOneResources;
+            }
             else
+            {
                 GameInformation.maxTradeResources = GameInformation.playerTwoResources;
+            }
+            resourcesRemaining[0].text = GameInformation.maxTradeResources[0].ToString();
+            resourcesRemaining[1].text = GameInformation.maxTradeResources[1].ToString();
+            resourcesRemaining[2].text = GameInformation.maxTradeResources[2].ToString();
+            resourcesRemaining[3].text = GameInformation.maxTradeResources[3].ToString();
             panel.SetActive(true);
-            SendMessageUpwards("ToogleTriggers");
+
+            if(GameInformation.gameType != 'T')
+                SendMessageUpwards("ToogleTriggers");
+        }
+        else
+        {
+            tradeError.gameObject.SetActive(true);
         }
     }
 }

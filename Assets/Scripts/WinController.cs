@@ -13,6 +13,8 @@ public class WinController : MonoBehaviour
     public GameObject panel;
     public Button completeTurnBtn;
     public Button tradeBtn;
+    public GameObject gameMusic;
+    public GameObject winMusic;
 
     private bool gameInReview;
 
@@ -20,6 +22,8 @@ public class WinController : MonoBehaviour
     {
         panel.gameObject.SetActive(false);
         gameInReview = false;
+        gameMusic.gameObject.SetActive(true);
+        winMusic.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -27,6 +31,8 @@ public class WinController : MonoBehaviour
         if (GameInformation.gameOver && !gameInReview) {
             gameInReview = true;
             GameInformation.tutorialNeeded = true;
+            if (GameInformation.gameType == 'N')
+                GameInformation.networkHelpNeeded = false;
             EnableWinPanel();
         }
     }
@@ -46,6 +52,8 @@ public class WinController : MonoBehaviour
             loserScoreText.text = "Player One: " + GameInformation.playerOneScore.ToString();
         }
         panel.gameObject.SetActive(true);
+        gameMusic.gameObject.SetActive(false);
+        winMusic.gameObject.SetActive(true);
     }
 
     public void OnCancelClick()
@@ -53,5 +61,6 @@ public class WinController : MonoBehaviour
         panel.gameObject.SetActive(false);
         completeTurnBtn.interactable = false;
         tradeBtn.interactable = false;
+        winMusic.gameObject.SetActive(false);
     }
 }

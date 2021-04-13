@@ -25,13 +25,13 @@ public class TutorialManager : MonoBehaviour
         "For the first two rounds for each player, the game piece-road combo can go anywhere in the city...",
         "It's now player 2's turn",
         "Every piece collects a rent from all non-foreclosed properties it touches, this is done at the start of every turn",
-        "This game piece collects rent from 1 green, 1 red, and 1 yellow property",
-        "And this game piece collects rent from 1 green, 1 yellow, and 1 blue property", // 10
+        "This game piece collects rent from Pacific Avenue, one from Illinois Avenue, and one from Marvin Gardens",
+        "And this game piece collects rent from North Carolina Avenue, one from Marvin Gardens, and one from Connecticut Avenue", // 10
         "Meaning that you've collected rent in the form of 2 green, 2 yellow, 1 blue, and 1 red for this turn",
         "Players use collected rent to build additional game pieces and roads",
-        "Tap the street corner of the property to place a new game piece",
-        "Now it's the gold player's turn, they recieve their rent from their properties",
-        "Houses are legally connected even if they pass through an opponent's game piece", // 15
+        "Click the street corner of the property to place a new game piece",
+        "Now it's the gold player's turn, they receive their rent from their properties",
+        "Roads are legally connected even if they pass through an opponent's game piece", // 15
         "The gold player now submits their move...",
         "The silver player gets rent from all their placed game pieces",
         "Build the highlighted roads and game pieces",
@@ -46,11 +46,11 @@ public class TutorialManager : MonoBehaviour
         "If you don't have the right mix of rent, you can trade for it",
         "Once per turn, you may trade any 3 types of rent for one of another color",
         "Now you have the rent required to build 1 more game piece",
-        "Tap the highlighted street corner to build a game piece", // 30
+        "Click the highlighted street corner to build a game piece", // 30
         "The goal of Nodopoly is to be the first to 10 points",
-        "1 point is rewarded for each game piece placed and monopolized property. 2 points are rewarded for having the longest chain of roads",
-        "While the gold player has 7 roads placed, but not all connected. This means the silver player has the longest network because 6 > 5",
-        "Tap the highlighted corner to build a game piece",
+        "1 point is rewarded for each game piece placed and one point for each monopolized property. 2 points are rewarded for having the longest chain of roads",
+        "While the gold player has 7 roads placed, not all are connected. This means the silver player has the longest network because 6 > 5",
+        "Click the highlighted corner to build a game piece",
         "", // 35
         "Click the Police Man to quit any game, click the Question for in-game rule summary and score breakdown"
     };
@@ -59,8 +59,8 @@ public class TutorialManager : MonoBehaviour
         "Click the green arrow to proceed. Click the red arrow to go back. Click the police man in the top left to exit at any time",
         "",
         "The opening sequence of Nodopoly goes: player 1 then player 2, player 2, player 1 and then back to player 2 to start the game",
-        "Tap the highlighted street corner to build a game piece",
-        "Tap the highlighted street to build a road to connect to your game piece. Press GO to submit your move",
+        "Click the highlighted street corner to build a game piece",
+        "Click the highlighted street to build a road to connect to your game piece. Press GO to submit your move",
         "", // 5
         "...but after the first two moves, new placements must connect to an already established network",
         "They collect their rent and make their move, they complete the turn to pass it back to you",
@@ -68,28 +68,28 @@ public class TutorialManager : MonoBehaviour
         " ",
         " ", // 10
         "",
-        "A road costs 1 red and 1 blue, while a game piece costs 2 yellow, and 2 green",
+        "A road costs 1 red and 1 blue, while a game piece costs 2 yellow and 2 green",
         "Press Go to submit your move",
         " ",
         "And you may build additional roads without any game pieces on them", // 15
         "...and any unused rent are saved for future rounds",
         "Including from the new game piece they placed last turn",
         "",
-        "If more game pieces are on property than it's star amount, it forecloses and stops paying rent out to either player",
+        "If more game pieces are on property than its star amount, it forecloses and stops paying rent out to either player",
         "But the silver player is about to place a 2nd game piece on it, which will foreclose it", // 20
         "Remember, game pieces from both players count towards the total limit!",
         "",
-        "Monopolizing a property builds a hotel on that property and stop paying rent to the opposing player",
+        "Monopolizing a property builds a hotel on that property and stops it paying rent to the opposing player",
         " ",
-        " ", // 25
+        "Surrounding a foreclosed property also monopolizes it, and starts paying rent only to the player who surrounded it", // 25
         "The gold player cannot build through the silver perimeter now that these properties are monopolized",
         "Click the chest to open the trading menu",
         "Click the 2 yellow dollars and a red dollar to trade for a needed green dollar",
         " ",
-        "", // 30
+        "Press GO to submit your move", // 30
         "",
         "All 6 of player 1's roads are connected",
-        "The player with the longest road network will recieve this card",
+        "The player with the longest road network will receive this card",
         "Finishing this turn will get you a score a 10",
         "", // 35
         "Click the green arrow to exit"
@@ -133,8 +133,10 @@ public class TutorialManager : MonoBehaviour
     public SpriteRenderer[] blockSquares;
     public Sprite[] undoBlockSprites;
 
-    private float[] arrowXLocations = new float[14];
-    private float[] arrowYLocations = new float[14];
+    public AudioSource resourceSound;
+
+    private float[] arrowXLocations = new float[15];
+    private float[] arrowYLocations = new float[15];
 
     #region Setup
     private void Awake()
@@ -207,7 +209,15 @@ public class TutorialManager : MonoBehaviour
             infoOne.text = infoOneMessages[messageNumber];
             infoTwo.text = infoTwoMessages[messageNumber];
 
-            if (messageNumber == 3)
+            if(messageNumber == 1)
+            {
+                bottomBG.SetActive(false);
+            }
+            else if(messageNumber == 2)
+            {
+                bottomBG.SetActive(true);
+            }
+            else if (messageNumber == 3)
             {
                 tutorialPanel.SetActive(false);
                 HighlightNode(0);
@@ -230,6 +240,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 5)
             {
+                bottomBG.SetActive(false);
                 StopAllCoroutines();
                 arrows[3].gameObject.SetActive(false);
                 arrows[2].gameObject.SetActive(false);
@@ -247,6 +258,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 6)
             {
+                bottomBG.SetActive(true);
                 currentPlayerMessage.text = "Your Move";
                 GameInformation.openingMoveNodeSet = false;
                 GameInformation.openingMoveBranchSet = false;
@@ -283,7 +295,9 @@ public class TutorialManager : MonoBehaviour
             {
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
-                ;
+
+                resourceSound.Play();
+
                 int[] one = new int[] { 1, 1, 2, 2 };
                 int[] two = new int[] { 1, 1, 1, 1 };
                 SetResources(one, two);
@@ -296,6 +310,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 9)
             {
+                bottomBG.SetActive(false);
                 arrows[0].gameObject.SetActive(true);
                 StartCoroutine(MoveForward(arrows[0]));
             }
@@ -310,6 +325,15 @@ public class TutorialManager : MonoBehaviour
             {
                 StopAllCoroutines();
                 arrows[1].gameObject.SetActive(false);
+                arrows[14].gameObject.SetActive(true);
+                StartCoroutine(MoveBackward(arrows[14]));
+            }
+            else if(messageNumber == 12)
+            {
+                StopAllCoroutines();
+                arrows[14].gameObject.SetActive(false);
+                MoveArrow(14);
+                bottomBG.SetActive(true);
             }
             else if (messageNumber == 13)
             {
@@ -366,7 +390,7 @@ public class TutorialManager : MonoBehaviour
             {
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
-                ;
+                resourceSound.Play();
                 int[] one = new int[] { 3, 3, 3, 2 };
                 int[] two = new int[] { 0, 0, 2, 2 };
                 SetResources(one, two);
@@ -379,6 +403,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 18)
             {
+                bottomBG.SetActive(false);
                 HighlightNode(5);
 
                 HighlightBranch(7);
@@ -387,6 +412,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if(messageNumber == 19)
             {
+                bottomBG.SetActive(true);
                 int[] one = new int[] { 0, 0, 1, 0 };
                 int[] two = new int[] { 0, 0, 2, 2 };
                 SetResources(one, two);
@@ -410,11 +436,13 @@ public class TutorialManager : MonoBehaviour
             }
             else if(messageNumber == 22)
             {
+                bottomBG.SetActive(false);
                 goBtn.interactable = true;
                 forwardBtn.interactable = false;
             }
             else if(messageNumber == 23)
             {
+                bottomBG.SetActive(true);
                 forwardBtn.interactable = true;
                 goBtn.interactable = false;
                 tutorialTiles[0].squareState.resourceState = SquareStatus.Blocked;
@@ -435,6 +463,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 24)
             {
+                bottomBG.SetActive(false);
                 arrows[5].gameObject.SetActive(true);
                 StartCoroutine(MoveForward(arrows[5]));
                 ClaimBranch(10, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
@@ -447,6 +476,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 25)
             {
+                bottomBG.SetActive(true);
                 StopAllCoroutines();
                 arrows[5].gameObject.SetActive(false);
                 arrows[6].gameObject.SetActive(true);
@@ -459,7 +489,7 @@ public class TutorialManager : MonoBehaviour
                 forwardBtn.interactable = false;
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
-                ;
+                resourceSound.Play();
                 int[] one = new int[] { 4, 3, 3, 1 };
                 int[] two = new int[] { 0, 0, 3, 3 };
                 SetResources(one, two);
@@ -508,6 +538,8 @@ public class TutorialManager : MonoBehaviour
             }
             else if(messageNumber == 29)
             {
+                resourceSound.Play();
+                bottomBG.SetActive(false);
                 int[] one = new int[] { 1, 2, 2, 2 };
                 int[] two = new int[] { 0, 0, 3, 3 };
                 SetResources(one, two);
@@ -516,12 +548,14 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 30)
             {
+                bottomBG.SetActive(true);
                 HighlightNode(6);
                 forwardBtn.interactable = false;
                 goBtn.interactable = true;
             }
             else if (messageNumber == 31)
             {
+                bottomBG.SetActive(false);
                 ClaimNode(6, PlayerColor.Silver, tutorialNodes[0].playerOneSprite);
                 forwardBtn.interactable = true;
                 goBtn.interactable = false;
@@ -540,6 +574,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 32)
             {
+                bottomBG.SetActive(true);
                 arrows[8].gameObject.SetActive(false);
                 arrows[9].gameObject.SetActive(false);
                 ClaimBranch(0, PlayerColor.Silver, highlightSilver);
@@ -589,7 +624,7 @@ public class TutorialManager : MonoBehaviour
                 HighlightNode(7);
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
-                ;
+                resourceSound.Play();
 
                 int[] one = new int[] { 4, 4, 3, 4 };
                 int[] two = new int[] { 2, 2, 4, 4 };
@@ -622,6 +657,7 @@ public class TutorialManager : MonoBehaviour
             else if (messageNumber == 36)
             {
                 winPanel.SetActive(false);
+                infoBtn.interactable = true;
                 topBG.SetActive(true);
                 bottomBG.SetActive(true);
                 GameInformation.gameOver = false;
@@ -649,7 +685,15 @@ public class TutorialManager : MonoBehaviour
             infoOne.text = infoOneMessages[messageNumber];
             infoTwo.text = infoTwoMessages[messageNumber];
 
-            if (messageNumber == 2)
+            if(messageNumber == 0)
+            {
+                bottomBG.SetActive(true);
+            }
+            else if(messageNumber == 1)
+            {
+                bottomBG.SetActive(false);
+            }
+            else if (messageNumber == 2)
             {
                 StopAllCoroutines();
                 tutorialPanel.SetActive(true);
@@ -678,10 +722,10 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 4)
             {
+                bottomBG.SetActive(true);
                 StopAllCoroutines();
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
-                ;
                 UndoBranch(0, PlayerColor.Blank, tutorialBranches[0].blankSprite);
                 GameInformation.openingMoveNodeSet = true;
                 GameInformation.openingMoveBranchSet = false;
@@ -705,7 +749,7 @@ public class TutorialManager : MonoBehaviour
             else if (messageNumber == 5)
             {
                 StopAllCoroutines();
-
+                bottomBG.SetActive(false);
                 // undo 6
                 GameInformation.openingMoveNodeSet = false;
                 GameInformation.openingMoveBranchSet = false;
@@ -747,7 +791,6 @@ public class TutorialManager : MonoBehaviour
                 // redo 6
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
-                ;
                 GameInformation.openingMoveNodeSet = false;
                 GameInformation.openingMoveBranchSet = false;
                 forwardBtn.interactable = false;
@@ -783,11 +826,11 @@ public class TutorialManager : MonoBehaviour
                 StopAllCoroutines();
                 MoveArrow(0);
                 arrows[0].gameObject.SetActive(false);
-
+                bottomBG.SetActive(true);
                 // redo 8
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
-                ;
+                resourceSound.Play();
                 int[] one = new int[] { 1, 1, 2, 2 };
                 int[] two = new int[] { 1, 1, 1, 1 };
                 SetResources(one, two);
@@ -802,15 +845,18 @@ public class TutorialManager : MonoBehaviour
                 StopAllCoroutines();
                 MoveArrow(1);
                 arrows[1].gameObject.SetActive(false);
-
+                bottomBG.SetActive(false);
                 // redo 9
                 arrows[0].gameObject.SetActive(true);
                 StartCoroutine(MoveForward(arrows[0]));
             }
             else if (messageNumber == 10)
             {
+                bottomBG.SetActive(false);
                 StopAllCoroutines();
                 MoveArrow(0);
+                arrows[14].gameObject.SetActive(false);
+                MoveArrow(14);
                 arrows[0].gameObject.SetActive(false);
                 arrows[1].gameObject.SetActive(true);
                 StartCoroutine(MoveForward(arrows[1]));
@@ -818,7 +864,10 @@ public class TutorialManager : MonoBehaviour
             else if (messageNumber == 11)
             {
                 StopAllCoroutines();
+                bottomBG.SetActive(false);
                 MoveArrow(1);
+                arrows[14].gameObject.SetActive(true);
+                StartCoroutine(MoveBackward(arrows[14]));
                 arrows[1].gameObject.SetActive(false);
             }
             else if (messageNumber == 12)
@@ -847,7 +896,7 @@ public class TutorialManager : MonoBehaviour
                 currentPlayerMessage.text = "Your Move";
                 UndoBranch(5, PlayerColor.Blank, tutorialBranches[0].blankSprite);
                 UndoBranch(6, PlayerColor.Blank, tutorialBranches[0].blankSprite);
-                ;
+                resourceSound.Play();
                 gameController.UpdateScores();
                 playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
                 playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
@@ -907,6 +956,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 17)
             {
+                bottomBG.SetActive(true);
                 UndoNode(5, PlayerColor.Blank, tutorialNodes[0].blankSprite);
                 UndoBranch(7, PlayerColor.Blank, tutorialBranches[0].blankSprite);
                 UndoBranch(8, PlayerColor.Blank, tutorialBranches[0].blankSprite);
@@ -914,7 +964,7 @@ public class TutorialManager : MonoBehaviour
 
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
-                ;
+                resourceSound.Play();
                 int[] one = new int[] { 3, 3, 3, 2 };
                 int[] two = new int[] { 0, 0, 2, 2 };
                 SetResources(one, two);
@@ -925,6 +975,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 18)
             {
+                bottomBG.SetActive(false);
                 int[] one = new int[] { 3, 3, 3, 2 };
                 int[] two = new int[] { 0, 0, 2, 2 };
                 SetResources(one, two);
@@ -966,6 +1017,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 21)
             {
+                bottomBG.SetActive(true);
                 StopAllCoroutines();
                 goBtn.interactable = false;
                 forwardBtn.interactable = true;
@@ -974,11 +1026,12 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 22)
             {
+                bottomBG.SetActive(false);
                 tutorialTiles[0].squareState.resourceState = SquareStatus.Open;
                 blockSquares[0].sprite = undoBlockSprites[0];
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
-                ;
+                resourceSound.Play();
                 int[] one = new int[] { 1, 1, 0, 0 };
                 int[] two = new int[] { 0, 0, 2, 2 };
                 SetResources(one, two);
@@ -991,6 +1044,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 23)
             {
+                bottomBG.SetActive(true);
                 StopAllCoroutines();
                 MoveArrow(5);
                 arrows[5].gameObject.SetActive(false);
@@ -1015,6 +1069,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 24)
             {
+                bottomBG.SetActive(false);
                 StopAllCoroutines();
                 UndoBranch(12, PlayerColor.Blank, tutorialBranches[0].blankSprite);
                 MoveArrow(6);
@@ -1070,7 +1125,7 @@ public class TutorialManager : MonoBehaviour
                 forwardBtn.interactable = false;
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
-                ;
+                resourceSound.Play();
                 int[] one = new int[] { 4, 3, 3, 1 };
                 int[] two = new int[] { 0, 0, 3, 3 };
                 SetResources(one, two);
@@ -1116,6 +1171,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 28)
             {
+                bottomBG.SetActive(true);
                 int[] one = new int[] { 3, 2, 3, 1 };
                 int[] two = new int[] { 0, 0, 3, 3 };
                 SetResources(one, two);
@@ -1132,6 +1188,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if (messageNumber == 29)
             {
+                bottomBG.SetActive(false);
                 int[] one = new int[] { 1, 2, 2, 2 };
                 int[] two = new int[] { 0, 0, 3, 3 };
                 SetResources(one, two);
@@ -1142,6 +1199,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if(messageNumber == 30)
             {
+                bottomBG.SetActive(true);
                 UndoNode(6, PlayerColor.Blank, tutorialSprite);
                 MoveArrow(8);
                 MoveArrow(9);
@@ -1154,13 +1212,13 @@ public class TutorialManager : MonoBehaviour
                 gameController.UpdateScores();
                 playerOneScore.text = "Score: " + GameInformation.playerOneScore.ToString();
                 playerTwoScore.text = "Score: " + GameInformation.playerTwoScore.ToString();
-
                 HighlightNode(6);
                 forwardBtn.interactable = false;
                 goBtn.interactable = true;
             }
             else if(messageNumber == 31)
             {
+                bottomBG.SetActive(false);
                 UndoBranch(0, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
                 UndoBranch(3, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
                 UndoBranch(7, PlayerColor.Silver, tutorialBranches[0].playerOneSprite);
@@ -1192,6 +1250,7 @@ public class TutorialManager : MonoBehaviour
                 ClaimBranch(11, PlayerColor.Gold, tutorialBranches[0].playerTwoSprite);
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
+                resourceSound.Play();
                 longestNetworkCard.SetActive(false);
                 int[] one = new int[] { 1, 2, 0, 0 };
                 int[] two = new int[] { 2, 2, 4, 4 };
@@ -1258,7 +1317,7 @@ public class TutorialManager : MonoBehaviour
                 HighlightNode(7);
                 GameInformation.currentPlayer = "HUMAN";
                 currentPlayerMessage.text = "Your Move";
-                ;
+                resourceSound.Play();
                 int[] one = new int[] { 4, 4, 3, 4 };
                 int[] two = new int[] { 2, 2, 4, 4 };
                 SetResources(one, two);
@@ -1273,6 +1332,7 @@ public class TutorialManager : MonoBehaviour
                 winPanel.SetActive(true);
                 topBG.SetActive(false);
                 bottomBG.SetActive(false);
+                infoBtn.interactable = false;
                 MoveArrow(12);
                 MoveArrow(13);
                 arrows[12].gameObject.SetActive(false);

@@ -10,6 +10,8 @@ public class IntroManager : MonoBehaviour
     public SpriteRenderer introImage;
     public SceneLoader sl;
 
+    public AudioSource introMusic;
+
     private void Awake()
     {
         introImage.enabled = false;
@@ -59,8 +61,9 @@ public class IntroManager : MonoBehaviour
             yield return null;
         }
 
-        //sl.LoadMenuScene();
+        teamLogo.gameObject.SetActive(false);
         introImage.enabled = true;
+        introMusic.Play();
         StartCoroutine(MoveCamera());
     }
 
